@@ -1,0 +1,2 @@
+# nixos
+Personal NixOS flake
