@@ -106,6 +106,9 @@
     };
   };
 
+  # Networking
+  networking.firewall.enable = true;
+
   # Internationalization
   time.timeZone = "America/Sao_Paulo";
   i18n.defaultLocale = "en_US.UTF-8";
