@@ -108,6 +108,10 @@
 
   # Networking
   networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    57621 # spotify local discovery
+    5353 # spotify cast discovery
+  ];
 
   # Internationalization
   time.timeZone = "America/Sao_Paulo";
