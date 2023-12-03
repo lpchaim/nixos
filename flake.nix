@@ -32,7 +32,6 @@
         commonModulesDailyDriver = [
           ./traits/kernel-zen.nix
           ./traits/user-lpchaim.nix
-          ./traits/graphical.nix
           ./traits/wayland.nix
           ./traits/pipewire.nix
         ];
