@@ -8,9 +8,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-software-center.url = "github:vlinkz/nix-software-center";
+    # waydroid-script = "casualsnek/waydroid_script";
   };
 
-  outputs = { self, flake-utils, disko, nixpkgs }@inputs:
+  outputs = { self, flake-utils, disko, nixpkgs, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -23,7 +25,7 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              ./traits/base.nix
+              (import ./traits/base.nix { inherit pkgs; inherit system; inherit inputs; })
               disko.nixosModules.disko
             ] ++ modules;
           };
