@@ -2,7 +2,11 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ pkgs
+, system
+, inputs
+, ...
+}:
 
 {
   # Use the systemd-boot EFI boot loader.
@@ -85,6 +89,7 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
+    inputs.nix-software-center.packages.${system}.nix-software-center
   ];
 
   # Package manager
@@ -93,6 +98,12 @@
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
+    settings = {
+      substituters = [ "https://snowflakeos.cachix.org/" ];
+      trusted-public-keys = [
+        "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
+      ];
+    };
   };
 
   # Internationalization
