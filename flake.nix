@@ -9,13 +9,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-software-center.url = "github:vlinkz/nix-software-center";
-    # waydroid-script = "casualsnek/waydroid_script";
   };
 
   outputs = { self, flake-utils, disko, nixpkgs, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
         makeOsConfig = modulesOrPaths:
           let
             modules = builtins.map
@@ -25,9 +28,10 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              (import ./traits/base.nix { inherit pkgs; inherit system; inherit inputs; })
+              ./traits/base.nix
               disko.nixosModules.disko
             ] ++ modules;
+            specialArgs = { inherit inputs pkgs system; };
           };
         commonModulesDailyDriver = [
           ./traits/kernel-zen.nix
@@ -37,7 +41,7 @@
         ];
       in
       {
-        packages.nixosConfigurations = {
+        nixosConfigurations = {
           laptop = makeOsConfig (commonModulesDailyDriver ++ [
             ./hardware/laptop/configuration.nix
             ./traits/gnome.nix
