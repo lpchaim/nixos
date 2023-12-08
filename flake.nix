@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nur.url = "github:nix-community/NUR";
     flake-utils.url = "github:numtide/flake-utils";
     disko = {
       url = "github:nix-community/disko";
@@ -29,8 +30,9 @@
           modules = [
             ./traits/base.nix
             disko.nixosModules.disko
+            nur.nixosModules.nur
           ] ++ modules;
-          specialArgs = { inherit inputs system; pkgs = makePkgs(system); };
+          specialArgs = { inherit inputs system; pkgs = makePkgs (system); };
         };
       commonDailyDriver = [
         ./traits/kernel-zen.nix
