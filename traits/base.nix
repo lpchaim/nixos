@@ -97,7 +97,12 @@
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
   };
+  nixpkgs.config.allowUnfree = true;
 
   # Internationalization
   time.timeZone = "America/Sao_Paulo";
