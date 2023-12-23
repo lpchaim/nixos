@@ -9,8 +9,12 @@
 }:
 
 {
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
@@ -91,6 +95,9 @@
     wget
     inputs.nix-software-center.packages.${system}.nix-software-center
   ];
+  environment.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = "1";
+  };
 
   # Package manager
   nix = {
@@ -104,7 +111,12 @@
         "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
       ];
     };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
   };
+  nixpkgs.config.allowUnfree = true;
 
   # Networking
   networking.firewall.enable = true;
@@ -120,4 +132,14 @@
 
   # Graphics
   hardware.opengl.enable = true;
+
+  # Boot
+  boot = {
+    initrd.systemd.enable = true;
+    plymouth = {
+      enable = true;
+      theme = "breeze";
+    };
+    kernelParams = [ "splash" "quiet" ];
+  };
 }
