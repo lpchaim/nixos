@@ -40,6 +40,7 @@
             ./hardware/laptop/configuration.nix
             ./traits/gnome.nix
             ./traits/laptop.nix
+            ./traits/gaming.nix
           ]);
         };
         devShells.default = pkgs.mkShell {
