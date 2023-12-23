@@ -90,6 +90,9 @@
     vim
     wget
   ];
+  environment.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = "1";
+  };
 
   # Package manager
   nix = {

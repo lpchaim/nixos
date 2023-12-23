@@ -13,7 +13,13 @@
   outputs = { self, flake-utils, disko, nixpkgs }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+          };
+        };
         makeOsConfig = modulesOrPaths:
           let
             modules = builtins.map
