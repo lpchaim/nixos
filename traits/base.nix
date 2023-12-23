@@ -111,4 +111,14 @@
 
   # Graphics
   hardware.opengl.enable = true;
+
+  # Boot
+  boot = {
+    initrd.systemd.enable = true;
+    plymouth = {
+      enable = true;
+      theme = "breeze";
+    };
+    kernelParams = [ "splash" "quiet" ];
+  };
 }
