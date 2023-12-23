@@ -16,8 +16,10 @@
     let
       makePkgs = system: import nixpkgs {
         inherit system;
-        allowUnfree = true;
-        allowUnfreePredicate = _: true;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
       };
       makeOsConfig = system: modulesOrPaths:
         let
@@ -47,6 +49,7 @@
           ./hardware/laptop/configuration.nix
           ./traits/gnome.nix
           ./traits/laptop.nix
+          ./traits/gaming.nix
         ]);
       };
     } // flake-utils.lib.eachDefaultSystem (system:
