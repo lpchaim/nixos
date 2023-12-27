@@ -3,52 +3,70 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    nur.url = "github:nix-community/NUR";
     flake-utils.url = "github:numtide/flake-utils";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-software-center.url = "github:vlinkz/nix-software-center";
+    snowfall-flake = {
+      url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "unstable";
+    };
   };
 
-  outputs = { self, flake-utils, disko, nixpkgs }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config = {
-            allowUnfree = true;
-            allowUnfreePredicate = _: true;
-          };
+  outputs = { self, flake-utils, disko, nixpkgs, nur, snowfall-flake, ... }@inputs:
+    let
+      makePkgs = system: import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
         };
-        makeOsConfig = modulesOrPaths:
-          let
-            modules = builtins.map
-              (x: if (builtins.isPath x) then (import x) else x)
-              modulesOrPaths;
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            modules = [
-              ./traits/base.nix
-              disko.nixosModules.disko
-            ] ++ modules;
-          };
-        commonModulesDailyDriver = [
-          ./traits/user-lpchaim.nix
-          ./traits/graphical.nix
-          ./traits/wayland.nix
-          ./traits/pipewire.nix
+        overlays = [
+          snowfall-flake.overlays.default
         ];
+      };
+      makeOsConfig = system: modulesOrPaths:
+        let
+          modules = builtins.map
+            (x: if (builtins.isPath x) then (import x) else x)
+            modulesOrPaths;
+          pkgs = makePkgs (system);
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./traits/base.nix
+            disko.nixosModules.disko
+            nur.nixosModules.nur
+          ] ++ modules;
+          specialArgs = { inherit inputs pkgs system; };
+        };
+      commonDailyDriver = [
+        ./traits/kernel-zen.nix
+        ./traits/user-lpchaim.nix
+        ./traits/wayland.nix
+        ./traits/pipewire.nix
+      ];
+    in
+    {
+      nixosConfigurations = {
+        laptop = makeOsConfig "x86_64-linux" (commonDailyDriver ++ [
+          ./hardware/laptop/configuration.nix
+          ./traits/gnome.nix
+          ./traits/laptop.nix
+          ./traits/gaming.nix
+        ]);
+      };
+    } // flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = makePkgs system;
       in
       {
-        packages.nixosConfigurations = {
-          laptop = makeOsConfig (commonModulesDailyDriver ++ [
-            ./hardware/laptop/configuration.nix
-            ./traits/gnome.nix
-            ./traits/laptop.nix
-            ./traits/gaming.nix
-          ]);
-        };
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             nil
