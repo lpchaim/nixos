@@ -95,6 +95,7 @@
     vim
     wget
     inputs.nix-software-center.packages.${system}.nix-software-center
+    snowfallorg.flake
   ];
   environment.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = "1";
@@ -107,6 +108,7 @@
       experimental-features = flakes nix-command
     '';
     settings = {
+      keep-outputs = true;
       substituters = [ "https://snowflakeos.cachix.org/" ];
       trusted-public-keys = [
         "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="

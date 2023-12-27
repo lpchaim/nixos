@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nur.url = "github:nix-community/NUR";
     flake-utils.url = "github:numtide/flake-utils";
     disko = {
@@ -10,9 +12,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-software-center.url = "github:vlinkz/nix-software-center";
+    snowfall-flake = {
+      url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "unstable";
+    };
   };
 
-  outputs = { self, flake-utils, disko, nixpkgs, nur, ... }@inputs:
+  outputs = { self, flake-utils, disko, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
       makePkgs = system: import nixpkgs {
         inherit system;
@@ -20,12 +26,16 @@
           allowUnfree = true;
           allowUnfreePredicate = _: true;
         };
+        overlays = [
+          snowfall-flake.overlays.default
+        ];
       };
       makeOsConfig = system: modulesOrPaths:
         let
           modules = builtins.map
             (x: if (builtins.isPath x) then (import x) else x)
             modulesOrPaths;
+          pkgs = makePkgs (system);
         in
         nixpkgs.lib.nixosSystem {
           inherit system;
@@ -34,7 +44,7 @@
             disko.nixosModules.disko
             nur.nixosModules.nur
           ] ++ modules;
-          specialArgs = { inherit inputs system; pkgs = makePkgs (system); };
+          specialArgs = { inherit inputs pkgs system; };
         };
       commonDailyDriver = [
         ./traits/kernel-zen.nix
