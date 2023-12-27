@@ -2,7 +2,11 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ pkgs
+, system
+, inputs
+, ...
+}:
 
 {
   boot.loader.systemd-boot.enable = false;
@@ -10,6 +14,7 @@
     enable = true;
     device = "nodev";
     efiSupport = true;
+    configurationLimit = 20;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -89,6 +94,8 @@
   environment.systemPackages = with pkgs; [
     vim
     wget
+    inputs.nix-software-center.packages.${system}.nix-software-center
+    snowfallorg.flake
   ];
   environment.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = "1";
@@ -100,12 +107,26 @@
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
+    settings = {
+      keep-outputs = true;
+      substituters = [ "https://snowflakeos.cachix.org/" ];
+      trusted-public-keys = [
+        "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
+      ];
+    };
     gc = {
       automatic = true;
       dates = "weekly";
     };
   };
   nixpkgs.config.allowUnfree = true;
+
+  # Networking
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    57621 # spotify local discovery
+    5353 # spotify cast discovery
+  ];
 
   # Internationalization
   time.timeZone = "America/Sao_Paulo";
