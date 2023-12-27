@@ -30,11 +30,8 @@
           snowfall-flake.overlays.default
         ];
       };
-      makeOsConfig = system: modulesOrPaths:
+      makeOsConfig = system: modules:
         let
-          modules = builtins.map
-            (x: if (builtins.isPath x) then (import x) else x)
-            modulesOrPaths;
           pkgs = makePkgs (system);
         in
         nixpkgs.lib.nixosSystem {
