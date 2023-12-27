@@ -14,6 +14,7 @@
         };
       };
     };
+    fprintd.enable = true;
     thermald.enable = true;
   };
 }
