@@ -5,20 +5,20 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nur.url = "github:nix-community/NUR";
-    flake-utils.url = "github:numtide/flake-utils";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
+    nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "unstable";
     };
   };
 
-  outputs = { self, flake-utils, disko, nixpkgs, nur, snowfall-flake, ... }@inputs:
+  outputs = { self, disko, flake-utils, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
       makePkgs = system: import nixpkgs {
         inherit system;
