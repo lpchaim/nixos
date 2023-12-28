@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   hardware.steam-hardware.enable = true;
   programs.steam = {
@@ -6,4 +8,7 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
   };
+  environment.systemPackages = with pkgs; [
+    protontricks
+  ];
 }
