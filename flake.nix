@@ -10,7 +10,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-software-center.url = "github:vlinkz/nix-software-center";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
@@ -18,8 +27,9 @@
     };
   };
 
-  outputs = { self, disko, flake-utils, nixpkgs, nur, snowfall-flake, ... }@inputs:
+  outputs = { self, disko, flake-utils, home-manager, nixpkgs, nixvim, nixneovimplugins, nur, snowfall-flake, ... }@inputs:
     let
+      inherit (self) outputs;
       makePkgs = system: import nixpkgs {
         inherit system;
         config = {
@@ -27,6 +37,7 @@
           allowUnfreePredicate = _: true;
         };
         overlays = [
+          nixneovimplugins.overlays.default
           snowfall-flake.overlays.default
         ];
       };
@@ -41,7 +52,7 @@
             disko.nixosModules.disko
             nur.nixosModules.nur
           ] ++ modules;
-          specialArgs = { inherit inputs pkgs system; };
+          specialArgs = { inherit inputs pkgs system outputs; };
         };
       commonDailyDriver = [
         ./traits/kernel-zen.nix
@@ -49,6 +60,18 @@
         ./traits/wayland.nix
         ./traits/pipewire.nix
       ];
+      makeHomeConfig = system: modules:
+        let
+          pkgs = makePkgs (system);
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = modules ++ [
+            # ./home-manager/home.nix
+            nixvim.homeManagerModules.nixvim
+          ];
+          extraSpecialArgs = { inherit inputs pkgs system outputs; };
+        };
     in
     {
       nixosConfigurations = {
@@ -64,6 +87,11 @@
         pkgs = makePkgs system;
       in
       {
+        homeConfigurations = {
+          lpchaim = makeHomeConfig system [
+            # TODO
+          ];
+        };
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             nil
