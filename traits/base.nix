@@ -18,42 +18,18 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
+  sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
@@ -65,18 +41,16 @@
   #   ];
   # };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    allowSFTP = true;
+    openFirewall = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -92,10 +66,12 @@
   # Programs
   programs.zsh.enable = true;
   environment.systemPackages = with pkgs; [
-    vim
-    wget
     inputs.nix-software-center.packages.${system}.nix-software-center
     snowfallorg.flake
+    vim
+    wget
+    winetricks
+    wineWowPackages.stable
   ];
   environment.sessionVariables = {
     NIXPKGS_ALLOW_UNFREE = "1";
@@ -129,12 +105,36 @@
   ];
 
   # Internationalization
-  time.timeZone = "America/Sao_Paulo";
+  time = {
+    timeZone = "America/Sao_Paulo";
+    hardwareClockInLocalTime = true;
+  };
   i18n.defaultLocale = "en_US.UTF-8";
-  time.hardwareClockInLocalTime = true;
+  console = {
+    # font = "Lat2-Terminus16";
+    # keyMap = "pt";
+    useXkbConfig = true; # use xkb.options in tty.
+  };
+  services.xserver.xkb.layout = "br";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Graphics
-  hardware.opengl.enable = true;
+  hardware = {
+    opengl =
+      let
+        getExtraPackages = pkgs: map (key: pkgs.${key}) [
+          "intel-media-driver"
+          "intel-vaapi-driver"
+        ];
+      in
+      {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
+        extraPackages = getExtraPackages pkgs;
+        extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
+      };
+  };
 
   # Boot
   boot = {
