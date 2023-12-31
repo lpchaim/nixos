@@ -1,0 +1,7 @@
+keys:
+  - &default age10fa7ce7w6q0ppk5l2gvg6d02g9cmj26rpt00ct54d4latqsnwajs90a43h
+creation_rules:
+  - path_regex: secrets/default.yaml
+    key_groups:
+      - age:
+        - *default

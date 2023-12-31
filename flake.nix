@@ -9,7 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-software-center.url = "github:vlinkz/nix-software-center";
-    # waydroid-script = "casualsnek/waydroid_script";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, flake-utils, disko, nixpkgs, ... }@inputs:
