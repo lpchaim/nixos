@@ -122,9 +122,9 @@
   hardware = {
     opengl =
       let
-        getExtraPackages = pkgs: map (key: pkgs.${key}) [
-          "intel-media-driver"
-          "intel-vaapi-driver"
+        getExtraPackages = p: with p; [
+          intel-media-driver
+          intel-vaapi-driver
         ];
       in
       {
@@ -136,6 +136,17 @@
       };
   };
 
+  # Bluetooth tweaks
+  hardware.bluetooth = {
+    enable = true;
+    settings = {
+      General = {
+        FastConnectable = true;
+      };
+    };
+  };
+  services.blueman.enable = true;
+
   # Boot
   boot = {
     initrd.systemd.enable = true;
@@ -143,6 +154,6 @@
       enable = true;
       theme = "breeze";
     };
-    kernelParams = [ "splash" "quiet" ];
+    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
 }
