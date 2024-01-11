@@ -5,6 +5,19 @@
     nixpkgs.url = "github:NixOS/nixpkgs/23.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "unstable";
+    };
+    nixneovimplugins = {
+      url = "github:jooooscha/nixpkgs-vim-extra-plugins";
+      inputs.nixpkgs.follows = "unstable";
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "unstable";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,52 +31,97 @@
     };
   };
 
-  outputs = { self, disko, flake-utils, nixpkgs, nur, snowfall-flake, ... }@inputs:
+  outputs = { self, disko, flake-utils, home-manager, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
-      makePkgs = system: import nixpkgs {
-        inherit system;
+      makePkgs = { system, nixpkgs ? inputs.nixpkgs, overlays ? [ ] }: import nixpkgs {
+        inherit overlays system;
         config = {
           allowUnfree = true;
           allowUnfreePredicate = _: true;
         };
-        overlays = [
-          snowfall-flake.overlays.default
-        ];
       };
-      makeOsConfig = system: modules:
+
+      makeOsConfig = { system ? "x86_64-linux", nixpkgs ? inputs.nixpkgs, modules ? [ ] }:
         let
-          pkgs = makePkgs (system);
+          pkgs = makePkgs {
+            inherit nixpkgs system;
+            overlays = [
+              snowfall-flake.overlays.default
+            ];
+          };
         in
         nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [
-            ./traits/base.nix
+          modules = modules ++ [
+            ./traits/nixos/base.nix
             disko.nixosModules.disko
             nur.nixosModules.nur
-          ] ++ modules;
+          ];
           specialArgs = { inherit inputs pkgs system; };
         };
-      commonDailyDriver = [
-        ./traits/kernel-zen.nix
-        ./traits/user-lpchaim.nix
-        ./traits/wayland.nix
-        ./traits/pipewire.nix
-      ];
+
+      makeHomeConfig = { nixpkgs ? inputs.unstable, system ? "x86_64-linux", modules ? [ ] }:
+        let
+          pkgs = makePkgs {
+            inherit nixpkgs system;
+            overlays = [
+              inputs.nixneovimplugins.overlays.default
+            ];
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = modules ++ [
+            ./modules/home-manager
+            inputs.nixvim.homeManagerModules.nixvim
+          ];
+          extraSpecialArgs = { inherit inputs pkgs system; };
+        };
     in
     {
-      nixosConfigurations = {
-        laptop = makeOsConfig "x86_64-linux" (commonDailyDriver ++ [
-          ./hardware/laptop/configuration.nix
-          ./traits/gnome.nix
-          ./traits/laptop.nix
-          ./traits/gaming.nix
-        ]);
-      };
+      nixosConfigurations =
+        let
+          makeDefault = modules: makeOsConfig {
+            system = "x86_64-linux";
+            modules = modules ++ [
+              ./traits/nixos/kernel-zen.nix
+              ./traits/nixos/user-lpchaim.nix
+              ./traits/nixos/wayland.nix
+              ./traits/nixos/pipewire.nix
+            ];
+          };
+        in
+        {
+          laptop = makeDefault [
+            ./hardware/laptop/configuration.nix
+            ./traits/nixos/gnome.nix
+            ./traits/nixos/laptop.nix
+            ./traits/nixos/gaming.nix
+          ];
+        };
     } // flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = makePkgs system;
+        pkgs = makePkgs { inherit system; };
+        makeHomeConfigFromModules = modules: makeHomeConfig { inherit modules system; };
       in
-      {
+      rec {
+        homeConfigurations = {
+          "cheina@pc079" = makeHomeConfigFromModules [
+            (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "cheina"; })
+            ./traits/home-manager/cheina.nix
+            ./traits/home-manager/non-nixos.nix
+          ];
+          "lpchaim@laptop" = makeHomeConfigFromModules [
+            (import ./traits/home-manager/base.nix { stateVersion = "23.11"; username = "lpchaim"; })
+            ./traits/home-manager/gnome.nix
+            ./traits/home-manager/gui.nix
+          ];
+          lpchaim = makeHomeConfigFromModules [ ];
+          lupec = makeHomeConfigFromModules [ ];
+        };
+
+        legacyPackages.homeConfigurations = homeConfigurations;
+
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             nil
