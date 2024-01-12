@@ -37,7 +37,7 @@
   outputs = { self, disko, flake-utils, home-manager, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
       myLib = import ./lib { inherit inputs; };
-      inherit (myLib) makeHomeConfig makeOsConfig makePkgs;
+      inherit (myLib) makeHomeConfig makeOsConfig;
     in
     {
       nixosConfigurations =
@@ -62,7 +62,9 @@
         };
     } // flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = makePkgs { inherit system; };
+        myLib = import ./lib { inherit inputs system; };
+        inherit (myLib) makePkgs makeDevShell;
+        pkgs = makePkgs { };
       in
       rec {
         homeConfigurations =
@@ -81,17 +83,13 @@
             lpchaim = makeDefault [ ];
             lupec = makeDefault [ ];
           };
-
         legacyPackages.homeConfigurations = homeConfigurations;
 
-        devShells.default = pkgs.mkShell {
+        lib = myLib;
+
+        devShells.default = makeDevShell {
           packages = with pkgs; [
-            nil
-            nixd
-            nixpkgs-fmt
             pre-commit
-            rustup
-            rnix-lsp
           ];
           shellHook = ''
             pre-commit install
