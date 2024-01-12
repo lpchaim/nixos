@@ -51,13 +51,8 @@ in
     }
     (
       mkIf cfg.preferDarkTheme {
-        gtk.gtk3.extraConfig.Settings = ''
-          gtk-application-prefer-dark-theme=1
-        '';
-        gtk.gtk4.extraConfig.Settings = ''
-          gtk-application-prefer-dark-theme=1
-        '';
-
+        gtk.gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+        gtk.gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
         dconf.settings = {
           "org/gnome/desktop/interface" = {
             color-scheme = "prefer-dark";
