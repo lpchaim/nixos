@@ -45,8 +45,8 @@
           makeDefault = modules: makeOsConfig {
             system = "x86_64-linux";
             modules = modules ++ [
-              ./traits/nixos/kernel-zen.nix
               ./traits/nixos/user-lpchaim.nix
+              ./traits/nixos/kernel.nix
               ./traits/nixos/wayland.nix
               ./traits/nixos/pipewire.nix
             ];
