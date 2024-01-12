@@ -36,7 +36,8 @@
 
   outputs = { self, disko, flake-utils, home-manager, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
-      inherit (import ./lib { inherit inputs; }) makeHomeConfig makeOsConfig makePkgs;
+      myLib = import ./lib { inherit inputs; };
+      inherit (myLib) makeHomeConfig makeOsConfig makePkgs;
     in
     {
       nixosConfigurations =
@@ -73,7 +74,7 @@
               ./traits/home-manager/non-nixos.nix
             ];
             "lpchaim@laptop" = makeDefault [
-              (import ./traits/home-manager/base.nix { stateVersion = "23.11"; username = "lpchaim"; })
+              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
               ./traits/home-manager/gnome.nix
               ./traits/home-manager/gui.nix
             ];
