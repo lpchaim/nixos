@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ inputs, system ? "x86_64-linux", pkgs ? import inputs.nixpkgs { inherit system; }, ... }@args:
 
 rec {
-  makePkgs = { system, nixpkgs ? inputs.nixpkgs, overlays ? [ ] }: import nixpkgs {
+  makePkgs = { system ? args.system, nixpkgs ? inputs.nixpkgs, overlays ? [ ] }: import nixpkgs {
     inherit overlays system;
     config = {
       allowUnfree = true;
@@ -9,7 +9,7 @@ rec {
     };
   };
 
-  makeOsConfig = { system ? "x86_64-linux", nixpkgs ? inputs.nixpkgs, modules ? [ ] }:
+  makeOsConfig = { system ? inputs.system, nixpkgs ? inputs.nixpkgs, modules ? [ ] }:
     let
       pkgs = makePkgs {
         inherit nixpkgs system;
@@ -28,7 +28,7 @@ rec {
       specialArgs = { inherit inputs pkgs system; };
     };
 
-  makeHomeConfig = { nixpkgs ? inputs.unstable, system ? "x86_64-linux", modules ? [ ] }:
+  makeHomeConfig = { nixpkgs ? inputs.unstable, system ? inputs.system, modules ? [ ] }:
     let
       pkgs = makePkgs {
         inherit nixpkgs system;
@@ -45,4 +45,15 @@ rec {
       ];
       extraSpecialArgs = { inherit inputs pkgs system; };
     };
+
+  makeDevShell = { packages ? [ ], shellHook ? "" }: pkgs.mkShell {
+    inherit shellHook;
+    packages = with pkgs; [
+      nil
+      nixd
+      nixpkgs-fmt
+      rustup
+      rnix-lsp
+    ] ++ packages;
+  };
 }
