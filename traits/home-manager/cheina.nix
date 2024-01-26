@@ -34,7 +34,6 @@
     enable = true;
     cli.enable = true;
     cli.git.enable = false;
-    de.flavor = "gnome";
-    de.gnome.enableTheming = false;
+    cli.hishtory.enable = false;
   };
 }

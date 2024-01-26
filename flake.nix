@@ -45,8 +45,8 @@
           makeDefault = modules: makeOsConfig {
             system = "x86_64-linux";
             modules = modules ++ [
-              ./traits/nixos/kernel-zen.nix
               ./traits/nixos/user-lpchaim.nix
+              ./traits/nixos/kernel.nix
               ./traits/nixos/wayland.nix
               ./traits/nixos/pipewire.nix
             ];
@@ -79,6 +79,10 @@
               (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
               ./traits/home-manager/gnome.nix
               ./traits/home-manager/gui.nix
+            ];
+            "lupec@desktop" = makeDefault [
+              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lupec"; })
+              ./traits/home-manager/non-nixos.nix
             ];
             lpchaim = makeDefault [ ];
             lupec = makeDefault [ ];

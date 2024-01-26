@@ -11,11 +11,15 @@ rec {
 
   makeOsConfig = { system ? inputs.system, nixpkgs ? inputs.nixpkgs, modules ? [ ] }:
     let
+      overlays = [
+        inputs.snowfall-flake.overlays.default
+      ];
       pkgs = makePkgs {
-        inherit nixpkgs system;
-        overlays = [
-          inputs.snowfall-flake.overlays.default
-        ];
+        inherit nixpkgs overlays system;
+      };
+      unstable = makePkgs {
+        inherit overlays system;
+        nixpkgs = inputs.unstable;
       };
     in
     nixpkgs.lib.nixosSystem {
@@ -25,7 +29,7 @@ rec {
         inputs.disko.nixosModules.disko
         inputs.nur.nixosModules.nur
       ];
-      specialArgs = { inherit inputs pkgs system; };
+      specialArgs = { inherit inputs pkgs system unstable; };
     };
 
   makeHomeConfig = { nixpkgs ? inputs.unstable, system ? inputs.system, modules ? [ ] }:
