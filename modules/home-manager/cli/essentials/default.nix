@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 
+with lib;
 let
   namespace = [ "my" "modules" "cli" "essentials" ];
   cfg = lib.getAttrFromPath namespace config;
@@ -51,6 +52,7 @@ in
         enable = true;
         enableAliases = true;
         extraOptions = [
+          "--group"
           "--group-directories-first"
         ];
         git = true;
@@ -58,7 +60,7 @@ in
       };
       fzf.enable = true;
       mcfly = {
-        enable = true;
+        enable = mkDefault true;
         fuzzySearchFactor = 2;
         keyScheme = "vim";
       };
