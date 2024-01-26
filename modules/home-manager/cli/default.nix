@@ -23,6 +23,7 @@ in
       enable = mkDefault true;
       lazygit.enable = mkDefault true;
     };
+    hishtory.enable = mkDefault true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;
     tealdeer.enable = mkDefault true;
@@ -31,13 +32,14 @@ in
   };
 
   imports = [
-    ./editors/default.nix
-    ./essentials/default.nix
-    ./git/default.nix
-    ./nushell/default.nix
-    ./starship/default.nix
-    ./tealdeer/default.nix
-    ./tmux/default.nix
-    ./zsh/default.nix
+    ./editors
+    ./essentials
+    ./git
+    ./hishtory
+    ./nushell
+    ./starship
+    ./tealdeer
+    ./tmux
+    ./zsh
   ];
 }
