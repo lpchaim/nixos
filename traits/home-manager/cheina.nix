@@ -34,5 +34,6 @@
     enable = true;
     cli.enable = true;
     cli.git.enable = false;
+    cli.hishtory.enable = false;
   };
 }

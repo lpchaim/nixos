@@ -80,6 +80,10 @@
               ./traits/home-manager/gnome.nix
               ./traits/home-manager/gui.nix
             ];
+            "lupec@desktop" = makeDefault [
+              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lupec"; })
+              ./traits/home-manager/non-nixos.nix
+            ];
             lpchaim = makeDefault [ ];
             lupec = makeDefault [ ];
           };
