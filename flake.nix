@@ -3,7 +3,7 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+    stable.url = "github:NixOS/nixpkgs/23.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
@@ -23,7 +23,7 @@
     # Misc
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "stable";
     };
     flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
@@ -37,28 +37,51 @@
   outputs = { self, disko, flake-utils, home-manager, nixpkgs, nur, snowfall-flake, ... }@inputs:
     let
       myLib = import ./lib { inherit inputs; };
-      inherit (myLib) makeHomeConfig makeOsConfig;
+      inherit (myLib) makeHomeConfig makeOsConfig makeOsHomeModule;
+
+      homeModules = {
+        "cheina@pc079" = [
+          (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "cheina"; })
+          ./traits/home-manager/cheina.nix
+          ./traits/home-manager/non-nixos.nix
+        ];
+        "lpchaim@laptop" = [
+          (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
+          ./traits/home-manager/gnome.nix
+          ./traits/home-manager/gui.nix
+          ./traits/home-manager/media.nix
+        ];
+        lpchaim = [ ];
+        lupec = [ ];
+      };
     in
     {
       nixosConfigurations =
         let
-          makeDefault = modules: makeOsConfig {
-            system = "x86_64-linux";
+          makeDefault = { modules, nixpkgs ? inputs.unstable, system ? "x86_64-linux" }: makeOsConfig {
+            inherit nixpkgs system;
             modules = modules ++ [
               ./traits/nixos/user-lpchaim.nix
               ./traits/nixos/kernel.nix
               ./traits/nixos/wayland.nix
               ./traits/nixos/pipewire.nix
+              home-manager.nixosModules.home-manager
             ];
+          };
+          makeHomeModule = { modules, nixpkgs ? inputs.unstable, system ? "x86_64-linux" }: makeOsHomeModule {
+            inherit modules nixpkgs system;
           };
         in
         {
-          laptop = makeDefault [
-            ./hardware/laptop/configuration.nix
-            ./traits/nixos/gnome.nix
-            ./traits/nixos/laptop.nix
-            ./traits/nixos/gaming.nix
-          ];
+          laptop = makeDefault {
+            modules = [
+              ./hardware/laptop/configuration.nix
+              ./traits/nixos/gnome.nix
+              ./traits/nixos/laptop.nix
+              ./traits/nixos/gaming.nix
+              (makeHomeModule { inherit nixpkgs; modules = homeModules."lpchaim@laptop"; })
+            ];
+          };
         };
     } // flake-utils.lib.eachDefaultSystem (system:
       let
@@ -68,25 +91,8 @@
       in
       rec {
         homeConfigurations =
-          let makeDefault = modules: makeHomeConfig { inherit modules system; };
-          in {
-            "cheina@pc079" = makeDefault [
-              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "cheina"; })
-              ./traits/home-manager/cheina.nix
-              ./traits/home-manager/non-nixos.nix
-            ];
-            "lpchaim@laptop" = makeDefault [
-              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
-              ./traits/home-manager/gnome.nix
-              ./traits/home-manager/gui.nix
-            ];
-            "lupec@desktop" = makeDefault [
-              (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lupec"; })
-              ./traits/home-manager/non-nixos.nix
-            ];
-            lpchaim = makeDefault [ ];
-            lupec = makeDefault [ ];
-          };
+          let makeDefault = modules: makeHomeConfig { inherit modules system; nixpkgs = inputs.unstable; };
+          in builtins.mapAttrs (_: modules: makeDefault modules) homeModules;
         legacyPackages.homeConfigurations = homeConfigurations;
 
         lib = myLib;
