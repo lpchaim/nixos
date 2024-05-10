@@ -1,7 +1,15 @@
-{ inputs, system ? "x86_64-linux", pkgs ? import inputs.nixpkgs { inherit system; }, ... }@args:
+{ inputs, system ? "x86_64-linux", pkgs ? import inputs.stable { inherit system; }, ... }@args:
 
+let
+  systemOverlays = [
+    inputs.snowfall-flake.overlays.default
+  ];
+  homeOverlays = [
+    inputs.nixneovimplugins.overlays.default
+  ];
+in
 rec {
-  makePkgs = { system ? args.system, nixpkgs ? inputs.nixpkgs, overlays ? [ ] }: import nixpkgs {
+  makePkgs = { system ? args.system, nixpkgs ? inputs.stable, overlays ? [ ] }: import nixpkgs {
     inherit overlays system;
     config = {
       allowUnfree = true;
@@ -9,11 +17,9 @@ rec {
     };
   };
 
-  makeOsConfig = { system ? inputs.system, nixpkgs ? inputs.nixpkgs, modules ? [ ] }:
+  makeOsConfig = { nixpkgs, system ? inputs.system, modules ? [ ] }:
     let
-      overlays = [
-        inputs.snowfall-flake.overlays.default
-      ];
+      overlays = systemOverlays ++ homeOverlays;
       pkgs = makePkgs {
         inherit nixpkgs overlays system;
       };
@@ -32,21 +38,42 @@ rec {
       specialArgs = { inherit inputs pkgs system unstable; };
     };
 
-  makeHomeConfig = { nixpkgs ? inputs.unstable, system ? inputs.system, modules ? [ ] }:
+  defaultHomeModules = [
+    ../modules/home-manager
+    inputs.nixvim.homeManagerModules.nixvim
+  ];
+
+  makeOsHomeModule = { system, nixpkgs, modules ? [ ], username ? "lpchaim" }:
     let
       pkgs = makePkgs {
         inherit nixpkgs system;
-        overlays = [
-          inputs.nixneovimplugins.overlays.default
-        ];
+        overlays = homeOverlays;
+      };
+    in
+    {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        users.${username} = {
+          imports = defaultHomeModules ++ modules;
+          config = {
+            home.enableNixpkgsReleaseCheck = false;
+          };
+        };
+        extraSpecialArgs = { inherit inputs pkgs system; };
+      };
+    };
+
+  makeHomeConfig = { nixpkgs, system ? inputs.system, modules ? [ ] }:
+    let
+      pkgs = makePkgs {
+        inherit nixpkgs system;
+        overlays = homeOverlays;
       };
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = modules ++ [
-        ../modules/home-manager
-        inputs.nixvim.homeManagerModules.nixvim
-      ];
+      modules = defaultHomeModules ++ modules;
       extraSpecialArgs = { inherit inputs pkgs system; };
     };
 
