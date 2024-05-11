@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -35,6 +35,7 @@
     cli.enable = true;
     cli.git.enable = false;
     cli.hishtory.enable = false;
+    de.flavor = null;
   };
 
   programs.helix.languages.language = [
