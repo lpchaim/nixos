@@ -14,8 +14,10 @@ in
       enable = true;
       colorschemes.catppuccin = {
         enable = true;
-        flavour = "mocha";
-        transparentBackground = false;
+        settings = {
+          flavour = "mocha";
+          transparent_background = false;
+        };
       };
       globals = {
         mapleader = "<Space>";
