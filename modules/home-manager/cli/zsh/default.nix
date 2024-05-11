@@ -12,7 +12,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       history = {
         extended = false;
         ignoreDups = true;
