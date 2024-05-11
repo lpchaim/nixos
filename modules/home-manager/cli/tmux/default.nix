@@ -36,9 +36,10 @@ in
         extraConfig = ''
           # General
           set -g default-terminal '${termBasic}'
-          set -ga terminal-overrides ',${termFull}:Tc'
-          set -g set-clipboard on
+          set -g detach-on-destroy off
           set -g renumber-windows on
+          set -g set-clipboard on
+          set -ga terminal-overrides ',${termFull}:Tc'
 
           # Visuals
           set-option -g status-position top
