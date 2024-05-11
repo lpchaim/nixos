@@ -22,6 +22,7 @@ in
       dash-to-dock
       gsconnect
       show-desktop-button
+      tailscale-qs
       tray-icons-reloaded
       user-themes
       vitals
@@ -40,6 +41,7 @@ in
           "dash-to-dock@micxgx.gmail.com"
           "gsconnect@andyholmes.github.io"
           "show-desktop-button@amivaleo"
+          "tailscale@joaophi.github.com"
           # "trayIconsReloaded@selfmade.pl"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "Vitals@CoreCoding.com"

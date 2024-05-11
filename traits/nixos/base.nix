@@ -103,6 +103,10 @@
     57621 # spotify local discovery
     5353 # spotify cast discovery
   ];
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+  };
 
   # Internationalization
   time = {
