@@ -35,6 +35,7 @@ in
           "SourceCodePro"
         ];
       })
+      nix-output-monitor
       rsync
       wget
     ];
