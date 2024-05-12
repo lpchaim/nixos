@@ -1,3 +1,3 @@
 {
-  my.modules.de.flavor = "gnome";
+  my.modules.de.gnome.enable = true;
 }

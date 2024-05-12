@@ -12,7 +12,7 @@ in
 
   config = setAttrByPath namespace (mkIf cfg.enable {
     cli.enable = mkDefault true;
-    de.flavor = mkDefault null;
+    de.gnome.enable = mkDefault false;
     gui.enable = mkDefault false;
   });
 
