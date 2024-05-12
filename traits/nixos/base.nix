@@ -3,6 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { pkgs
+, config
 , system
 , inputs
 , ...
@@ -159,5 +160,14 @@
       theme = "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
+  };
+
+  # Secrets
+  sops = {
+    defaultSopsFile = ../../secrets/default.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      password.neededForUsers = true;
+    };
   };
 }
