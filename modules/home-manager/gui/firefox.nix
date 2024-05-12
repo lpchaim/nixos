@@ -14,8 +14,8 @@ in
       enable = true;
       package = pkgs.firefox.override {
         cfg = {
-          enableGnomeExtensions = (config.my.modules.de.flavor == "gtk");
-          enablePlasmaBrowserIntegration = (config.my.modules.de.flavor == "plasma");
+          enableGnomeExtensions = config.my.modules.de.gnome.enable or false;
+          enablePlasmaBrowserIntegration = config.my.modules.de.plasma.enable or false;
         };
         nativeMessagingHosts = [ pkgs.gnomeExtensions.gsconnect ];
       };
@@ -46,7 +46,7 @@ in
           "general.useragent.locale" = "pt-BR";
           "mousewheel.default.delta_multiplier_x" = 20;
           "mousewheel.default.delta_multiplier_y" = 20;
-          "widget.use-xdg-desktop-portal.file-picker" = if (config.my.modules.de.flavor == "plasma") then 1 else 0;
+          "widget.use-xdg-desktop-portal.file-picker" = if (config.my.modules.plasma.enable or false) then 1 else 0;
         };
       };
     };
