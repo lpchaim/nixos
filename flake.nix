@@ -103,16 +103,30 @@
 
         lib = myLib;
 
-        devShells.default = makeDevShell {
-          packages = with pkgs; [
-            age
-            pre-commit
-            ssh-to-age
-            sops
-          ];
-          shellHook = ''
-            pre-commit install
-          '';
+        devShells = {
+          default = makeDevShell {
+            packages = with pkgs; [
+              age
+              pre-commit
+              ssh-to-age
+              sops
+            ];
+            shellHook = ''
+              pre-commit install
+            '';
+          };
+          cheina = makeDevShell {
+            packages = with pkgs; [
+              nil
+              nodePackages.intelephense
+              nodePackages.typescript-language-server
+              phpactor
+              vscode-langservers-extracted
+            ];
+            shellHook = ''
+              zsh
+            '';
+          };
         };
       }
     );
