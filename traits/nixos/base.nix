@@ -86,8 +86,12 @@
     '';
     settings = {
       keep-outputs = true;
-      substituters = [ "https://snowflakeos.cachix.org/" ];
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://snowflakeos.cachix.org/"
+      ];
       trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
       ];
     };
