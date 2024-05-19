@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -36,4 +36,23 @@
     cli.git.enable = false;
     cli.hishtory.enable = false;
   };
+
+  programs.helix.languages.language = [
+    {
+      name = "php";
+      language-id = "php";
+      debugger = {
+        name = "vscode-php-debug";
+        transport = "stdio";
+        command = "node";
+        args = [ "/home/cheina/.vscode/extensions/xdebug.php-debug-1.34.0/out/phpDebug.js" ];
+      };
+      debugger.templates = [{
+        name = "Listen for Xdebug";
+        request = "launch";
+        completion = [ "ignored" ];
+        args = { };
+      }];
+    }
+  ];
 }

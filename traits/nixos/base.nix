@@ -3,6 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { pkgs
+, config
 , system
 , inputs
 , ...
@@ -29,7 +30,7 @@
   # hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.alice = {
@@ -103,6 +104,10 @@
     57621 # spotify local discovery
     5353 # spotify cast discovery
   ];
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+  };
 
   # Internationalization
   time = {
@@ -155,5 +160,14 @@
       theme = "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
+  };
+
+  # Secrets
+  sops = {
+    defaultSopsFile = ../../secrets/default.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      password.neededForUsers = true;
+    };
   };
 }
