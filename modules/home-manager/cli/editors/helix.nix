@@ -44,6 +44,12 @@ in
           "A-ç" = "switch_to_uppercase";
           "ç" = "switch_to_lowercase";
         };
+        keys.normal.space = {
+          "y" = ":clipboard-yank-join";
+        };
+        keys.select.space = {
+          "y" = ":clipboard-yank-join";
+        };
       };
     };
   };
