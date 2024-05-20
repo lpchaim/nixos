@@ -20,6 +20,7 @@ in
       cheat
       curl
       delta
+      devenv
       difftastic
       du-dust
       duf

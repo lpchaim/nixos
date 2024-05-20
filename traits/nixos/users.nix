@@ -27,4 +27,5 @@ in
       root.hashedPassword = null;
     };
   };
+  nix.settings.trusted-users = [ "root" "@wheel" ];
 }
