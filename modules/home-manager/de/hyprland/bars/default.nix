@@ -1,0 +1,6 @@
+{
+  imports = [
+    ./ags
+    ./waybar.nix
+  ];
+}
