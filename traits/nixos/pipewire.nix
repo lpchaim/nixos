@@ -1,9 +1,13 @@
 # Use pipewire audio
 
-{ ... }:
+{ lib, ... }:
 
 {
-  hardware.pulseaudio.enable = false;
+  sound.enable = lib.mkForce false;
+  hardware = {
+    pulseaudio.enable = false;
+    enableAllFirmware = true;
+  };
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

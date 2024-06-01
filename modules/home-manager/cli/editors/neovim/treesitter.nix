@@ -1,16 +1,15 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   programs.nixvim = {
     keymaps =
       let
-        makeKeymap = mode: key: action: lua: {
+        makeKeymap = mode: key: action: raw: ({
           inherit mode;
           inherit key;
-          inherit action;
-          inherit lua;
+          action = if raw then ({ __raw = action; }) else action;
           options.silent = true;
-        };
+        });
       in
       [
         (makeKeymap "" "A-o" "require('tree-climber').goto_parent" true)
