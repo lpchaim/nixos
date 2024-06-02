@@ -3,7 +3,6 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { pkgs
-, config
 , system
 , inputs
 , ...
@@ -86,8 +85,12 @@
     '';
     settings = {
       keep-outputs = true;
-      substituters = [ "https://snowflakeos.cachix.org/" ];
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://snowflakeos.cachix.org"
+      ];
       trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
       ];
     };
@@ -114,14 +117,16 @@
     timeZone = "America/Sao_Paulo";
     hardwareClockInLocalTime = true;
   };
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "pt_BR.UTF-8/UTF-8"
+  ];
   i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    # font = "Lat2-Terminus16";
-    # keyMap = "pt";
-    useXkbConfig = true; # use xkb.options in tty.
+  console.useXkbConfig = true; # use xkb.options in tty.
+  services.xserver.xkb = {
+    layout = "br,br,us";
+    variant = ",nodeadkeys,intl";
   };
-  services.xserver.xkb.layout = "br";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Graphics
   hardware = {

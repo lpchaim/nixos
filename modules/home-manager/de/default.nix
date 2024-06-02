@@ -8,5 +8,6 @@ in
 {
   imports = [
     ./gnome/default.nix
+    ./hyprland/default.nix
   ];
 }

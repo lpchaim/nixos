@@ -4,6 +4,8 @@ with lib;
 let
   namespace = [ "my" "modules" "cli" "essentials" ];
   cfg = lib.getAttrFromPath namespace config;
+  defaultFont = "JetBrainsMono";
+  fonts = [ defaultFont "FiraCode" "Overpass" "SourceCodePro" ];
 in
 {
   options = lib.setAttrByPath namespace {
@@ -11,7 +13,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    fonts.fontconfig.enable = true;
+    fonts.fontconfig = {
+      enable = true;
+      defaultFonts.monospace = fonts;
+    };
     nixpkgs.config.allowUnfree = true;
 
     home.packages = with pkgs; [
@@ -20,6 +25,7 @@ in
       cheat
       curl
       delta
+      devenv
       difftastic
       du-dust
       duf
@@ -27,14 +33,7 @@ in
       htop
       neofetch
       ncdu
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "Overpass"
-          "SourceCodePro"
-        ];
-      })
+      (nerdfonts.override { fonts = fonts; })
       nix-output-monitor
       rsync
       wget
@@ -48,6 +47,7 @@ in
       direnv = {
         enable = true;
         nix-direnv.enable = true;
+        config.global.hide_env_diff = true;
       };
       eza = {
         enable = true;

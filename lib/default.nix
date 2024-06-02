@@ -52,6 +52,7 @@ rec {
     in
     {
       home-manager = {
+        backupFileExtension = "bak";
         useGlobalPkgs = true;
         useUserPackages = true;
         users.${username} = {

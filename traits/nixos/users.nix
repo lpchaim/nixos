@@ -20,11 +20,12 @@ in
         home = "/home/${userName}";
         description = fullName;
         group = userName;
-        extraGroups = [ "wheel" "networkmanager" ];
+        extraGroups = [ "i2c" "networkmanager" "wheel" ];
         shell = pkgs.zsh;
         hashedPasswordFile = "${config.sops.secrets."password".path}";
       };
       root.hashedPassword = null;
     };
   };
+  nix.settings.trusted-users = [ "root" "@wheel" ];
 }

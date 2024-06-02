@@ -20,6 +20,24 @@
       inputs.nixpkgs.follows = "unstable";
     };
 
+    # Hyprland
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "unstable";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+    ags = {
+      url = "github:Aylur/ags/05e0f23534fa30c1db2a142664ee8f71e38db260";
+      inputs.nixpkgs.follows = "unstable";
+    };
+    dots-hyprland = {
+      url = "github:end-4/dots-hyprland";
+      flake = false;
+    };
+
     # Misc
     disko = {
       url = "github:nix-community/disko";
@@ -53,6 +71,7 @@
         "lpchaim@laptop" = [
           (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
           ./traits/home-manager/gnome.nix
+          ./traits/home-manager/hyprland.nix
           ./traits/home-manager/gui.nix
           ./traits/home-manager/media.nix
         ];
@@ -69,6 +88,7 @@
               ./traits/nixos/users.nix
               ./traits/nixos/kernel.nix
               ./traits/nixos/wayland.nix
+              ./traits/nixos/hyprland.nix
               ./traits/nixos/pipewire.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
