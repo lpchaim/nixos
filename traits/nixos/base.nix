@@ -5,6 +5,7 @@
 { pkgs
 , system
 , inputs
+, lib
 , ...
 }:
 
@@ -162,7 +163,7 @@
     initrd.systemd.enable = true;
     plymouth = {
       enable = true;
-      theme = "breeze";
+      theme = lib.mkDefault "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
@@ -173,6 +174,21 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       password.neededForUsers = true;
+    };
+  };
+
+  # Theming
+  stylix = {
+    image = ../../assets/wallpaper-city-d.png;
+    polarity = "dark";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    fonts.monospace = {
+      name = "JetBrainsMono";
+      package = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
+    };
+    homeManagerIntegration = {
+      autoImport = false;
+      followSystem = true;
     };
   };
 }

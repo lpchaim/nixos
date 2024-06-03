@@ -75,8 +75,8 @@ in
 
         dconf.settings = {
           "org/gnome/desktop/background" = {
-            picture-uri = "${destinationPath}/.wallpaper-l";
-            picture-uri-dark = "${destinationPath}/.wallpaper-d";
+            picture-uri = mkDefault "${destinationPath}/.wallpaper-l";
+            picture-uri-dark = mkDefault "${destinationPath}/.wallpaper-d";
             primary-color = "#000000";
             picture-options = "zoom";
           };

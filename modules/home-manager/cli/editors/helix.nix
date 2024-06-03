@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   namespace = [ "my" "modules" "cli" "editors" "helix" ];
@@ -14,7 +14,7 @@ in
       enable = true;
       defaultEditor = true;
       settings = {
-        theme = "dark_plus";
+        theme = lib.mkDefault "dark_plus";
         editor = {
           bufferline = "always";
           color-modes = true;

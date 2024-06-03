@@ -4,8 +4,7 @@ with lib;
 let
   namespace = [ "my" "modules" "cli" "essentials" ];
   cfg = lib.getAttrFromPath namespace config;
-  defaultFont = "JetBrainsMono";
-  fonts = [ defaultFont "FiraCode" "Overpass" "SourceCodePro" ];
+  fonts = [ "JetBrainsMono" "FiraCode" "Overpass" "SourceCodePro" ];
 in
 {
   options = lib.setAttrByPath namespace {
@@ -15,7 +14,7 @@ in
   config = lib.mkIf cfg.enable {
     fonts.fontconfig = {
       enable = true;
-      defaultFonts.monospace = fonts;
+      defaultFonts.monospace = [ config.stylix.fonts.monospace.name ] ++ fonts;
     };
     nixpkgs.config.allowUnfree = true;
 

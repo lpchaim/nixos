@@ -1,6 +1,11 @@
 # Use the Hyprland compositor
 
 {
+  imports = [
+    ./pipewire.nix
+    ./wayland.nix
+  ];
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;

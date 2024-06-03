@@ -1,4 +1,8 @@
-{ inputs, system ? "x86_64-linux", pkgs ? import inputs.stable { inherit system; }, ... }@args:
+{ inputs
+, system ? "x86_64-linux"
+, pkgs ? import inputs.nixpkgs { inherit system; }
+, ...
+}@args:
 
 let
   systemOverlays = [
@@ -9,7 +13,7 @@ let
   ];
 in
 rec {
-  makePkgs = { system ? args.system, nixpkgs ? inputs.stable, overlays ? [ ] }: import nixpkgs {
+  makePkgs = { system ? args.system, nixpkgs ? inputs.nixpkgs, overlays ? [ ] }: import nixpkgs {
     inherit overlays system;
     config = {
       allowUnfree = true;
@@ -23,9 +27,13 @@ rec {
       pkgs = makePkgs {
         inherit nixpkgs overlays system;
       };
-      unstable = makePkgs {
+      pkgs-stable = makePkgs {
         inherit overlays system;
-        nixpkgs = inputs.unstable;
+        nixpkgs = inputs.nixpkgs-stable;
+      };
+      pkgs-unstable = makePkgs {
+        inherit overlays system;
+        nixpkgs = inputs.nixpkgs-unstable;
       };
     in
     nixpkgs.lib.nixosSystem {
@@ -33,14 +41,18 @@ rec {
       modules = modules ++ [
         ../traits/nixos/base.nix
         inputs.disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
         inputs.nur.nixosModules.nur
+        inputs.sops-nix.nixosModules.sops
+        inputs.stylix.nixosModules.stylix
       ];
-      specialArgs = { inherit inputs pkgs system unstable; };
+      specialArgs = { inherit inputs pkgs system pkgs-stable pkgs-unstable; };
     };
 
   defaultHomeModules = [
     ../modules/home-manager
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.stylix.homeManagerModules.stylix
   ];
 
   makeOsHomeModule = { system, nixpkgs, modules ? [ ], username ? "lpchaim" }:
@@ -85,7 +97,6 @@ rec {
       nixd
       nixpkgs-fmt
       rustup
-      rnix-lsp
     ] ++ packages;
   };
 }
