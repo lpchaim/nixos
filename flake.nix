@@ -65,66 +65,55 @@
 
   outputs = { self, flake-utils, ... }@inputs:
     let
-      myLib = import ./lib { inherit inputs; };
+      defaultSystem = "x86_64-linux";
+      myLib = import ./lib { inherit inputs; system = defaultSystem; };
       inherit (myLib) makeHomeConfig makeOsConfig makeOsHomeModule;
-
-      homeModules = {
-        "cheina@pc079" = [
-          (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "cheina"; })
-          ./traits/home-manager/cheina.nix
-          ./traits/home-manager/non-nixos.nix
-        ];
-        "lpchaim@laptop" = [
-          (import ./traits/home-manager/base.nix { stateVersion = "23.05"; username = "lpchaim"; })
-          ./traits/home-manager/gnome.nix
-          ./traits/home-manager/hyprland.nix
-          ./traits/home-manager/gui.nix
-          ./traits/home-manager/media.nix
-        ];
-        lpchaim = [ ];
-        lupec = [ ];
-      };
+      osModules =
+        let
+          getTraits = traits: map (mod: ./traits/nixos/${mod}.nix) traits;
+          getTraitsWithDefaults = traits: getTraits ([ "users" "kernel" "wayland" "pipewire" "hyprland" ] ++ traits);
+          makeHomeModule = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
+            makeOsHomeModule { inherit modules nixpkgs system; };
+        in
+        {
+          "laptop" = (getTraitsWithDefaults [ "laptop" "gnome" "gaming" ]) ++ [
+            ./hardware/laptop/configuration.nix
+            (makeHomeModule { modules = homeModules."lpchaim@laptop"; })
+          ];
+        };
+      homeModules =
+        let
+          getTraits = traits: map (mod: ./traits/home-manager/${mod}.nix) traits;
+          getBaseModule = { stateVersion, username ? "lpchaim", homeDirectory ? "/home/${username}" }:
+            { imports = getTraits [ "base" ]; home = { inherit username stateVersion; homeDirectory = builtins.toPath homeDirectory; }; };
+        in
+        {
+          "lpchaim@laptop" = (getTraits [ "gnome" "hyprland" "gui" "media" ])
+            ++ [ (getBaseModule { stateVersion = "23.05"; }) ];
+          "cheina@pc079" = (getTraits [ "non-nixos" "cheina" ])
+            ++ [ (getBaseModule { stateVersion = "23.05"; username = "cheina"; }) ];
+        };
     in
     {
       nixosConfigurations =
         let
-          makeDefault = { modules, nixpkgs ? inputs.nixpkgs-unstable, system ? "x86_64-linux" }: makeOsConfig {
-            inherit nixpkgs system;
-            modules = modules ++ [
-              ./traits/nixos/users.nix
-              ./traits/nixos/kernel.nix
-              ./traits/nixos/wayland.nix
-              ./traits/nixos/hyprland.nix
-              ./traits/nixos/pipewire.nix
-            ];
-          };
-          makeHomeModule = { modules, nixpkgs ? inputs.nixpkgs-unstable, system ? "x86_64-linux" }: makeOsHomeModule {
-            inherit modules nixpkgs system;
-          };
+          makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
+            makeOsConfig { inherit modules nixpkgs system; };
         in
-        {
-          laptop = makeDefault {
-            modules = [
-              ./hardware/laptop/configuration.nix
-              ./traits/nixos/gnome.nix
-              ./traits/nixos/laptop.nix
-              ./traits/nixos/gaming.nix
-              (makeHomeModule { nixpkgs = inputs.nixpkgs-unstable; modules = homeModules."lpchaim@laptop"; })
-            ];
-          };
-        };
+        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) osModules;
+      homeConfigurations =
+        let
+          makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
+            makeHomeConfig { inherit modules nixpkgs system; };
+        in
+        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) homeModules;
     } // flake-utils.lib.eachDefaultSystem (system:
       let
         myLib = import ./lib { inherit inputs system; };
         inherit (myLib) makePkgs makeDevShell;
-        pkgs = makePkgs { };
+        pkgs = makePkgs { inherit system; };
       in
       rec {
-        homeConfigurations =
-          let makeDefault = modules: makeHomeConfig { inherit modules system; nixpkgs = inputs.nixpkgs-unstable; };
-          in builtins.mapAttrs (_: modules: makeDefault modules) homeModules;
-        legacyPackages.homeConfigurations = homeConfigurations;
-
         lib = myLib;
 
         devShells = {
@@ -141,7 +130,6 @@
           };
           cheina = makeDevShell {
             packages = with pkgs; [
-              nil
               nodePackages.intelephense
               nodePackages.typescript-language-server
               phpactor

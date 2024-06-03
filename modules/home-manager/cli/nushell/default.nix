@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   namespace = [ "my" "modules" "cli" "nushell" ];
@@ -16,6 +16,7 @@ in
       envFile.text = "";
       extraConfig = (builtins.readFile ./config.nu);
       extraEnv = (builtins.readFile ./env.nu);
+      shellAliases = config.home.shellAliases;
     };
   };
 }
