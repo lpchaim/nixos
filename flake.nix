@@ -113,7 +113,7 @@
         inherit (myLib) makePkgs makeDevShell;
         pkgs = makePkgs { inherit system; };
       in
-      rec {
+      {
         lib = myLib;
 
         devShells = {
