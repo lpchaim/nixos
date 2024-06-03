@@ -10,6 +10,10 @@
 }:
 
 {
+  imports = [
+    ../shared
+  ];
+
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub = {
     enable = true;
@@ -178,17 +182,8 @@
   };
 
   # Theming
-  stylix = {
-    image = ../../assets/wallpaper-city-d.png;
-    polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-    fonts.monospace = {
-      name = "JetBrainsMono";
-      package = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
-    };
-    homeManagerIntegration = {
-      autoImport = false;
-      followSystem = true;
-    };
+  stylix.homeManagerIntegration = {
+    autoImport = false;
+    followSystem = true;
   };
 }

@@ -41,6 +41,7 @@ in
           };
         }
       ];
+      shellAliases = config.home.shellAliases;
     };
   };
 }

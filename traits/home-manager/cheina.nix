@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -29,6 +29,9 @@
     	git fetch origin dev:dev && git checkout dev
     }
   '';
+  programs.tmux.extraConfig = lib.optionalString config.programs.nushell.enable ''
+    set-option -g default-shell ${config.programs.nushell.package}/bin/nu
+  '';
 
   my.modules = {
     enable = true;
@@ -55,4 +58,16 @@
       }];
     }
   ];
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      enable-hot-corners = true;
+    };
+    "org/gnome/desktop/wm/keybindings" = {
+      switch-applications = [ ];
+      switch-applications-backward = [ ];
+      switch-windows = [ "<Alt>Tab" ];
+      switch-windows-backward = [ "<Shift><Alt>Tab" ];
+    };
+  };
 }

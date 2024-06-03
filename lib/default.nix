@@ -55,7 +55,7 @@ rec {
     inputs.stylix.homeManagerModules.stylix
   ];
 
-  makeOsHomeModule = { system, nixpkgs, modules ? [ ], username ? "lpchaim" }:
+  makeOsHomeModule = { system, nixpkgs ? inputs.nixpkgs, modules ? [ ], username ? "lpchaim" }:
     let
       pkgs = makePkgs {
         inherit nixpkgs system;
@@ -77,7 +77,7 @@ rec {
       };
     };
 
-  makeHomeConfig = { nixpkgs, system ? inputs.system, modules ? [ ] }:
+  makeHomeConfig = { nixpkgs ? inputs.nixpkgs, system ? inputs.system, modules ? [ ] }:
     let
       pkgs = makePkgs {
         inherit nixpkgs system;
