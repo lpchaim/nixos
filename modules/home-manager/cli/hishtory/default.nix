@@ -20,20 +20,17 @@ in
       };
     };
 
-
     programs.mcfly.enable = false;
 
     programs.zsh = mkIf config.my.modules.cli.zsh.enable {
       initExtra = ''
-        hishtory_tquery() {
-          hishtory tquery
-          zle reset-prompt
-        }
-        zle -N hishtory_tquery
-        bindkey '^r' hishtory_tquery
-
+        hishtory config-set enable-control-r true
         hishtory config-set filter-duplicate-commands true
         hishtory config-set timestamp-format '2006-01-02 15:04'
+
+        source ${pkgs.hishtory}/share/hishtory/config.zsh
+
+        hishtory enable
       '';
     };
   };

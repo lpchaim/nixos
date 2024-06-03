@@ -3,27 +3,28 @@
 
   inputs = {
     # Nixpkgs
-    stable.url = "github:NixOS/nixpkgs/23.11";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Hyprland
     hyprland = {
       url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -31,7 +32,7 @@
     };
     ags = {
       url = "github:Aylur/ags/05e0f23534fa30c1db2a142664ee8f71e38db260";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     dots-hyprland = {
       url = "github:end-4/dots-hyprland";
@@ -41,23 +42,28 @@
     # Misc
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "stable";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-stable.follows = "stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+    };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 
-  outputs = { self, disko, flake-utils, home-manager, nixpkgs, nur, snowfall-flake, sops-nix, ... }@inputs:
+  outputs = { self, flake-utils, ... }@inputs:
     let
       myLib = import ./lib { inherit inputs; };
       inherit (myLib) makeHomeConfig makeOsConfig makeOsHomeModule;
@@ -82,7 +88,7 @@
     {
       nixosConfigurations =
         let
-          makeDefault = { modules, nixpkgs ? inputs.unstable, system ? "x86_64-linux" }: makeOsConfig {
+          makeDefault = { modules, nixpkgs ? inputs.nixpkgs-unstable, system ? "x86_64-linux" }: makeOsConfig {
             inherit nixpkgs system;
             modules = modules ++ [
               ./traits/nixos/users.nix
@@ -90,11 +96,9 @@
               ./traits/nixos/wayland.nix
               ./traits/nixos/hyprland.nix
               ./traits/nixos/pipewire.nix
-              home-manager.nixosModules.home-manager
-              sops-nix.nixosModules.sops
             ];
           };
-          makeHomeModule = { modules, nixpkgs ? inputs.unstable, system ? "x86_64-linux" }: makeOsHomeModule {
+          makeHomeModule = { modules, nixpkgs ? inputs.nixpkgs-unstable, system ? "x86_64-linux" }: makeOsHomeModule {
             inherit modules nixpkgs system;
           };
         in
@@ -105,7 +109,7 @@
               ./traits/nixos/gnome.nix
               ./traits/nixos/laptop.nix
               ./traits/nixos/gaming.nix
-              (makeHomeModule { inherit nixpkgs; modules = homeModules."lpchaim@laptop"; })
+              (makeHomeModule { nixpkgs = inputs.nixpkgs-unstable; modules = homeModules."lpchaim@laptop"; })
             ];
           };
         };
@@ -117,7 +121,7 @@
       in
       rec {
         homeConfigurations =
-          let makeDefault = modules: makeHomeConfig { inherit modules system; nixpkgs = inputs.unstable; };
+          let makeDefault = modules: makeHomeConfig { inherit modules system; nixpkgs = inputs.nixpkgs-unstable; };
           in builtins.mapAttrs (_: modules: makeDefault modules) homeModules;
         legacyPackages.homeConfigurations = homeConfigurations;
 
