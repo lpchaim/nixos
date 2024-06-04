@@ -49,7 +49,7 @@
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -67,40 +67,39 @@
     let
       defaultSystem = "x86_64-linux";
       myLib = import ./lib { inherit inputs; system = defaultSystem; };
-      inherit (myLib) makeHomeConfig makeOsConfig makeOsHomeModule;
-      osModules =
+      inherit (myLib) makeHomeConfig makeNixosConfig makeNixosHomeModule;
+      nixosModules =
         let
-          getTraits = traits: map (mod: ./traits/nixos/${mod}.nix) traits;
-          getTraitsWithDefaults = traits: getTraits ([ "users" "kernel" "wayland" "pipewire" "hyprland" ] ++ traits);
+          getTraitModules = traits: map (mod: ./traits/nixos/${mod}.nix) traits;
+          getTraitModulesWithDefaults = traits: getTraitModules ([ "users" "kernel" "wayland" "pipewire" "hyprland" ] ++ traits);
           makeHomeModule = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
-            makeOsHomeModule { inherit modules nixpkgs system; };
+            [ (makeNixosHomeModule { inherit modules nixpkgs system; }) ];
         in
         {
-          "laptop" = (getTraitsWithDefaults [ "laptop" "gnome" "gaming" ]) ++ [
-            ./hardware/laptop/configuration.nix
-            (makeHomeModule { modules = homeModules."lpchaim@laptop"; })
-          ];
+          "laptop" = [ ./hardware/laptop/configuration.nix ]
+            ++ (makeHomeModule { modules = homeModules."lpchaim@laptop"; })
+            ++ (getTraitModulesWithDefaults [ "laptop" "gnome" "gaming" ]);
         };
       homeModules =
         let
-          getTraits = traits: map (mod: ./traits/home-manager/${mod}.nix) traits;
-          getBaseModule = { stateVersion, username ? "lpchaim", homeDirectory ? "/home/${username}" }:
-            { imports = getTraits [ "base" ]; home = { inherit username stateVersion; homeDirectory = builtins.toPath homeDirectory; }; };
+          getTraitModules = traits: map (mod: ./traits/home-manager/${mod}.nix) traits;
+          makeBaseModule = { stateVersion, username ? "lpchaim", homeDirectory ? "/home/${username}" }:
+            [{ home = { inherit homeDirectory stateVersion username; }; }];
         in
         {
-          "lpchaim@laptop" = (getTraits [ "gnome" "hyprland" "gui" "media" ])
-            ++ [ (getBaseModule { stateVersion = "23.05"; }) ];
-          "cheina@pc079" = (getTraits [ "non-nixos" "cheina" ])
-            ++ [ (getBaseModule { stateVersion = "23.05"; username = "cheina"; }) ];
+          "lpchaim@laptop" = (makeBaseModule { stateVersion = "23.05"; })
+            ++ (getTraitModules [ "gnome" "hyprland" "gui" "media" ]);
+          "cheina@pc079" = (makeBaseModule { stateVersion = "23.05"; username = "cheina"; })
+            ++ (getTraitModules [ "non-nixos" "cheina" ]);
         };
     in
     {
       nixosConfigurations =
         let
           makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
-            makeOsConfig { inherit modules nixpkgs system; };
+            makeNixosConfig { inherit modules nixpkgs system; };
         in
-        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) osModules;
+        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) nixosModules;
       homeConfigurations =
         let
           makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
