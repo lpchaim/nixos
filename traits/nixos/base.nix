@@ -182,8 +182,11 @@
   };
 
   # Theming
-  stylix.homeManagerIntegration = {
-    autoImport = false;
-    followSystem = true;
+  stylix = {
+    homeManagerIntegration = {
+      autoImport = false;
+      followSystem = true;
+    };
+    targets.plymouth.enable = false;
   };
 }
