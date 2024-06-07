@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }@args:
 
 with lib;
 let
@@ -8,7 +8,7 @@ in
 {
   imports = [
     ./bars
-    ./binds.nix
+    ./binds
     ./plugins
   ];
 
@@ -37,18 +37,23 @@ in
       };
   };
 
-  config = lib.mkIf cfg.enable (
-    setAttrByPath namespace
-      {
-        plugins.enable = mkDefault false;
-        bars.ags.enable = mkDefault true;
-        bars.waybar.enable = mkDefault false;
-      }
-    // {
+  config = mkIf cfg.enable (mkMerge [
+    (setAttrByPath namespace {
+      plugins.enable = mkDefault false;
+      bars.ags.enable = mkDefault true;
+      bars.waybar.enable = mkDefault false;
+    })
+    {
       wayland.windowManager.hyprland = {
         enable = true;
         systemd.variables = [ "--all" ];
         settings = {
+          exec-once = [
+            "hypridle"
+            "hyprlock"
+            "hyprpaper"
+            "xwaylandvideobridge"
+          ];
           general = {
             gaps_in = 5;
             gaps_out = 10;
@@ -60,18 +65,25 @@ in
             layout = "dwindle";
           };
           decoration = {
-            rounding = 10;
-            active_opacity = 1.0;
-            inactive_opacity = 1.0;
+            rounding = 5;
+            active_opacity = 0.9;
+            inactive_opacity = 0.8;
             drop_shadow = true;
             shadow_range = 4;
             shadow_render_power = 3;
             "col.shadow" = mkDefault "rgba(1a1a1aee)";
             blur = {
               enabled = true;
-              size = 3;
-              passes = 1;
-              vibrancy = 0.1696;
+              size = 8;
+              passes = 3;
+              noise = 0.2;
+              contrast = 0.9;
+              brightness = 0.8;
+              vibrancy = 0.2;
+              new_optimizations = true;
+              popups = true;
+              special = false;
+              xray = true;
             };
           };
           animations = {
@@ -94,11 +106,11 @@ in
             pseudotile = true;
             smart_split = true;
             preserve_split = true;
-            no_gaps_when_only = true;
+            no_gaps_when_only = false;
           };
           master = {
             new_is_master = true;
-            no_gaps_when_only = true;
+            no_gaps_when_only = false;
           };
           misc = {
             disable_hyprland_logo = true;
@@ -126,20 +138,18 @@ in
           monitor = [ ",preferred,auto,1" ];
           opengl.nvidia_anti_flicker = true;
           windowrulev2 = [
-            "opacity 0.0 override,class:^(xwaylandvideobridge)$"
-            "noanim,class:^(xwaylandvideobridge)$"
-            "noinitialfocus,class:^(xwaylandvideobridge)$"
             "maxsize 1 1,class:^(xwaylandvideobridge)$"
+            "noanim,class:^(xwaylandvideobridge)$"
             "noblur,class:^(xwaylandvideobridge)$"
+            "nofocus,class:^(xwaylandvideobridge)$"
+            "noinitialfocus,class:^(xwaylandvideobridge)$"
+            "opacity 0.0 override,class:^(xwaylandvideobridge)$"
           ];
         };
       };
 
       programs = {
-        hyprlock = {
-          enable = false;
-          settings = { };
-        };
+        hyprlock = (import ./hyprlock args);
         kitty = {
           enable = true;
           font.name = config.stylix.fonts.monospace.name;
@@ -152,10 +162,7 @@ in
       };
 
       services = {
-        hypridle = {
-          enable = false;
-          settings = { };
-        };
+        hypridle = (import ./hypridle args);
         hyprpaper = {
           enable = true;
           settings = {
@@ -167,20 +174,33 @@ in
         };
       };
 
-      home.file.".config/xdg-desktop-portal/hyprland-portals.conf".text = ''
-        [preferred]
-        default=hyprland;gtk
-      '';
+      home = {
+        file.".config/xdg-desktop-portal/hyprland-portals.conf".text = ''
+          [preferred]
+          default=hyprland;gtk
+        '';
+        packages = with pkgs; [
+          grimblast
+          hyprcursor
+          hypridle
+          hyprlock
+          hyprpaper
+          hyprpicker
+          xwaylandvideobridge
+        ];
+      };
 
-      home.packages = with pkgs; [
-        grimblast
-        hyprpicker
-        xwaylandvideobridge
-      ];
-
-      xdg.portal.extraPortals = with pkgs; [
-        xdg-desktop-portal-hyprland
-      ];
+      xdg.portal = {
+        enable = true;
+        config = {
+          preferred.default = [ "hyprland" "gtk" ];
+        };
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-hyprland
+          xdg-desktop-portal-gtk
+        ];
+        xdgOpenUsePortal = true;
+      };
     }
-  );
+  ]);
 }
