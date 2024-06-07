@@ -3,14 +3,14 @@
 with lib;
 let
   namespace = [ "my" "modules" "cli" "hishtory" ];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = getAttrFromPath namespace config;
 in
 {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "hishtory";
+  options = setAttrByPath namespace {
+    enable = mkEnableOption "hishtory";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
         hishtory
@@ -24,7 +24,9 @@ in
 
     programs.zsh = mkIf config.my.modules.cli.zsh.enable {
       initExtra = ''
-        hishtory config-set enable-control-r true
+        if [[ $(hishtory config-get enable-control-r) != "true" ]]; then
+          hishtory config-set enable-control-r true;
+        fi
         hishtory config-set filter-duplicate-commands true
         hishtory config-set timestamp-format '2006-01-02 15:04'
 
