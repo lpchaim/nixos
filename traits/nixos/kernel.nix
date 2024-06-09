@@ -1,8 +1,8 @@
-{ unstable, ... }:
+{ pkgs, ... }:
 
 {
   boot = {
-    kernelPackages = unstable.linuxPackages_zen;
+    kernelPackages = pkgs.unstable.linuxPackages_zen;
     kernelModules = [
       "i2c-dev"
       "wireguard"

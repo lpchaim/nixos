@@ -4,8 +4,7 @@ with lib;
 let
   namespace = [ "my" "modules" "cli" "essentials" ];
   cfg = lib.getAttrFromPath namespace config;
-  defaultFont = "JetBrainsMono";
-  fonts = [ defaultFont "FiraCode" "Overpass" "SourceCodePro" ];
+  myNerdFonts = [ "FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro" ];
 in
 {
   options = lib.setAttrByPath namespace {
@@ -15,29 +14,39 @@ in
   config = lib.mkIf cfg.enable {
     fonts.fontconfig = {
       enable = true;
-      defaultFonts.monospace = fonts;
+      defaultFonts.monospace = [ config.stylix.fonts.monospace.name ] ++ myNerdFonts;
     };
     nixpkgs.config.allowUnfree = true;
 
-    home.packages = with pkgs; [
-      bash
-      btop
-      cheat
-      curl
-      delta
-      devenv
-      difftastic
-      du-dust
-      duf
-      fd
-      htop
-      neofetch
-      ncdu
-      (nerdfonts.override { fonts = fonts; })
-      nix-output-monitor
-      rsync
-      wget
-    ];
+    home = {
+      packages = with pkgs; [
+        bash
+        btop
+        cheat
+        curl
+        delta
+        devenv
+        difftastic
+        du-dust
+        duf
+        fd
+        htop
+        neofetch
+        ncdu
+        (nerdfonts.override { fonts = myNerdFonts; })
+        nix-output-monitor
+        rsync
+        wget
+      ];
+      shellAliases = {
+        gco = "git checkout";
+        gd = "git diff";
+        gds = "git diff --staged";
+        gl = "git log";
+        glg = "git log --graph";
+        gst = "git status";
+      };
+    };
 
     programs = {
       bat.enable = true;
