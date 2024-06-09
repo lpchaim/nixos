@@ -93,6 +93,8 @@
         {
           "lpchaim@laptop" = (makeBaseModule { stateVersion = "23.05"; })
             ++ (getTraitModules [ "gnome" "hyprland" "gui" "media" ]);
+          "lupec@desktop" = (makeBaseModule { stateVersion = "23.11"; username = "lupec"; })
+            ++ (getTraitModules [ "non-nixos" ]);
           "cheina@pc079" = (makeBaseModule { stateVersion = "23.05"; username = "cheina"; })
             ++ (getTraitModules [ "non-nixos" "cheina" ]);
         };
