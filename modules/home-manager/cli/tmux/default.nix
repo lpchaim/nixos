@@ -131,7 +131,7 @@ in
             plugin = resurrect;
             extraConfig =
               let
-                simpleRestore = [ "btop" "htop" ];
+                simpleRestore = [ "btop" "htop" "nu" ];
                 complexRestore = [ "hx" "nano" "nix-shell" "vim" ];
                 resurrectProcesses = lib.concatStringsSep " " (
                   simpleRestore

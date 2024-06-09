@@ -5,10 +5,15 @@
 { pkgs
 , system
 , inputs
+, lib
 , ...
 }:
 
 {
+  imports = [
+    ../shared
+  ];
+
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub = {
     enable = true;
@@ -162,7 +167,7 @@
     initrd.systemd.enable = true;
     plymouth = {
       enable = true;
-      theme = "breeze";
+      theme = lib.mkDefault "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
@@ -174,5 +179,14 @@
     secrets = {
       password.neededForUsers = true;
     };
+  };
+
+  # Theming
+  stylix = {
+    homeManagerIntegration = {
+      autoImport = false;
+      followSystem = true;
+    };
+    targets.plymouth.enable = false;
   };
 }
