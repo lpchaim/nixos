@@ -40,6 +40,10 @@
     };
 
     # Misc
+    devenv = {
+      url = "github:cachix/devenv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -89,6 +93,8 @@
         {
           "lpchaim@laptop" = (makeBaseModule { stateVersion = "23.05"; })
             ++ (getTraitModules [ "gnome" "hyprland" "gui" "media" ]);
+          "lupec@desktop" = (makeBaseModule { stateVersion = "23.11"; username = "lupec"; })
+            ++ (getTraitModules [ "non-nixos" ]);
           "cheina@pc079" = (makeBaseModule { stateVersion = "23.05"; username = "cheina"; })
             ++ (getTraitModules [ "non-nixos" "cheina" ]);
         };
