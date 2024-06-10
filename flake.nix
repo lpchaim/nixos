@@ -55,6 +55,10 @@
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -67,84 +71,33 @@
     };
   };
 
-  outputs = { self, flake-utils, ... }@inputs:
-    let
-      defaultSystem = "x86_64-linux";
-      myLib = import ./lib { inherit inputs; system = defaultSystem; };
-      inherit (myLib) makeHomeConfig makeNixosConfig makeNixosHomeModule;
-      nixosModules =
-        let
-          getTraitModules = traits: map (mod: ./traits/nixos/${mod}.nix) traits;
-          getTraitModulesWithDefaults = traits: getTraitModules ([ "users" "kernel" "wayland" "pipewire" "hyprland" ] ++ traits);
-          makeHomeModule = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
-            [ (makeNixosHomeModule { inherit modules nixpkgs system; }) ];
-        in
-        {
-          "laptop" = [ ./hardware/laptop/configuration.nix ]
-            ++ (makeHomeModule { modules = homeModules."lpchaim@laptop"; })
-            ++ (getTraitModulesWithDefaults [ "laptop" "gnome" "gaming" ]);
-        };
-      homeModules =
-        let
-          getTraitModules = traits: map (mod: ./traits/home-manager/${mod}.nix) traits;
-          makeBaseModule = { stateVersion, username ? "lpchaim", homeDirectory ? "/home/${username}" }:
-            [{ home = { inherit homeDirectory stateVersion username; }; }];
-        in
-        {
-          "lpchaim@laptop" = (makeBaseModule { stateVersion = "23.05"; })
-            ++ (getTraitModules [ "gnome" "hyprland" "gui" "media" ]);
-          "lupec@desktop" = (makeBaseModule { stateVersion = "23.11"; username = "lupec"; })
-            ++ (getTraitModules [ "non-nixos" ]);
-          "cheina@pc079" = (makeBaseModule { stateVersion = "23.05"; username = "cheina"; })
-            ++ (getTraitModules [ "non-nixos" "cheina" ]);
-        };
-    in
-    {
-      nixosConfigurations =
-        let
-          makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
-            makeNixosConfig { inherit modules nixpkgs system; };
-        in
-        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) nixosModules;
-      homeConfigurations =
-        let
-          makeDefault = { modules, nixpkgs ? inputs.nixpkgs, system ? defaultSystem }:
-            makeHomeConfig { inherit modules nixpkgs system; };
-        in
-        builtins.mapAttrs (_: modules: makeDefault { inherit modules; }) homeModules;
-    } // flake-utils.lib.eachDefaultSystem (system:
-      let
-        myLib = import ./lib { inherit inputs system; };
-        inherit (myLib) makePkgs makeDevShell;
-        pkgs = makePkgs { inherit system; };
-      in
-      {
-        lib = myLib;
+  outputs = inputs:
+    inputs.snowfall-lib.mkFlake {
+      inherit inputs;
+      src = ./.;
+      snowfall.namespace = "lpchaim";
 
-        devShells = {
-          default = makeDevShell {
-            packages = with pkgs; [
-              age
-              pre-commit
-              ssh-to-age
-              sops
-            ];
-            shellHook = ''
-              pre-commit install
-            '';
-          };
-          cheina = makeDevShell {
-            packages = with pkgs; [
-              nodePackages.intelephense
-              nodePackages.typescript-language-server
-              phpactor
-              vscode-langservers-extracted
-            ];
-            shellHook = ''
-              zsh
-            '';
-          };
-        };
-      }
-    );
+      channels-config = {
+        allowUnfree = true;
+        config = { };
+      };
+
+      overlays = with inputs; [
+        nixneovimplugins.overlays.default
+        snowfall-flake.overlays.default
+      ];
+
+      systems.modules.nixos = with inputs; [
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager
+        nur.nixosModules.nur
+        sops-nix.nixosModules.sops
+        stylix.nixosModules.stylix
+      ];
+
+      homes.modules = with inputs; [
+        nixvim.homeManagerModules.nixvim
+        stylix.homeManagerModules.stylix
+      ];
+    };
 }
