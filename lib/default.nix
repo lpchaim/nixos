@@ -19,7 +19,7 @@ let
     stylix.homeManagerModules.stylix
   ];
   getDevShellPackages = p: with p; [
-    nixd
+    nil
     nixpkgs-fmt
     snowfallorg.flake
   ];

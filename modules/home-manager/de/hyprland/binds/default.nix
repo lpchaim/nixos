@@ -1,27 +1,23 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with (import ./lib.nix { inherit lib; });
-let
-  namespace = [ "my" "modules" "de" "hyprland" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
   wayland.windowManager.hyprland = {
     settings = {
-      "$mod" = cfg.command.mod;
-      "$menu" = cfg.command.menu;
-      "$run" = cfg.command.run;
-      "$terminal" = cfg.command.terminal;
-      "$fileManager" = cfg.command.fileManager;
-      "$webBrowser" = cfg.command.webBrowser;
+      "$mod" = "SUPER";
+      bindr = [
+        "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
+        "$mod, R, exec, pkill rofi || rofi -show run"
+        "$mod, W, exec, pkill rofi || rofi -show window"
+      ];
       bind = [
-        ", Print, exec, grimblast copy area"
-        "$mod, E, exec, $fileManager"
-        "$mod, B, exec, $webBrowser"
-        "$mod, T, exec, $terminal"
-        "$mod, R, exec, $run"
+        "$mod, T, exec, kitty"
+        "$mod ALT, T, exec, wezterm"
+        "$mod, B, exec, firefox"
+        "$mod, E, exec, nautilus"
         "CTRL ALT, L, exec, hyprlock"
+        ", Print, exec, grimblast copy area --freze"
 
         # "$mod CTRL, Z, pseudo," # dwindle
         "$mod, X, togglesplit," # dwindle
@@ -61,13 +57,44 @@ in
         "$mod CTRL, K, resizeactive, 0 -10"
         "$mod CTRL, J, resizeactive, 0 10"
       ];
-      bindr = [
-        "$mod, SUPER_L, exec, pkill ${lib.elemAt (lib.splitString " " cfg.command.menu) 0} || $menu"
-      ];
       bindm = [
         "$mod, mouse:272, movewindow" # LMB
         "$mod, mouse:273, resizewindow" # RMB
       ];
+      misc = {
+        enable_swallow = true;
+        swallow_regex = "^(kitty|wezterm)";
+      };
     };
   };
+
+  programs = {
+    firefox.enable = true;
+    kitty.enable = true;
+    rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+      terminal = "${pkgs.kitty}/bin/kitty";
+      extraConfig = {
+        modi = "run,drun,window";
+        display-drun = "   Apps ";
+        display-run = "   Run ";
+        display-window = " 﩯 Window";
+        lines = 5;
+        font = "${config.stylix.fonts.sansSerif.name}";
+        show-icons = true;
+        drun-display-format = "{icon} {name}";
+        location = 0;
+        disable-history = false;
+        hide-scrollbar = true;
+        sidebar-mode = true;
+      };
+    };
+    wezterm.enable = true;
+  };
+
+  home.packages = with pkgs; [
+    gnome.nautilus
+    grimblast
+  ];
 }
