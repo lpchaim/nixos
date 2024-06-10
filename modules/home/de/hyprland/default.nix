@@ -120,18 +120,6 @@ in
         };
       };
 
-      programs = {
-        kitty = {
-          enable = true;
-          font.name = config.stylix.fonts.monospace.name;
-        };
-        rofi = {
-          enable = true;
-          package = pkgs.rofi-wayland;
-          terminal = cfg.command.terminal;
-        };
-      };
-
       services = {
         hyprpaper = {
           enable = true;
