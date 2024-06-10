@@ -8,6 +8,7 @@
       makeDevShell {
         inherit pkgs shellHook mkShell;
         packages = packages ++ (with pkgs; [
+          nil
           nixd
           nixpkgs-fmt
           snowfallorg.flake
