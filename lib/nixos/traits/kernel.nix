@@ -2,7 +2,7 @@
 
 {
   boot = {
-    kernelPackages = pkgs.unstable.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = [
       "i2c-dev"
       "wireguard"

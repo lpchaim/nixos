@@ -73,26 +73,31 @@
 
   outputs = inputs:
     inputs.snowfall-lib.mkFlake {
-        inherit inputs;
-        src = ./.;
-        snowfall.namespace = "lpchaim";
+      inherit inputs;
+      src = ./.;
+      snowfall.namespace = "lpchaim";
 
-        channels-config = {
-          allowUnfree = true;
-          config = {};
-        };
+      channels-config = {
+        allowUnfree = true;
+        config = { };
+      };
 
-        systems.modules.nixos = with inputs; [
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager
-          nur.nixosModules.nur
-          sops-nix.nixosModules.sops
-          stylix.nixosModules.stylix
-        ];
+      overlays = with inputs; [
+        nixneovimplugins.overlays.default
+        snowfall-flake.overlays.default
+      ];
 
-        homes.modules = with inputs; [
-          nixvim.homeManagerModules.nixvim
-          stylix.homeManagerModules.stylix
-        ];
+      systems.modules.nixos = with inputs; [
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager
+        nur.nixosModules.nur
+        sops-nix.nixosModules.sops
+        stylix.nixosModules.stylix
+      ];
+
+      homes.modules = with inputs; [
+        nixvim.homeManagerModules.nixvim
+        stylix.homeManagerModules.stylix
+      ];
     };
 }

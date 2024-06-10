@@ -62,21 +62,21 @@ in
     )
     (
       let
-        assetsPath = ../../../../../assets;
+        assetsPath = ../../../../assets;
         destinationPath = config.home.homeDirectory;
         pfp = "${assetsPath}/profile-picture.png";
-        wallpaperLight = "${assetsPath}/wallpaper-city-l.png";
-        wallpaperDark = "${assetsPath}/wallpaper-city-d.png";
+        wallpaperLight = "${assetsPath}/wallpaper-light.png";
+        wallpaperDark = "${assetsPath}/wallpaper-dark.png";
       in
       {
         home.file."${destinationPath}/.face".source = pfp;
-        home.file."${destinationPath}/.wallpaper-l".source = wallpaperLight;
-        home.file."${destinationPath}/.wallpaper-d".source = wallpaperDark;
+        home.file."${destinationPath}/.wallpaper-light".source = wallpaperLight;
+        home.file."${destinationPath}/.wallpaper-dark".source = wallpaperDark;
 
         dconf.settings = {
           "org/gnome/desktop/background" = {
-            picture-uri = mkDefault "${destinationPath}/.wallpaper-l";
-            picture-uri-dark = mkDefault "${destinationPath}/.wallpaper-d";
+            picture-uri = mkDefault "${destinationPath}/.wallpaper-light";
+            picture-uri-dark = mkDefault "${destinationPath}/.wallpaper-dark";
             primary-color = "#000000";
             picture-options = "zoom";
           };

@@ -172,6 +172,13 @@
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
 
+  # Home manager
+  home-manager = {
+    backupFileExtension = "bak";
+    useGlobalPkgs = true;
+    useUserPackages = true;
+  };
+
   # Secrets
   sops = {
     defaultSopsFile = ../../secrets/default.yaml;
@@ -190,4 +197,3 @@
     targets.plymouth.enable = false;
   };
 }
-

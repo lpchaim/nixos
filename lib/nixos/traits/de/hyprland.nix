@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ./pipewire.nix
-    ./wayland.nix
+    ../pipewire.nix
+    ../wayland.nix
   ];
 
   programs.hyprland = {
