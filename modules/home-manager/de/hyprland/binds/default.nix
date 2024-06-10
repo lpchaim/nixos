@@ -77,11 +77,12 @@ with (import ./lib.nix { inherit lib; });
       terminal = "${pkgs.kitty}/bin/kitty";
       extraConfig = {
         modi = "run,drun,window";
-        display-drun = "   Apps ";
-        display-run = "   Run ";
-        display-window = " 﩯 Window";
+        display-drun = " 󰀻 Apps ";
+        display-run = "  Run ";
+        display-window = "   Window ";
+        display-Network = " 󰤨  Network ";
         lines = 5;
-        font = "${config.stylix.fonts.sansSerif.name}";
+        font = "${config.stylix.fonts.monospace.name}";
         show-icons = true;
         drun-display-format = "{icon} {name}";
         location = 0;
