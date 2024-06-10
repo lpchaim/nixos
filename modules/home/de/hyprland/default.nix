@@ -8,27 +8,6 @@ in
 {
   options = setAttrByPath namespace {
     enable = mkEnableOption "Hyprland customizations";
-    command =
-      let
-        mkCommandOption = name: default:
-          mkOption {
-            inherit default;
-            description = "${name} command";
-            type = types.str;
-          };
-      in
-      {
-        mod = mkOption {
-          description = "Main modifier key";
-          type = types.str;
-          default = "SUPER";
-        };
-        menu = mkCommandOption "Menu" "rofi -show drun";
-        run = mkCommandOption "Run" "rofi -show run";
-        terminal = mkCommandOption "Terminal" "kitty";
-        fileManager = mkCommandOption "File manager" "nautilus";
-        webBrowser = mkCommandOption "Web browser" "firefox";
-      };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -109,8 +88,6 @@ in
           misc = {
             disable_hyprland_logo = true;
             vrr = 2; # Fullscreen only
-            enable_swallow = true;
-            swallow_regex = "^(${cfg.command.terminal})";
           };
           input = {
             kb_layout = "br,br,us";
@@ -139,6 +116,7 @@ in
             "noinitialfocus,class:^(xwaylandvideobridge)$"
             "opacity 0.0 override,class:^(xwaylandvideobridge)$"
           ];
+          debug.disable_logs = false;
         };
       };
 
@@ -172,7 +150,6 @@ in
           default=hyprland;gtk
         '';
         packages = with pkgs; [
-          grimblast
           hyprcursor
           hypridle
           hyprlock
