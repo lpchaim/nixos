@@ -4,8 +4,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/23.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    stable.url = "github:NixOS/nixpkgs/23.11";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
     home-manager = {
@@ -14,11 +14,11 @@
     };
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "unstable";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "unstable";
     };
 
     # Hyprland
@@ -46,14 +46,14 @@
     };
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "stable";
     };
     flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "unstable";
     };
     snowfall-lib = {
       url = "github:snowfallorg/lib";
@@ -62,7 +62,7 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+      inputs.nixpkgs-stable.follows = "stable";
     };
     stylix = {
       url = "github:danth/stylix";
