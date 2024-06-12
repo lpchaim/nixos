@@ -11,6 +11,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.zsh = {
+      inherit (config.home) shellAliases;
       enable = true;
       autosuggestion.enable = true;
       history = {
@@ -41,7 +42,6 @@ in
           };
         }
       ];
-      shellAliases = config.home.shellAliases;
     };
   };
 }
