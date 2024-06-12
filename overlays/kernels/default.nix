@@ -2,5 +2,5 @@
 
 final: prev:
 {
-  inherit (channels.nixpkgs-unstable) linuxPackages_zen;
+  inherit (channels.unstable) linuxPackages_zen;
 }
