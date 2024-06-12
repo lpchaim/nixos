@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   namespace = [ "my" "modules" "cli" "nushell" ];
@@ -11,12 +11,24 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.nushell = {
+      inherit (config.home) shellAliases;
       enable = true;
-      configFile.text = "";
-      envFile.text = "";
-      extraConfig = (builtins.readFile ./config.nu);
-      extraEnv = (builtins.readFile ./env.nu);
-      shellAliases = config.home.shellAliases;
+      extraConfig = builtins.readFile ./config.nu;
+      extraEnv =
+        let
+          pkgToKeyVal = name: {
+            inherit name;
+            value = "${pkgs.${name}}/bin/${name}";
+          };
+          pathsPerPkg = builtins.listToAttrs
+            (builtins.map pkgToKeyVal [ "git" "fzf" ]);
+          patch = path:
+            pkgs.runCommand "patch-commands" pathsPerPkg "substituteAll ${path} $out";
+        in
+        lib.concatStringsSep "\n" [
+          (builtins.readFile ./env.nu)
+          (builtins.readFile (patch ./commands.nu))
+        ];
     };
   };
 }
