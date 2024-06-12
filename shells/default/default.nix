@@ -1,6 +1,8 @@
 { lib, pkgs, mkShell, ... }:
 
-with lib.lpchaim.shell;
+let
+  inherit (lib.lpchaim.shell) makeDevShellWithDefaultPackages;
+in
 makeDevShellWithDefaultPackages {
   inherit pkgs mkShell;
   packages = with pkgs; [
