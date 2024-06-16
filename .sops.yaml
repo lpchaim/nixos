@@ -1,0 +1,11 @@
+keys:
+  - &primary age1tq2gcmu4hd4sd89hl7szhd0z8vg6tx9hk3xsvuljm9gsj7n0l4nsl6ad4u
+  - &laptop age1ke3gya92cy465lp9yxwygckgtg8tcsh366vgh4ywu6edl7a7ca0sgjxrjg
+  - &wsl age1cfshc5yzepc92mga9pclg6rcj084esq9a8tfe38m9c6mgzy5p5sqgc68u6
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *primary
+      - *laptop
+      - *wsl
