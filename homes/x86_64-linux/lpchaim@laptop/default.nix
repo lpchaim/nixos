@@ -9,6 +9,7 @@ in
     "de/hyprland"
     "apps/gui"
     "apps/media"
+    "llm/low"
   ];
 
   config.home = rec {

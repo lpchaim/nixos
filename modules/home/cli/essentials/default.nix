@@ -16,7 +16,6 @@ in
       enable = true;
       defaultFonts.monospace = [ config.stylix.fonts.monospace.name ] ++ myNerdFonts;
     };
-    nixpkgs.config.allowUnfree = true;
 
     home = {
       packages = with pkgs; [

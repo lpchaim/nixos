@@ -14,7 +14,7 @@ in
     groups.${userName} = {
       gid = 1000;
     };
-    users = {
+    extraUsers = {
       ${userName} = {
         isNormalUser = true;
         home = "/home/${userName}";
@@ -28,4 +28,5 @@ in
     };
   };
   nix.settings.trusted-users = [ "root" "@wheel" ];
+  services.ollama.writablePaths = [ config.users.extraUsers.lpchaim.home ];
 }
