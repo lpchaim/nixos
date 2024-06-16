@@ -2,10 +2,10 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ pkgs
-, system
-, inputs
+{ inputs
 , lib
+, pkgs
+, system
 , ...
 }:
 
@@ -36,16 +36,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-  # };
-
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
@@ -56,17 +46,6 @@
       PermitRootLogin = "no";
     };
   };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
 
   # Programs
   programs.zsh.enable = true;
@@ -104,7 +83,6 @@
       dates = "weekly";
     };
   };
-  nixpkgs.config.allowUnfree = true;
 
   # Networking
   networking.firewall.enable = true;
@@ -195,5 +173,14 @@
       followSystem = true;
     };
     targets.plymouth.enable = false;
+  };
+
+  # LLMs
+  services.ollama = {
+    enable = true;
+    # openFirewall = true;
+    host = "127.0.0.1";
+    port = 11434;
+    sandbox = true;
   };
 }

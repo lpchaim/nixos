@@ -50,6 +50,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
+    nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";

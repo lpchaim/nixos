@@ -1,17 +1,16 @@
 { config, inputs, lib, pkgs, ... }:
 
-with lib;
 let
   namespace = [ "my" "modules" "de" "hyprland" "bars" "ags" ];
-  cfg = getAttrFromPath namespace config;
+  cfg = lib.getAttrFromPath namespace config;
 in
 {
   imports = [
     inputs.ags.homeManagerModules.default
   ];
 
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "AGS";
+  options = lib.setAttrByPath namespace {
+    enable = lib.mkEnableOption "AGS";
   };
 
   config =
@@ -38,7 +37,7 @@ in
         gnome-keyring
       ]);
     in
-    mkIf cfg.enable {
+    lib.mkIf cfg.enable {
       programs.ags = {
         enable = true;
         package = inputs.ags.packages.${pkgs.system}.ags.overrideAttrs (prev: {
@@ -79,6 +78,15 @@ in
         };
       };
 
-      wayland.windowManager.hyprland.settings.exec-once = [ "ags" ];
+      wayland.windowManager.hyprland.settings = {
+        exec-once = lib.mkBefore [ "ags" ];
+        binde = lib.mkAfter [
+          ", XF86AudioRaiseVolume, exec, ags run-js 'indicator.popup(1)'"
+          ", XF86AudioLowerVolume, exec, ags run-js 'indicator.popup(1)'"
+          ", XF86AudioMute, exec, ags run-js 'indicator.popup(1)'"
+          ", XF86MonBrightnessDown, exec, ags run-js 'indicator.popup(1)'"
+          ", XF86MonBrightnessUp, exec, ags run-js 'indicator.popup(1)'"
+        ];
+      };
     };
 }

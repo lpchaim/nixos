@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   namespace = [ "my" "modules" "cli" "git" ];
@@ -17,6 +17,7 @@ in
         delta.enable = true;
         extraConfig = {
           init.defaultBranch = "main";
+          push.autoSetupRemote = true;
           pull.rebase = false;
         };
         userEmail = "lpchaim@gmail.com";
