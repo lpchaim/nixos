@@ -1169,22 +1169,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1716948383,
-        "narHash": "sha256-SzDKxseEcHR5KzPXLwsemyTR/kaM9whxeiJohbL04rs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ad57eef4ef0659193044870c731987a6df5cf56b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixvim": {
       "inputs": {
         "devshell": "devshell",
@@ -1319,7 +1303,9 @@
         "nix-software-center": "nix-software-center",
         "nix-std": "nix-std",
         "nixneovimplugins": "nixneovimplugins",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": [
+          "unstable"
+        ],
         "nixvim": "nixvim",
         "nur": "nur",
         "snowfall-flake": "snowfall-flake",
@@ -1611,11 +1597,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1718160348,
-        "narHash": "sha256-9YrUjdztqi4Gz8n3mBuqvCkMo4ojrA6nASwyIKWMpus=",
+        "lastModified": 1718318537,
+        "narHash": "sha256-tfFEk3kkAKzjqQQ6IstB0aIHuY5EoxWEdcbiD6Zs/pI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "57d6973abba7ea108bac64ae7629e7431e0199b6",
+        "rev": "80c129e782f918ec8bac5625b539f4bc7cac5504",
         "type": "github"
       },
       "original": {
