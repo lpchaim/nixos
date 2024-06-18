@@ -1,5 +1,6 @@
-# Use the Hyprland compositor
+{ pkgs, ... }:
 
+# Use the Hyprland compositor
 {
   imports = [
     ../pipewire.nix
@@ -10,6 +11,15 @@
     enable = true;
     xwayland.enable = true;
   };
-  security.polkit.enable = true;
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  security = {
+    pam.services.hyprlock = { };
+    polkit.enable = true;
+  };
+  environment = {
+    sessionVariables.NIXOS_OZONE_WL = "1";
+    systemPackages = with pkgs; [
+      hypridle
+      hyprlock
+    ];
+  };
 }
