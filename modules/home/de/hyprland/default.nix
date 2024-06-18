@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }@args:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -23,7 +23,6 @@ in
         settings = {
           exec-once = [
             "hypridle"
-            "hyprlock"
             "hyprpaper"
             "xwaylandvideobridge"
           ];
@@ -139,8 +138,6 @@ in
         '';
         packages = with pkgs; [
           hyprcursor
-          hypridle
-          hyprlock
           hyprpaper
           hyprpicker
           xwaylandvideobridge

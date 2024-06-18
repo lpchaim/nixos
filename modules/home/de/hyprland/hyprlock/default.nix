@@ -52,8 +52,6 @@ mkIf cfg.enable {
             color = ''rgba(255, 255, 255, 0.6)'';
             font_size = "120";
             font_family = config.stylix.fonts.sansSerif.name;
-            outline_thickness = 2;
-            size = "250, 60";
             position = "0, -300";
             halign = "center";
             valign = "top";
