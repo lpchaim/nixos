@@ -176,4 +176,9 @@
     };
     targets.plymouth.enable = false;
   };
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+  };
 }
