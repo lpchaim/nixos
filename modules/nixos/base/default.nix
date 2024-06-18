@@ -126,6 +126,10 @@
   # Services
   services = {
     blueman.enable = true;
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
     libinput.enable = true;
     ollama = {
       enable = true;
