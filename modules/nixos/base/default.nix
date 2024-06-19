@@ -2,13 +2,18 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs
+{ config
+, inputs
 , lib
 , pkgs
 , system
 , ...
 }:
 
+let
+  getFileSystemsByFsType = fsType:
+    lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
+in
 {
   imports = [
     ../../shared
@@ -126,6 +131,18 @@
   # Services
   services = {
     blueman.enable = true;
+    btrfs.autoScrub =
+      let
+        btrfsFileSystems = getFileSystemsByFsType "btrfs";
+      in
+      lib.mkIf (btrfsFileSystems != { }) {
+        enable = true;
+        interval = "monthly";
+        fileSystems =
+          if btrfsFileSystems?"/"
+          then [ "/" ]
+          else lib.attrNames btrfsFileSystems;
+      };
     fstrim = {
       enable = true;
       interval = "weekly";
