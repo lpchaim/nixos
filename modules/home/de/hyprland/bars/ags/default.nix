@@ -16,15 +16,7 @@ in
   config =
     let
       pythonWithMaterialYouColor = (pkgs.python311.withPackages (p: with p; [
-        (buildPythonPackage rec {
-          pname = "materialyoucolor";
-          version = "2.0.9";
-          src = fetchPypi {
-            inherit pname version;
-            sha256 = "sha256-J35//h3tWn20f5ej6OXaw4NKnxung9q7m0E4Zf9PUw4=";
-          };
-          doCheck = false;
-        })
+        pkgs.lpchaim."pythonPackages.materialyoucolor"
         # material-color-utilities
         pywayland
         setproctitle
