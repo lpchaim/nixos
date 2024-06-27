@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.0](https://github.com/lpchaim/nixos/compare/v0.0.2...v0.1.0) (2024-06-27)
+
+
+### Features
+
+* Add wifi network priority ([aedadee](https://github.com/lpchaim/nixos/commit/aedadeec89ebbe7bcefa2cbe51e2a066b4e6b507))
+* Enable btrfs auto scrub ([63b843c](https://github.com/lpchaim/nixos/commit/63b843cae518de2654cefebb6d718ed0bae0d230))
+* Enable weekly fstrim ([a53cd9a](https://github.com/lpchaim/nixos/commit/a53cd9a621605faff765ece369dcbedfd2430188))
+* Enable zramSwap ([26f5c74](https://github.com/lpchaim/nixos/commit/26f5c74a6730212f08fa202478ffe69dfcb99c79))
+* Enhance rofi configuration ([a2a155d](https://github.com/lpchaim/nixos/commit/a2a155d258aaa08209e3ccc30f3fbb2bd248ac47))
+
+
+### Bug Fixes
+
+* Hyprland fixes ([cd766fd](https://github.com/lpchaim/nixos/commit/cd766fd78addb55e4c26cedf03ec30f4b3443d8e))
+* **hyprland:** Enable window focusing on activate ([dfd4988](https://github.com/lpchaim/nixos/commit/dfd49887368ebb7b0b79b8a81c028d21c099ff08))
+
 ## 0.0.1 (2024-06-16)
 
 
