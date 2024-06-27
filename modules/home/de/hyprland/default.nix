@@ -87,6 +87,7 @@ in
           };
           misc = {
             disable_hyprland_logo = true;
+            focus_on_activate = true;
             vrr = 2; # Fullscreen only
           };
           input = {
