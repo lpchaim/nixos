@@ -1,12 +1,5 @@
 # Changelog
 
-## [0.0.2](https://github.com/lpchaim/nixos/compare/v0.0.1...v0.0.2) (2024-06-18)
-
-
-### Bug Fixes
-
-* Hyprland fixes ([7fdc47b](https://github.com/lpchaim/nixos/commit/7fdc47bdb38ad162d81a8ac3cf1f60328ba4637b))
-
 ## 0.0.1 (2024-06-16)
 
 
