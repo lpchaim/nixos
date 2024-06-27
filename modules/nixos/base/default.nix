@@ -2,63 +2,41 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs
+{ config
+, inputs
 , lib
 , pkgs
 , system
 , ...
 }:
 
+let
+  getFileSystemsByFsType = fsType:
+    lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
+in
 {
   imports = [
     ../../shared
   ];
 
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub = {
-    enable = true;
-    device = "nodev";
-    efiSupport = true;
-    configurationLimit = 5;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    allowSFTP = true;
-    openFirewall = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
+  # Boot
+  boot = {
+    loader = {
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        configurationLimit = 5;
+      };
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = false;
     };
-  };
-
-  # Programs
-  programs.zsh.enable = true;
-  environment.systemPackages = with pkgs; [
-    inputs.nix-software-center.packages.${system}.nix-software-center
-    snowfallorg.flake
-    vim
-    wget
-    winetricks
-    wineWowPackages.stable
-  ];
-  environment.sessionVariables = {
-    NIXPKGS_ALLOW_UNFREE = "1";
+    initrd.systemd.enable = true;
+    plymouth = {
+      enable = true;
+      theme = lib.mkDefault "breeze";
+    };
+    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
 
   # Package manager
@@ -85,14 +63,23 @@
   };
 
   # Networking
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [
-    57621 # spotify local discovery
-    5353 # spotify cast discovery
-  ];
-  services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "both";
+  networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        57621 # spotify local discovery
+        5353 # spotify cast discovery
+      ];
+    };
+    dhcpcd.extraConfig =
+      let wifiOffset = 2000;
+      in ''
+        ssid Lpchaim5G
+        metric ${toString (wifiOffset - 20)}
+
+        ssid Lpchaim
+        metric ${toString (wifiOffset - 10)}
+      '';
   };
 
   # Internationalization
@@ -100,19 +87,29 @@
     timeZone = "America/Sao_Paulo";
     hardwareClockInLocalTime = true;
   };
-  i18n.supportedLocales = [
-    "en_US.UTF-8/UTF-8"
-    "pt_BR.UTF-8/UTF-8"
-  ];
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    supportedLocales = [
+      "en_US.UTF-8/UTF-8"
+      "pt_BR.UTF-8/UTF-8"
+    ];
+    defaultLocale = "en_US.UTF-8";
+  };
   console.useXkbConfig = true; # use xkb.options in tty.
   services.xserver.xkb = {
     layout = "br,br,us";
     variant = ",nodeadkeys,intl";
   };
 
-  # Graphics
+  # Hardware
   hardware = {
+    bluetooth = {
+      enable = true;
+      settings = {
+        General = {
+          FastConnectable = true;
+        };
+      };
+    };
     opengl =
       let
         getExtraPackages = p: with p; [
@@ -129,35 +126,69 @@
       };
   };
 
-  # Bluetooth tweaks
-  hardware.bluetooth = {
-    enable = true;
-    settings = {
-      General = {
-        FastConnectable = true;
+  # Programs
+  programs.zsh.enable = true;
+  environment.systemPackages = with pkgs; [
+    helix
+    inputs.nix-software-center.packages.${system}.nix-software-center
+    snowfallorg.flake
+    vim
+    wget
+  ];
+  environment.sessionVariables = {
+    NIXPKGS_ALLOW_UNFREE = "1";
+  };
+
+  # Services
+  services = {
+    blueman.enable = true;
+    btrfs.autoScrub =
+      let
+        btrfsFileSystems = getFileSystemsByFsType "btrfs";
+      in
+      lib.mkIf (btrfsFileSystems != { }) {
+        enable = true;
+        interval = "monthly";
+        fileSystems =
+          if btrfsFileSystems?"/"
+          then [ "/" ]
+          else lib.attrNames btrfsFileSystems;
+      };
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+    libinput.enable = true;
+    ollama = {
+      enable = true;
+      # openFirewall = true;
+      host = "127.0.0.1";
+      port = 11434;
+      sandbox = true;
+    };
+    openssh = {
+      enable = true;
+      allowSFTP = true;
+      openFirewall = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
       };
     };
-  };
-  services.blueman.enable = true;
-
-  # Boot
-  boot = {
-    initrd.systemd.enable = true;
-    plymouth = {
+    printing.enable = true;
+    tailscale = {
       enable = true;
-      theme = lib.mkDefault "breeze";
+      useRoutingFeatures = "both";
     };
-    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
+  services.xserver.enable = true;
 
-  # Home manager
+  # Misc
   home-manager = {
     backupFileExtension = "bak";
     useGlobalPkgs = true;
     useUserPackages = true;
   };
-
-  # Secrets
   sops = {
     defaultSopsFile = lib.snowfall.fs.get-file "secrets/default.yaml";
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -165,8 +196,7 @@
       password.neededForUsers = true;
     };
   };
-
-  # Theming
+  sound.enable = true;
   stylix = {
     homeManagerIntegration = {
       autoImport = false;
@@ -174,13 +204,9 @@
     };
     targets.plymouth.enable = false;
   };
-
-  # LLMs
-  services.ollama = {
+  zramSwap = {
     enable = true;
-    # openFirewall = true;
-    host = "127.0.0.1";
-    port = 11434;
-    sandbox = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
   };
 }

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 with lib;
 with (import ./lib.nix { inherit lib; });
@@ -6,11 +6,6 @@ with (import ./lib.nix { inherit lib; });
   wayland.windowManager.hyprland = {
     settings = {
       "$mod" = "SUPER";
-      bindr = [
-        "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
-        "$mod, R, exec, pkill rofi || rofi -show run"
-        "$mod, W, exec, pkill rofi || rofi -show window"
-      ];
       bind = [
         "$mod, T, exec, kitty"
         "$mod ALT, T, exec, wezterm"
@@ -71,26 +66,6 @@ with (import ./lib.nix { inherit lib; });
   programs = {
     firefox.enable = true;
     kitty.enable = true;
-    rofi = {
-      enable = true;
-      package = pkgs.rofi-wayland;
-      terminal = "${pkgs.kitty}/bin/kitty";
-      extraConfig = {
-        modi = "run,drun,window";
-        display-drun = " 󰀻 Apps ";
-        display-run = "  Run ";
-        display-window = "   Window ";
-        display-Network = " 󰤨  Network ";
-        lines = 5;
-        font = "${config.stylix.fonts.monospace.name}";
-        show-icons = true;
-        drun-display-format = "{icon} {name}";
-        location = 0;
-        disable-history = false;
-        hide-scrollbar = true;
-        sidebar-mode = true;
-      };
-    };
     wezterm.enable = true;
   };
 

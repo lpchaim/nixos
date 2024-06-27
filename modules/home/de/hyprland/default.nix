@@ -12,9 +12,10 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (setAttrByPath namespace {
-      plugins.enable = mkDefault false;
       bars.ags.enable = mkDefault true;
       bars.waybar.enable = mkDefault false;
+      launchers.rofi.enable = mkDefault true;
+      plugins.enable = mkDefault false;
     })
     {
       wayland.windowManager.hyprland = {
@@ -86,6 +87,7 @@ in
           };
           misc = {
             disable_hyprland_logo = true;
+            focus_on_activate = true;
             vrr = 2; # Fullscreen only
           };
           input = {
