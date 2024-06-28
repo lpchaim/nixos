@@ -48,7 +48,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "stable";
     };
-    flake-utils.url = "github:numtide/flake-utils";
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
@@ -82,6 +81,7 @@
         allowUnfree = true;
         config = { };
       };
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       overlays = with inputs; [
         nixneovimplugins.overlays.default
@@ -98,6 +98,7 @@
 
       homes.modules = with inputs; [
         nixvim.homeManagerModules.nixvim
+        sops-nix.homeManagerModules.sops
         stylix.homeManagerModules.stylix
       ];
     };
