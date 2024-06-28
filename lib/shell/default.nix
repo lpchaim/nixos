@@ -1,18 +1,25 @@
 {
   shell = rec {
-    makeDevShell = { pkgs, packages ? [ ], shellHook ? "", mkShell ? pkgs.mkShell, ... }@args:
+    makeDevShell = { pkgs, mkShell, packages ? [ ], shellHook ? "", ... }:
       mkShell {
         inherit packages shellHook;
       };
-    makeDevShellWithDefaultPackages = { pkgs, packages ? [ ], shellHook ? "", mkShell ? pkgs.mkShell, ... }@args:
+    makeDevShellWithDefaults = { pkgs, mkShell, packages ? [ ], shellHook ? "", ... }:
       makeDevShell {
-        inherit pkgs shellHook mkShell;
+        inherit pkgs mkShell;
         packages = packages ++ (with pkgs; [
+          age
           nil
           nixd
           nixpkgs-fmt
+          pre-commit
+          ssh-to-age
           snowfallorg.flake
+          sops
         ]);
+        shellHook = shellHook + ''
+          pre-commit install
+        '';
       };
   };
 }
