@@ -36,6 +36,7 @@ in
         nix-output-monitor
         rsync
         silver-searcher
+        snowfallorg.flake
         wget
       ];
       shellAliases = {
