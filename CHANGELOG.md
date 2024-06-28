@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/lpchaim/nixos/compare/v0.1.0...v0.2.0) (2024-06-28)
+
+
+### Features
+
+* Misc tweaks ([eb69e65](https://github.com/lpchaim/nixos/commit/eb69e653cd2a2cb2be7aa919bd937e2bf7736e1c))
+* **shell:** Add generic rust development shell ([fc15b51](https://github.com/lpchaim/nixos/commit/fc15b51a3c02c341d3097bfbc8f94248e854595f))
+
 ## [0.1.0](https://github.com/lpchaim/nixos/compare/v0.0.2...v0.1.0) (2024-06-27)
 
 
