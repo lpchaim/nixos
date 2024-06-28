@@ -1,5 +1,5 @@
 {
 	"nix.enableLanguageServer": true,
 	"nix.formatterPath": "nixpkgs-fmt",
-	"nix.serverPath": "nixd"
+	"nix.serverPath": "nil"
 }
