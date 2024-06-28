@@ -6,9 +6,9 @@
 }:
 
 let
-  inherit (lib.lpchaim.shell) makeDevShellWithDefaultPackages;
+  inherit (lib.lpchaim.shell) makeDevShellWithDefaults;
 in
-makeDevShellWithDefaultPackages {
+makeDevShellWithDefaults {
   inherit pkgs mkShell;
   packages = with pkgs; [
     cargo
