@@ -1,10 +1,14 @@
-{ lib, pkgs, ... }:
+{ lib
+, pkgs
+, mkShell
+, ...
+}:
 
 let
   inherit (lib.lpchaim.shell) makeDevShellWithDefaultPackages;
 in
 makeDevShellWithDefaultPackages {
-  inherit pkgs;
+  inherit pkgs mkShell;
   packages = with pkgs; [
     nodePackages.intelephense
     nodePackages.typescript-language-server
