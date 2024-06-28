@@ -1,6 +1,7 @@
 { lib
 , pkgs
 , mkShell
+, rustPlatform
 , ...
 }:
 
@@ -10,12 +11,19 @@ in
 makeDevShellWithDefaultPackages {
   inherit pkgs mkShell;
   packages = with pkgs; [
-    age
+    cargo
+    openssl
+    pkg-config
+    rustc
+    rustfmt
     pre-commit
-    ssh-to-age
-    sops
+    rustPackages.clippy
+    rust-analyzer
+    vscode-extensions.vadimcn.vscode-lldb
+    xorg.libX11
   ];
   shellHook = ''
-    pre-commit install
+    zsh
   '';
+  RUST_SRC_PATH = rustPlatform.rustLibSrc;
 }
