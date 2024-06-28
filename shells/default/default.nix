@@ -5,17 +5,8 @@
 }:
 
 let
-  inherit (lib.lpchaim.shell) makeDevShellWithDefaultPackages;
+  inherit (lib.lpchaim.shell) makeDevShellWithDefaults;
 in
-makeDevShellWithDefaultPackages {
+makeDevShellWithDefaults {
   inherit pkgs mkShell;
-  packages = with pkgs; [
-    age
-    pre-commit
-    ssh-to-age
-    sops
-  ];
-  shellHook = ''
-    pre-commit install
-  '';
 }
