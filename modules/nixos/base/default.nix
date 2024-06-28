@@ -112,7 +112,7 @@ in
         };
       };
     };
-    opengl =
+    graphics =
       let
         getExtraPackages = p: with p; [
           intel-media-driver
@@ -121,8 +121,7 @@ in
       in
       {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
+        enable32Bit = true;
         extraPackages = getExtraPackages pkgs;
         extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
       };

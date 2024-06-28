@@ -4,7 +4,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/23.11";
+    stable.url = "github:NixOS/nixpkgs/24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
@@ -52,6 +52,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "stable";
     };
+    # jovian = {
+    #   follows = "chaotic/jovian";
+    #   inputs.nixpkgs.follows = "unstable";
+    # };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
@@ -93,6 +97,7 @@
       ];
 
       systems.modules.nixos = with inputs; [
+        chaotic.nixosModules.default
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         nur.nixosModules.nur
@@ -101,6 +106,7 @@
       ];
 
       homes.modules = with inputs; [
+        chaotic.homeManagerModules.default
         nixvim.homeManagerModules.nixvim
         sops-nix.homeManagerModules.sops
         stylix.homeManagerModules.stylix
