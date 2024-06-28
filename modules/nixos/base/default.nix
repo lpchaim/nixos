@@ -11,6 +11,7 @@
 }:
 
 let
+  inherit (lib.snowfall) fs;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
 in
@@ -190,7 +191,7 @@ in
     useUserPackages = true;
   };
   sops = {
-    defaultSopsFile = lib.snowfall.fs.get-file "secrets/default.yaml";
+    defaultSopsFile = fs.get-file "secrets/default.yaml";
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       password.neededForUsers = true;
