@@ -29,4 +29,5 @@ in
   };
   nix.settings.trusted-users = [ "root" "@wheel" ];
   services.ollama.writablePaths = [ config.users.extraUsers.lpchaim.home ];
+  jovian.steam.user = userName;
 }

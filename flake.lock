@@ -1438,6 +1438,10 @@
         "home-manager": "home-manager_2",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
+        "jovian": [
+          "chaotic",
+          "jovian"
+        ],
         "nix-software-center": "nix-software-center",
         "nix-std": "nix-std",
         "nixneovimplugins": "nixneovimplugins",

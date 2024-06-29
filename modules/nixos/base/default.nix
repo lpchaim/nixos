@@ -11,6 +11,7 @@
 }:
 
 let
+  inherit (lib) mkDefault;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
 in
@@ -23,7 +24,7 @@ in
   boot = {
     loader = {
       grub = {
-        enable = true;
+        enable = mkDefault true;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 5;
@@ -34,7 +35,7 @@ in
     initrd.systemd.enable = true;
     plymouth = {
       enable = true;
-      theme = lib.mkDefault "breeze";
+      theme = mkDefault "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
@@ -172,8 +173,8 @@ in
       allowSFTP = true;
       openFirewall = true;
       settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "no";
+        PasswordAuthentication = mkDefault false;
+        PermitRootLogin = mkDefault "no";
       };
     };
     printing.enable = true;

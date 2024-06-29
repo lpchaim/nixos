@@ -11,6 +11,7 @@
           age
           nil
           nixd
+          nixos-rebuild
           nixpkgs-fmt
           pre-commit
           ssh-to-age
