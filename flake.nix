@@ -92,6 +92,8 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       overlays = with inputs; [
+        chaotic.overlays.default
+        jovian.overlays.default
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
       ];
@@ -100,6 +102,7 @@
         chaotic.nixosModules.default
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
+        jovian.nixosModules.default
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
         stylix.nixosModules.stylix

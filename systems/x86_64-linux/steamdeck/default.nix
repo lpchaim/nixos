@@ -1,18 +1,22 @@
-{ config, inputs, lib, ... }:
+{ config
+, lib
+, ...
+}:
 
 let
+  inherit (lib) mkIf mkForce mkMerge;
   inherit (lib.lpchaim.nixos) getTraitModules;
-  inherit (lib) mkIf mkForce;
 in
 {
   imports =
     [
       ./disko.nix
       ./hardware-configuration.nix
-      inputs.jovian.nixosModules.default
     ]
     ++ (getTraitModules [
-      "composite/base"
+      "users"
+      "wayland"
+      "pipewire"
       "de/gnome"
       "gaming"
     ]);
@@ -27,7 +31,10 @@ in
         autoStart = true;
         desktopSession = "gnome";
       };
-      steamos.useSteamOSConfig = true;
+      steamos = {
+        enableMesaPatches = false;
+        useSteamOSConfig = true;
+      };
       decky-loader.enable = true;
       devices.steamdeck = {
         enable = true;
@@ -36,10 +43,11 @@ in
       };
     };
 
-    networking.networkmanager.enable = true;
-    services = mkIf config.jovian.steam.autoStart {
-      displayManager.sddm.enable = mkForce false;
-      xserver.displayManager.gdm.enable = mkForce false;
-    };
+    services = mkMerge [
+      (mkIf config.jovian.steam.autoStart {
+        displayManager.sddm.enable = mkForce false;
+        xserver.displayManager.gdm.enable = mkForce false;
+      })
+    ];
   };
 }
