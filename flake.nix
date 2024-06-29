@@ -52,10 +52,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "stable";
     };
-    # jovian = {
-    #   follows = "chaotic/jovian";
-    #   inputs.nixpkgs.follows = "unstable";
-    # };
+    jovian = {
+      follows = "chaotic/jovian";
+      inputs.nixpkgs.follows = "chaotic/nixpkgs";
+    };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
