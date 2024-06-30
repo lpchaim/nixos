@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/lpchaim/nixos/compare/v0.2.0...v0.3.0) (2024-06-30)
+
+
+### Features
+
+* Add chaotic-cx input and substituter ([4922734](https://github.com/lpchaim/nixos/commit/4922734368df1ee7d9e96d8fd6c272ab14cce30a))
+* Add nixos-generators ([18af727](https://github.com/lpchaim/nixos/commit/18af727645e556b2540465ab6c85fd127644083b))
+* Initial steam deck config ([764c674](https://github.com/lpchaim/nixos/commit/764c6740be50c06aa19bb50cd125a8f6f7927e39))
+* **secrets:** Add secondary master key ([90acf18](https://github.com/lpchaim/nixos/commit/90acf18b1c613a5ef8a1be4d74ee0f414598cf29))
+* **storage:** Extract default BTRFS disko configuration to a function ([72ea0e9](https://github.com/lpchaim/nixos/commit/72ea0e97ed6a285aa36f9b79405594b25c2c29b1))
+
 ## [0.2.0](https://github.com/lpchaim/nixos/compare/v0.1.0...v0.2.0) (2024-06-28)
 
 
