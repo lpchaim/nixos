@@ -58,6 +58,10 @@
     };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
@@ -103,6 +107,7 @@
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         jovian.nixosModules.default
+        nixos-generators.nixosModules.all-formats
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
         stylix.nixosModules.stylix
