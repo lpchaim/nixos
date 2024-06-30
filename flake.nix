@@ -62,6 +62,10 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
@@ -108,6 +112,7 @@
         home-manager.nixosModules.home-manager
         jovian.nixosModules.default
         nixos-generators.nixosModules.all-formats
+        nixos-wsl.nixosModules.default
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
         stylix.nixosModules.stylix
