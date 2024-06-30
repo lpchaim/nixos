@@ -11,6 +11,7 @@
 }:
 
 let
+  inherit (lib) mkDefault;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
 in
@@ -23,7 +24,7 @@ in
   boot = {
     loader = {
       grub = {
-        enable = true;
+        enable = mkDefault true;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 5;
@@ -34,7 +35,7 @@ in
     initrd.systemd.enable = true;
     plymouth = {
       enable = true;
-      theme = lib.mkDefault "breeze";
+      theme = mkDefault "breeze";
     };
     kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
   };
@@ -49,10 +50,12 @@ in
       keep-outputs = true;
       substituters = [
         "https://nix-community.cachix.org"
+        "https://nyx.chaotic.cx"
         "https://snowflakeos.cachix.org"
       ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8"
         "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
       ];
     };
@@ -110,7 +113,7 @@ in
         };
       };
     };
-    opengl =
+    graphics =
       let
         getExtraPackages = p: with p; [
           intel-media-driver
@@ -119,8 +122,7 @@ in
       in
       {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
+        enable32Bit = true;
         extraPackages = getExtraPackages pkgs;
         extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
       };
@@ -171,8 +173,8 @@ in
       allowSFTP = true;
       openFirewall = true;
       settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "no";
+        PasswordAuthentication = mkDefault false;
+        PermitRootLogin = mkDefault "no";
       };
     };
     printing.enable = true;

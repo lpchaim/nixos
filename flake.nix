@@ -4,7 +4,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/23.11";
+    stable.url = "github:NixOS/nixpkgs/24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Home Manager
@@ -40,6 +40,10 @@
     };
 
     # Misc
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "unstable";
+    };
     devenv = {
       url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,8 +52,16 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "stable";
     };
+    jovian = {
+      follows = "chaotic/jovian";
+      inputs.nixpkgs.follows = "chaotic/nixpkgs";
+    };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
@@ -84,19 +96,25 @@
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       overlays = with inputs; [
+        chaotic.overlays.default
+        jovian.overlays.default
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
       ];
 
       systems.modules.nixos = with inputs; [
+        chaotic.nixosModules.default
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
+        jovian.nixosModules.default
+        nixos-generators.nixosModules.all-formats
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
         stylix.nixosModules.stylix
       ];
 
       homes.modules = with inputs; [
+        chaotic.homeManagerModules.default
         nixvim.homeManagerModules.nixvim
         sops-nix.homeManagerModules.sops
         stylix.homeManagerModules.stylix
