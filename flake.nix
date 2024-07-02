@@ -86,6 +86,7 @@
   outputs = inputs:
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
+
       src = ./.;
       snowfall.namespace = "lpchaim";
 
@@ -93,6 +94,7 @@
         allowUnfree = true;
         config = { };
       };
+
       supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
       overlays = with inputs; [
