@@ -2,6 +2,7 @@
 
 with lib;
 let
+  inherit (lib.lpchaim) shared;
   namespace = [ "my" "modules" ];
   cfg = getAttrFromPath namespace config;
 in
@@ -22,5 +23,6 @@ in
       gui.enable = mkDefault false;
     };
     programs.home-manager.enable = mkDefault true;
+    nix.settings = shared.nix.settings;
   };
 }
