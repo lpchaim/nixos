@@ -12,9 +12,12 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (setAttrByPath namespace {
-      bars.ags.enable = mkDefault true;
+      bars.ags.enable = mkDefault cfg.enable;
+      bars.ags.enableFnKeys = mkDefault cfg.bars.ags.enable;
       bars.waybar.enable = mkDefault false;
-      launchers.rofi.enable = mkDefault true;
+      binds.enable = mkDefault cfg.enable;
+      launchers.rofi.enable = mkDefault cfg.enable;
+      osd.swayosd.enable = mkDefault cfg.enable;
       plugins.enable = mkDefault false;
     })
     {

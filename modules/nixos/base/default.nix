@@ -206,6 +206,10 @@ in
     };
     targets.plymouth.enable = false;
   };
+  systemd = {
+    targets.network-online.wantedBy = pkgs.lib.mkForce [ ];
+    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [ ];
+  };
   zramSwap = {
     enable = true;
     algorithm = "zstd";
