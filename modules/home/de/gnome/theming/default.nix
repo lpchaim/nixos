@@ -31,8 +31,8 @@ in
       });
 
       gtk.theme = mkIf cfg.enableGtkTheme {
-        name = "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
-        package = pkgs.catppuccin-gtk;
+        name = mkDefault "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
+        package = mkDefault pkgs.catppuccin-gtk;
       };
 
       gtk.iconTheme = mkIf cfg.enableIconTheme {
