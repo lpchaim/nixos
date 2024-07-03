@@ -38,6 +38,7 @@
     cli.enable = true;
     cli.git.enable = false;
     cli.hishtory.enable = false;
+    de.gnome.theming.enableGnomeShellTheme = false;
   };
 
   programs.helix.languages.language = [
