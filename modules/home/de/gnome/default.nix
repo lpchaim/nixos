@@ -18,11 +18,11 @@ in
       };
       theming = {
         enable = mkDefault true;
-        enableGtkTheme = mkDefault false;
-        enableGnomeShellTheme = mkDefault false;
-        enableIconTheme = mkDefault true;
-        enableCursorTheme = mkDefault true;
-        preferDarkTheme = mkDefault true;
+        enableGtkTheme = mkDefault cfg.theming.enable;
+        enableGnomeShellTheme = mkDefault cfg.theming.enable;
+        enableIconTheme = mkDefault cfg.theming.enable;
+        enableCursorTheme = mkDefault cfg.theming.enable;
+        preferDarkTheme = mkDefault cfg.theming.enable;
       };
     } // {
     gtk.enable = true;
