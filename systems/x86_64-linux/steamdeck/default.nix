@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , ...
 }:
 
@@ -36,7 +37,7 @@ in
         desktopSession = "gnome";
       };
       steamos = {
-        enableMesaPatches = false;
+        enableMesaPatches = true;
         useSteamOSConfig = true;
       };
       decky-loader.enable = true;
