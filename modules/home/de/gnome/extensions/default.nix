@@ -13,7 +13,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      gnome.gnome-tweaks
+      gnome-tweaks
     ]
     ++ (with gnomeExtensions; [
       appindicator
