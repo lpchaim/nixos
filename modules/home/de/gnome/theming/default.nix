@@ -46,7 +46,7 @@ in
       };
 
       dconf.settings."org/gnome/shell/extensions/user-theme" = mkIf cfg.enableGnomeShellTheme {
-        name = "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
+        name = mkDefault "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
       };
     }
     (
