@@ -22,13 +22,13 @@ in
         pywayland
         setproctitle
       ]));
-      dependencies = [ pythonWithMaterialYouColor ]
+      dependencies =
+        [ pythonWithMaterialYouColor ]
         ++ (import ./deps.nix pkgs)
         ++ (with pkgs.gnome; [
-        gnome-bluetooth
-        gnome-control-center
-        gnome-keyring
-      ]);
+          gnome-bluetooth
+          gnome-control-center
+        ]);
     in
     lib.mkIf cfg.enable (lib.mkMerge [
       {

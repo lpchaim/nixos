@@ -16,6 +16,7 @@ p: with p; [
   gammastep
   gawk
   gjs
+  gnome-keyring
   gnome-usage
   gojq
   gojq

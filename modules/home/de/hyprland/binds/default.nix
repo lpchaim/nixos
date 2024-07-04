@@ -105,8 +105,8 @@ in
       };
 
       home.packages = with pkgs; [
-        gnome.nautilus
         grimblast
+        nautilus
       ];
     }
     (lib.mkIf cfg.enableFnKeys {
