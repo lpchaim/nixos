@@ -19,6 +19,7 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "unstable";
+      inputs.home-manager.follows = "home-manager";
     };
 
     # Hyprland
@@ -66,6 +67,7 @@
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "unstable";
+      inputs.snowfall-lib.follows = "snowfall-lib";
     };
     snowfall-lib = {
       url = "github:snowfallorg/lib";
