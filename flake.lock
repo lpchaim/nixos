@@ -286,7 +286,7 @@
     "disko": {
       "inputs": {
         "nixpkgs": [
-          "stable"
+          "nixpkgs"
         ]
       },
       "locked": {
