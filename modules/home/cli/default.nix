@@ -28,6 +28,7 @@ in
     starship.enable = mkDefault true;
     tealdeer.enable = mkDefault true;
     tmux.enable = mkDefault true;
+    zellij.enable = mkDefault false;
     zsh.enable = mkDefault true;
   };
 }
