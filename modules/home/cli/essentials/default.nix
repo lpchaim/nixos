@@ -30,6 +30,7 @@ in
         duf
         fd
         htop
+        just
         neofetch
         ncdu
         (nerdfonts.override { fonts = myNerdFonts; })
