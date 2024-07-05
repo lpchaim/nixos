@@ -19,9 +19,6 @@ in
     programs = {
       zellij = {
         enable = true;
-        enableFishIntegration = true;
-        enableBashIntegration = true;
-        enableZshIntegration = true;
       };
     };
 
