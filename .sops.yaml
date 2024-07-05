@@ -2,7 +2,7 @@ keys:
   - &master1 age1tq2gcmu4hd4sd89hl7szhd0z8vg6tx9hk3xsvuljm9gsj7n0l4nsl6ad4u
   - &master2 age10fa7ce7w6q0ppk5l2gvg6d02g9cmj26rpt00ct54d4latqsnwajs90a43h
   - &laptop age1ke3gya92cy465lp9yxwygckgtg8tcsh366vgh4ywu6edl7a7ca0sgjxrjg
-  - &steamdeck age1zdqvvg49vq97chtzft2kduzrm5lrmj65jvvtmk47p3vy8xnqevrss0nx6n
+  - &steamdeck age1rsz0jrlkqs2z2p3r4a6qhwnsmyhwgh72mtxvvfwm00qtn8lq9arqa29vum
   - &wsl age1cfshc5yzepc92mga9pclg6rcj084esq9a8tfe38m9c6mgzy5p5sqgc68u6
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
