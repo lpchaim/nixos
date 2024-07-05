@@ -36,7 +36,7 @@
   my.modules = {
     enable = true;
     cli.enable = true;
-    cli.git.enable = false;
+    cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
   };
@@ -71,4 +71,6 @@
       switch-windows-backward = [ "<Shift><Alt>Tab" ];
     };
   };
+
+  home.sessionVariables.XDEBUG_MODE = "off";
 }
