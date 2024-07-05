@@ -40,7 +40,7 @@ in
         enableMesaPatches = true;
         useSteamOSConfig = true;
       };
-      decky-loader.enable = true;
+      decky-loader.enable = false;
       devices.steamdeck = {
         enable = true;
         autoUpdate = true;

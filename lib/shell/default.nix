@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 {
   shell = rec {
     makeDevShell = { pkgs, mkShell, packages ? [ ], shellHook ? "", ... }:
@@ -9,6 +11,7 @@
         inherit pkgs mkShell;
         packages = packages ++ (with pkgs; [
           age
+          inputs.disko.packages.${pkgs.system}.disko-install
           nil
           nixd
           nixos-generators
