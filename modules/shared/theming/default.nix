@@ -3,6 +3,7 @@
 with lib;
 {
   stylix = rec {
+    enable = mkDefault true;
     autoEnable = mkDefault true;
     image = mkDefault (
       if polarity != "light" then ../../assets/wallpaper-dark.png
