@@ -53,6 +53,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     jovian = {
       follows = "chaotic/jovian";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
