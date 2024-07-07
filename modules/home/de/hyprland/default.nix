@@ -137,10 +137,6 @@ in
       };
 
       home = {
-        file.".config/xdg-desktop-portal/hyprland-portals.conf".text = ''
-          [preferred]
-          default=hyprland;gtk
-        '';
         packages = with pkgs; [
           hyprcursor
           hyprpaper
@@ -152,7 +148,8 @@ in
       xdg.portal = {
         enable = true;
         config = {
-          preferred.default = [ "hyprland" "gtk" ];
+          common.default = [ "gtk" ];
+          hyprland.default = [ "hyprland" "gtk" ];
         };
         extraPortals = with pkgs; [
           xdg-desktop-portal-hyprland
