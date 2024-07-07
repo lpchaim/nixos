@@ -24,6 +24,7 @@ in
       lazygit.enable = mkDefault true;
     };
     hishtory.enable = mkDefault true;
+    just.enable = true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;
     tealdeer.enable = mkDefault true;

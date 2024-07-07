@@ -30,7 +30,6 @@ in
         duf
         fd
         htop
-        just
         neofetch
         ncdu
         (nerdfonts.override { fonts = myNerdFonts; })
@@ -38,6 +37,7 @@ in
         rsync
         silver-searcher
         snowfallorg.flake
+        yazi
         wget
       ];
       shellAliases = {
