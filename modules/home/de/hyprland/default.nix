@@ -96,6 +96,7 @@ in
           input = {
             kb_layout = "br,br,us";
             kb_variant = ",nodeadkeys,intl";
+            kb_options = "grp:alt_space_toggle";
             follow_mouse = 1;
             touchpad.natural_scroll = false;
           };
