@@ -118,7 +118,10 @@ in
   };
 
   # Programs
-  programs.zsh.enable = true;
+  programs = {
+    nix-ld.enable = true;
+    zsh.enable = true;
+  };
   environment.systemPackages = with pkgs; [
     helix
     inputs.nix-software-center.packages.${system}.nix-software-center
