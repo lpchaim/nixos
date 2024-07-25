@@ -1,6 +1,7 @@
 {
   storage.btrfs.mkStorage =
     { device
+    , bootSize ? "512M"
     , swapSize
     }: {
       disko.devices = {
@@ -13,7 +14,7 @@
               partitions = {
                 ESP = {
                   type = "EF00";
-                  size = "512M";
+                  size = bootSize;
                   content = {
                     type = "filesystem";
                     format = "vfat";

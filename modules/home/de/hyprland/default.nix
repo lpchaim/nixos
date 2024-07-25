@@ -85,7 +85,7 @@ in
             no_gaps_when_only = false;
           };
           master = {
-            new_is_master = true;
+            new_status = "master";
             no_gaps_when_only = false;
           };
           misc = {
