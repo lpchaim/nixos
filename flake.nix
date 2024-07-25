@@ -95,6 +95,7 @@
 
       channels-config = {
         allowUnfree = true;
+        cudaSupport = true;
         config = { };
       };
 
