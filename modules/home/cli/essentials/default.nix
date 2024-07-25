@@ -20,7 +20,6 @@ in
     home = {
       packages = with pkgs; [
         bash
-        btop
         cheat
         curl
         delta
@@ -53,6 +52,7 @@ in
     programs = {
       bat.enable = true;
       broot.enable = true;
+      btop.enable = true;
       carapace.enable = true;
       dircolors.enable = true;
       direnv = {
