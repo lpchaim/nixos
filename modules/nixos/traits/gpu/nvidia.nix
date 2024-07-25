@@ -9,7 +9,8 @@
       open = true;
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       powerManagement.enable = true;
-      powerManagement.finegrained = true;
     };
   };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
 }
