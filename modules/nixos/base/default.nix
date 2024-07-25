@@ -88,8 +88,7 @@ in
   };
   console.useXkbConfig = true; # use xkb.options in tty.
   services.xserver.xkb = {
-    layout = "br,br,us";
-    variant = ",nodeadkeys,intl";
+    inherit (lib.lpchaim.shared.kb.default) layout options variant;
   };
 
   # Hardware

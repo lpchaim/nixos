@@ -2,6 +2,7 @@
 
 with lib;
 let
+  inherit (lib.lpchaim) shared;
   namespace = [ "my" "modules" "de" "hyprland" ];
   cfg = getAttrFromPath namespace config;
 in
@@ -94,12 +95,20 @@ in
             vrr = 2; # Fullscreen only
           };
           input = {
-            kb_layout = "br,br,us";
-            kb_variant = ",nodeadkeys,intl";
-            kb_options = "grp:alt_space_toggle";
+            kb_layout = shared.kb.default.layout;
+            kb_variant = shared.kb.default.variant;
+            kb_options = shared.kb.default.options;
             follow_mouse = 1;
             touchpad.natural_scroll = false;
+            resolve_binds_by_sym = true;
           };
+          device = [
+            {
+              name = "keychron--keychron-link--keyboard";
+              kb_layout = shared.kb.us.layout;
+              kb_variant = shared.kb.us.variant;
+            }
+          ];
           binds.workspace_center_on = 1; # Last active
           gestures = {
             workspace_swipe = true;
