@@ -14,5 +14,26 @@
       keep-derivations = true;
       keep-outputs = true;
     };
+    kb = rec {
+      br = {
+        inherit (default) options;
+        layout = "br";
+        variant = "nodeadkeys";
+      };
+      us = {
+        inherit (default) options;
+        layout = "us";
+        variant = "altgr-intl";
+      };
+      default =
+        let
+          mkMerge = builtins.concatStringsSep ",";
+        in
+        {
+          layout = mkMerge [ br.layout us.layout ];
+          variant = mkMerge [ br.variant us.variant ];
+          options = "compose:ralt,grp:alt_space_toggle";
+        };
+    };
   };
 }
