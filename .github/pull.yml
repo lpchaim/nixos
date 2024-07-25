@@ -1,0 +1,6 @@
+version: "1"
+rules:
+  - base: nvidia
+    upstream: lpchaim:develop
+    mergeMethod: merge
+    mergeUnstable: false
