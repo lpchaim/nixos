@@ -15,8 +15,10 @@ in
     ]
     ++ (getTraitModules [
       "composite/base"
+      "formfactor/desktop"
       "de/gnome"
       "de/hyprland"
+      "gaming"
       "gpu/nvidia"
       "misc/rgb"
     ]);
