@@ -19,7 +19,6 @@
     };
     power-profiles-daemon.enable = false; # Conflicts with auto-cpufreq
     fprintd.enable = true;
-    fwupd.enable = true;
     thermald.enable = true;
   };
 }
