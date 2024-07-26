@@ -120,7 +120,7 @@ in
             "XCURSOR_SIZE,32"
             "HYPRCURSOR_SIZE,32"
           ];
-          monitor = [ ",preferred,auto,1" ];
+          monitor = [ ",highrr,auto,1" ];
           opengl.nvidia_anti_flicker = true;
           windowrulev2 = [
             "maxsize 1 1,class:^(xwaylandvideobridge)$"
