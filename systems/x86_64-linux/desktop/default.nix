@@ -24,4 +24,21 @@ in
     ]);
 
   system.stateVersion = "23.11";
+
+  fileSystems."/run/media/lpchaim/storage" = {
+    device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
+    fsType = "ntfs3";
+    options = [
+      "defaults"
+      "auto"
+      "nofail"
+      "nosuid"
+      "nodev"
+      "relatime"
+      "uid=1000"
+      "gid=1000"
+      "iocharset=utf8"
+      "uhelper=udisks2"
+    ];
+  };
 }
