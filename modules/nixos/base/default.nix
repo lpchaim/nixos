@@ -151,6 +151,7 @@ in
       enable = true;
       interval = "weekly";
     };
+    fwupd.enable = true;
     libinput.enable = true;
     ollama = {
       enable = true;
