@@ -1,9 +1,6 @@
 # Use pipewire audio
 
-{ lib, ... }:
-
 {
-  sound.enable = lib.mkForce false;
   hardware = {
     pulseaudio.enable = false;
     enableAllFirmware = true;

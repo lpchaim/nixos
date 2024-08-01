@@ -155,10 +155,9 @@ in
     libinput.enable = true;
     ollama = {
       enable = true;
-      # openFirewall = true;
+      openFirewall = true;
       host = "127.0.0.1";
       port = 11434;
-      sandbox = true;
     };
     openssh = {
       enable = true;
@@ -190,7 +189,6 @@ in
       password.neededForUsers = true;
     };
   };
-  sound.enable = true;
   stylix = {
     homeManagerIntegration = {
       autoImport = false;
