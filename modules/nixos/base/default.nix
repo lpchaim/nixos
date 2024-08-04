@@ -25,13 +25,19 @@ in
   boot = {
     loader = {
       grub = {
-        enable = mkDefault true;
+        enable = mkDefault false;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 5;
       };
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = false;
+      systemd-boot = {
+        enable = mkDefault true;
+        editor = false;
+        configurationLimit = 5;
+        memtest86.enable = true;
+        netbootxyz.enable = true;
+      };
     };
     initrd.systemd.enable = true;
     plymouth = {
