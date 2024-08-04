@@ -58,6 +58,10 @@
       follows = "chaotic/jovian";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
     };
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+      inputs.nixpkgs.follows = "chaotic/nixpkgs";
+    };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nixos-generators = {
@@ -105,6 +109,7 @@
         jovian.overlays.default
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
+        nix-gaming.overlays.default
       ];
 
       systems.modules.nixos = with inputs; [
@@ -112,6 +117,8 @@
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         jovian.nixosModules.default
+        nix-gaming.nixosModules.pipewireLowLatency
+        nix-gaming.nixosModules.platformOptimizations
         nixos-generators.nixosModules.all-formats
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
