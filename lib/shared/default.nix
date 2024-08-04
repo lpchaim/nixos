@@ -34,7 +34,7 @@
         {
           layout = mkMerge [ br.layout us.layout ];
           variant = mkMerge [ br.variant us.variant ];
-          options = "compose:ralt,grp:alt_space_toggle";
+          options = "grp:alt_space_toggle";
         };
     };
   };
