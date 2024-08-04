@@ -41,8 +41,8 @@ in
       };
 
       gtk.cursorTheme = mkIf cfg.enableCursorTheme {
-        name = "Catppuccin-Latte-Light-Cursors";
-        package = pkgs.catppuccin-cursors.latteLight;
+        name = mkDefault "catppuccin-latte-light-cursors";
+        package = mkDefault pkgs.catppuccin-cursors.latteLight;
       };
 
       dconf.settings."org/gnome/shell/extensions/user-theme" = mkIf cfg.enableGnomeShellTheme {
