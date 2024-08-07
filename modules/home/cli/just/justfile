@@ -1,6 +1,3 @@
-extraSubs := "@extraSubstituters@"
-extraPubKeys := "@extraTrustedPublicKeys@"
-
 _default:
     just --list
 
@@ -9,37 +6,48 @@ _default:
 deploy flake='.#' target='localhost':
     sudo nixos-rebuild switch \
     --flake {{ flake }} \
-    --target-host {{ target }} \
-    --option extra-substituters "{{extraSubs}}" \
-    --option extra-trusted-public-keys "{{extraPubKeys}}"
+    {{ if target != 'localhost' { '--target-host {{ target }}' } else { '' } }}
 
 [group("nixos")]
 [doc("Runs nixos-rebuild test")]
 test flake='.#':
     sudo nixos-rebuild test \
-    --flake {{ flake }} \
-    --option extra-substituters "{{extraSubs}}" \
-    --option extra-trusted-public-keys "{{extraPubKeys}}"
+    --flake {{ flake }}
 
 [group("secrets")]
 [doc("Updates secret files, run after adding new keys")]
-secrets-update:
+update-secrets:
     #!/usr/bin/env zsh
     sops updatekeys secrets/**/*
 
 [group("secrets")]
 [doc("Grabs a host's SSH key and generates the corresponding age key")]
-@host-get-key host:
+@get-host-key host:
     nix shell nixpkgs#ssh-to-age nixpkgs#openssh \
     --command ssh-keyscan localhost 2>/dev/null \
     | ssh-to-age 2>/dev/null
 
 [group("secrets")]
 [doc("Opens a secrets file for editing")]
-@secrets-edit file='secrets/default.yaml':
+@edit-secrets file='secrets/default.yaml':
     sops {{ file }}
+
+[group("security")]
+[doc("Enroll security key")]
+enroll-security-key:
+    #!/usr/bin/env bash
+    mkdir -p ~/.config/Yubico
+    [ -e ~/.config/Yubico/u2f_keys ] \
+        && pamu2fcfg --nouser >> ~/.config/Yubico/u2f_keys \
+        || pamu2fcfg > ~/.config/Yubico/u2f_keys
+
+[group("security")]
+[doc("Clear enrolled security keys, if any")]
+clear-security-keys:
+    [ -e ~/.config/Yubico/u2f_keys ] \
+        && rm -f ~/.config/Yubico/u2f_keys
 
 [group("theming")]
 [doc("Opens the current stylix color scheme in a browser")]
-@theme-inspect:
+@inspect-theme:
     firefox $(readlink -f /etc/stylix/palette.html)
