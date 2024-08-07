@@ -12,7 +12,6 @@
           nil
           nixd
           nixos-generators
-          nixos-rebuild
           nixpkgs-fmt
           pre-commit
           ssh-to-age
