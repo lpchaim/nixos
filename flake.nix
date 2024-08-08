@@ -58,6 +58,10 @@
       follows = "chaotic/jovian";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
@@ -117,6 +121,7 @@
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         jovian.nixosModules.default
+        lanzaboote.nixosModules.lanzaboote
         nix-gaming.nixosModules.pipewireLowLatency
         nix-gaming.nixosModules.platformOptimizations
         nixos-generators.nixosModules.all-formats

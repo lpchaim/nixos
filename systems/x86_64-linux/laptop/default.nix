@@ -22,4 +22,5 @@ in
 
   networking.hostName = "laptop";
   system.stateVersion = "23.11";
+  my.security.secureboot.enable = true;
 }

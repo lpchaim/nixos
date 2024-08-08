@@ -47,6 +47,18 @@ clear-security-keys:
     [ -e ~/.config/Yubico/u2f_keys ] \
         && rm -f ~/.config/Yubico/u2f_keys
 
+# Generates the necessary keys in /etc/secureboot
+[group("secureboot")]
+[group("security")]
+create-secureboot-keys:
+    sudo sbctl create-keys
+
+# Enrolls keys, requires system to be in setup mode
+[group("secureboot")]
+[group("security")]
+enroll-secureboot-keys: create-secureboot-keys
+    sudo sbctl enroll-keys --microsoft
+
 [group("theming")]
 [doc("Opens the current stylix color scheme in a browser")]
 @inspect-theme:
