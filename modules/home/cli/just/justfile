@@ -1,39 +1,42 @@
 _default:
     just --list
 
+# Runs nixos-rebuild switch
 [group("nixos")]
-[doc("Runs nixos-rebuild switch")]
 deploy flake='.#' target='localhost':
     sudo nixos-rebuild switch \
     --flake {{ flake }} \
     {{ if target != 'localhost' { '--target-host {{ target }}' } else { '' } }}
 
+# Runs nixos-rebuild test
 [group("nixos")]
-[doc("Runs nixos-rebuild test")]
 test flake='.#':
     sudo nixos-rebuild test \
     --flake {{ flake }}
 
+# Updates secret files, run after adding new keys
 [group("secrets")]
-[doc("Updates secret files, run after adding new keys")]
+[group("security")]
 update-secrets:
     #!/usr/bin/env zsh
     sops updatekeys secrets/**/*
 
+# Grabs a host's SSH key and generates the corresponding age key
 [group("secrets")]
-[doc("Grabs a host's SSH key and generates the corresponding age key")]
+[group("security")]
 @get-host-key host:
     nix shell nixpkgs#ssh-to-age nixpkgs#openssh \
     --command ssh-keyscan localhost 2>/dev/null \
     | ssh-to-age 2>/dev/null
 
+# Opens a secrets file for editing
 [group("secrets")]
-[doc("Opens a secrets file for editing")]
+[group("security")]
 @edit-secrets file='secrets/default.yaml':
     sops {{ file }}
 
+# Enroll security key
 [group("security")]
-[doc("Enroll security key")]
 enroll-security-key:
     #!/usr/bin/env bash
     mkdir -p ~/.config/Yubico
@@ -41,8 +44,8 @@ enroll-security-key:
         && pamu2fcfg --nouser >> ~/.config/Yubico/u2f_keys \
         || pamu2fcfg > ~/.config/Yubico/u2f_keys
 
+# Clear enrolled security keys, if any
 [group("security")]
-[doc("Clear enrolled security keys, if any")]
 clear-security-keys:
     [ -e ~/.config/Yubico/u2f_keys ] \
         && rm -f ~/.config/Yubico/u2f_keys
@@ -59,7 +62,7 @@ create-secureboot-keys:
 enroll-secureboot-keys: create-secureboot-keys
     sudo sbctl enroll-keys --microsoft
 
+# Opens the current stylix color scheme in a browser
 [group("theming")]
-[doc("Opens the current stylix color scheme in a browser")]
 @inspect-theme:
     firefox $(readlink -f /etc/stylix/palette.html)

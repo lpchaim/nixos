@@ -1,36 +1,31 @@
 { config, lib, pkgs, ... }:
 
-let
-  namespace = [ "my" "modules" "cli" "just" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
-{
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "just";
+lib.lpchaim.mkModule {
+  inherit config;
+  namespace = "my.modules.cli.just";
+  description = "just task runner";
+  options = {
+    extraConfig = lib.mkOption {
+      description = "extra text to append to justfile";
+      type = lib.types.string;
+      default = "";
+    };
   };
-
-  config = lib.mkIf cfg.enable {
-    home =
-      let
-        rootDir = "${config.home.homeDirectory}/.config/nixos";
-      in
-      {
-        packages = [ pkgs.just ];
-        file."${rootDir}/.justfile".text = lib.pipe ./justfile [
-          (file: pkgs.writeText "formatted-justfile" ''
-            cp $src ./justfile
-            chmod +rw ./justfile;
-            ${lib.getExe pkgs.just} --unstable --fmt --justfile ./justfile
-            cat ./justfile > $out
-            chmod +rw $out;
-          '')
-          builtins.readFile
-        ];
-        shellAliases."just" = lib.concatStringsSep " " [
+  configBuilder = cfg: {
+    home = {
+      packages = [ pkgs.just ];
+      file.".justfile".text = lib.trim ''
+        ${builtins.readFile ./justfile}
+        ${cfg.extraConfig}
+      '';
+      shellAliases = {
+        "_just" = lib.getExe pkgs.just;
+        "just" = lib.concatStringsSep " " [
           (lib.getExe pkgs.just)
-          "--working-directory ${rootDir}"
-          "--justfile ${rootDir}/.justfile"
+          "--unstable"
+          "--global-justfile"
         ];
       };
+    };
   };
 }
