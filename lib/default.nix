@@ -8,8 +8,8 @@
     , config
     , description ? "module"
     , options ? { }
-    , rootConfig ? cfg: { }
-    , moduleConfig ? cfg: { }
+    , configBuilder ? cfg: { }
+    , namespacedConfigBuilder ? cfg: { }
     }:
     let
       ns = lib.splitString "." namespace;
@@ -21,11 +21,13 @@
         in lib.setAttrByPath ns finalOptions;
       config =
         let
-          finalRootConfig = rootConfig cfg;
-          finalModuleConfig = moduleConfig cfg;
+          rootConfig = configBuilder cfg;
+          namespacedConfig = namespacedConfigBuilder cfg;
         in
-        lib.mkIf (cfg.enable && (finalRootConfig != { } || finalModuleConfig != { }))
-          (lib.mkMerge [ finalRootConfig finalModuleConfig ]);
+        lib.mkMerge [
+          (if rootConfig != { } then rootConfig else { })
+          (if namespacedConfig != { } then (lib.setAttrByPath ns namespacedConfig) else { })
+        ];
     };
   mkEnableOptionWithDefault = description: default:
     (lib.mkEnableOption description) // { inherit default; };

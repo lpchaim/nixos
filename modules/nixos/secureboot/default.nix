@@ -5,7 +5,7 @@ in mkModule {
   inherit config;
   namespace = "my.security.secureboot";
   description = "secure boot";
-  rootConfig = cfg: {
+  configBuilder = cfg: {
     environment.systemPackages = [ pkgs.sbctl ];
     boot = {
       loader.systemd-boot.enable = lib.mkForce false;
