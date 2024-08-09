@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let inherit (lib.lpchaim) mkModule;
-in mkModule {
+lib.lpchaim.mkModule {
   inherit config;
   namespace = "my.security.secureboot";
   description = "secure boot";
