@@ -29,6 +29,7 @@ in
   config = {
     networking.hostName = "steamdeck";
     system.stateVersion = "24.05";
+    my.security.u2f.login.control = "sufficient";
 
     jovian = {
       steam = {
