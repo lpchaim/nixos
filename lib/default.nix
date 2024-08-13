@@ -10,12 +10,14 @@
     , options ? { }
     , configBuilder ? cfg: { }
     , namespacedConfigBuilder ? cfg: { }
+    , imports ? [ ]
     }:
     let
       ns = lib.splitString "." namespace;
       cfg = lib.getAttrFromPath ns config;
     in
     {
+      inherit imports;
       options =
         let finalOptions = { enable = lib.mkEnableOption description; } // options;
         in lib.setAttrByPath ns finalOptions;
