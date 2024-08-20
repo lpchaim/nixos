@@ -42,6 +42,7 @@ in
     }
     {
       home.packages = with pkgs; [
+        brave
         spotify
         spotify-tray
       ];
