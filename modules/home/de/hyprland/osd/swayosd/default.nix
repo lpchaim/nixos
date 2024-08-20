@@ -10,7 +10,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    my.modules.de.hyprland.bars.ags.enableFnKeys = lib.mkForce false;
+    my.modules.de.hyprland.binds.enableFnKeys = lib.mkForce false;
     home.packages = [ pkgs.swayosd ];
     wayland.windowManager.hyprland.settings = {
       exec-once = lib.mkBefore [ "${pkgs.swayosd}/bin/swayosd-server" ];

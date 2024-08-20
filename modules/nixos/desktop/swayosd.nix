@@ -6,7 +6,7 @@ let
 in
 {
   options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "swayosd libinput bacckend";
+    enable = lib.mkEnableOption "swayosd libinput backend";
   };
 
   config = lib.mkIf cfg.enable {

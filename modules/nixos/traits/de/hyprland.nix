@@ -22,5 +22,4 @@
       hyprlock
     ];
   };
-  my.services.swayosd.enable = true;
 }
