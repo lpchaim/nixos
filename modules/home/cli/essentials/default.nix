@@ -29,6 +29,7 @@ in
         duf
         fd
         htop
+        inotify-tools
         neofetch
         ncdu
         (nerdfonts.override { fonts = myNerdFonts; })
