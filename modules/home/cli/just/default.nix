@@ -7,7 +7,7 @@ lib.lpchaim.mkModule {
   options = {
     extraConfig = lib.mkOption {
       description = "extra text to append to justfile";
-      type = lib.types.string;
+      type = lib.types.lines;
       default = "";
     };
   };
