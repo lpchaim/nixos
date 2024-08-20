@@ -12,9 +12,5 @@ in
     "llm/low"
   ];
 
-  config.home = rec {
-    stateVersion = "23.05";
-    username = "lpchaim";
-    homeDirectory = "/home/${username}";
-  };
+  config.home.stateVersion = "23.05";
 }

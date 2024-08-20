@@ -174,6 +174,7 @@ in
         PermitRootLogin = mkDefault "no";
       };
     };
+    power-profiles-daemon.enable = true;
     printing.enable = true;
     tailscale = {
       enable = true;

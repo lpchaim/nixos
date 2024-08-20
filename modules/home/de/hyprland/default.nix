@@ -14,11 +14,12 @@ in
   config = mkIf cfg.enable (mkMerge [
     (setAttrByPath namespace {
       bars.ags.enable = mkDefault cfg.enable;
-      bars.ags.enableFnKeys = mkDefault cfg.bars.ags.enable;
+      bars.ags.dotfiles.aylur.enable = mkDefault cfg.bars.ags.enable;
+      binds.enableFnKeys = mkDefault cfg.bars.ags.enable;
       bars.waybar.enable = mkDefault false;
       binds.enable = mkDefault cfg.enable;
       launchers.rofi.enable = mkDefault cfg.enable;
-      osd.swayosd.enable = mkDefault cfg.enable;
+      osd.swayosd.enable = mkDefault false;
       plugins.enable = mkDefault false;
     })
     {

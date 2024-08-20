@@ -1,6 +1,7 @@
 {
   description = "Personal NixOS flake";
 
+
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
@@ -27,6 +28,10 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland-hyprspace = {
+      url = "github:KZDKM/Hyprspace";
+      inputs.hyprland.follows = "hyprland";
+    };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
@@ -35,7 +40,22 @@
       url = "github:Aylur/ags/05e0f23534fa30c1db2a142664ee8f71e38db260";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dots-hyprland = {
+    dotfiles-aylur = {
+      url = "github:Aylur/dotfiles";
+      inputs.ags.follows = "ags";
+      inputs.home-manager.follows = "home-manager";
+      inputs.hyprland.follows = "hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dotfiles-aylur-raw = {
+      follows = "dotfiles-aylur";
+      flake = false;
+    };
+    matugen = {
+      url = "github:InioX/matugen?ref=v2.2.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dotfiles-end-4 = {
       url = "github:end-4/dots-hyprland";
       flake = false;
     };
@@ -131,6 +151,7 @@
       ];
 
       homes.modules = with inputs; [
+        ags.homeManagerModules.default
         chaotic.homeManagerModules.default
         nixvim.homeManagerModules.nixvim
         sops-nix.homeManagerModules.sops
