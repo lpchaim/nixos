@@ -124,10 +124,12 @@ in
 
   # Programs
   programs = {
+    adb.enable = true;
     nix-ld.enable = true;
     zsh.enable = true;
   };
   environment.systemPackages = with pkgs; [
+    android-udev-rules
     helix
     inputs.nix-software-center.packages.${system}.nix-software-center
     snowfallorg.flake
