@@ -10,21 +10,9 @@ lib.lpchaim.mkModule {
         description = "See pam.conf(5)";
         default = "sufficient";
       };
-      login.control = lib.mkOption {
-        description = "Specific to login";
-        default = "required";
-      };
     };
   };
   configBuilder = cfg: lib.mkIf cfg.enable {
-    environment.etc."pam.d/login".text =
-      let
-        patchedLoginPam = lib.replaceStrings
-          [ "auth ${cfg.u2f.control} ${pkgs.pam_u2f}" ]
-          [ "auth ${cfg.u2f.login.control} ${pkgs.pam_u2f}" ]
-          config.security.pam.services.login.text;
-      in
-      lib.mkForce patchedLoginPam;
     security.pam = {
       services = {
         login.u2fAuth = true;
