@@ -22,7 +22,6 @@ lib.lpchaim.mkModule {
       u2f = {
         inherit (cfg.u2f) control;
         enable = true;
-        settings.authfile = "${config.sops.secrets."u2f-mappings".path}";
         settings.cue = true;
       };
     };

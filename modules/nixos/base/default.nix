@@ -196,7 +196,6 @@ in
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       password.neededForUsers = true;
-      u2f-mappings = { };
     };
   };
   stylix = {
