@@ -4,7 +4,7 @@ import { icon } from "lib/utils"
 import icons from "lib/icons"
 
 const options = mkOptions(OPTIONS, {
-    autotheme: opt(false),
+    autotheme: opt(true),
 
     wallpaper: {
         resolution: opt<import("service/wallpaper").Resolution>(1920),
@@ -127,6 +127,7 @@ const options = mkOptions(OPTIONS, {
             ignore: opt([
                 "KDE Connect Indicator",
                 "spotify-client",
+                "xwaylandvideobridge"
             ]),
         },
         media: {
@@ -137,7 +138,7 @@ const options = mkOptions(OPTIONS, {
             length: opt(40),
         },
         powermenu: {
-            monochrome: opt(false),
+            monochrome: opt(true),
             action: opt(() => App.toggleWindow("powermenu")),
         },
     },
@@ -168,7 +169,7 @@ const options = mkOptions(OPTIONS, {
 
     overview: {
         scale: opt(9),
-        workspaces: opt(10),
+        workspaces: opt(0),
         monochromeIcon: opt(false),
     },
 
@@ -184,7 +185,7 @@ const options = mkOptions(OPTIONS, {
     quicksettings: {
         avatar: {
             image: opt(`/var/lib/AccountsService/icons/${Utils.USER}`),
-            size: opt(70),
+            size: opt(40),
         },
         width: opt(380),
         position: opt<"left" | "center" | "right">("right"),
@@ -226,7 +227,7 @@ const options = mkOptions(OPTIONS, {
     },
 
     notifications: {
-        position: opt<Array<"top" | "bottom" | "left" | "right">>(["bottom", "right"]),
+        position: opt<Array<"top" | "bottom" | "left" | "right">>(["top", "right"]),
         blacklist: opt(["Spotify"]),
         width: opt(440),
     },
