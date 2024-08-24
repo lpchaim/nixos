@@ -10,6 +10,26 @@ lib.lpchaim.mkModule {
       GTK_THEME = "Adwaita-dark";
       XCURSOR_THEME = "Adwaita";
     };
-    wayland.windowManager.hyprland.settings.exec-once = lib.mkBefore [ "ags" ];
+    systemd.user.services.ags =
+      let
+        ags = config.programs.ags.finalPackage;
+      in
+      {
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${ags}/bin/ags";
+          Restart = "always";
+          RestartSec = "5";
+        };
+        Unit = {
+          After = [ "graphical-session-pre.target" ];
+          ConditionEnvironment = "WAYLAND_DISPLAY";
+          Description = "ags";
+          PartOf = [ "graphical-session.target" ];
+          X-Restart-Triggers = [ ags ];
+        };
+      };
   };
 }

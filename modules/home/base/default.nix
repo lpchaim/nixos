@@ -24,5 +24,6 @@ in
     };
     programs.home-manager.enable = mkDefault true;
     nix.settings = shared.nix.settings;
+    systemd.user.startServices = "sd-switch";
   };
 }
