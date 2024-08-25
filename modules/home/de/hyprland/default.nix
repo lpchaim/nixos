@@ -158,12 +158,10 @@ in
 
       xdg.portal = {
         enable = true;
-        config = {
-          common.default = [ "gtk" ];
-          hyprland.default = [ "hyprland" "gtk" ];
-        };
+        config.common.default = [ "hyprland" "wlr" "gtk" ];
         extraPortals = with pkgs; [
           xdg-desktop-portal-hyprland
+          xdg-desktop-portal-wlr
           xdg-desktop-portal-gtk
         ];
         xdgOpenUsePortal = true;

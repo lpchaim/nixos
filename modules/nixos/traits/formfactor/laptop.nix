@@ -1,5 +1,5 @@
 # Laptop-specific configurations
-{ config, lib, ... }:
+{ config, ... }:
 
 {
   hardware.sensor.iio.enable = true;
