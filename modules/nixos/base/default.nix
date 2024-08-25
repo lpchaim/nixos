@@ -132,6 +132,7 @@ in
     android-udev-rules
     helix
     inputs.nix-software-center.packages.${system}.nix-software-center
+    sbctl
     snowfallorg.flake
     vim
     wget
