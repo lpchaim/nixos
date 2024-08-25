@@ -31,6 +31,8 @@ in
             "hypridle"
             "hyprpaper"
             "xwaylandvideobridge"
+            "[workspace 10 silent] steam -silent"
+            "[workspace 10 silent] openrgb --startminimized"
           ];
           general = {
             gaps_in = 5;
@@ -52,9 +54,9 @@ in
             "col.shadow" = mkDefault "rgba(1a1a1aee)";
             blur = {
               enabled = true;
-              size = 8;
+              size = 10;
               passes = 3;
-              noise = 0.2;
+              noise = 0.1;
               contrast = 0.9;
               brightness = 0.8;
               vibrancy = 0.2;
@@ -83,8 +85,9 @@ in
           dwindle = {
             pseudotile = true;
             smart_split = true;
+            smart_resizing = true;
             preserve_split = true;
-            no_gaps_when_only = false;
+            no_gaps_when_only = 1;
           };
           master = {
             new_status = "master";
@@ -123,14 +126,31 @@ in
           ];
           monitor = [ ",highrr,auto,1" ];
           opengl.nvidia_anti_flicker = true;
-          windowrulev2 = [
-            "maxsize 1 1,class:^(xwaylandvideobridge)$"
-            "noanim,class:^(xwaylandvideobridge)$"
-            "noblur,class:^(xwaylandvideobridge)$"
-            "nofocus,class:^(xwaylandvideobridge)$"
-            "noinitialfocus,class:^(xwaylandvideobridge)$"
-            "opacity 0.0 override,class:^(xwaylandvideobridge)$"
-          ];
+          windowrulev2 =
+            let
+              mkRules = matcher: rules:
+                map (rule: "${rule},${matcher}") rules;
+              mkAutoFloatRules = matcher:
+                mkRules matcher [
+                  "opacity 0.7 override"
+                  "noinitialfocus"
+                  "float"
+                  "pin"
+                  "move onscreen 100%-w-3% 100%-w-3%"
+                  "size 20% 20%"
+                ];
+            in
+            (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
+            ++ (mkAutoFloatRules "class:^(discord)$,initialTitle:^(Discord Popout)$")
+            ++ (mkRules
+              "class:^steam_app\d+$"
+              [ "idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override" ])
+            ++ (mkRules
+              "class:^(xwaylandvideobridge)$"
+              [ "maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override" ])
+            ++ [
+              "stayfocused, class:^(rofi)$"
+            ];
           debug.disable_logs = false;
         };
       };

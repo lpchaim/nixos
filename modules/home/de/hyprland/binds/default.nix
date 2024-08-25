@@ -75,6 +75,9 @@ in
 
             "$mod, mouse_down, workspace, e+1"
             "$mod, mouse_up, workspace, e-1"
+
+            "$mod SHIFT ALT, 1, movewindow, mon:+1"
+            "$mod SHIFT ALT, 2, movewindow, mon:-1"
           ]
           ++ (makeDirectionalBinds "movefocus" [ ])
           ++ (makeDirectionalBinds "movewindoworgroup" [ "SHIFT" ])
