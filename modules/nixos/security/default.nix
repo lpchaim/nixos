@@ -8,7 +8,7 @@ lib.lpchaim.mkModule {
     u2f = {
       control = lib.mkOption {
         inherit (options.security.pam.u2f.control) description type;
-        default = "required";
+        default = "requisite";
       };
       relaxed = lib.mkOption {
         description = "Relax required to sufficient for less critical devices";
@@ -21,7 +21,7 @@ lib.lpchaim.mkModule {
     environment.etc =
       let
         patch = svc: lib.replaceStrings
-          [ "auth required ${pkgs.pam_u2f}" ]
+          [ "auth ${cfg.u2f.control} ${pkgs.pam_u2f}" ]
           [ "auth sufficient ${pkgs.pam_u2f}" ]
           config.security.pam.services.${svc}.text;
       in
@@ -39,7 +39,11 @@ lib.lpchaim.mkModule {
         inherit (cfg.u2f) control;
         enable = true;
         settings.authfile = "${config.sops.secrets."u2f-mappings".path}";
-        settings.cue = true;
+        settings = {
+          cue = true;
+          appid = "pam://auth";
+          origin = "pam://localhost";
+        };
       };
     };
     programs = {
@@ -69,5 +73,9 @@ lib.lpchaim.mkModule {
       yubikey-personalization
       yubioath-flutter
     ];
+    sops.secrets.u2f-mappings = {
+      group = "wheel";
+      mode = "0440";
+    };
   };
 }
