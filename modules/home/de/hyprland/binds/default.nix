@@ -64,7 +64,6 @@ in
             "$mod, G, togglegroup,"
             "$mod SHIFT, G, changegroupactive,"
             "$mod, Z, fullscreen,"
-            "$mod ALT, Z, fakefullscreen,"
 
             "ALT, TAB, cyclenext, tiled"
             "ALT SHIFT, TAB, cyclenext, prev tiled"

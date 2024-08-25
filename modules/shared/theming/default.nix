@@ -17,7 +17,7 @@ with lib;
       size = 32;
     };
     fonts.monospace = mkDefault {
-      name = mkDefault "JetBrainsMono";
+      name = mkDefault "JetBrainsMono Nerd Font";
       package = mkDefault (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
     };
   };
