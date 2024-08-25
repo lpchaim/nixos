@@ -28,6 +28,7 @@ in
 
   config = {
     system.stateVersion = "24.05";
+    my.security.u2f.relaxed = true;
 
     jovian = {
       steam = {

@@ -152,6 +152,7 @@ in
           hyprcursor
           hyprpaper
           hyprpicker
+          wlinhibit
           xwaylandvideobridge
         ];
       };
