@@ -24,6 +24,7 @@ in
     ]);
 
   system.stateVersion = "23.11";
+  my.security.secureboot.enable = true;
 
   fileSystems."/run/media/lpchaim/storage" = {
     device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
