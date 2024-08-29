@@ -181,6 +181,16 @@ in
     printing.enable = true;
     tailscale = {
       enable = true;
+      authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
+      extraUpFlags = [
+        "--accept-dns"
+        "--accept-routes"
+        "--advertise-exit-node"
+        "--advertise-tags=tag:nixos"
+        "--reset" # Forces unspecified arguments to default values
+        "--ssh"
+      ];
+      openFirewall = true;
       useRoutingFeatures = "both";
     };
   };
@@ -197,6 +207,7 @@ in
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       password.neededForUsers = true;
+      "tailscale/oauth/secret" = { };
     };
   };
   stylix = {
