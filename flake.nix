@@ -112,6 +112,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    wayland-pipewire-idle-inhibit = {
+      url = "github:rafaelrc7/wayland-pipewire-idle-inhibit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -156,6 +160,7 @@
         nixvim.homeManagerModules.nixvim
         sops-nix.homeManagerModules.sops
         stylix.homeManagerModules.stylix
+        wayland-pipewire-idle-inhibit.homeModules.default
       ];
     };
 }

@@ -165,6 +165,35 @@ in
             wallpaper = [ ", ${config.stylix.image}" ];
           };
         };
+        wayland-pipewire-idle-inhibit = {
+          enable = true;
+          systemdTarget = "graphical-session.target";
+          settings = {
+            verbosity = "INFO";
+            media_minimum_duration = 10;
+            idle_inhibitor = "wayland";
+            sink_whitelist = [ ];
+            node_blacklist = [ ];
+          };
+        };
+      };
+
+      systemd.user.services.wljoywake = {
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${pkgs.wljoywake}/bin/wljoywake -t 10";
+          Restart = "always";
+          RestartSec = "5";
+        };
+        Unit = {
+          After = [ "graphical-session-pre.target" ];
+          ConditionEnvironment = "WAYLAND_DISPLAY";
+          Description = "wljoywake";
+          PartOf = [ "graphical-session.target" ];
+          X-Restart-Triggers = [ pkgs.wljoywake ];
+        };
       };
 
       home = {
