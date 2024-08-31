@@ -1488,6 +1488,26 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724576102,
+        "narHash": "sha256-uM7n5nNL6fmA0bwMJBNll11f4cMWOFa2Ni6F5KeIldM=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "e333d62b70b179da1dd78d94315e8a390f2d12e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix-software-center": {
       "inputs": {
         "nixos-appstream-data": "nixos-appstream-data",
@@ -1988,6 +2008,7 @@
         "lanzaboote": "lanzaboote",
         "matugen": "matugen_2",
         "nix-gaming": "nix-gaming",
+        "nix-index-database": "nix-index-database",
         "nix-software-center": "nix-software-center",
         "nix-std": "nix-std",
         "nixneovimplugins": "nixneovimplugins",
