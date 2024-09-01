@@ -1,4 +1,4 @@
-args@{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with builtins;
 with lib;
