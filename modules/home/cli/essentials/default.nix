@@ -76,6 +76,8 @@ in
         fuzzySearchFactor = 2;
         keyScheme = "vim";
       };
+      nix-index.enable = true;
+      nix-index-database.comma.enable = true;
       ripgrep.enable = true;
       zoxide.enable = true;
     };
