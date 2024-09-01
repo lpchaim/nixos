@@ -5,10 +5,6 @@ let
   namespace = [ "my" "modules" "de" "gnome" "theming" ];
   cfg = getAttrFromPath namespace config;
   toTitle = str: "${lib.toUpper (lib.substring 0 1 str)}${lib.substring 1 (lib.stringLength str) str}";
-  catppuccin = {
-    variant = "mocha";
-    accent = "blue";
-  };
 in
 {
   options = setAttrByPath namespace {
@@ -22,31 +18,9 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      home.packages = with pkgs; [ ]
-        ++ optional cfg.enableGnomeShellTheme (catppuccin-gtk.override {
-        variant = catppuccin.variant;
-        accents = [ catppuccin.accent ];
-        tweaks = [ "normal" ];
-        size = "standard";
-      });
-
-      gtk.theme = mkIf cfg.enableGtkTheme {
-        name = mkDefault "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
-        package = mkDefault pkgs.catppuccin-gtk;
-      };
-
       gtk.iconTheme = mkIf cfg.enableIconTheme {
         name = "Papirus-Dark";
         package = pkgs.papirus-icon-theme;
-      };
-
-      gtk.cursorTheme = mkIf cfg.enableCursorTheme {
-        name = mkDefault "catppuccin-latte-light-cursors";
-        package = mkDefault pkgs.catppuccin-cursors.latteLight;
-      };
-
-      dconf.settings."org/gnome/shell/extensions/user-theme" = mkIf cfg.enableGnomeShellTheme {
-        name = mkDefault "Catppuccin-${toTitle catppuccin.variant}-Standard-${toTitle catppuccin.accent}-Dark";
       };
     }
     (

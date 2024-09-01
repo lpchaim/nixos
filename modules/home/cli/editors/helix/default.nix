@@ -10,7 +10,6 @@ in
       enable = true;
       defaultEditor = true;
       settings = {
-        theme = lib.mkForce "catppuccin_mocha";
         editor = {
           bufferline = "always";
           color-modes = true;

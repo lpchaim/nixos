@@ -8,13 +8,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;
-      colorschemes.catppuccin = {
-        enable = true;
-        settings = {
-          flavour = "mocha";
-          transparent_background = false;
-        };
-      };
       globals = {
         mapleader = "<Space>";
       };
