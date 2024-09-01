@@ -86,6 +86,10 @@
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nixos-generators = {
@@ -157,6 +161,7 @@
       homes.modules = with inputs; [
         ags.homeManagerModules.default
         chaotic.homeManagerModules.default
+        nix-index-database.hmModules.nix-index
         nixvim.homeManagerModules.nixvim
         sops-nix.homeManagerModules.sops
         stylix.homeManagerModules.stylix
