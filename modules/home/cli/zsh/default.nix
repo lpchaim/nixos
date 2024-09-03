@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-let
-  namespace = [ "my" "modules" "cli" "zsh" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  namespace = ["my" "modules" "cli" "zsh"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "zsh";
   };

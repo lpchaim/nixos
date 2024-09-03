@@ -1,9 +1,6 @@
-{ lib, ... }:
-
-let
+{lib, ...}: let
   inherit (lib.lpchaim.home) getTraitModules;
-in
-{
+in {
   imports = getTraitModules [
     "de/gnome"
     "de/hyprland"
@@ -11,9 +8,5 @@ in
     "apps/media"
   ];
 
-  config.home = rec {
-    stateVersion = "24.05";
-    username = "lpchaim";
-    homeDirectory = "/home/${username}";
-  };
+  config.home.stateVersion = "24.05";
 }

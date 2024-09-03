@@ -1,15 +1,13 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
-
-with lib;
-let
-  namespace = [ "my" "modules" "gui" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "gui"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "gui apps";
   };

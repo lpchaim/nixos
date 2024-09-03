@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-
+{pkgs, ...}:
 # Use the Hyprland compositor
 {
   imports = [
@@ -12,7 +11,7 @@
     xwayland.enable = true;
   };
   security = {
-    pam.services.hyprlock = { };
+    pam.services.hyprlock = {};
     polkit.enable = true;
   };
   xdg.portal = {

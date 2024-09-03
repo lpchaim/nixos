@@ -1,18 +1,16 @@
-{ lib, ... }:
-
-let
-  inherit (lib)
+{lib, ...}: let
+  inherit
+    (lib)
     attrNames
     attrValues
-    replaceStrings;
-in
-{
+    replaceStrings
+    ;
+in {
   strings = {
-    replaceUsing =
-      replacements: str:
+    replaceUsing = replacements: str:
       replaceStrings
-        (attrNames replacements)
-        (attrValues replacements)
-        str;
+      (attrNames replacements)
+      (attrValues replacements)
+      str;
   };
 }

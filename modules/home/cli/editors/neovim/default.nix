@@ -1,10 +1,11 @@
-{ config, lib, ... }:
-
-let
-  namespace = [ "my" "modules" "cli" "editors" "neovim" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  namespace = ["my" "modules" "cli" "editors" "neovim"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;

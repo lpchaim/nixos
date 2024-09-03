@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 lib.lpchaim.mkModule {
   inherit config;
   namespace = "my.modules.cli.just";
@@ -13,7 +17,7 @@ lib.lpchaim.mkModule {
   };
   configBuilder = cfg: {
     home = {
-      packages = [ pkgs.just ];
+      packages = [pkgs.just];
       file.".justfile".text = lib.trim ''
         ${builtins.readFile ./justfile}
         ${cfg.extraConfig}

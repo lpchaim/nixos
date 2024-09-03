@@ -1,12 +1,14 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "de" "gnome" "theming" ];
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "de" "gnome" "theming"];
   cfg = getAttrFromPath namespace config;
   toTitle = str: "${lib.toUpper (lib.substring 0 1 str)}${lib.substring 1 (lib.stringLength str) str}";
-in
-{
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "theming tweaks";
     enableGtkTheme = mkEnableOption "custom GTK theme";
@@ -41,8 +43,7 @@ in
         pfp = "${assetsPath}/profile-picture.png";
         wallpaperLight = "${assetsPath}/wallpaper-light.png";
         wallpaperDark = "${assetsPath}/wallpaper-dark.png";
-      in
-      {
+      in {
         home.file."${destinationPath}/.face".source = pfp;
         home.file."${destinationPath}/.wallpaper-light".source = wallpaperLight;
         home.file."${destinationPath}/.wallpaper-dark".source = wallpaperDark;

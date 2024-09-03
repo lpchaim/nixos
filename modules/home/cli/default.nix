@@ -1,11 +1,12 @@
-{ config, lib, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "cli" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "cli"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "custom modules";
   };

@@ -1,23 +1,18 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config
-, inputs
-, lib
-, pkgs
-, system
-, ...
-}:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkDefault;
   inherit (lib.lpchaim) shared;
   inherit (lib.snowfall) fs;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
-in
-{
+in {
   imports = [
     (fs.get-file "modules/shared")
   ];
@@ -36,7 +31,7 @@ in
         enable = mkDefault true;
         editor = false;
         configurationLimit = 5;
-        memtest86.enable = true;
+        memtest86.enable = pkgs.stdenv.isx86_64;
         netbootxyz.enable = true;
       };
     };
@@ -45,7 +40,7 @@ in
       enable = true;
       theme = mkDefault "breeze";
     };
-    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
+    kernelParams = ["splash" "quiet" "btusb.enable_autosuspend=n"];
   };
 
   # Package manager
@@ -70,15 +65,15 @@ in
         5353 # spotify cast discovery
       ];
     };
-    dhcpcd.extraConfig =
-      let wifiOffset = 2000;
-      in ''
-        ssid Lpchaim5G
-        metric ${toString (wifiOffset - 20)}
+    dhcpcd.extraConfig = let
+      wifiOffset = 2000;
+    in ''
+      ssid Lpchaim5G
+      metric ${toString (wifiOffset - 20)}
 
-        ssid Lpchaim
-        metric ${toString (wifiOffset - 10)}
-      '';
+      ssid Lpchaim
+      metric ${toString (wifiOffset - 10)}
+    '';
   };
 
   # Internationalization
@@ -108,31 +103,31 @@ in
         };
       };
     };
-    graphics =
-      let
-        getExtraPackages = p: with p; [
-          intel-media-driver
-          intel-vaapi-driver
-        ];
-      in
-      {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = getExtraPackages pkgs;
-        extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
-      };
+    graphics = let
+      getExtraPackages = p:
+        with p;
+          lib.optionals pkgs.stdenv.isx86_64 [
+            intel-media-driver
+            intel-vaapi-driver
+          ];
+    in rec {
+      enable = lib.mkDefault false;
+      enable32Bit = config.hardware.graphics.enable && pkgs.stdenv.isx86_64;
+      extraPackages = lib.mkIf enable (getExtraPackages pkgs);
+      extraPackages32 = lib.mkIf enable (getExtraPackages pkgs.pkgsi686Linux);
+    };
   };
 
   # Programs
   programs = {
     adb.enable = true;
+    fish.enable = true;
     nix-ld.enable = true;
     zsh.enable = true;
   };
   environment.systemPackages = with pkgs; [
     android-udev-rules
     helix
-    inputs.nix-software-center.packages.${system}.nix-software-center
     sbctl
     snowfallorg.flake
     vim
@@ -145,16 +140,15 @@ in
   # Services
   services = {
     blueman.enable = true;
-    btrfs.autoScrub =
-      let
-        btrfsFileSystems = getFileSystemsByFsType "btrfs";
-      in
-      lib.mkIf (btrfsFileSystems != { }) {
+    btrfs.autoScrub = let
+      btrfsFileSystems = getFileSystemsByFsType "btrfs";
+    in
+      lib.mkIf (btrfsFileSystems != {}) {
         enable = true;
         interval = "monthly";
         fileSystems =
-          if btrfsFileSystems?"/"
-          then [ "/" ]
+          if btrfsFileSystems ? "/"
+          then ["/"]
           else lib.attrNames btrfsFileSystems;
       };
     fstrim = {
@@ -195,20 +189,20 @@ in
       useRoutingFeatures = "both";
     };
   };
-  services.xserver.enable = true;
+  services.xserver.enable = lib.mkDefault true;
 
   # Misc
   home-manager = {
-    backupFileExtension = "bak";
+    backupFileExtension = "backup";
     useGlobalPkgs = true;
     useUserPackages = true;
   };
   sops = {
     defaultSopsFile = lib.snowfall.fs.get-file "secrets/default.yaml";
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
       password.neededForUsers = true;
-      "tailscale/oauth/secret" = { };
+      "tailscale/oauth/secret" = {};
     };
   };
   stylix = {
@@ -219,8 +213,8 @@ in
     targets.plymouth.enable = false;
   };
   systemd = {
-    targets.network-online.wantedBy = pkgs.lib.mkForce [ ];
-    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [ ];
+    targets.network-online.wantedBy = pkgs.lib.mkForce [];
+    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
   };
   zramSwap = {
     enable = true;

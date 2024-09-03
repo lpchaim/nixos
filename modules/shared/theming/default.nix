@@ -1,11 +1,15 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   stylix = rec {
     enable = lib.mkDefault true;
     autoEnable = lib.mkDefault true;
     image = lib.mkDefault (
-      if polarity != "light" then ../../assets/wallpaper-dark.png
+      if polarity != "light"
+      then ../../assets/wallpaper-dark.png
       else ../../assets/wallpaper-light.png
     );
     polarity = lib.mkDefault "dark";
@@ -17,7 +21,7 @@
     };
     fonts.monospace = lib.mkDefault {
       name = lib.mkDefault "JetBrainsMono Nerd Font";
-      package = lib.mkDefault (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
+      package = lib.mkDefault (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];});
     };
   };
 }

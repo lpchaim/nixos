@@ -1,7 +1,11 @@
-{ lib, ... }:
-
-{
+{lib, ...}: {
   shared = {
+    defaults = {
+      name.user = "lpchaim";
+      name.full = "Lucas Chaim";
+      email.main = "lpchaim@proton.me";
+      shell = "fish";
+    };
     nix.settings = {
       accept-flake-config = true;
       builders-use-substitutes = true;
@@ -34,15 +38,13 @@
         layout = "us";
         variant = "altgr-intl";
       };
-      default =
-        let
-          mkMerge = builtins.concatStringsSep ",";
-        in
-        {
-          layout = mkMerge [ br.layout us.layout ];
-          variant = mkMerge [ br.variant us.variant ];
-          options = "grp:alt_space_toggle";
-        };
+      default = let
+        mkMerge = builtins.concatStringsSep ",";
+      in {
+        layout = mkMerge [br.layout us.layout];
+        variant = mkMerge [br.variant us.variant];
+        options = "grp:alt_space_toggle";
+      };
     };
   };
 }

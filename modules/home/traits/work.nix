@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     nodePackages.clipboard-cli
   ];
@@ -49,14 +52,16 @@
         name = "vscode-php-debug";
         transport = "stdio";
         command = "node";
-        args = [ "~/.vscode/extensions/xdebug.php-debug-1.34.0/out/phpDebug.js" ];
+        args = ["~/.vscode/extensions/xdebug.php-debug-1.34.0/out/phpDebug.js"];
       };
-      debugger.templates = [{
-        name = "Listen for Xdebug";
-        request = "launch";
-        completion = [ "ignored" ];
-        args = { };
-      }];
+      debugger.templates = [
+        {
+          name = "Listen for Xdebug";
+          request = "launch";
+          completion = ["ignored"];
+          args = {};
+        }
+      ];
     }
   ];
 
@@ -65,10 +70,10 @@
       enable-hot-corners = true;
     };
     "org/gnome/desktop/wm/keybindings" = {
-      switch-applications = [ ];
-      switch-applications-backward = [ ];
-      switch-windows = [ "<Alt>Tab" ];
-      switch-windows-backward = [ "<Shift><Alt>Tab" ];
+      switch-applications = [];
+      switch-applications-backward = [];
+      switch-windows = ["<Alt>Tab"];
+      switch-windows-backward = ["<Shift><Alt>Tab"];
     };
   };
 
