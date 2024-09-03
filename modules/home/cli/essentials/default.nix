@@ -35,7 +35,6 @@ in
         (nerdfonts.override { fonts = myNerdFonts; })
         nix-output-monitor
         rsync
-        silver-searcher
         snowfallorg.flake
         yazi
         wget

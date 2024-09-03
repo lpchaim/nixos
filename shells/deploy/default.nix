@@ -5,21 +5,28 @@
 }:
 
 let
-  inherit (lib.lpchaim.shared.nix) settings;
   inherit (lib.lpchaim.shell) makeDevShellWithDefaults;
-  concat = lib.concatStringsSep " ";
 in
 makeDevShellWithDefaults {
   inherit pkgs mkShell;
   packages = with pkgs; [
+    bat
+    disko
+    git
+    fish
+    helix
+    home-manager
     nixos-rebuild
-    zsh
   ];
   shellHook = ''
-    zsh
-  '';
-  NIX_CONFIG = ''
-    extra-substituters = ${concat settings.extra-substituters}
-    extra-trusted-public-keys = ${concat settings.extra-trusted-public-keys}
+    export NIX_CONFIG="${builtins.readFile pkgs.nix-conf}"
+    export EDITOR=hx
+    export FLAKE="$HOME/.config/nixos"
+
+    if [ ! -d "$FLAKE" ]; then
+      git clone "https://github.com/lpchaim/nixos" "$FLAKE"
+    fi
+
+    fish
   '';
 }

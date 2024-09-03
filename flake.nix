@@ -1,8 +1,12 @@
 {
   description = "Personal NixOS flake";
 
-
   inputs = {
+    # Systems
+    systems.url = "github:nix-systems/default-linux";
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
+
     # Nixpkgs
     nixpkgs.follows = "unstable";
     stable.url = "github:NixOS/nixpkgs/24.05";
@@ -122,26 +126,31 @@
     };
   };
 
-  outputs = inputs:
-    inputs.snowfall-lib.mkFlake {
+  outputs = inputs @ {self, ...}: let
+    snowfallLib = inputs.snowfall-lib.mkLib {
       inherit inputs;
-
       src = ./.;
       snowfall.namespace = "lpchaim";
-
+    };
+    snowfallConfig = {
       channels-config = {
         allowUnfree = true;
-        config = { };
       };
 
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      supportedSystems = import inputs.systems;
 
       overlays = with inputs; [
         chaotic.overlays.default
         jovian.overlays.default
+        nix-gaming.overlays.default
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
-        nix-gaming.overlays.default
+        (next: prev: {
+          nix-conf = let
+            homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
+            nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
+          in nixCfg;
+        })
       ];
 
       systems.modules.nixos = with inputs; [
@@ -167,5 +176,40 @@
         stylix.homeManagerModules.stylix
         wayland-pipewire-idle-inhibit.homeModules.default
       ];
+
+      outputs-builder = channels: {
+        formatter = channels.nixpkgs.alejandra;
+      };
+
+      alias = {
+        shells.default = "deploy";
+      };
     };
+  in
+    snowfallLib.mkFlake snowfallConfig
+    // inputs.flake-utils.lib.eachDefaultSystem (system: let
+      inherit (snowfallLib.snowfall) home module;
+      homeModules = snowfallLib.pipe ./modules/home [
+        (src: module.create-modules {inherit src;})
+        builtins.attrValues
+      ];
+    in {
+      legacyPackages.homeConfigurations.minimal = let
+        homeData = home.create-home {
+          inherit system;
+          name = "minimal";
+          path = ./homes/minimal;
+          channelName = "nixpkgs";
+          modules = snowfallConfig.homes.modules ++ homeModules;
+          specialArgs = rec {
+            username = "lpchaim";
+            homeDirectory = "/home/${username}";
+            stateVersion = "24.05";
+          };
+        };
+      in
+        homeData.builder {
+          inherit (homeData) modules specialArgs;
+        };
+    });
 }
