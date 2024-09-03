@@ -1,9 +1,9 @@
-{ lib
-, fetchPypi
-, python3Packages
-, ...
+{
+  lib,
+  fetchPypi,
+  python3Packages,
+  ...
 }:
-
 python3Packages.buildPythonPackage rec {
   pname = "materialyoucolor";
   version = "2.0.9";
@@ -18,6 +18,6 @@ python3Packages.buildPythonPackage rec {
   meta = {
     homepage = "https://github.com/T-Dynamos/materialyoucolor-python";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ lpchaim ];
+    maintainers = with lib.maintainers; [lpchaim];
   };
 }

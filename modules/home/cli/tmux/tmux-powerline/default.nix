@@ -1,12 +1,14 @@
-{ config, pkgs, lib, ... }:
-
-with builtins;
-with lib;
-let
-  namespace = [ "my" "modules" "cli" "tmux" "tmux-powerline" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with builtins;
+with lib; let
+  namespace = ["my" "modules" "cli" "tmux" "tmux-powerline"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   options = lib.setAttrByPath namespace {
     enable = mkOption {
       description = "Whether to enable tmux-powerline.";

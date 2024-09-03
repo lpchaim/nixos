@@ -1,12 +1,14 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  inherit (lib.lpchaim) shared;
-  namespace = [ "my" "modules" "de" "hyprland" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  inherit (lib.lpchaim) shared;
+  namespace = ["my" "modules" "de" "hyprland"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "Hyprland customizations";
   };
@@ -25,7 +27,7 @@ in
     {
       wayland.windowManager.hyprland = {
         enable = true;
-        systemd.variables = [ "--all" ];
+        systemd.variables = ["--all"];
         settings = {
           exec-once = [
             "hypridle"
@@ -124,30 +126,29 @@ in
             "XCURSOR_SIZE,32"
             "HYPRCURSOR_SIZE,32"
           ];
-          monitor = [ ",highrr,auto,1" ];
+          monitor = [",highrr,auto,1"];
           opengl.nvidia_anti_flicker = true;
-          windowrulev2 =
-            let
-              mkRules = matcher: rules:
-                map (rule: "${rule},${matcher}") rules;
-              mkAutoFloatRules = matcher:
-                mkRules matcher [
-                  "opacity 0.7 override"
-                  "noinitialfocus"
-                  "float"
-                  "pin"
-                  "move onscreen 100%-w-3% 100%-w-3%"
-                  "size 20% 20%"
-                ];
-            in
+          windowrulev2 = let
+            mkRules = matcher: rules:
+              map (rule: "${rule},${matcher}") rules;
+            mkAutoFloatRules = matcher:
+              mkRules matcher [
+                "opacity 0.7 override"
+                "noinitialfocus"
+                "float"
+                "pin"
+                "move onscreen 100%-w-3% 100%-w-3%"
+                "size 20% 20%"
+              ];
+          in
             (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
             ++ (mkAutoFloatRules "class:^(discord)$,initialTitle:^(Discord Popout)$")
             ++ (mkRules
               "class:^steam_app\d+$"
-              [ "idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override" ])
+              ["idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override"])
             ++ (mkRules
               "class:^(xwaylandvideobridge)$"
-              [ "maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override" ])
+              ["maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override"])
             ++ [
               "stayfocused, class:^(rofi)$"
             ];
@@ -161,8 +162,8 @@ in
           settings = {
             ipc = "on";
             splash = false;
-            preload = [ "${config.stylix.image}" ];
-            wallpaper = [ ", ${config.stylix.image}" ];
+            preload = ["${config.stylix.image}"];
+            wallpaper = [", ${config.stylix.image}"];
           };
         };
         wayland-pipewire-idle-inhibit = {
@@ -172,15 +173,15 @@ in
             verbosity = "INFO";
             media_minimum_duration = 10;
             idle_inhibitor = "wayland";
-            sink_whitelist = [ ];
-            node_blacklist = [ ];
+            sink_whitelist = [];
+            node_blacklist = [];
           };
         };
       };
 
       systemd.user.services.wljoywake = {
         Install = {
-          WantedBy = [ "graphical-session.target" ];
+          WantedBy = ["graphical-session.target"];
         };
         Service = {
           ExecStart = "${pkgs.wljoywake}/bin/wljoywake -t 10";
@@ -188,11 +189,11 @@ in
           RestartSec = "5";
         };
         Unit = {
-          After = [ "graphical-session-pre.target" ];
+          After = ["graphical-session-pre.target"];
           ConditionEnvironment = "WAYLAND_DISPLAY";
           Description = "wljoywake";
-          PartOf = [ "graphical-session.target" ];
-          X-Restart-Triggers = [ pkgs.wljoywake ];
+          PartOf = ["graphical-session.target"];
+          X-Restart-Triggers = [pkgs.wljoywake];
         };
       };
 
@@ -208,7 +209,7 @@ in
 
       xdg.portal = {
         enable = true;
-        config.common.default = [ "hyprland" "wlr" "gtk" ];
+        config.common.default = ["hyprland" "wlr" "gtk"];
         extraPortals = with pkgs; [
           xdg-desktop-portal-hyprland
           xdg-desktop-portal-wlr

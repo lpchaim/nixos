@@ -1,23 +1,20 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config
-, inputs
-, lib
-, pkgs
-, system
-, ...
-}:
-
-let
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  system,
+  ...
+}: let
   inherit (lib) mkDefault;
   inherit (lib.lpchaim) shared;
   inherit (lib.snowfall) fs;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
-in
-{
+in {
   imports = [
     (fs.get-file "modules/shared")
   ];
@@ -45,7 +42,7 @@ in
       enable = true;
       theme = mkDefault "breeze";
     };
-    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
+    kernelParams = ["splash" "quiet" "btusb.enable_autosuspend=n"];
   };
 
   # Package manager
@@ -70,15 +67,15 @@ in
         5353 # spotify cast discovery
       ];
     };
-    dhcpcd.extraConfig =
-      let wifiOffset = 2000;
-      in ''
-        ssid Lpchaim5G
-        metric ${toString (wifiOffset - 20)}
+    dhcpcd.extraConfig = let
+      wifiOffset = 2000;
+    in ''
+      ssid Lpchaim5G
+      metric ${toString (wifiOffset - 20)}
 
-        ssid Lpchaim
-        metric ${toString (wifiOffset - 10)}
-      '';
+      ssid Lpchaim
+      metric ${toString (wifiOffset - 10)}
+    '';
   };
 
   # Internationalization
@@ -108,19 +105,18 @@ in
         };
       };
     };
-    graphics =
-      let
-        getExtraPackages = p: with p; [
+    graphics = let
+      getExtraPackages = p:
+        with p; [
           intel-media-driver
           intel-vaapi-driver
         ];
-      in
-      {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = getExtraPackages pkgs;
-        extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
-      };
+    in {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = getExtraPackages pkgs;
+      extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
+    };
   };
 
   # Programs
@@ -145,16 +141,15 @@ in
   # Services
   services = {
     blueman.enable = true;
-    btrfs.autoScrub =
-      let
-        btrfsFileSystems = getFileSystemsByFsType "btrfs";
-      in
-      lib.mkIf (btrfsFileSystems != { }) {
+    btrfs.autoScrub = let
+      btrfsFileSystems = getFileSystemsByFsType "btrfs";
+    in
+      lib.mkIf (btrfsFileSystems != {}) {
         enable = true;
         interval = "monthly";
         fileSystems =
-          if btrfsFileSystems?"/"
-          then [ "/" ]
+          if btrfsFileSystems ? "/"
+          then ["/"]
           else lib.attrNames btrfsFileSystems;
       };
     fstrim = {
@@ -205,10 +200,10 @@ in
   };
   sops = {
     defaultSopsFile = lib.snowfall.fs.get-file "secrets/default.yaml";
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
       password.neededForUsers = true;
-      "tailscale/oauth/secret" = { };
+      "tailscale/oauth/secret" = {};
     };
   };
   stylix = {
@@ -219,8 +214,8 @@ in
     targets.plymouth.enable = false;
   };
   systemd = {
-    targets.network-online.wantedBy = pkgs.lib.mkForce [ ];
-    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [ ];
+    targets.network-online.wantedBy = pkgs.lib.mkForce [];
+    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
   };
   zramSwap = {
     enable = true;

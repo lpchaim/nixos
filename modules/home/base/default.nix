@@ -1,13 +1,14 @@
-{ config, lib, ... }:
-
-with lib;
-let
+{
+  config,
+  lib,
+  ...
+}:
+with lib; let
   inherit (lib.lpchaim) shared;
   inherit (lib.snowfall) fs;
-  namespace = [ "my" "modules" ];
+  namespace = ["my" "modules"];
   cfg = getAttrFromPath namespace config;
-in
-{
+in {
   imports = [
     (fs.get-file "modules/shared")
   ];

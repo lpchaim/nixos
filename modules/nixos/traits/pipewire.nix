@@ -1,5 +1,4 @@
 # Use pipewire audio
-
 {
   hardware = {
     pulseaudio.enable = false;

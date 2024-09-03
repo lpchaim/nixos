@@ -1,7 +1,5 @@
 # Laptop-specific configurations
-{ config, ... }:
-
-{
+{config, ...}: {
   hardware.sensor.iio.enable = true;
 
   powerManagement.enable = true;

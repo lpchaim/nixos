@@ -1,9 +1,6 @@
-{ lib, ... }:
-
-let
+{lib, ...}: let
   inherit (lib.lpchaim.home) getTraitModules;
-in
-{
+in {
   imports = getTraitModules [
     "non-nixos"
   ];

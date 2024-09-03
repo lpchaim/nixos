@@ -1,11 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "cli" "hishtory" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "cli" "hishtory"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "hishtory";
   };
