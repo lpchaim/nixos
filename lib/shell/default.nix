@@ -9,8 +9,8 @@
         inherit pkgs mkShell;
         packages = packages ++ (with pkgs; [
           age
+          alejandra
           nil
-          nixd
           nixos-generators
           nixpkgs-fmt
           pre-commit

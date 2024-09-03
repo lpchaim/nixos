@@ -18,5 +18,6 @@ in
       kakoune.enable = cfg.kakoune.enable;
       vim.enable = cfg.vim.enable;
     };
+    home.sessionVariables.EDITOR = "hx";
   };
 }

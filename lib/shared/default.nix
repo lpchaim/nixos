@@ -1,8 +1,14 @@
+{ lib, ... }:
+
 {
   shared = {
     nix.settings = {
+      accept-flake-config = true;
+      builders-use-substitutes = true;
       auto-optimise-store = true;
-      extra-substituters = [
+      extra-experimental-features = "flakes nix-command";
+      extra-substituters = lib.mkForce [];
+      extra-trusted-substituters = [
         "https://nix-community.cachix.org"
         "https://nix-gaming.cachix.org"
         "https://nyx.chaotic.cx"
