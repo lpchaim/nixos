@@ -3,12 +3,13 @@
 with lib;
 let
   inherit (lib.lpchaim) shared;
+  inherit (lib.snowfall) fs;
   namespace = [ "my" "modules" ];
   cfg = getAttrFromPath namespace config;
 in
 {
   imports = [
-    ../../shared
+    (fs.get-file "modules/shared")
   ];
 
   options = setAttrByPath namespace {
