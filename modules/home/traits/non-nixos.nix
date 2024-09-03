@@ -1,6 +1,4 @@
-{ config, ... }:
-
-{
+{config, ...}: {
   targets.genericLinux.enable = true;
 
   xdg.mime.enable = true;

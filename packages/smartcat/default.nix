@@ -1,13 +1,12 @@
-{ lib
-, fetchFromGitHub
-, rustPlatform
-
-, openssl
-, pkg-config
-, xorg
-, ...
+{
+  lib,
+  fetchFromGitHub,
+  rustPlatform,
+  openssl,
+  pkg-config,
+  xorg,
+  ...
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "smartcat";
   version = "1.3.0";
@@ -35,6 +34,6 @@ rustPlatform.buildRustPackage rec {
     license = licenses.asl20;
     platforms = platforms.unix;
     mainProgram = "sc";
-    maintainers = with maintainers; [ lpchaim ];
+    maintainers = with maintainers; [lpchaim];
   };
 }

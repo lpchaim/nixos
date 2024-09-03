@@ -1,15 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkIf mkForce;
   inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
-in
-{
+in {
   imports =
     [
       ./hardware-configuration.nix

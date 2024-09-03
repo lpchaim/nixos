@@ -1,15 +1,20 @@
-{ config, inputs, lib, ... }:
-
-let
-  inherit (lib) getAttrFromPath
+{
+  config,
+  inputs,
+  lib,
+  ...
+}: let
+  inherit
+    (lib)
+    getAttrFromPath
     mkEnableOption
     mkForce
-    setAttrByPath;
+    setAttrByPath
+    ;
   inherit (inputs.home-manager.lib.hm.generators) toKDL;
-  namespace = [ "my" "modules" "cli" "zellij" ];
+  namespace = ["my" "modules" "cli" "zellij"];
   cfg = getAttrFromPath namespace config;
-in
-{
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "zellij";
   };

@@ -1,12 +1,10 @@
 # Use wayland instead of X11
 # https://nixos.wiki/wiki/Wayland
-
-{ pkgs
-, config
-, ...
-}:
-
 {
+  pkgs,
+  config,
+  ...
+}: {
   services.xserver.displayManager.gdm.wayland = true;
   programs.xwayland.enable = true;
 

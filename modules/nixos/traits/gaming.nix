@@ -1,17 +1,19 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   hardware.steam-hardware.enable = true;
   programs.steam = {
     enable = true;
-    extraCompatPackages =
-      let
-        geVersions = [ "9-10" ];
-        protonGePackages = map
-          (v: pkgs.proton-ge-bin.overrideAttrs
-            (final: prev: { pname = prev.pname + v; version = "GE-Proton${v}"; }))
-          geVersions;
-      in
+    extraCompatPackages = let
+      geVersions = ["9-10"];
+      protonGePackages =
+        map
+        (v:
+          pkgs.proton-ge-bin.overrideAttrs
+          (final: prev: {
+            pname = prev.pname + v;
+            version = "GE-Proton${v}";
+          }))
+        geVersions;
+    in
       protonGePackages;
     gamescopeSession.enable = true;
     remotePlay.openFirewall = true;

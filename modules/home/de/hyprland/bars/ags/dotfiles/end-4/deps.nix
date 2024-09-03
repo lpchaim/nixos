@@ -1,4 +1,5 @@
-p: with p; [
+p:
+with p; [
   adw-gtk3
   axel
   bc
@@ -33,7 +34,7 @@ p: with p; [
   libsForQt5.qt5ct
   material-symbols
   meson
-  (nerdfonts.override { fonts = [ "JetBrainsMono" "SpaceMono" ]; })
+  (nerdfonts.override {fonts = ["JetBrainsMono" "SpaceMono"];})
   networkmanager
   nodejs
   ollama

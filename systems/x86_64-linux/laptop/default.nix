@@ -1,10 +1,7 @@
-{ lib, ... }:
-
-let
+{lib, ...}: let
   inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
-in
-{
+in {
   imports =
     [
       ./hardware-configuration.nix

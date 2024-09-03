@@ -1,11 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "de" "hyprland" "bars" "waybar" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "de" "hyprland" "bars" "waybar"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "Waybar";
   };
