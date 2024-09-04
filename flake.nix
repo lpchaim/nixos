@@ -6,6 +6,8 @@
     systems.url = "github:nix-systems/default-linux";
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
     # Nixpkgs
     nixpkgs.follows = "unstable";
@@ -108,6 +110,7 @@
     };
     snowfall-lib = {
       url = "github:snowfallorg/lib";
+      inputs.flake-utils-plus.follows = "flake-utils-plus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -127,10 +130,12 @@
   };
 
   outputs = inputs @ {self, ...}: let
+    inherit (snowfallLib.snowfall.attrs) merge-deep;
+    inherit (snowfallLib.snowfall.internal.user-lib.shared) defaults;
     snowfallLib = inputs.snowfall-lib.mkLib {
       inherit inputs;
       src = ./.;
-      snowfall.namespace = "lpchaim";
+      snowfall.namespace = defaults.name.user;
     };
     snowfallConfig = {
       channels-config = {
@@ -143,6 +148,7 @@
         chaotic.overlays.default
         jovian.overlays.default
         nix-gaming.overlays.default
+        nix-software-center.overlays.default
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
         (next: prev: {
@@ -187,30 +193,32 @@
       };
     };
   in
-    snowfallLib.mkFlake snowfallConfig
-    // inputs.flake-utils.lib.eachDefaultSystem (system: let
-      inherit (snowfallLib.snowfall) home module;
-      homeModules = snowfallLib.pipe ./modules/home [
-        (src: module.create-modules {inherit src;})
-        builtins.attrValues
-      ];
-    in {
-      legacyPackages.homeConfigurations.minimal = let
-        homeData = home.create-home {
-          inherit system;
-          name = "minimal";
-          path = ./homes/minimal;
-          channelName = "nixpkgs";
-          modules = snowfallConfig.homes.modules ++ homeModules;
-          specialArgs = rec {
-            username = "lpchaim";
-            homeDirectory = "/home/${username}";
-            stateVersion = "24.05";
+    merge-deep [
+      (snowfallLib.mkFlake snowfallConfig)
+      (inputs.flake-utils.lib.eachDefaultSystem (system: let
+        inherit (snowfallLib.snowfall) home module;
+        homeModules = snowfallLib.pipe ./modules/home [
+          (src: module.create-modules {inherit src;})
+          builtins.attrValues
+        ];
+      in {
+        legacyPackages.homeConfigurations.minimal = let
+          homeData = home.create-home {
+            inherit system;
+            name = "minimal";
+            path = ./homes/minimal;
+            channelName = "nixpkgs";
+            modules = snowfallConfig.homes.modules ++ homeModules;
+            specialArgs = rec {
+              username = defaults.name.user;
+              homeDirectory = "/home/${username}";
+              stateVersion = "24.05";
+            };
           };
-        };
-      in
-        homeData.builder {
-          inherit (homeData) modules specialArgs;
-        };
-    });
+        in
+          homeData.builder {
+            inherit (homeData) modules specialArgs;
+          };
+      }))
+    ];
 }

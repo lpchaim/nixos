@@ -3,11 +3,12 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 {
   config,
+  lib,
   pkgs,
   ...
 }: let
-  userName = "lpchaim";
-  fullName = "Lucas Chaim";
+  inherit (lib.lpchaim.shared) defaults;
+  userName = defaults.name.user;
 in {
   users = {
     mutableUsers = false;
@@ -16,18 +17,19 @@ in {
     };
     extraUsers = {
       ${userName} = {
-        isNormalUser = true;
+        uid = 1000;
         home = "/home/${userName}";
-        description = fullName;
+        description = defaults.name.full;
+        isNormalUser = true;
         group = userName;
         extraGroups = ["i2c" "networkmanager" "wheel"];
-        shell = pkgs.zsh;
+        shell = pkgs.${defaults.shell};
         hashedPasswordFile = "${config.sops.secrets."password".path}";
       };
       root.hashedPassword = null;
     };
   };
   nix.settings.trusted-users = ["root" "@wheel"];
-  systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.lpchaim.home];
+  systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
   jovian.steam.user = userName;
 }
