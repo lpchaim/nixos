@@ -3,6 +3,7 @@ keys:
   - &master2 age10fa7ce7w6q0ppk5l2gvg6d02g9cmj26rpt00ct54d4latqsnwajs90a43h
   - &desktop age1a90s9rr2t82vlx4q757pvqm88nh572567hssycczv2t5rjhzudmsvqdjuv
   - &laptop age1ke3gya92cy465lp9yxwygckgtg8tcsh366vgh4ywu6edl7a7ca0sgjxrjg
+  - &raspberrypi age174ngzkzt0czudr4pu69mps5t77nzelgprl2htcwd62n7h740hayqd0zh48
   - &steamdeck age1rsz0jrlkqs2z2p3r4a6qhwnsmyhwgh72mtxvvfwm00qtn8lq9arqa29vum
   - &wsl age1cfshc5yzepc92mga9pclg6rcj084esq9a8tfe38m9c6mgzy5p5sqgc68u6
 creation_rules:
@@ -13,5 +14,6 @@ creation_rules:
       - *master2
       - *desktop
       - *laptop
+      - *raspberrypi
       - *steamdeck
       - *wsl
