@@ -1,5 +1,11 @@
 {lib, ...}: {
   shared = {
+    defaults = {
+      name.user = "lpchaim";
+      name.full = "Lucas Chaim";
+      email.main = "lpchaim@proton.me";
+      shell = "fish";
+    };
     nix.settings = {
       accept-flake-config = true;
       builders-use-substitutes = true;

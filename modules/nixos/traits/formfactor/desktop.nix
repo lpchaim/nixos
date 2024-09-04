@@ -1,19 +1,34 @@
 # Desktop-specific configurations
-{pkgs, ...}: {
-  environment.systemPackages = with pkgs; [
-    piper
-    qmk
-    qmk_hid
-    qmk-udev-rules
-    via
-    wayvnc
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ../pipewire.nix
+    ../wayland.nix
   ];
 
-  hardware.keyboard.qmk.enable = true;
+  config = {
+    environment.systemPackages = with pkgs; [
+      nix-software-center
+      piper
+      qmk
+      qmk_hid
+      qmk-udev-rules
+      via
+      wayvnc
+    ];
 
-  networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
+    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_zen;
 
-  powerManagement.powerUpCommands = ''
-    ${pkgs.zsh}/bin/zsh -c "echo disabled > /sys/bus/usb/devices/*/power/wakeup"
-  '';
+    hardware.graphics.enable = true;
+    hardware.keyboard.qmk.enable = true;
+
+    networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
+
+    powerManagement.powerUpCommands = ''
+      ${pkgs.zsh}/bin/zsh -c "echo disabled > /sys/bus/usb/devices/*/power/wakeup"
+    '';
+  };
 }

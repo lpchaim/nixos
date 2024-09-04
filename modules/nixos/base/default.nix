@@ -3,10 +3,8 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 {
   config,
-  inputs,
   lib,
   pkgs,
-  system,
   ...
 }: let
   inherit (lib) mkDefault;
@@ -33,7 +31,7 @@ in {
         enable = mkDefault true;
         editor = false;
         configurationLimit = 5;
-        memtest86.enable = true;
+        memtest86.enable = pkgs.stdenv.isx86_64;
         netbootxyz.enable = true;
       };
     };
@@ -107,28 +105,29 @@ in {
     };
     graphics = let
       getExtraPackages = p:
-        with p; [
-          intel-media-driver
-          intel-vaapi-driver
-        ];
-    in {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = getExtraPackages pkgs;
-      extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
+        with p;
+          lib.optionals pkgs.stdenv.isx86_64 [
+            intel-media-driver
+            intel-vaapi-driver
+          ];
+    in rec {
+      enable = lib.mkDefault false;
+      enable32Bit = config.hardware.graphics.enable && pkgs.stdenv.isx86_64;
+      extraPackages = lib.mkIf enable (getExtraPackages pkgs);
+      extraPackages32 = lib.mkIf enable (getExtraPackages pkgs.pkgsi686Linux);
     };
   };
 
   # Programs
   programs = {
     adb.enable = true;
+    fish.enable = true;
     nix-ld.enable = true;
     zsh.enable = true;
   };
   environment.systemPackages = with pkgs; [
     android-udev-rules
     helix
-    inputs.nix-software-center.packages.${system}.nix-software-center
     sbctl
     snowfallorg.flake
     vim
@@ -190,11 +189,11 @@ in {
       useRoutingFeatures = "both";
     };
   };
-  services.xserver.enable = true;
+  services.xserver.enable = lib.mkDefault true;
 
   # Misc
   home-manager = {
-    backupFileExtension = "bak";
+    backupFileExtension = "backup";
     useGlobalPkgs = true;
     useUserPackages = true;
   };

@@ -8,9 +8,5 @@ in {
     "apps/media"
   ];
 
-  config.home = rec {
-    stateVersion = "24.05";
-    username = "lpchaim";
-    homeDirectory = "/home/${username}";
-  };
+  config.home.stateVersion = "24.05";
 }

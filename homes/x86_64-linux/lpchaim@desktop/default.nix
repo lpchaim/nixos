@@ -9,9 +9,5 @@ in {
     "llm/high"
   ];
 
-  config.home = rec {
-    stateVersion = "24.11";
-    username = "lpchaim";
-    homeDirectory = "/home/${username}";
-  };
+  config.home.stateVersion = "24.11";
 }
