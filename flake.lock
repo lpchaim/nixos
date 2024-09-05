@@ -1352,6 +1352,26 @@
         "type": "github"
       }
     },
+    "nh": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1725287741,
+        "narHash": "sha256-ZxyB7BwxQjoMz5lUnsb+KuTWfRyPtJVqEjnlOoABSUE=",
+        "owner": "viperML",
+        "repo": "nh",
+        "rev": "5dd64eb04fddeac2eb08c018212cc58978934920",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viperML",
+        "repo": "nh",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -2012,6 +2032,7 @@
         ],
         "lanzaboote": "lanzaboote",
         "matugen": "matugen_2",
+        "nh": "nh",
         "nix-gaming": "nix-gaming",
         "nix-index-database": "nix-index-database",
         "nix-software-center": "nix-software-center",

@@ -36,11 +36,15 @@ in {
         ncdu
         (nerdfonts.override {fonts = myNerdFonts;})
         nix-output-monitor
+        nurl
         rsync
         snowfallorg.flake
         yazi
         wget
       ];
+      sessionVariables = {
+        FLAKE = "${config.xdg.configHome}/nixos";
+      };
       shellAliases = {
         gco = "git checkout";
         gd = "git diff";

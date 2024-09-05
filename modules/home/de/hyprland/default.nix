@@ -129,26 +129,26 @@ in {
           monitor = [",highrr,auto,1"];
           opengl.nvidia_anti_flicker = true;
           windowrulev2 = let
-            mkRules = matcher: rules:
+            mkRules = rules: matcher:
               map (rule: "${rule},${matcher}") rules;
-            mkAutoFloatRules = matcher:
-              mkRules matcher [
-                "opacity 0.7 override"
-                "noinitialfocus"
-                "float"
-                "pin"
-                "move onscreen 100%-w-3% 100%-w-3%"
-                "size 20% 20%"
-              ];
+            mkAutoFloatRules = mkRules [
+              "opacity 0.7 override"
+              "noinitialfocus"
+              "float"
+              "pin"
+              "move onscreen 100%-w-3% 100%-w-3%"
+              "size 20% 20%"
+            ];
           in
             (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
+            ++ (mkAutoFloatRules "initialTitle:^(Picture in picture)$")
             ++ (mkAutoFloatRules "class:^(discord)$,initialTitle:^(Discord Popout)$")
             ++ (mkRules
-              "class:^steam_app\d+$"
               ["idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override"])
+            "class:^steam_app\d+$"
             ++ (mkRules
-              "class:^(xwaylandvideobridge)$"
               ["maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override"])
+            "class:^(xwaylandvideobridge)$"
             ++ [
               "stayfocused, class:^(rofi)$"
             ];

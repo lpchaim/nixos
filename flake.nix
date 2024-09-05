@@ -88,6 +88,10 @@
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:viperML/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
@@ -147,8 +151,9 @@
       overlays = with inputs; [
         chaotic.overlays.default
         jovian.overlays.default
+        nh.overlays.default
         nix-gaming.overlays.default
-        nix-software-center.overlays.default
+        nix-software-center.overlays.pkgs
         nixneovimplugins.overlays.default
         snowfall-flake.overlays.default
         (next: prev: {
