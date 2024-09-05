@@ -13,10 +13,9 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs.nushell = {
-      inherit (config.home) shellAliases;
       enable = true;
-      extraConfig = builtins.readFile ./config.nu;
-      extraEnv = let
+      configFile.source = ./config.nu;
+      envFile.text = let
         pkgToKeyVal = name: {
           inherit name;
           value = "${pkgs.${name}}/bin/${name}";
@@ -31,6 +30,15 @@ in {
           (builtins.readFile ./env.nu)
           (builtins.readFile (patch ./commands.nu))
         ];
+      shellAliases =
+        config.programs.bash.shellAliases
+        // config.home.shellAliases
+        // {
+          ls = "ls";
+          la = "ls -a";
+          ll = "ls -l";
+          lla = "ls -la";
+        };
     };
   };
 }
