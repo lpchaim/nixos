@@ -135,6 +135,7 @@
 
   outputs = inputs @ {self, ...}: let
     inherit (snowfallLib.snowfall.attrs) merge-deep;
+    inherit (snowfallLib.snowfall.internal.user-lib.home) mkHome;
     inherit (snowfallLib.snowfall.internal.user-lib.shared) defaults;
     snowfallLib = inputs.snowfall-lib.mkLib {
       inherit inputs;
@@ -200,30 +201,11 @@
   in
     merge-deep [
       (snowfallLib.mkFlake snowfallConfig)
-      (inputs.flake-utils.lib.eachDefaultSystem (system: let
-        inherit (snowfallLib.snowfall) home module;
-        homeModules = snowfallLib.pipe ./modules/home [
-          (src: module.create-modules {inherit src;})
-          builtins.attrValues
-        ];
-      in {
-        legacyPackages.homeConfigurations.minimal = let
-          homeData = home.create-home {
-            inherit system;
-            name = "minimal";
-            path = ./homes/minimal;
-            channelName = "nixpkgs";
-            modules = snowfallConfig.homes.modules ++ homeModules;
-            specialArgs = rec {
-              username = defaults.name.user;
-              homeDirectory = "/home/${username}";
-              stateVersion = "24.05";
-            };
-          };
-        in
-          homeData.builder {
-            inherit (homeData) modules specialArgs;
-          };
+      (inputs.flake-utils.lib.eachDefaultSystem (system: {
+        legacyPackages.homeConfigurations.minimal = mkHome {
+          inherit system;
+          inherit (snowfallConfig.homes) modules;
+        };
       }))
     ];
 }
