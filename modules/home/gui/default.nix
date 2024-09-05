@@ -43,6 +43,7 @@ in {
         brave
         spotify
         spotify-tray
+        zapzap
       ];
     }
   ]);

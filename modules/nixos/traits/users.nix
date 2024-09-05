@@ -22,7 +22,7 @@ in {
         description = defaults.name.full;
         isNormalUser = true;
         group = userName;
-        extraGroups = ["i2c" "networkmanager" "wheel"];
+        extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
         shell = pkgs.${defaults.shell};
         hashedPasswordFile = "${config.sops.secrets."password".path}";
       };
