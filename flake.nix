@@ -21,10 +21,12 @@
     };
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "unstable";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "unstable";
       inputs.home-manager.follows = "home-manager";
     };
@@ -48,6 +50,7 @@
       inputs.ags.follows = "ags";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
+      inputs.hyprland-plugins.follows = "hyprland-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-aylur-raw = {
@@ -70,6 +73,7 @@
     };
     devenv = {
       url = "github:cachix/devenv";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -83,6 +87,8 @@
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
@@ -111,6 +117,7 @@
     };
     snowfall-lib = {
       url = "github:snowfallorg/lib";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.flake-utils-plus.follows = "flake-utils-plus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -121,8 +128,11 @@
     };
     stylix = {
       url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
     wayland-pipewire-idle-inhibit = {
       url = "github:rafaelrc7/wayland-pipewire-idle-inhibit";
