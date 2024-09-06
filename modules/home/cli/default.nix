@@ -20,6 +20,7 @@ in {
       vim.enable = mkDefault true;
     };
     essentials.enable = mkDefault true;
+    fish.enable = mkDefault true;
     git = {
       enable = mkDefault true;
       lazygit.enable = mkDefault true;
