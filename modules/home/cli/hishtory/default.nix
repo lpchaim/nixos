@@ -22,19 +22,41 @@ in {
       };
     };
 
-    programs.mcfly.enable = false;
-
-    programs.zsh = mkIf config.my.modules.cli.zsh.enable {
-      initExtra = ''
-        if [[ $(hishtory config-get enable-control-r) != "true" ]]; then
-          hishtory config-set enable-control-r true;
-        fi
+    programs = let
+      commonPre = ''
         hishtory config-set filter-duplicate-commands true
         hishtory config-set timestamp-format '2006-01-02 15:04'
+        # hishtory config-set enable-control-r true > /dev/null
+      '';
+      commonPost = ''
+        hishtory enable
+      '';
+    in {
+      mcfly.enable = false;
+      fish.interactiveShellInit = ''
+        ${commonPre}
+
+        set enabled (hishtory config-get enable-control-r)
+        if not $enabled
+          hishtory config-set enable-control-r true
+        end
+
+        source ${pkgs.hishtory}/share/hishtory/config.fish
+        eval $(${pkgs.hishtory}/bin/hishtory completion fish)
+
+        ${commonPost}
+      '';
+      zsh.initExtra = ''
+        ${commonPre}
+
+        if [[ $(hishtory config-get enable-control-r) != "true" ]]; then
+          hishtory config-set enable-control-r true
+        fi
 
         source ${pkgs.hishtory}/share/hishtory/config.zsh
+        eval $(${pkgs.hishtory}/bin/hishtory completion zsh)
 
-        hishtory enable
+        ${commonPost}
       '';
     };
   };
