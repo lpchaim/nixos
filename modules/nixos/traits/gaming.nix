@@ -25,6 +25,7 @@
   environment.systemPackages = with pkgs; [
     gamemode
     osu-stable
+    parsec-bin
     wine-discord-ipc-bridge
   ];
   services.pipewire.lowLatency.enable = true;
