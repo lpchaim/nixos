@@ -25,7 +25,7 @@ in {
       enable = mkDefault true;
       lazygit.enable = mkDefault true;
     };
-    hishtory.enable = mkDefault true;
+    hishtory.enable = mkDefault false;
     just.enable = true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;

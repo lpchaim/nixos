@@ -25,7 +25,5 @@ in
       if [ ! -d "$FLAKE" ]; then
         git clone "https://github.com/lpchaim/nixos" "$FLAKE"
       fi
-
-      fish
     '';
   }
