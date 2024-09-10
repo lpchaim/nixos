@@ -48,7 +48,6 @@
     dotfiles-aylur = {
       url = "github:Aylur/dotfiles";
       inputs.ags.follows = "ags";
-      inputs.astal.url = "github:Aylur/astal/77612285d31ad6df5fe019c77f3007ef2e186a49";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";
@@ -57,10 +56,6 @@
     dotfiles-aylur-raw = {
       follows = "dotfiles-aylur";
       flake = false;
-    };
-    matugen = {
-      url = "github:InioX/matugen?ref=v2.2.0";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-end-4 = {
       url = "github:end-4/dots-hyprland";

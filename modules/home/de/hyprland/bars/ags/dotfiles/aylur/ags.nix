@@ -37,7 +37,7 @@
     fzf
     brightnessctl
     swww
-    inputs.matugen.packages.${system}.default
+    inputs.dotfiles-aylur.inputs.matugen.packages.${system}.default
     slurp
     wf-recorder
     wl-clipboard
