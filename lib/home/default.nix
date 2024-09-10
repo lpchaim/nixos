@@ -9,12 +9,12 @@ in {
       system,
       modules ? [],
       specialArgs ? {},
+      channelName ? "nixpkgs"
     }: let
       homeArgs = {
-        inherit modules system;
+        inherit channelName modules system;
         name = "minimal";
         path = ../../homes/minimal;
-        channelName = "nixpkgs";
         specialArgs =
           rec {
             username = defaults.name.user;
@@ -26,7 +26,7 @@ in {
       homeData = home.create-home homeArgs;
     in
       homeData.builder {
-        inherit (homeData) modules specialArgs;
+        inherit (homeData) modules specialArgs system;
       };
   };
 }
