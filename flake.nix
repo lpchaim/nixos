@@ -143,6 +143,7 @@
   outputs = inputs @ {self, ...}: let
     inherit (snowfallLib.snowfall.attrs) merge-deep;
     inherit (snowfallLib.snowfall.internal.user-lib.home) mkHome;
+    inherit (snowfallLib.snowfall.internal.user-lib.nixos) mkSystem;
     inherit (snowfallLib.snowfall.internal.user-lib.shared) defaults;
     snowfallLib = inputs.snowfall-lib.mkLib {
       inherit inputs;
@@ -212,6 +213,10 @@
         legacyPackages.homeConfigurations.minimal = mkHome {
           inherit system;
           inherit (snowfallConfig.homes) modules;
+        };
+        legacyPackages.nixosConfigurations.minimal = mkSystem {
+          inherit system;
+          modules = snowfallConfig.systems.modules.nixos;
         };
       }))
     ];
