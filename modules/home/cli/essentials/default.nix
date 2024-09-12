@@ -5,6 +5,7 @@
   ...
 }:
 with lib; let
+  inherit (lib.lpchaim.shared) defaults;
   namespace = ["my" "modules" "cli" "essentials"];
   cfg = lib.getAttrFromPath namespace config;
   myNerdFonts = ["FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro"];
@@ -55,6 +56,7 @@ in {
       };
     };
 
+    programs.${defaults.shell}.enable = config.programs ? "${defaults.shell}";
     programs = {
       bat.enable = true;
       broot.enable = true;
