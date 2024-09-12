@@ -20,7 +20,8 @@ lib.lpchaim.mkModule {
         filter_mode = "global";
         search_mode = "fuzzy";
         filter_mode_shell_up_key_binding = "host";
-        search_mode_shell_up_key_binding = "prefix"; sync_frequency = "15m";
+        search_mode_shell_up_key_binding = "prefix";
+        sync_frequency = "15m";
         workspaces = true;
       };
     };

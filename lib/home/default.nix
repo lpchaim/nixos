@@ -9,7 +9,7 @@ in {
       system,
       modules ? [],
       specialArgs ? {},
-      channelName ? "nixpkgs"
+      channelName ? "nixpkgs",
     }: let
       homeArgs = {
         inherit channelName modules system;
