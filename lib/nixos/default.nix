@@ -9,7 +9,7 @@ in {
       system,
       modules ? [],
       specialArgs ? [],
-      channelName ? "nixpkgs"
+      channelName ? "nixpkgs",
     }: let
       systemArgs = {
         inherit channelName modules;
@@ -23,9 +23,10 @@ in {
         homes = {};
       };
       systemData = create-system systemArgs;
-    in systemData.builder {
-      inherit system;
-      inherit (systemArgs) modules specialArgs;
-    };
+    in
+      systemData.builder {
+        inherit system;
+        inherit (systemArgs) modules specialArgs;
+      };
   };
 }
