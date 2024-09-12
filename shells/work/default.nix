@@ -15,6 +15,7 @@ in
       vscode-langservers-extracted
     ];
     shellHook = ''
-      zsh
+      nu
+      $env.XDEBUG_MODE = off
     '';
   }
