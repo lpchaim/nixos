@@ -31,5 +31,4 @@ in {
   };
   nix.settings.trusted-users = ["root" "@wheel"];
   systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
-  jovian.steam.user = userName;
 }

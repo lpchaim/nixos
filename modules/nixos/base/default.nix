@@ -232,5 +232,4 @@ in {
     algorithm = "zstd";
     memoryPercent = 50;
   };
-  jovian.steamos.useSteamOSConfig = lib.mkDefault false;
 }
