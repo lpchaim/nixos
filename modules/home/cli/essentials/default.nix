@@ -43,8 +43,11 @@ in {
         procs
         rsync
         snowfallorg.flake
+        tgpt
+        tig
         yazi
         wget
+        python312Packages.howdoi
       ];
       sessionVariables = {
         FLAKE = "${config.xdg.configHome}/nixos";
