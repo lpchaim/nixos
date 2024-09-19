@@ -174,7 +174,6 @@
         chaotic.nixosModules.default
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
-        jovian.nixosModules.default
         lanzaboote.nixosModules.lanzaboote
         nix-gaming.nixosModules.pipewireLowLatency
         nix-gaming.nixosModules.platformOptimizations
