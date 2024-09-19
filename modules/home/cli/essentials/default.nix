@@ -23,6 +23,7 @@ in {
     home = {
       packages = with pkgs; [
         bash
+        chafa
         cheat
         curl
         delta
@@ -31,6 +32,7 @@ in {
         du-dust
         duf
         fd
+        hexyl
         htop
         inotify-tools
         neofetch
@@ -38,6 +40,7 @@ in {
         (nerdfonts.override {fonts = myNerdFonts;})
         nix-output-monitor
         nurl
+        procs
         rsync
         snowfallorg.flake
         yazi
