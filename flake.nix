@@ -53,10 +53,6 @@
       inputs.hyprland-plugins.follows = "hyprland-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dotfiles-aylur-raw = {
-      follows = "dotfiles-aylur";
-      flake = false;
-    };
     dotfiles-end-4 = {
       url = "github:end-4/dots-hyprland";
       flake = false;

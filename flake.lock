@@ -1875,9 +1875,6 @@
         "devenv": "devenv",
         "disko": "disko",
         "dotfiles-aylur": "dotfiles-aylur",
-        "dotfiles-aylur-raw": [
-          "dotfiles-aylur"
-        ],
         "dotfiles-end-4": "dotfiles-end-4",
         "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils_3",
