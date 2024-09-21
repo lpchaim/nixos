@@ -13,6 +13,7 @@
     nixpkgs.follows = "unstable";
     stable.url = "github:NixOS/nixpkgs/24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-cuda.follows = "nixpkgs";
 
     # Home Manager
     home-manager = {
@@ -22,12 +23,12 @@
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
       inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.flake-compat.follows = "flake-compat";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
 
@@ -42,12 +43,13 @@
       inputs.hyprland.follows = "hyprland";
     };
     ags = {
-      url = "github:Aylur/ags/05e0f23534fa30c1db2a142664ee8f71e38db260";
+      url = "github:Aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-aylur = {
       url = "github:Aylur/dotfiles";
       inputs.ags.follows = "ags";
+      inputs.astal.url = "github:Aylur/astal";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";
@@ -59,10 +61,7 @@
     };
 
     # Misc
-    chaotic = {
-      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-      inputs.nixpkgs.follows = "unstable";
-    };
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     devenv = {
       url = "github:cachix/devenv";
       inputs.flake-compat.follows = "flake-compat";
@@ -75,10 +74,7 @@
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     flake-parts.url = "github:hercules-ci/flake-parts";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    jovian = {
-      follows = "chaotic/jovian";
-      inputs.nixpkgs.follows = "chaotic/nixpkgs";
-    };
+    jovian.follows = "chaotic/jovian";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.flake-compat.follows = "flake-compat";
@@ -89,10 +85,7 @@
       url = "github:viperML/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "chaotic/nixpkgs";
-    };
+    nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -106,11 +99,11 @@
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.snowfall-lib.follows = "snowfall-lib";
     };
     snowfall-lib = {
-      url = "github:snowfallorg/lib";
+      url = "github:lpchaim/snowfall-lib/per-channel-config-passthrough";
       inputs.flake-compat.follows = "flake-compat";
       inputs.flake-utils-plus.follows = "flake-utils-plus";
       inputs.nixpkgs.follows = "nixpkgs";
