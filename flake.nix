@@ -73,6 +73,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     jovian = {
       follows = "chaotic/jovian";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
@@ -132,83 +133,53 @@
     };
   };
 
-  outputs = inputs @ {self, ...}: let
-    inherit (snowfallLib.snowfall.attrs) merge-deep;
-    inherit (snowfallLib.snowfall.internal.user-lib.home) mkHome;
-    inherit (snowfallLib.snowfall.internal.user-lib.nixos) mkSystem;
-    inherit (snowfallLib.snowfall.internal.user-lib.shared) defaults;
-    snowfallLib = inputs.snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
-      snowfall.namespace = defaults.name.user;
-    };
-    snowfallConfig = {
-      channels-config = {
-        allowUnfree = true;
-      };
-
-      supportedSystems = import inputs.systems;
-
-      overlays = with inputs; [
-        chaotic.overlays.default
-        jovian.overlays.default
-        nh.overlays.default
-        nix-gaming.overlays.default
-        nix-software-center.overlays.pkgs
-        nixneovimplugins.overlays.default
-        snowfall-flake.overlays.default
-        (next: prev: {
-          nix-conf = let
-            homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
-            nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
-          in
-            nixCfg;
-        })
-      ];
-
-      systems.modules.nixos = with inputs; [
-        chaotic.nixosModules.default
-        disko.nixosModules.disko
-        home-manager.nixosModules.home-manager
-        lanzaboote.nixosModules.lanzaboote
-        nix-gaming.nixosModules.pipewireLowLatency
-        nix-gaming.nixosModules.platformOptimizations
-        nixos-generators.nixosModules.all-formats
-        nur.nixosModules.nur
-        sops-nix.nixosModules.sops
-        stylix.nixosModules.stylix
-      ];
-
-      homes.modules = with inputs; [
-        ags.homeManagerModules.default
-        chaotic.homeManagerModules.default
-        nix-index-database.hmModules.nix-index
-        nixvim.homeManagerModules.nixvim
-        sops-nix.homeManagerModules.sops
-        stylix.homeManagerModules.stylix
-        wayland-pipewire-idle-inhibit.homeModules.default
-      ];
-
-      outputs-builder = channels: {
-        formatter = channels.nixpkgs.alejandra;
-      };
-
-      alias = {
-        shells.default = "deploy";
-      };
-    };
-  in
-    merge-deep [
-      (snowfallLib.mkFlake snowfallConfig)
-      (inputs.flake-utils.lib.eachDefaultSystem (system: {
-        legacyPackages.homeConfigurations.minimal = mkHome {
-          inherit system;
-          inherit (snowfallConfig.homes) modules;
-        };
-        legacyPackages.nixosConfigurations.minimal = mkSystem {
-          inherit system;
-          modules = snowfallConfig.systems.modules.nixos;
-        };
-      }))
+  outputs = inputs: let
+    overlays = with inputs; [
+      chaotic.overlays.default
+      jovian.overlays.default
+      nh.overlays.default
+      nix-gaming.overlays.default
+      nix-software-center.overlays.pkgs
+      nixneovimplugins.overlays.default
+      snowfall-flake.overlays.default
+      (next: prev: {
+        nix-conf = let
+          homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
+          nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
+        in
+          nixCfg;
+      })
     ];
+    nixosModules = with inputs; [
+      chaotic.nixosModules.default
+      disko.nixosModules.disko
+      home-manager.nixosModules.home-manager
+      lanzaboote.nixosModules.lanzaboote
+      nix-gaming.nixosModules.pipewireLowLatency
+      nix-gaming.nixosModules.platformOptimizations
+      nixos-generators.nixosModules.all-formats
+      nur.nixosModules.nur
+      sops-nix.nixosModules.sops
+      stylix.nixosModules.stylix
+    ];
+    homeManagerModules = with inputs; [
+      ags.homeManagerModules.default
+      chaotic.homeManagerModules.default
+      nix-index-database.hmModules.nix-index
+      nixvim.homeManagerModules.nixvim
+      sops-nix.homeManagerModules.sops
+      stylix.homeManagerModules.stylix
+      wayland-pipewire-idle-inhibit.homeModules.default
+    ];
+  in
+    inputs.flake-parts.lib.mkFlake
+    {inherit inputs;}
+    ({flake-parts-lib, ...}: let
+      inherit (flake-parts-lib) importApply;
+    in {
+      systems = import inputs.systems;
+      imports = [
+        (importApply ./flake/snowfall {inherit homeManagerModules nixosModules overlays;})
+      ];
+    });
 }
