@@ -1,4 +1,6 @@
-{
+{config, ...}: let
+  inherit (config.lib.stylix.colors.withHashtag) base00 base0E;
+in {
   "autotheme" = false;
   "bar.battery.bar" = "hidden";
   "bar.battery.percentage" = true;
@@ -49,6 +51,8 @@
   "quicksettings.media.monochromeIcon" = false;
   "theme.border.width" = 2;
   "theme.blur" = 0;
+  "theme.dark.primary.bg" = "${base0E}";
+  "theme.dark.primary.fg" = "${base00}";
   "theme.padding" = 8;
   "theme.spacing" = 2;
 }
