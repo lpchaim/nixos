@@ -24,9 +24,9 @@
   };
   environment.systemPackages = with pkgs; [
     gamemode
-    osu-stable
+    # osu-stable # @TODO Reenable when I figure out why nix-gaming's cachix doesn't ever seem to work
     parsec-bin
-    wine-discord-ipc-bridge
+    # wine-discord-ipc-bridge
   ];
   services.pipewire.lowLatency.enable = true;
   security.rtkit.enable = true; # make pipewire realtime-capable
