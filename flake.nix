@@ -74,6 +74,7 @@
     };
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
     jovian = {
       follows = "chaotic/jovian";
       inputs.nixpkgs.follows = "chaotic/nixpkgs";
@@ -171,6 +172,11 @@
       stylix.homeManagerModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
     ];
+    mkPkgs = system:
+      import inputs.nixpkgs {
+        inherit system overlays;
+        allowUnfree = true;
+      };
   in
     inputs.flake-parts.lib.mkFlake
     {inherit inputs;}
@@ -179,7 +185,27 @@
     in {
       systems = import inputs.systems;
       imports = [
+        inputs.git-hooks-nix.flakeModule
         (importApply ./flake/snowfall {inherit homeManagerModules nixosModules overlays;})
+        (importApply ./devShells {inherit mkPkgs;})
       ];
+      perSystem = {
+        config,
+        system,
+        pkgs,
+        ...
+      }: let
+        pkgs = mkPkgs system;
+      in {
+        formatter = pkgs.alejandra;
+        pre-commit = {
+          inherit pkgs;
+          check.enable = true;
+          settings = {
+            hooks.alejandra.enable = true;
+            hooks.ripsecrets.enable = true;
+          };
+        };
+      };
     });
 }

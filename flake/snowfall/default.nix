@@ -19,13 +19,6 @@
 
     supportedSystems = import inputs.systems;
     channels-config = {allowUnfree = true;};
-
-    outputs-builder = channels: {
-      formatter = channels.nixpkgs.alejandra;
-    };
-    alias = {
-      shells.default = "deploy";
-    };
   };
   flake = merge-deep [
     (snowfallLib.mkFlake snowfallConfig)
