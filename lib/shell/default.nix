@@ -18,7 +18,7 @@
       ...
     }:
       makeDevShell {
-        inherit pkgs mkShell;
+        inherit pkgs mkShell shellHook;
         packages =
           packages
           ++ (with pkgs; [
@@ -27,16 +27,10 @@
             nil
             nixos-generators
             nixpkgs-fmt
-            pre-commit
             ssh-to-age
             snowfallorg.flake
             sops
           ]);
-        shellHook =
-          shellHook
-          + ''
-            pre-commit install
-          '';
       };
   };
 }
