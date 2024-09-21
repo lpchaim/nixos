@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -13,7 +12,7 @@
       else ../../assets/wallpaper-light.png
     );
     polarity = lib.mkDefault "dark";
-    base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    base16Scheme = lib.mkDefault "${pkgs.base16-schemes}/share/themes/stella.yaml";
     cursor = {
       name = "catppuccin-latte-light-cursors";
       package = pkgs.catppuccin-cursors.latteLight;
