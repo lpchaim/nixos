@@ -15,7 +15,6 @@ in
       pkg-config
       rustc
       rustfmt
-      pre-commit
       rustPackages.clippy
       rust-analyzer
       vscode-extensions.vadimcn.vscode-lldb
