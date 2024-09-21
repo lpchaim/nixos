@@ -12,13 +12,15 @@
     src = ../..;
     snowfall.namespace = defaults.name.user;
   };
-  snowfallConfig = {
+  snowfallConfig = rec {
     inherit overlays;
     systems.modules.nixos = nixosModules;
+    systems.hosts.desktop.channelName = "nixpkgs-cuda";
     homes.modules = homeManagerModules;
 
     supportedSystems = import inputs.systems;
     channels-config = {allowUnfree = true;};
+    channels.nixpkgs-cuda.config = channels-config // {cudaSupport = true;};
   };
   flake = merge-deep [
     (snowfallLib.mkFlake snowfallConfig)
