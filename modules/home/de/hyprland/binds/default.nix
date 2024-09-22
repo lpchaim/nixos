@@ -71,7 +71,14 @@ in {
               # "$mod CTRL, Z, pseudo," # dwindle
               "$mod, X, togglesplit," # dwindle
 
-              "$mod, Q, killactive,"
+              "$mod, Q, exec, ${pkgs.writeShellScript "killactive" ''
+                # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
+                if [ "$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${lib.getBin pkgs.jq} -r ".class")" = "Steam" ]; then
+                    ${lib.getBin pkgs.xdotool} getactivewindow windowunmap
+                else
+                    ${pkgs.hyprland}/bin/hyprctl dispatch killactive ""
+                fi
+              ''}"
               "$mod, F, togglefloating,"
               "$mod ALT, F, setfloating,"
               "$mod ALT, F, pin,"
