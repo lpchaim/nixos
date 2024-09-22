@@ -49,7 +49,6 @@
     dotfiles-aylur = {
       url = "github:Aylur/dotfiles";
       inputs.ags.follows = "ags";
-      inputs.astal.url = "github:Aylur/astal";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";
