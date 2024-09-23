@@ -1,7 +1,22 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   hardware.steam-hardware.enable = true;
   programs.steam = {
     enable = true;
+    extest.enable = true;
+    extraPackages = with pkgs; [
+      gamescope
+      mangohud
+    ];
+    package = pkgs.steam.override {
+      extraEnv = {
+        MANGOHUD = true;
+        OBS_VKCAPTURE = true;
+      };
+    };
     extraCompatPackages = let
       geVersions = ["9-10"];
       protonGePackages =
