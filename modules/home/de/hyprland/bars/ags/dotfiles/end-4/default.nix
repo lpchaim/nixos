@@ -13,12 +13,12 @@
       setproctitle
     ]);
   dependencies =
-    [pythonWithMaterialYouColor]
-    ++ (import ./deps.nix pkgs)
-    ++ (with pkgs.gnome; [
-      gnome-bluetooth
-      gnome-control-center
-    ]);
+    (import ./deps.nix pkgs)
+    ++ [
+      pythonWithMaterialYouColor
+      pkgs.gnome-bluetooth
+      pkgs.gnome.gnome-control-center
+    ];
 in
   lib.lpchaim.mkModule {
     inherit config;

@@ -13,6 +13,7 @@
     nixpkgs.follows = "unstable";
     stable.url = "github:NixOS/nixpkgs/24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-cuda.follows = "nixpkgs";
 
     # Home Manager
     home-manager = {
@@ -21,19 +22,18 @@
     };
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
 
     # Hyprland
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-hyprspace = {
       url = "github:KZDKM/Hyprspace";
       inputs.hyprland.follows = "hyprland";
@@ -43,7 +43,7 @@
       inputs.hyprland.follows = "hyprland";
     };
     ags = {
-      url = "github:Aylur/ags/05e0f23534fa30c1db2a142664ee8f71e38db260";
+      url = "github:Aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-aylur = {
@@ -51,14 +51,7 @@
       inputs.ags.follows = "ags";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dotfiles-aylur-raw = {
-      follows = "dotfiles-aylur";
-      flake = false;
-    };
-    matugen = {
-      url = "github:InioX/matugen?ref=v2.2.0";
+      inputs.hyprland-plugins.follows = "hyprland-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-end-4 = {
@@ -67,12 +60,10 @@
     };
 
     # Misc
-    chaotic = {
-      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-      inputs.nixpkgs.follows = "unstable";
-    };
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     devenv = {
       url = "github:cachix/devenv";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -80,18 +71,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-    jovian = {
-      follows = "chaotic/jovian";
-      inputs.nixpkgs.follows = "chaotic/nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    jovian.follows = "chaotic/jovian";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "chaotic/nixpkgs";
+    nh = {
+      url = "github:viperML/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -105,11 +98,12 @@
     nur.url = "github:nix-community/NUR";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.snowfall-lib.follows = "snowfall-lib";
     };
     snowfall-lib = {
-      url = "github:snowfallorg/lib";
+      url = "github:lpchaim/snowfall-lib/per-channel-config-passthrough";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.flake-utils-plus.follows = "flake-utils-plus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -120,8 +114,11 @@
     };
     stylix = {
       url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-utils.follows = "flake-utils";
       inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
     wayland-pipewire-idle-inhibit = {
       url = "github:rafaelrc7/wayland-pipewire-idle-inhibit";
@@ -129,96 +126,78 @@
     };
   };
 
-  outputs = inputs @ {self, ...}: let
-    inherit (snowfallLib.snowfall.attrs) merge-deep;
-    inherit (snowfallLib.snowfall.internal.user-lib.shared) defaults;
-    snowfallLib = inputs.snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
-      snowfall.namespace = defaults.name.user;
-    };
-    snowfallConfig = {
-      channels-config = {
+  outputs = inputs: let
+    overlays = with inputs; [
+      chaotic.overlays.default
+      jovian.overlays.default
+      nh.overlays.default
+      nix-gaming.overlays.default
+      nix-software-center.overlays.pkgs
+      nixneovimplugins.overlays.default
+      snowfall-flake.overlays.default
+      (next: prev: {
+        nix-conf = let
+          homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
+          nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
+        in
+          nixCfg;
+      })
+    ];
+    nixosModules = with inputs; [
+      chaotic.nixosModules.default
+      disko.nixosModules.disko
+      home-manager.nixosModules.home-manager
+      lanzaboote.nixosModules.lanzaboote
+      nix-gaming.nixosModules.pipewireLowLatency
+      nix-gaming.nixosModules.platformOptimizations
+      nixos-generators.nixosModules.all-formats
+      nur.nixosModules.nur
+      sops-nix.nixosModules.sops
+      stylix.nixosModules.stylix
+    ];
+    homeManagerModules = with inputs; [
+      ags.homeManagerModules.default
+      chaotic.homeManagerModules.default
+      nix-index-database.hmModules.nix-index
+      nixvim.homeManagerModules.nixvim
+      sops-nix.homeManagerModules.sops
+      stylix.homeManagerModules.stylix
+      wayland-pipewire-idle-inhibit.homeModules.default
+    ];
+    mkPkgs = system:
+      import inputs.nixpkgs {
+        inherit system overlays;
         allowUnfree = true;
       };
-
-      supportedSystems = import inputs.systems;
-
-      overlays = with inputs; [
-        chaotic.overlays.default
-        jovian.overlays.default
-        nix-gaming.overlays.default
-        nix-software-center.overlays.default
-        nixneovimplugins.overlays.default
-        snowfall-flake.overlays.default
-        (next: prev: {
-          nix-conf = let
-            homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
-            nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
-          in
-            nixCfg;
-        })
-      ];
-
-      systems.modules.nixos = with inputs; [
-        chaotic.nixosModules.default
-        disko.nixosModules.disko
-        home-manager.nixosModules.home-manager
-        jovian.nixosModules.default
-        lanzaboote.nixosModules.lanzaboote
-        nix-gaming.nixosModules.pipewireLowLatency
-        nix-gaming.nixosModules.platformOptimizations
-        nixos-generators.nixosModules.all-formats
-        nur.nixosModules.nur
-        sops-nix.nixosModules.sops
-        stylix.nixosModules.stylix
-      ];
-
-      homes.modules = with inputs; [
-        ags.homeManagerModules.default
-        chaotic.homeManagerModules.default
-        nix-index-database.hmModules.nix-index
-        nixvim.homeManagerModules.nixvim
-        sops-nix.homeManagerModules.sops
-        stylix.homeManagerModules.stylix
-        wayland-pipewire-idle-inhibit.homeModules.default
-      ];
-
-      outputs-builder = channels: {
-        formatter = channels.nixpkgs.alejandra;
-      };
-
-      alias = {
-        shells.default = "deploy";
-      };
-    };
   in
-    merge-deep [
-      (snowfallLib.mkFlake snowfallConfig)
-      (inputs.flake-utils.lib.eachDefaultSystem (system: let
-        inherit (snowfallLib.snowfall) home module;
-        homeModules = snowfallLib.pipe ./modules/home [
-          (src: module.create-modules {inherit src;})
-          builtins.attrValues
-        ];
+    inputs.flake-parts.lib.mkFlake
+    {inherit inputs;}
+    ({flake-parts-lib, ...}: let
+      inherit (flake-parts-lib) importApply;
+    in {
+      systems = import inputs.systems;
+      imports = [
+        inputs.git-hooks-nix.flakeModule
+        (importApply ./flake/snowfall {inherit homeManagerModules nixosModules overlays;})
+        (importApply ./devShells {inherit mkPkgs;})
+      ];
+      perSystem = {
+        config,
+        system,
+        pkgs,
+        ...
+      }: let
+        pkgs = mkPkgs system;
       in {
-        legacyPackages.homeConfigurations.minimal = let
-          homeData = home.create-home {
-            inherit system;
-            name = "minimal";
-            path = ./homes/minimal;
-            channelName = "nixpkgs";
-            modules = snowfallConfig.homes.modules ++ homeModules;
-            specialArgs = rec {
-              username = defaults.name.user;
-              homeDirectory = "/home/${username}";
-              stateVersion = "24.05";
-            };
+        formatter = pkgs.alejandra;
+        pre-commit = {
+          inherit pkgs;
+          check.enable = true;
+          settings = {
+            hooks.alejandra.enable = true;
+            hooks.ripsecrets.enable = true;
           };
-        in
-          homeData.builder {
-            inherit (homeData) modules specialArgs;
-          };
-      }))
-    ];
+        };
+      };
+    });
 }

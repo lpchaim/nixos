@@ -51,7 +51,7 @@ in {
     '';
     settings = shared.nix.settings;
     gc = {
-      automatic = true;
+      automatic = !config.programs.nh.clean.enable;
       dates = "weekly";
     };
   };
@@ -110,11 +110,11 @@ in {
             intel-media-driver
             intel-vaapi-driver
           ];
-    in rec {
+    in {
       enable = lib.mkDefault false;
       enable32Bit = config.hardware.graphics.enable && pkgs.stdenv.isx86_64;
-      extraPackages = lib.mkIf enable (getExtraPackages pkgs);
-      extraPackages32 = lib.mkIf enable (getExtraPackages pkgs.pkgsi686Linux);
+      extraPackages = lib.mkIf config.hardware.graphics.enable (getExtraPackages pkgs);
+      extraPackages32 = lib.mkIf config.hardware.graphics.enable (getExtraPackages pkgs.pkgsi686Linux);
     };
   };
 
@@ -123,6 +123,14 @@ in {
     adb.enable = true;
     fish.enable = true;
     nix-ld.enable = true;
+    nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 5";
+      };
+    };
     zsh.enable = true;
   };
   environment.systemPackages = with pkgs; [
@@ -151,11 +159,13 @@ in {
           then ["/"]
           else lib.attrNames btrfsFileSystems;
       };
+    devmon.enable = true;
     fstrim = {
       enable = true;
       interval = "weekly";
     };
     fwupd.enable = true;
+    gvfs.enable = true;
     libinput.enable = true;
     ollama = {
       enable = true;
@@ -188,6 +198,7 @@ in {
       openFirewall = true;
       useRoutingFeatures = "both";
     };
+    udisks2.enable = true;
   };
   services.xserver.enable = lib.mkDefault true;
 

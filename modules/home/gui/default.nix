@@ -21,11 +21,20 @@ in {
         discord
       ];
 
-      programs.vscode = {
-        enable = true;
-        package = pkgs.vscode.fhs;
-        enableExtensionUpdateCheck = true;
-        mutableExtensionsDir = true;
+      programs = {
+        chromium = {
+          enable = true;
+          commandLineArgs = [
+            "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
+          ];
+          package = pkgs.brave;
+        };
+        vscode = {
+          enable = true;
+          package = pkgs.vscode.fhs;
+          enableExtensionUpdateCheck = true;
+          mutableExtensionsDir = true;
+        };
       };
 
       services.nextcloud-client = {
@@ -40,9 +49,9 @@ in {
     }
     {
       home.packages = with pkgs; [
-        brave
         spotify
         spotify-tray
+        zapzap
       ];
     }
   ]);
