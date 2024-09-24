@@ -20,11 +20,12 @@ in {
       vim.enable = mkDefault true;
     };
     essentials.enable = mkDefault true;
+    fish.enable = mkDefault true;
     git = {
       enable = mkDefault true;
       lazygit.enable = mkDefault true;
     };
-    hishtory.enable = mkDefault true;
+    hishtory.enable = mkDefault false;
     just.enable = true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;

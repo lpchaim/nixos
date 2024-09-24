@@ -5,6 +5,7 @@
   ...
 }:
 with lib; let
+  inherit (lib.lpchaim.shared) defaults;
   namespace = ["my" "modules" "cli" "essentials"];
   cfg = lib.getAttrFromPath namespace config;
   myNerdFonts = ["FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro"];
@@ -22,6 +23,7 @@ in {
     home = {
       packages = with pkgs; [
         bash
+        chafa
         cheat
         curl
         delta
@@ -30,17 +32,26 @@ in {
         du-dust
         duf
         fd
+        hexyl
         htop
         inotify-tools
         neofetch
         ncdu
         (nerdfonts.override {fonts = myNerdFonts;})
         nix-output-monitor
+        nurl
+        procs
         rsync
         snowfallorg.flake
+        tgpt
+        tig
         yazi
         wget
+        python312Packages.howdoi
       ];
+      sessionVariables = {
+        FLAKE = "${config.xdg.configHome}/nixos";
+      };
       shellAliases = {
         gco = "git checkout";
         gd = "git diff";
@@ -51,6 +62,7 @@ in {
       };
     };
 
+    programs.${defaults.shell}.enable = config.programs ? "${defaults.shell}";
     programs = {
       bat.enable = true;
       broot.enable = true;

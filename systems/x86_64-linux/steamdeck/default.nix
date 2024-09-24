@@ -1,15 +1,17 @@
 {
   config,
+  inputs,
   lib,
-  pkgs,
   ...
 }: let
   inherit (lib) mkIf mkForce;
   inherit (lib.lpchaim.nixos) getTraitModules;
+  inherit (lib.lpchaim.shared) defaults;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
 in {
   imports =
     [
+      inputs.jovian.nixosModules.default
       ./hardware-configuration.nix
       (mkStorage {
         device = "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463";
@@ -30,6 +32,7 @@ in {
 
     jovian = {
       steam = {
+        inherit (defaults.name) user;
         enable = true;
         autoStart = true;
         desktopSession = "gnome";

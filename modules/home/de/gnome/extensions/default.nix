@@ -7,7 +7,7 @@
 with lib; let
   namespace = ["my" "modules" "de" "gnome" "extensions"];
   cfg = getAttrFromPath namespace config;
-  pre43 = versionOlder pkgs.gnome.gnome-shell.version "43";
+  pre43 = versionOlder pkgs.gnome-shell.version "43";
 in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "GNOME Shell extensions";

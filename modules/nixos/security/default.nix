@@ -58,7 +58,6 @@ lib.lpchaim.mkModule {
         };
       };
       services = {
-        pcscd.enable = true;
         udev = {
           extraRules = ''
             ACTION=="remove", \

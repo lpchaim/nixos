@@ -37,7 +37,7 @@
     fzf
     brightnessctl
     swww
-    inputs.matugen.packages.${system}.default
+    inputs.dotfiles-aylur.inputs.matugen.packages.${system}.default
     slurp
     wf-recorder
     wl-clipboard
@@ -63,11 +63,7 @@
 
   config = stdenv.mkDerivation {
     inherit name;
-    src = "${inputs.dotfiles-aylur-raw}/ags";
-
-    patchPhase = ''
-      cp ${./options.ts} ./options.ts
-    '';
+    src = "${inputs.dotfiles-aylur}/ags";
 
     buildPhase = ''
       ${esbuild}/bin/esbuild \
