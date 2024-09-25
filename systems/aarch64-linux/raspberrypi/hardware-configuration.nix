@@ -13,12 +13,12 @@
   ];
 
   boot.initrd.availableKernelModules = [
-  	"pcie_brcmstb" # required for the pcie bus to work
-  	"reset-raspberrypi" # required for vl805 firmware to load
+    "pcie_brcmstb" # required for the pcie bus to work
+    "reset-raspberrypi" # required for vl805 firmware to load
     "uas"
-  	"usbhid"
-  	"usb_storage"
-  	"vc4"
+    "usbhid"
+    "usb_storage"
+    "vc4"
   ];
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];

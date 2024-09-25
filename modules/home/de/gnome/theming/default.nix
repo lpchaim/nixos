@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -38,20 +39,15 @@ in {
     )
     (
       let
-        assetsPath = ../../../../assets;
+        inherit (lib.lpchaim.shared.defaults) profilePicture wallpaper;
         destinationPath = config.home.homeDirectory;
-        pfp = "${assetsPath}/profile-picture.png";
-        wallpaperLight = "${assetsPath}/wallpaper-light.png";
-        wallpaperDark = "${assetsPath}/wallpaper-dark.png";
       in {
-        home.file."${destinationPath}/.face".source = pfp;
-        home.file."${destinationPath}/.wallpaper-light".source = wallpaperLight;
-        home.file."${destinationPath}/.wallpaper-dark".source = wallpaperDark;
+        home.file."${destinationPath}/.face".source = profilePicture;
+        home.file."${destinationPath}/.wallpaper".source = wallpaper;
 
         dconf.settings = {
           "org/gnome/desktop/background" = {
-            picture-uri = mkDefault "${destinationPath}/.wallpaper-light";
-            picture-uri-dark = mkDefault "${destinationPath}/.wallpaper-dark";
+            picture-uri = mkDefault "${destinationPath}/.wallpaper";
             primary-color = "#000000";
             picture-options = "zoom";
           };

@@ -1,10 +1,14 @@
-{
+let
+  assets = ../../assets;
+in {
   shared = {
     defaults = {
       name.user = "lpchaim";
       name.full = "Lucas Chaim";
       email.main = "lpchaim@proton.me";
       shell = "fish";
+      wallpaper = assets + /wallpaper.png;
+      profilePicture = assets + /profile-picture.png;
     };
     nix.settings = rec {
       accept-flake-config = true;
