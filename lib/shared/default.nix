@@ -1,5 +1,13 @@
-let
+{lib, ...}: let
   assets = ../../assets;
+  filter = prefix: (name: type: type == "regular" && lib.strings.hasPrefix prefix name);
+  assetWithPrefix = prefix:
+    lib.pipe (builtins.readDir assets) [
+      (lib.filterAttrs (filter prefix))
+      builtins.attrNames
+      builtins.head
+      (x: assets + /${x})
+    ];
 in {
   shared = {
     defaults = {
@@ -7,8 +15,8 @@ in {
       name.full = "Lucas Chaim";
       email.main = "lpchaim@proton.me";
       shell = "fish";
-      wallpaper = assets + /wallpaper.png;
-      profilePicture = assets + /profile-picture.png;
+      wallpaper = assetWithPrefix "wallpaper";
+      profilePicture = assetWithPrefix "profile-picture";
     };
     nix.settings = rec {
       accept-flake-config = true;
