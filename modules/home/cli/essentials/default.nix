@@ -32,6 +32,7 @@ in {
         du-dust
         duf
         fd
+        fx
         hexyl
         htop
         inotify-tools

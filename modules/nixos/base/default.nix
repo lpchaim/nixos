@@ -19,6 +19,7 @@ in {
 
   # Boot
   boot = {
+    binfmt.emulatedSystems = lib.optionals pkgs.stdenv.isx86_64 ["aarch64-linux"];
     loader = {
       grub = {
         enable = mkDefault false;

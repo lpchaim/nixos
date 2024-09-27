@@ -25,6 +25,11 @@ in {
       gui.enable = mkDefault false;
     };
     programs.home-manager.enable = mkDefault true;
+    nix.gc = {
+      automatic = true;
+      frequency = "daily";
+      options = "--delete-older-than=7d";
+    };
     nix.settings = shared.nix.settings;
     systemd.user.startServices = "sd-switch";
   };
