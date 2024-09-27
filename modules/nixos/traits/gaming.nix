@@ -9,6 +9,17 @@ in {
   hardware.steam-hardware.enable = true;
   programs.steam = {
     enable = true;
+    extest.enable = true;
+    extraPackages = with pkgs; [
+      gamescope
+      mangohud
+    ];
+    package = pkgs.steam.override {
+      extraEnv = {
+        MANGOHUD = true;
+        OBS_VKCAPTURE = true;
+      };
+    };
     extraCompatPackages = let
       geVersions = ["9-10"];
       protonGePackages =
@@ -34,6 +45,21 @@ in {
     # osu-stable # @TODO Reenable when I figure out why nix-gaming's cachix doesn't ever seem to work
     parsec-bin
     # wine-discord-ipc-bridge
+    (pkgs.wrapOBS {
+      plugins = (
+        (with pkgs.obs-studio-plugins; [
+          input-overlay
+          obs-pipewire-audio-capture
+          obs-scale-to-sound
+          obs-vaapi
+          obs-vkcapture
+          wlrobs
+        ])
+        ++ (lib.optionals (lib.elem "nvidia" config.services.xserver.videoDrivers) [
+          pkgs.obs-studio-plugins.obs-nvfbc
+        ])
+      );
+    })
   ];
 
   services.pipewire.lowLatency.enable = true;

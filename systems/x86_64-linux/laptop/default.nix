@@ -15,6 +15,7 @@ in {
       "formfactor/laptop"
       "de/gnome"
       "de/hyprland"
+      "gaming"
     ]);
 
   networking.hostName = "laptop";

@@ -2048,6 +2048,22 @@
         "type": "github"
       }
     },
+    "nu-scripts": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727367484,
+        "narHash": "sha256-CT4CI/oKidy7nwiqEbDJxKDuinrcjGQBke9bwwOcD8A=",
+        "owner": "nushell",
+        "repo": "nu_scripts",
+        "rev": "e10ffbaaa7dc8c9ecd300e72d5f0b6c7e6691175",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nushell",
+        "repo": "nu_scripts",
+        "type": "github"
+      }
+    },
     "nur": {
       "locked": {
         "lastModified": 1726947904,
@@ -2264,6 +2280,7 @@
           "nixpkgs"
         ],
         "nixvim": "nixvim",
+        "nu-scripts": "nu-scripts",
         "nur": "nur",
         "snowfall-flake": "snowfall-flake",
         "snowfall-lib": "snowfall-lib",
