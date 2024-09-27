@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -15,7 +16,7 @@ in {
     programs.nushell = {
       enable = true;
       configFile.source = ./config.nu;
-      envFile.text = let
+      envFile.source = let
         pkgToKeyVal = name: {
           inherit name;
           value = "${pkgs.${name}}/bin/${name}";
@@ -23,13 +24,13 @@ in {
         pathsPerPkg =
           builtins.listToAttrs
           (builtins.map pkgToKeyVal ["git" "fzf"]);
-        patch = path:
-          pkgs.runCommand "patch-commands" pathsPerPkg "substituteAll ${path} $out";
       in
-        lib.concatStringsSep "\n" [
-          (builtins.readFile ./env.nu)
-          (builtins.readFile (patch ./commands.nu))
-        ];
+        pkgs.runCommandNoCC "nushell-env" pathsPerPkg ''
+          substituteAll ${./commands.nu} $out
+          cat ${./env.nu} \
+          ${inputs.nu-scripts}/modules/formats/from-env.nu \
+          >> $out
+        '';
       shellAliases =
         config.programs.bash.shellAliases
         // config.home.shellAliases
