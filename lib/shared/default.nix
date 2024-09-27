@@ -42,6 +42,7 @@ in {
       ];
       keep-derivations = true;
       keep-outputs = true;
+      max-jobs = "auto";
     };
     kb = rec {
       br = {
