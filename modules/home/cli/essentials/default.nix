@@ -36,9 +36,11 @@ in {
         hexyl
         htop
         inotify-tools
+        omnix-cli
         neofetch
         ncdu
         (nerdfonts.override {fonts = myNerdFonts;})
+        nh
         nix-output-monitor
         nurl
         procs
