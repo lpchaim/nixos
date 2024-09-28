@@ -145,14 +145,7 @@
       nix-software-center.overlays.pkgs
       nixneovimplugins.overlays.default
       snowfall-flake.overlays.default
-      (next: prev: {
-        inherit (inputs.omni.packages.${prev.system}) omnix-cli;
-        nix-conf = let
-          homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
-          nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
-        in
-          nixCfg;
-      })
+      (import ./overlays {inherit inputs;})
     ];
     nixosModules = with inputs; [
       chaotic.nixosModules.default
