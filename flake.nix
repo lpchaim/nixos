@@ -72,6 +72,7 @@
     };
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     jovian.follows = "chaotic/jovian";
     lanzaboote = {
@@ -100,6 +101,11 @@
       flake = false;
     };
     nur.url = "github:nix-community/NUR";
+    omni = {
+      url = "github:juspay/omnix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+    };
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -140,6 +146,7 @@
       nixneovimplugins.overlays.default
       snowfall-flake.overlays.default
       (next: prev: {
+        inherit (inputs.omni.packages.${prev.system}) omnix-cli;
         nix-conf = let
           homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
           nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
@@ -203,5 +210,6 @@
           };
         };
       };
+      flake.schemas = inputs.flake-schemas.schemas;
     });
 }
