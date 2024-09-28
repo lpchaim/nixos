@@ -8,4 +8,14 @@ in
       nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
     in
       nixCfg;
+    writeNushellScript = name: text:
+      prev.writeScript "nushell-${name}" ''
+        #! ${prev.nushell}/bin/nu
+        ${text}
+      '';
+    writeNushellScriptBin = name: text:
+      prev.writeScriptBin "nushell-${name}" ''
+        #! ${prev.nushell}/bin/nu
+        ${text}
+      '';
   }
