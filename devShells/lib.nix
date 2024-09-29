@@ -19,6 +19,7 @@
           ++ (with pkgs; [
             age
             alejandra
+            nh
             nil
             nixos-generators
             nixpkgs-fmt
