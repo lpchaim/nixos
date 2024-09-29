@@ -14,6 +14,7 @@
     stable.url = "github:NixOS/nixpkgs/24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-cuda.follows = "nixpkgs";
+    nixpkgs-steamdeck.follows = "nixpkgs";
 
     # Home Manager
     home-manager = {
@@ -144,7 +145,6 @@
   outputs = inputs: let
     overlays = with inputs; [
       chaotic.overlays.default
-      jovian.overlays.default
       nh.overlays.default
       nix-gaming.overlays.default
       nix-software-center.overlays.pkgs
