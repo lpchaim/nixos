@@ -8,6 +8,7 @@ in {
   imports =
     [
       ./hardware-configuration.nix
+      ./disko.nix
     ]
     ++ (getTraitModules [
       "composite/base"

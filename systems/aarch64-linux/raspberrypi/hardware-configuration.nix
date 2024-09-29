@@ -24,31 +24,6 @@
   boot.kernelModules = [];
   boot.extraModulePackages = [];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["defaults,noatime,compress=zstd,subvol=@"];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["defaults,noatime,compress=zstd,subvol=@home"];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["defaults,noatime,compress=zstd,subvol=@nix"];
-  };
-
-  swapDevices = [
-    {
-      device = "/.swapfile";
-      size = 2 * 1024;
-    }
-  ];
-
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
