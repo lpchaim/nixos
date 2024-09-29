@@ -106,7 +106,7 @@
       flake = false;
     };
     nur.url = "github:nix-community/NUR";
-    omni = {
+    omnix = {
       url = "github:juspay/omnix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.systems.follows = "systems";
