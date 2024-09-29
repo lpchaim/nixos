@@ -19,6 +19,9 @@ in {
     {
       home.packages = with pkgs; [
         discord
+        spotify
+        spotify-tray
+        zapzap
       ];
 
       programs = {
@@ -47,16 +50,10 @@ in {
         "${config.home.homeDirectory}/.nix-profile/share/applications"
       ];
     }
-    {
-      home.packages = with pkgs; [
-        spotify
-        spotify-tray
-        zapzap
-      ];
-    }
   ]);
 
   imports = [
     ./firefox.nix
+    ./mangohud.nix
   ];
 }

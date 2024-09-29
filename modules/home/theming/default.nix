@@ -8,13 +8,10 @@
       builtins.toString
       (builtins.match "^.*/themes/.*${theme}.*$")
     ];
-in {
-  config = let
-    themeOverrides = lib.mkMerge [
-      (lib.mkIf (matchTheme "catppuccin" != null) {
-        programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";
-      })
-    ];
-  in
-    lib.mkIf config.stylix.enable themeOverrides;
-}
+in
+  lib.mkIf config.stylix.enable (lib.mkMerge [
+    {stylix.targets.mangohud.enable = false;}
+    (lib.mkIf (matchTheme "catppuccin" != null) {
+      programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";
+    })
+  ])
