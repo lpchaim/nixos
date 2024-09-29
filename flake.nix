@@ -46,9 +46,14 @@
       url = "github:Aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    astal = {
+      url = "github:Aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dotfiles-aylur = {
       url = "github:Aylur/dotfiles";
       inputs.ags.follows = "ags";
+      inputs.astal.follows = "astal";
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";

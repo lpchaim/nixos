@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; let
@@ -19,8 +20,8 @@ in
         listener = [
           {
             timeout = "60";
-            on-timeout = "brightnessctl -s set 10";
-            on-resume = "brightnessctl -r";
+            on-timeout = "${lib.getExe pkgs.brightnessctl} -s set 50%-";
+            on-resume = "${lib.getExe pkgs.brightnessctl} -r";
           }
           {
             timeout = "120";

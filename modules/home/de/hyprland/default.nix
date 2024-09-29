@@ -199,6 +199,7 @@ in {
 
       home = {
         packages = with pkgs; [
+          brightnessctl
           hyprcursor
           hyprpaper
           hyprpicker
