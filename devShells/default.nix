@@ -1,4 +1,4 @@
-{mkPkgs}: {
+{mkPkgs, ...}: {
   perSystem = {
     config,
     inputs',

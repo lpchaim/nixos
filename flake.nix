@@ -176,14 +176,22 @@
   in
     inputs.flake-parts.lib.mkFlake
     {inherit inputs;}
-    ({flake-parts-lib, ...}: let
+    ({
+      self,
+      flake-parts-lib,
+      ...
+    }: let
       inherit (flake-parts-lib) importApply;
     in {
       systems = import inputs.systems;
-      imports = [
+      imports = let
+        importApplyWithDefaults = path:
+          importApply path {inherit inputs mkPkgs self;};
+      in [
         inputs.git-hooks-nix.flakeModule
         (importApply ./flake/snowfall {inherit homeManagerModules nixosModules overlays;})
-        (importApply ./devShells {inherit mkPkgs;})
+        (importApplyWithDefaults ./apps)
+        (importApplyWithDefaults ./devShells)
       ];
       perSystem = {
         config,
