@@ -57,7 +57,7 @@ in {
     })
     (mkIf cfg.smartcat.enable {
       home = {
-        packages = [pkgs.lpchaim.smartcat];
+        packages = [pkgs.smartcat];
         file = {
           ".config/smartcat/.api_config.toml".text = serde.toTOML {
             ollama = {
