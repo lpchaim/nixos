@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   inventory:
     name: Build inventory
@@ -80,6 +84,6 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: ${{ matrix.system }}
+          system: aarch64-linux
       - run: |
           nix build .#nixosConfigurations.raspberrypi.config.system.build.toplevel
