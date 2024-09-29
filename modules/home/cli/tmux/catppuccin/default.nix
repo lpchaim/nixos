@@ -1,14 +1,15 @@
 # Docs https://github.com/catppuccin/tmux
-
-{ config, pkgs, lib, ... }:
-
-with builtins;
-with lib;
-let
-  namespace = [ "my" "modules" "cli" "tmux" "catppuccin" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with builtins;
+with lib; let
+  namespace = ["my" "modules" "cli" "tmux" "catppuccin"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   options = lib.setAttrByPath namespace {
     enable = mkOption {
       description = "Whether to enable catppuccin.";
@@ -17,7 +18,7 @@ in
     };
     flavor = mkOption {
       description = "The theme to use.";
-      type = types.enum [ "frappe" "macchiato" "mocha" ];
+      type = types.enum ["frappe" "macchiato" "mocha"];
       default = "mocha";
     };
   };

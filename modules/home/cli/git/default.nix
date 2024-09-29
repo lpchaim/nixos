@@ -1,10 +1,11 @@
-{ config, lib, ... }:
-
-let
-  namespace = [ "my" "modules" "cli" "git" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  namespace = ["my" "modules" "cli" "git"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "git";
     lazygit.enable = lib.mkEnableOption "lazygit";

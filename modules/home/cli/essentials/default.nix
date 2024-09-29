@@ -1,12 +1,15 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "cli" "essentials" ];
-  cfg = lib.getAttrFromPath namespace config;
-  myNerdFonts = [ "FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro" ];
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  inherit (lib.lpchaim.shared) defaults;
+  namespace = ["my" "modules" "cli" "essentials"];
+  cfg = lib.getAttrFromPath namespace config;
+  myNerdFonts = ["FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro"];
+in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "essentials";
   };
@@ -14,13 +17,13 @@ in
   config = lib.mkIf cfg.enable {
     fonts.fontconfig = {
       enable = true;
-      defaultFonts.monospace = [ config.stylix.fonts.monospace.name ] ++ myNerdFonts;
+      defaultFonts.monospace = [config.stylix.fonts.monospace.name] ++ myNerdFonts;
     };
 
     home = {
       packages = with pkgs; [
         bash
-        btop
+        chafa
         cheat
         curl
         delta
@@ -29,16 +32,29 @@ in
         du-dust
         duf
         fd
+        fx
+        hexyl
         htop
+        inotify-tools
+        omnix-cli
         neofetch
         ncdu
-        (nerdfonts.override { fonts = myNerdFonts; })
+        (nerdfonts.override {fonts = myNerdFonts;})
+        nh
         nix-output-monitor
+        nurl
+        procs
         rsync
-        silver-searcher
         snowfallorg.flake
+        tgpt
+        tig
+        yazi
         wget
+        python312Packages.howdoi
       ];
+      sessionVariables = {
+        FLAKE = "${config.xdg.configHome}/nixos";
+      };
       shellAliases = {
         gco = "git checkout";
         gd = "git diff";
@@ -49,9 +65,11 @@ in
       };
     };
 
+    programs.${defaults.shell}.enable = config.programs ? "${defaults.shell}";
     programs = {
       bat.enable = true;
       broot.enable = true;
+      btop.enable = true;
       carapace.enable = true;
       dircolors.enable = true;
       direnv = {
@@ -74,6 +92,8 @@ in
         fuzzySearchFactor = 2;
         keyScheme = "vim";
       };
+      nix-index.enable = true;
+      nix-index-database.comma.enable = true;
       ripgrep.enable = true;
       zoxide.enable = true;
     };

@@ -1,25 +1,23 @@
-{ config, lib, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "de" "hyprland" ];
+{
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "de" "hyprland"];
   cfg = getAttrFromPath namespace config;
 in
-mkIf cfg.enable {
-  programs.hyprlock = {
-    enable = true;
-    settings =
-      let
+  mkIf cfg.enable {
+    programs.hyprlock = {
+      enable = true;
+      settings = let
         colors = config.lib.stylix.colors;
-        makeRgb = colorIndex:
-          let
-            r = colors."base${colorIndex}-rgb-r";
-            g = colors."base${colorIndex}-rgb-g";
-            b = colors."base${colorIndex}-rgb-b";
-          in
-          "rgb(${r},${g},${b})";
-      in
-      {
+        makeRgb = colorIndex: let
+          r = colors."base${colorIndex}-rgb-r";
+          g = colors."base${colorIndex}-rgb-g";
+          b = colors."base${colorIndex}-rgb-b";
+        in "rgb(${r},${g},${b})";
+      in {
         background = {
           path = "screenshot";
           blur_size = 3;
@@ -58,5 +56,5 @@ mkIf cfg.enable {
           }
         ];
       };
-  };
-}
+    };
+  }

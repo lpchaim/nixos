@@ -1,16 +1,16 @@
-{ config, lib, ... }:
-
-let
-  namespace = [ "my" "modules" "cli" "editors" "helix" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  namespace = ["my" "modules" "cli" "editors" "helix"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   config = lib.mkIf cfg.enable {
     programs.helix = {
       enable = true;
       defaultEditor = true;
       settings = {
-        theme = lib.mkDefault "dark_plus";
         editor = {
           bufferline = "always";
           color-modes = true;
@@ -31,9 +31,9 @@ in
           wrap-around = true;
         };
         editor.statusline = {
-          left = [ "mode" "spinner" "file-name" ];
-          center = [ "version-control" ];
-          right = [ "diagnostics" "selections" "position" "total-line-numbers" "file-encoding" ];
+          left = ["mode" "spinner" "file-name"];
+          center = ["version-control"];
+          right = ["diagnostics" "selections" "position" "total-line-numbers" "file-encoding"];
         };
         keys.normal = {
           "A-f" = "file_picker_in_current_buffer_directory";
