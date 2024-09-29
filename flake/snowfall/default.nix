@@ -14,13 +14,18 @@
   };
   snowfallConfig = rec {
     inherit overlays;
+    supportedSystems = import inputs.systems;
     systems.modules.nixos = nixosModules;
-    systems.hosts.desktop.channelName = "nixpkgs-cuda";
     homes.modules = homeManagerModules;
 
-    supportedSystems = import inputs.systems;
     channels-config = {allowUnfree = true;};
     channels.nixpkgs-cuda.config = channels-config // {cudaSupport = true;};
+    channels.nixpkgs-steamdeck.overlaysBuilder = channels: [
+      inputs.jovian.overlays.default
+    ];
+
+    systems.hosts.desktop.channelName = "nixpkgs-cuda";
+    systems.hosts.steamdeck.channelName = "nixpkgs-steamdeck";
   };
   flake = merge-deep [
     (snowfallLib.mkFlake snowfallConfig)
