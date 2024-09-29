@@ -4,12 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop
       - main
 
 jobs:
-  define-matrix:
-    name: Define build matrix
+  inventory:
+    name: Build inventory
     runs-on: ubuntu-latest
     outputs:
       packages: ${{ steps.matrix.outputs.packages }}
@@ -20,80 +19,67 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-setup
         with:
-            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - id: matrix
         run: |
-          echo "packages=$(nix run .#get-ci-info -- --output packages)" >> $GITHUB_OUTPUT
-          echo "devShells=$(nix run .#get-ci-info -- --output devShells)" >> $GITHUB_OUTPUT
-          echo "homeConfigurations=$(nix run .#get-ci-info -- --output homeConfigurations)" >> $GITHUB_OUTPUT
-          echo "nixosConfigurations=$(nix run .#get-ci-info -- --output nixosConfigurations)" >> $GITHUB_OUTPUT
+          echo "packages=$(nix run .#get-ci-info -- --system x86_64-linux --output packages)" >> $GITHUB_OUTPUT
+          echo "devShells=$(nix run .#get-ci-info -- --system x86_64-linux --output devShells)" >> $GITHUB_OUTPUT
+          echo "homeConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output homeConfigurations)" >> $GITHUB_OUTPUT
+          echo "nixosConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output nixosConfigurations)" >> $GITHUB_OUTPUT
 
   build-packages:
     name: Build packages
-    needs: define-matrix
+    needs: inventory
     strategy:
-      matrix: ${{ fromJSON(needs.define-matrix.outputs.packages) }}
+      matrix: ${{ fromJSON(needs.inventory.outputs.packages) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-setup
         with:
-            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-            system: ${{ matrix.system }}
-      - name: Build ${{ matrix.system }}.${{ matrix.name }}
-        run: |
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: ${{ matrix.system }}
+      - run: |
           nix build ${{ matrix.derivation }}
 
   build-devshells:
     name: Build devShells
-    needs:
-      - define-matrix
-      - build-packages
+    needs: inventory
     strategy:
-      matrix: ${{ fromJSON(needs.define-matrix.outputs.devShells) }}
+      matrix: ${{ fromJSON(needs.inventory.outputs.devShells) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-setup
         with:
-            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-            system: ${{ matrix.system }}
-      - name: Build ${{ matrix.system }}.${{ matrix.name }}
-        run: |
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: ${{ matrix.system }}
+      - run: |
           nix build ${{ matrix.derivation }}
 
   build-homes:
     name: Build homeConfigurations
-    needs:
-      - define-matrix
-      - build-packages
+    needs: inventory
     strategy:
-      matrix: ${{ fromJSON(needs.define-matrix.outputs.homeConfigurations) }}
+      matrix: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-setup
         with:
-            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-            system: ${{ matrix.system }}
-      - name: Build ${{ matrix.system }}.${{ matrix.name }}
-        run: |
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: ${{ matrix.system }}
+      - run: |
           nix build ${{ matrix.derivation }}
 
-  build-nixos:
-    name: Build nixosConfigurations
-    needs:
-      - define-matrix
-      - build-homes
-    strategy:
-      matrix: ${{ fromJSON(needs.define-matrix.outputs.nixosConfigurations) }}
+  build-raspberrypi:
+    name: Build raspberrypi
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build-setup
         with:
-            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-            system: ${{ matrix.system }}
-      - name: Build ${{ matrix.system }}.${{ matrix.name }}
-        run: |
-          nix build ${{ matrix.derivation }}
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: ${{ matrix.system }}
+      - run: |
+          nix build .#nixosConfigurations.raspberrypi.config.system.build.toplevel
