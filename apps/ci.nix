@@ -18,7 +18,7 @@
         lib.mapAttrsToList
         (name: subject: {
           inherit name;
-          derivation = mkDerivationPath name;
+          derivation = lib.escapeShellArg (mkDerivationPath name);
           system = subject.system or subject.pkgs.system;
         })
         output;
@@ -56,6 +56,7 @@
           # Prints available outputs as JSON
           def main [
             --system: string = all  # Filter by system
+            --output: string = all  # Only include the specified output
           ]: nothing -> string {
             open "${ciInfoFile}"
             | from json
@@ -65,7 +66,9 @@
                 | update column1 { where system == $system }
                 | transpose --header-row --as-record
             } else $in
-            | to json
+            | if $output != all { get $output } else $in
+            | { include: $in }
+            | to json --raw
           }
         '';
     };

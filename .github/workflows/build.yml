@@ -1,0 +1,99 @@
+name: Build flake outputs
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  define-matrix:
+    name: Define build matrix
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.matrix.outputs.packages }}
+      devShells: ${{ steps.matrix.outputs.devShells }}
+      homeConfigurations: ${{ steps.matrix.outputs.homeConfigurations }}
+      nixosConfigurations: ${{ steps.matrix.outputs.nixosConfigurations }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - id: matrix
+        run: |
+          echo "packages=$(nix run .#get-ci-info -- --output packages)" >> $GITHUB_OUTPUT
+          echo "devShells=$(nix run .#get-ci-info -- --output devShells)" >> $GITHUB_OUTPUT
+          echo "homeConfigurations=$(nix run .#get-ci-info -- --output homeConfigurations)" >> $GITHUB_OUTPUT
+          echo "nixosConfigurations=$(nix run .#get-ci-info -- --output nixosConfigurations)" >> $GITHUB_OUTPUT
+
+  build-packages:
+    name: Build packages
+    needs: define-matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.packages) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+            system: ${{ matrix.system }}
+      - name: Build ${{ matrix.system }}.${{ matrix.name }}
+        run: |
+          nix build ${{ matrix.derivation }}
+
+  build-devshells:
+    name: Build devShells
+    needs:
+      - define-matrix
+      - build-packages
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.devShells) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+            system: ${{ matrix.system }}
+      - name: Build ${{ matrix.system }}.${{ matrix.name }}
+        run: |
+          nix build ${{ matrix.derivation }}
+
+  build-homes:
+    name: Build homeConfigurations
+    needs:
+      - define-matrix
+      - build-packages
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.homeConfigurations) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+            system: ${{ matrix.system }}
+      - name: Build ${{ matrix.system }}.${{ matrix.name }}
+        run: |
+          nix build ${{ matrix.derivation }}
+
+  build-nixos:
+    name: Build nixosConfigurations
+    needs:
+      - define-matrix
+      - build-homes
+    strategy:
+      matrix: ${{ fromJSON(needs.define-matrix.outputs.nixosConfigurations) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+            cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+            system: ${{ matrix.system }}
+      - name: Build ${{ matrix.system }}.${{ matrix.name }}
+        run: |
+          nix build ${{ matrix.derivation }}
