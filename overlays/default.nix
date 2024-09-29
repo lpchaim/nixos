@@ -9,13 +9,15 @@ in
     in
       nixCfg;
     writeNushellScript = name: text:
-      prev.writeScript "nushell-${name}" ''
-        #! ${prev.nushell}/bin/nu
+      prev.writeScript name ''
+        #!${prev.nushell}/bin/nu
+
         ${text}
       '';
     writeNushellScriptBin = name: text:
-      prev.writeScriptBin "nushell-${name}" ''
-        #! ${prev.nushell}/bin/nu
+      prev.writeScriptBin name ''
+        #!${prev.nushell}/bin/nu
+
         ${text}
       '';
   }
