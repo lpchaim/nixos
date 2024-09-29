@@ -8,6 +8,12 @@ with lib; let
   namespace = ["my" "modules" "gui"];
   cfg = getAttrFromPath namespace config;
 in {
+  imports = [
+    ./chromium.nix
+    ./firefox.nix
+    ./mangohud.nix
+  ];
+
   options = setAttrByPath namespace {
     enable = mkEnableOption "gui apps";
   };
@@ -25,13 +31,6 @@ in {
       ];
 
       programs = {
-        chromium = {
-          enable = true;
-          commandLineArgs = [
-            "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
-          ];
-          package = pkgs.brave;
-        };
         vscode = {
           enable = true;
           package = pkgs.vscode.fhs;
@@ -51,9 +50,4 @@ in {
       ];
     }
   ]);
-
-  imports = [
-    ./firefox.nix
-    ./mangohud.nix
-  ];
 }
