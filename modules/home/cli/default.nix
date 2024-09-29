@@ -1,11 +1,12 @@
-{ config, lib, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "cli" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "cli"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "custom modules";
   };
@@ -19,15 +20,18 @@ in
       vim.enable = mkDefault true;
     };
     essentials.enable = mkDefault true;
+    fish.enable = mkDefault true;
     git = {
       enable = mkDefault true;
       lazygit.enable = mkDefault true;
     };
-    hishtory.enable = mkDefault true;
+    hishtory.enable = mkDefault false;
+    just.enable = true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;
     tealdeer.enable = mkDefault true;
     tmux.enable = mkDefault true;
+    zellij.enable = mkDefault true;
     zsh.enable = mkDefault true;
   };
 }

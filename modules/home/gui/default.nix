@@ -1,15 +1,19 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
-
-with lib;
-let
-  namespace = [ "my" "modules" "gui" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "gui"];
+  cfg = getAttrFromPath namespace config;
+in {
+  imports = [
+    ./chromium.nix
+    ./firefox.nix
+    ./mangohud.nix
+  ];
+
   options = setAttrByPath namespace {
     enable = mkEnableOption "gui apps";
   };
@@ -21,13 +25,18 @@ in
     {
       home.packages = with pkgs; [
         discord
+        spotify
+        spotify-tray
+        zapzap
       ];
 
-      programs.vscode = {
-        enable = true;
-        package = pkgs.vscode.fhs;
-        enableExtensionUpdateCheck = true;
-        mutableExtensionsDir = true;
+      programs = {
+        vscode = {
+          enable = true;
+          package = pkgs.vscode.fhs;
+          enableExtensionUpdateCheck = true;
+          mutableExtensionsDir = true;
+        };
       };
 
       services.nextcloud-client = {
@@ -40,15 +49,5 @@ in
         "${config.home.homeDirectory}/.nix-profile/share/applications"
       ];
     }
-    {
-      home.packages = with pkgs; [
-        spotify
-        spotify-tray
-      ];
-    }
   ]);
-
-  imports = [
-    ./firefox.nix
-  ];
 }

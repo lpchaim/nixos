@@ -1,10 +1,7 @@
-{ lib, ... }:
-
-let
+{lib, ...}: let
   inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
-in
-{
+in {
   imports =
     [
       ./hardware-configuration.nix
@@ -18,8 +15,10 @@ in
       "formfactor/laptop"
       "de/gnome"
       "de/hyprland"
+      "gaming"
     ]);
 
   networking.hostName = "laptop";
   system.stateVersion = "23.11";
+  my.security.secureboot.enable = true;
 }

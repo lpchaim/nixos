@@ -1,22 +1,25 @@
-{ lib, pkgs, ... }:
-
 {
+  lib,
+  pkgs,
+  ...
+}: {
   programs.nixvim = {
-    keymaps =
-      let
-        makeKeymap = mode: key: action: raw: ({
-          inherit mode;
-          inherit key;
-          action = if raw then ({ __raw = action; }) else action;
-          options.silent = true;
-        });
-      in
-      [
-        (makeKeymap "" "A-o" "require('tree-climber').goto_parent" true)
-        (makeKeymap "" "A-i" "require('tree-climber').goto_child" true)
-        (makeKeymap "" "A-u" "require('tree-climber').goto_prev" true)
-        (makeKeymap "" "A-p" "require('tree-climber').goto_next" true)
-      ];
+    keymaps = let
+      makeKeymap = mode: key: action: raw: {
+        inherit mode;
+        inherit key;
+        action =
+          if raw
+          then {__raw = action;}
+          else action;
+        options.silent = true;
+      };
+    in [
+      (makeKeymap "" "A-o" "require('tree-climber').goto_parent" true)
+      (makeKeymap "" "A-i" "require('tree-climber').goto_child" true)
+      (makeKeymap "" "A-u" "require('tree-climber').goto_prev" true)
+      (makeKeymap "" "A-p" "require('tree-climber').goto_next" true)
+    ];
     plugins = {
       treesitter = {
         enable = true;
@@ -50,10 +53,9 @@
       # treesitter-refactor.enable = true;
       treesitter-textobjects.enable = true;
     };
-    extraPlugins =
-      with pkgs;
-      # with pkgs.vimPlugins;
-      # with pkgs.vimExtraPlugins;
+    extraPlugins = with pkgs;
+    # with pkgs.vimPlugins;
+    # with pkgs.vimExtraPlugins;
       [
         vimExtraPlugins.tree-climber-nvim
         # (vimUtils.buildVimPlugin {

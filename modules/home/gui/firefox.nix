@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-let
-  namespace = [ "my" "modules" "gui" "firefox" ];
-  cfg = lib.getAttrFromPath namespace config;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  namespace = ["my" "modules" "gui" "firefox"];
+  cfg = lib.getAttrFromPath namespace config;
+in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "Mozilla Firefox";
   };
@@ -17,7 +19,7 @@ in
           enableGnomeExtensions = config.my.modules.de.gnome.enable or false;
           enablePlasmaBrowserIntegration = config.my.modules.de.plasma.enable or false;
         };
-        nativeMessagingHosts = [ pkgs.gnomeExtensions.gsconnect ];
+        nativeMessagingHosts = [pkgs.gnomeExtensions.gsconnect];
       };
       profiles.default = {
         isDefault = true;
@@ -46,7 +48,10 @@ in
           "general.useragent.locale" = "pt-BR";
           "mousewheel.default.delta_multiplier_x" = 20;
           "mousewheel.default.delta_multiplier_y" = 20;
-          "widget.use-xdg-desktop-portal.file-picker" = if (config.my.modules.plasma.enable or false) then 1 else 0;
+          "widget.use-xdg-desktop-portal.file-picker" =
+            if (config.my.modules.plasma.enable or false)
+            then 1
+            else 0;
         };
       };
     };

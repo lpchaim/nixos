@@ -1,43 +1,47 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config
-, inputs
-, lib
-, pkgs
-, system
-, ...
-}:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkDefault;
+  inherit (lib.lpchaim) shared;
+  inherit (lib.snowfall) fs;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
-in
-{
+in {
   imports = [
-    ../../shared
+    (fs.get-file "modules/shared")
   ];
 
   # Boot
   boot = {
+    binfmt.emulatedSystems = lib.optionals pkgs.stdenv.isx86_64 ["aarch64-linux"];
     loader = {
       grub = {
-        enable = mkDefault true;
+        enable = mkDefault false;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 5;
       };
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = false;
+      systemd-boot = {
+        enable = mkDefault true;
+        editor = false;
+        configurationLimit = 5;
+        memtest86.enable = pkgs.stdenv.isx86_64;
+        netbootxyz.enable = true;
+      };
     };
     initrd.systemd.enable = true;
     plymouth = {
       enable = true;
       theme = mkDefault "breeze";
     };
-    kernelParams = [ "splash" "quiet" "btusb.enable_autosuspend=n" ];
+    kernelParams = ["splash" "quiet" "btusb.enable_autosuspend=n"];
   };
 
   # Package manager
@@ -46,21 +50,9 @@ in
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
-    settings = {
-      keep-outputs = true;
-      substituters = [
-        "https://nix-community.cachix.org"
-        "https://nyx.chaotic.cx"
-        "https://snowflakeos.cachix.org"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8"
-        "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
-      ];
-    };
+    settings = shared.nix.settings;
     gc = {
-      automatic = true;
+      automatic = !config.programs.nh.clean.enable;
       dates = "weekly";
     };
   };
@@ -74,15 +66,15 @@ in
         5353 # spotify cast discovery
       ];
     };
-    dhcpcd.extraConfig =
-      let wifiOffset = 2000;
-      in ''
-        ssid Lpchaim5G
-        metric ${toString (wifiOffset - 20)}
+    dhcpcd.extraConfig = let
+      wifiOffset = 2000;
+    in ''
+      ssid Lpchaim5G
+      metric ${toString (wifiOffset - 20)}
 
-        ssid Lpchaim
-        metric ${toString (wifiOffset - 10)}
-      '';
+      ssid Lpchaim
+      metric ${toString (wifiOffset - 10)}
+    '';
   };
 
   # Internationalization
@@ -99,8 +91,7 @@ in
   };
   console.useXkbConfig = true; # use xkb.options in tty.
   services.xserver.xkb = {
-    layout = "br,br,us";
-    variant = ",nodeadkeys,intl";
+    inherit (lib.lpchaim.shared.kb.default) layout options variant;
   };
 
   # Hardware
@@ -113,26 +104,40 @@ in
         };
       };
     };
-    graphics =
-      let
-        getExtraPackages = p: with p; [
-          intel-media-driver
-          intel-vaapi-driver
-        ];
-      in
-      {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = getExtraPackages pkgs;
-        extraPackages32 = getExtraPackages pkgs.pkgsi686Linux;
-      };
+    graphics = let
+      getExtraPackages = p:
+        with p;
+          lib.optionals pkgs.stdenv.isx86_64 [
+            intel-media-driver
+            intel-vaapi-driver
+          ];
+    in {
+      enable = lib.mkDefault false;
+      enable32Bit = config.hardware.graphics.enable && pkgs.stdenv.isx86_64;
+      extraPackages = lib.mkIf config.hardware.graphics.enable (getExtraPackages pkgs);
+      extraPackages32 = lib.mkIf config.hardware.graphics.enable (getExtraPackages pkgs.pkgsi686Linux);
+    };
   };
 
   # Programs
-  programs.zsh.enable = true;
+  programs = {
+    adb.enable = true;
+    fish.enable = true;
+    nix-ld.enable = true;
+    nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 5";
+      };
+    };
+    zsh.enable = true;
+  };
   environment.systemPackages = with pkgs; [
+    android-udev-rules
     helix
-    inputs.nix-software-center.packages.${system}.nix-software-center
+    sbctl
     snowfallorg.flake
     vim
     wget
@@ -144,29 +149,30 @@ in
   # Services
   services = {
     blueman.enable = true;
-    btrfs.autoScrub =
-      let
-        btrfsFileSystems = getFileSystemsByFsType "btrfs";
-      in
-      lib.mkIf (btrfsFileSystems != { }) {
+    btrfs.autoScrub = let
+      btrfsFileSystems = getFileSystemsByFsType "btrfs";
+    in
+      lib.mkIf (btrfsFileSystems != {}) {
         enable = true;
         interval = "monthly";
         fileSystems =
-          if btrfsFileSystems?"/"
-          then [ "/" ]
+          if btrfsFileSystems ? "/"
+          then ["/"]
           else lib.attrNames btrfsFileSystems;
       };
+    devmon.enable = true;
     fstrim = {
       enable = true;
       interval = "weekly";
     };
+    fwupd.enable = true;
+    gvfs.enable = true;
     libinput.enable = true;
     ollama = {
       enable = true;
-      # openFirewall = true;
+      openFirewall = true;
       host = "127.0.0.1";
       port = 11434;
-      sandbox = true;
     };
     openssh = {
       enable = true;
@@ -177,34 +183,50 @@ in
         PermitRootLogin = mkDefault "no";
       };
     };
+    power-profiles-daemon.enable = true;
     printing.enable = true;
     tailscale = {
       enable = true;
+      authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
+      extraUpFlags = [
+        "--accept-dns"
+        "--accept-routes"
+        "--advertise-exit-node"
+        "--advertise-tags=tag:nixos"
+        "--reset" # Forces unspecified arguments to default values
+        "--ssh"
+      ];
+      openFirewall = true;
       useRoutingFeatures = "both";
     };
+    udisks2.enable = true;
   };
-  services.xserver.enable = true;
+  services.xserver.enable = lib.mkDefault true;
 
   # Misc
   home-manager = {
-    backupFileExtension = "bak";
+    backupFileExtension = "backup";
     useGlobalPkgs = true;
     useUserPackages = true;
   };
   sops = {
     defaultSopsFile = lib.snowfall.fs.get-file "secrets/default.yaml";
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     secrets = {
       password.neededForUsers = true;
+      "tailscale/oauth/secret" = {};
     };
   };
-  sound.enable = true;
   stylix = {
     homeManagerIntegration = {
       autoImport = false;
       followSystem = true;
     };
     targets.plymouth.enable = false;
+  };
+  systemd = {
+    targets.network-online.wantedBy = pkgs.lib.mkForce [];
+    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
   };
   zramSwap = {
     enable = true;

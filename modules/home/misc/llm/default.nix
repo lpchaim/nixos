@@ -1,14 +1,17 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (inputs.home-manager.lib) hm;
   inherit (inputs.nix-std.lib) serde;
   inherit (lib) mkIf mkEnableOption mkOption;
-  namespace = [ "my" "modules" "misc" "llm" ];
+  namespace = ["my" "modules" "misc" "llm"];
   cfg = lib.getAttrFromPath namespace config;
-  defaultEnable = { default = cfg.enable; };
-in
-{
+  defaultEnable = {default = cfg.enable;};
+in {
   options = lib.setAttrByPath namespace {
     enable = mkEnableOption "LLM tools";
     defaultModel = mkOption {
@@ -40,22 +43,21 @@ in
   };
   config = mkIf cfg.enable (lib.mkMerge [
     (mkIf cfg.ollama.enable {
-      home.activation.setupOllamaModels =
-        let
-          models = lib.lists.unique [
-            cfg.defaultModel
-            cfg.ollama.model
-            cfg.smartcat.model
-          ];
-        in
-        hm.dag.entryAfter [ "writeBoundary" ] ''
+      home.activation.setupOllamaModels = let
+        models = lib.lists.unique [
+          cfg.defaultModel
+          cfg.ollama.model
+          cfg.smartcat.model
+        ];
+      in
+        hm.dag.entryAfter ["writeBoundary"] ''
           run echo "${lib.concatStringsSep "\n" models}" \
           | ${pkgs.parallel}/bin/parallel ${pkgs.ollama}/bin/ollama pull {}
         '';
     })
     (mkIf cfg.smartcat.enable {
       home = {
-        packages = [ pkgs.lpchaim.smartcat ];
+        packages = [pkgs.smartcat];
         file = {
           ".config/smartcat/.api_config.toml".text = serde.toTOML {
             ollama = {
@@ -68,9 +70,10 @@ in
             default = {
               api = "ollama";
               model = cfg.smartcat.model;
-              messages = [{
-                role = "system";
-                content = "
+              messages = [
+                {
+                  role = "system";
+                  content = "
                   You are an extremely skilled programmer with a keen eye for detail and an emphasis on readable code.
                   You have been tasked with acting as a smart version of the cat unix program. You take text and a prompt in and write text out.
                   For that reason, it is of crucial importance to just write the desired output. Do not under any circumstance write any comment or thought
@@ -78,13 +81,15 @@ in
                   Sometimes you will be asked to implement or extend some input code. Same thing goes here, write only what was asked because what you write will
                   be directly added to the user's editor. Never ever write ``` around the code.
                 ";
-              }];
+                }
+              ];
             };
             test = {
               api = "ollama";
-              messages = [{
-                role = "system";
-                content = "
+              messages = [
+                {
+                  role = "system";
+                  content = "
                   You are an extremely skilled programmer with a keen eye for detail and an emphasis on readable code.
                   You have been tasked with acting as a smart version of the cat unix program. You take text and a prompt in and write text out.
                   For that reason, it is of crucial importance to just write the desired output. Do not under any circumstance write any comment or thought
@@ -93,11 +98,12 @@ in
                   be directly added to the user's editor.
                   Never ever write ``` around the code.
                 ";
-              }];
+                }
+              ];
             };
             empty = {
               api = "ollama";
-              messages = [ ];
+              messages = [];
             };
           };
         };

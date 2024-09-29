@@ -1,11 +1,14 @@
-{ config, inputs, lib, pkgs, ... }:
-
-with lib;
-let
-  namespace = [ "my" "modules" "de" "hyprland" "plugins" ];
-  cfg = getAttrFromPath namespace config;
-in
 {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  namespace = ["my" "modules" "de" "hyprland" "plugins"];
+  cfg = getAttrFromPath namespace config;
+in {
   options = setAttrByPath namespace {
     enable = mkEnableOption "Hyprland plugins";
   };
