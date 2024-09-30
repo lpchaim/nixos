@@ -24,10 +24,10 @@ in {
     })
     {
       home.packages = with pkgs; [
-        discord
         spotify
         spotify-tray
         zapzap
+        vesktop
       ];
 
       programs = {
