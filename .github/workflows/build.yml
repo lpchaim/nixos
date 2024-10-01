@@ -34,6 +34,7 @@ jobs:
   build-packages:
     name: Build packages
     needs: inventory
+    if: ${{ needs.inventory.outputs.packages != '[]' }}
     strategy:
       matrix: ${{ fromJSON(needs.inventory.outputs.packages) }}
     runs-on: ubuntu-latest
