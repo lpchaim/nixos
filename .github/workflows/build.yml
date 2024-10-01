@@ -34,9 +34,10 @@ jobs:
   build-packages:
     name: Build packages
     needs: inventory
-    if: ${{ toJson(fromJson(needs.inventory.outputs.packages)) != '[]' }}
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.packages)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.packages) }}
+      matrix:
+        includes: ${{ fromJSON(needs.inventory.outputs.packages) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,8 +51,10 @@ jobs:
   build-devshells:
     name: Build devShells
     needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.devShells)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.devShells) }}
+      matrix:
+        includes: ${{ fromJSON(needs.inventory.outputs.devShells) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -65,8 +68,10 @@ jobs:
   build-homes:
     name: Build homeConfigurations
     needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.homeConfigurations)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
+      matrix:
+        includes: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
