@@ -37,7 +37,7 @@ jobs:
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.packages)) != '[]' }}
     strategy:
       matrix:
-        includes: ${{ fromJSON(needs.inventory.outputs.packages) }}
+        include: ${{ fromJSON(needs.inventory.outputs.packages) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.devShells)) != '[]' }}
     strategy:
       matrix:
-        includes: ${{ fromJSON(needs.inventory.outputs.devShells) }}
+        include: ${{ fromJSON(needs.inventory.outputs.devShells) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.homeConfigurations)) != '[]' }}
     strategy:
       matrix:
-        includes: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
+        include: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
