@@ -128,6 +128,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "stable";
     };
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix = {
       url = "github:danth/stylix";
       inputs.flake-compat.follows = "flake-compat";
@@ -170,6 +174,7 @@
       nix-index-database.hmModules.nix-index
       nixvim.homeManagerModules.nixvim
       sops-nix.homeManagerModules.sops
+      spicetify-nix.homeManagerModules.default
       stylix.homeManagerModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
     ];
