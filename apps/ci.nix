@@ -66,7 +66,7 @@
                 | update column1 { where system == $system }
                 | transpose --header-row --as-record
             } else $in
-            | if $output != all { get $output } else $in
+            | if $output != all { get --ignore-errors $output | default [] } else $in
             | { include: $in }
             | to json --raw
           }
