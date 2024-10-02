@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   inventory:
     name: Build inventory
@@ -30,8 +34,10 @@ jobs:
   build-packages:
     name: Build packages
     needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.packages)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.packages) }}
+      matrix:
+        include: ${{ fromJSON(needs.inventory.outputs.packages) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,8 +51,10 @@ jobs:
   build-devshells:
     name: Build devShells
     needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.devShells)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.devShells) }}
+      matrix:
+        include: ${{ fromJSON(needs.inventory.outputs.devShells) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -60,8 +68,10 @@ jobs:
   build-homes:
     name: Build homeConfigurations
     needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.homeConfigurations)) != '[]' }}
     strategy:
-      matrix: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
+      matrix:
+        include: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,6 +90,6 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: ${{ matrix.system }}
+          system: aarch64-linux
       - run: |
           nix build .#nixosConfigurations.raspberrypi.config.system.build.toplevel
