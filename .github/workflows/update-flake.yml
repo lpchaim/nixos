@@ -1,0 +1,28 @@
+name: Update flake inputs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * SAT"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Check flake before update
+        uses: DeterminateSystems/flake-checker-action@v4
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v24
+        with:
+          token: ${{ secrets.GHA_TOKEN }}
+          branch: update-flake-inputs
+          pr-title: "chore: Update flake inputs"
+          pr-labels: |
+            dependencies
+            automated
+      - name: Check flake after update
+        uses: DeterminateSystems/flake-checker-action@v4
