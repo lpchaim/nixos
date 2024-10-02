@@ -28,7 +28,7 @@ in {
     nix.gc = {
       automatic = true;
       frequency = "daily";
-      options = "--delete-older-than=7d";
+      options = "--delete-older-than 7d";
     };
     nix.settings = shared.nix.settings;
     nix.extraOptions = mkIf (args ? osConfig) args.osConfig.nix.extraOptions;
