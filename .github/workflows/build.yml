@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - update-flake-inputs
 
 concurrency:
   group: ${{ github.workflow }}
