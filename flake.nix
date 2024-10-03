@@ -216,6 +216,7 @@
           inherit pkgs;
           check.enable = true;
           settings = {
+            hooks.actionlint.enable = true;
             hooks.alejandra.enable = true;
             hooks.ripsecrets.enable = true;
           };

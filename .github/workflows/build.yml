@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - update-flake-inputs
 
 concurrency:
   group: ${{ github.workflow }}
@@ -26,10 +29,12 @@ jobs:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - id: matrix
         run: |
-          echo "packages=$(nix run .#get-ci-info -- --system x86_64-linux --output packages)" >> $GITHUB_OUTPUT
-          echo "devShells=$(nix run .#get-ci-info -- --system x86_64-linux --output devShells)" >> $GITHUB_OUTPUT
-          echo "homeConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output homeConfigurations)" >> $GITHUB_OUTPUT
-          echo "nixosConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output nixosConfigurations)" >> $GITHUB_OUTPUT
+          {
+          echo "packages=$(nix run .#get-ci-info -- --system x86_64-linux --output packages)"
+          echo "devShells=$(nix run .#get-ci-info -- --system x86_64-linux --output devShells)"
+          echo "homeConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output homeConfigurations)"
+          echo "nixosConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output nixosConfigurations)"
+          } >> "$GITHUB_OUTPUT"
 
   build-packages:
     name: Build packages
@@ -38,6 +43,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJSON(needs.inventory.outputs.packages) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +61,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJSON(needs.inventory.outputs.devShells) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,6 +79,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
