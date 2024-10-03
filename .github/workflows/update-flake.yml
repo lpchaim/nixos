@@ -14,7 +14,7 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: null
+          system: aarch64-linux
       - name: Update flake inputs
         uses: technote-space/create-pr-action@v2
         with:
