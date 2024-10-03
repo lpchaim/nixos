@@ -1,3 +1,6 @@
+name: Setup build environment
+description: Installs nix and optionally qemu, sets up caches
+
 inputs:
   system:
     description: 'The system to setup'
@@ -8,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Install qemu
-      if: ${{ inputs.system == 'aarch64-linux' }}
+      if: ${{ inputs.system != 'x86_64-linux' }}
       shell: bash
       run: |
         sudo apt-get install -y qemu-user-static

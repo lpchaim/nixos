@@ -11,18 +11,34 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-      - name: Check flake before update
-        uses: DeterminateSystems/flake-checker-action@v4
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v24
+      - uses: ./.github/actions/build-setup
         with:
-          token: ${{ secrets.GHA_TOKEN }}
-          branch: update-flake-inputs
-          pr-title: "chore: Update flake inputs"
-          pr-labels: |
-            dependencies
-            automated
-      - name: Check flake after update
-        uses: DeterminateSystems/flake-checker-action@v4
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: null
+      - name: Update flake inputs
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            updateOutput=$(nix flake update)
+            checkOutput=$(nix flake check)
+            cat <<EOF
+            ### Updated inputs
+            <details open>
+            ```sh
+            $updateOutput
+            ```
+            </details>
+
+            ### Check results
+            <details open>
+            ```sh
+            $checkOutput
+            ```
+            </details>
+            EOF
+          GITHUB_TOKEN: ${{ secrets.GHA_TOKEN }}
+          COMMIT_MESSAGE: 'chore: Update flake inputs'
+          PR_TITLE: 'chore: Update flake inputs'
+          PR_BRANCH_NAME: update-flake-inputs
+          PR_BODY: |
+            ${COMMANDS_OUTPUT}
