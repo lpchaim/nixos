@@ -5,13 +5,15 @@ inputs:
   system:
     description: 'The system to setup'
     default: 'x86_64-linux'
+  forceInstallQemu:
+    default: false
   cachixAuthToken:
     description: 'The token to use to authenticate with cachix'
 runs:
   using: "composite"
   steps:
     - name: Install qemu
-      if: ${{ inputs.system != 'x86_64-linux' }}
+      if: ${{ inputs.forceInstallQemu || inputs.system != 'x86_64-linux' }}
       shell: bash
       run: |
         sudo apt-get install -y qemu-user-static
