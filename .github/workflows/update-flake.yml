@@ -7,6 +7,7 @@ on:
 
 jobs:
   update:
+    name: Update flake
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,29 +17,131 @@ jobs:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: aarch64-linux
       - name: Update flake inputs
+        run: |
+          nix flake update 1> update.stdout 2> update.stderr
+      - name: Cache flake.lock
+        uses: actions/cache@v4.0.2
+        with:
+          path: flake.lock
+          key: flake-lock-${{ github.sha }}
+      - name: Cache update results
+        uses: actions/cache@v4.0.2
+        with:
+          path: |
+            update.stdout
+            update.stderr
+          key: update-${{ github.sha }}
+
+  check:
+    name: Run flake checks
+    needs: update
+    strategy:
+      matrix:
+        system:
+          - x86_64-linux
+          - aarch64-linux
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/build-setup
+        with:
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          system: ${{ matrix.system }}
+      - name: Restore cached flake.lock
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: flake.lock
+          key: flake-lock-${{ github.sha }}
+      - name: Run flake checks
+        run: |
+          nix flake check 1> check-${{ matrix.system }}.stdout 2> check-${{ matrix.system }}.stderr
+      - name: Cache check results
+        uses: actions/cache@v4.0.2
+        with:
+          path: |
+            check-${{ matrix.system }}.stdout
+            check-${{ matrix.system }}.stderr
+          key: check-${ matrix.system }-${{ github.sha }}
+
+  create-pr:
+    name: Create PR
+    needs:
+      - update
+      - check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore cached update results
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: |
+            update.stdout
+            update.stderr
+          key: update-${{ github.sha }}
+      - name: Restore cached x86_64-linux test results
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: |
+            check-x86_64-linux.stdout
+            check-x86_64-linux.stderr
+          key: check-x86_64-linux-${{ github.sha }}
+      - name: Restore cached aarch64-linux test results
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: |
+            check-aarch64-linux.stdout
+            check-aarch64-linux.stderr
+          key: check-aarch64-linux-${{ github.sha }}
+      - name: Set variables
+        id: vars
+        run: |
+          {
+            echo "update-stdout=$(cat update.stdout)"
+            echo "update-stderr=$(cat update.stderr)"
+            echo "check-x86_64-linux-stdout=$(cat check-x86_64-linux.stdout)"
+            echo "check-x86_64-linux-stderr=$(cat check-x86_64-linux.stderr)"
+            echo "check-aarch64-linux-stdout=$(cat check-aarch64-linux.stdout)"
+            echo "check-aarch64-linux-stderr=$(cat check-aarch64-linux.stderr)"
+          } > "$GITHUB_OUTPUT"
+      - name: Create PR
         uses: technote-space/create-pr-action@v2
         with:
-          EXECUTE_COMMANDS: |
-            updateOutput=$(nix flake update)
-            checkOutput=$(nix flake check)
-            cat <<EOF
-            ### Updated inputs
-            <details open>
-            ```sh
-            $updateOutput
-            ```
-            </details>
-
-            ### Check results
-            <details open>
-            ```sh
-            $checkOutput
-            ```
-            </details>
-            EOF
-          GITHUB_TOKEN: ${{ secrets.GHA_TOKEN }}
           COMMIT_MESSAGE: 'chore: Update flake inputs'
           PR_TITLE: 'chore: Update flake inputs'
           PR_BRANCH_NAME: update-flake-inputs
           PR_BODY: |
-            ${COMMANDS_OUTPUT}
+            ### Updated inputs
+
+            <details open>
+            ```sh
+            ${{ steps.vars.outputs.update-stdout }}
+            ```
+            </details>
+
+            ### Check results
+
+            #### x86_64-linux
+            ```sh
+            ${{ steps.vars.outputs.check-x86_64-linux-stdout }}
+            ```
+            <details>
+            <summary>Warnings</summary>
+            ```sh
+            ${{ steps.vars.outputs.check-x86_64-linux-stderr }}
+            ```
+            </details>
+
+            #### aarch64-linux
+            ```sh
+            ${{ steps.vars.outputs.check-aarch64-linux-stdout }}
+            ```
+            <details>
+            <summary>Warnings</summary>
+            ```sh
+            ${{ steps.vars.outputs.check-aarch64-linux-stderr }}
+            ```
+            </details>
+            ```
+            </details>
+          GITHUB_TOKEN: ${{ secrets.GHA_TOKEN }}
