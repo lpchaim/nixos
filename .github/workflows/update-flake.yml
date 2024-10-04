@@ -18,7 +18,10 @@ jobs:
           system: aarch64-linux
       - name: Update flake inputs
         run: |
-          nix flake update 1> update.stdout 2> update.stderr
+          nix flake update \
+          | tee --output-error /dev/tty \
+            1> update.stdout \
+            2> update.stderr
       - name: Cache flake.lock
         uses: actions/cache@v4.0.2
         with:
@@ -56,7 +59,10 @@ jobs:
           key: flake-lock-${{ github.sha }}
       - name: Run flake checks
         run: |
-          nix flake check 1> check-${{ matrix.system }}.stdout 2> check-${{ matrix.system }}.stderr
+          nix flake check \
+          | tee --output-error /dev/tty \
+            1> check-${{ matrix.system }}.stdout \
+            2> check-${{ matrix.system }}.stderr
       - name: Cache check results
         uses: actions/cache@v4.0.2
         with:
