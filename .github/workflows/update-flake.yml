@@ -17,6 +17,7 @@ jobs:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: aarch64-linux
       - name: Update flake inputs
+        continue-on-error: true
         run: |
           nix flake update \
           | tee --output-error /dev/tty \
@@ -51,6 +52,7 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          forceInstallQemu: true
           system: ${{ matrix.system }}
       - name: Restore cached flake.lock
         uses: actions/cache/restore@v4.0.2
