@@ -19,13 +19,35 @@ jobs:
       - name: Update flake inputs
         run: |
           nix flake update \
-            1> update.stdout \
+            > update.stdout \
             2> update.stderr
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ### Output
+          \`\`\`sh
+          $(cat update.stdout)
+          \`\`\`
+
+          ### Warnings
+          \`\`\`sh
+          $(cat update.stderr)
+          \`\`\`
+          EOF
       - name: Run flake checks
         run: |
           nix flake check \
-            1> check.stdout \
+            > check.stdout \
             2> check.stderr
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ### Output
+          \`\`\`sh
+          $(cat check.stdout)
+          \`\`\`
+
+          ### Warnings
+          \`\`\`sh
+          $(cat check.stderr)
+          \`\`\`
+          EOF
       - name: Build PR body
         id: vars
         run: |
@@ -41,9 +63,12 @@ jobs:
 
           ### Check results
 
+          <details open>
           \`\`\`sh
           $(cat check.stdout)
           \`\`\`
+          </details>
+
           <details>
           <summary>Warnings</summary>
           \`\`\`sh
@@ -53,6 +78,8 @@ jobs:
           GHO
           echo EOF
           } >> "$GITHUB_OUTPUT"
+          rm ./update.{stdout,stderr}
+          rm ./check.{stdout,stderr}
       - name: Create PR
         uses: technote-space/create-pr-action@v2
         with:
