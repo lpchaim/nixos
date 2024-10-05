@@ -88,11 +88,19 @@ jobs:
         id: vars
         run: |
           {
-            echo "update-stdout=$(cat update.stdout)"
-            echo "update-stderr=$(cat update.stderr)"
-            echo "check-stdout=$(cat check.stdout)"
-            echo "check-stderr=$(cat check.stderr)"
-          } > "$GITHUB_OUTPUT"
+          echo 'update-stdout<<EOF'
+          cat update.stdout
+          echo EOF
+          echo 'update-stderr<<EOF'
+          cat update.stderr
+          echo EOF
+          echo 'check-stdout<<EOF'
+          cat check.stdout
+          echo EOF
+          echo 'check-stderr<<EOF'
+          cat check.stderr
+          echo EOF
+          } >> "$GITHUB_OUTPUT"
       - name: Create PR
         uses: technote-space/create-pr-action@v2
         with:
