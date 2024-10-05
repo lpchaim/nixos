@@ -15,90 +15,42 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: aarch64-linux
+          forceInstallQemu: true
       - name: Update flake inputs
         run: |
           nix flake update \
             1> update.stdout \
             2> update.stderr
-      - name: Cache flake.lock
-        uses: actions/cache@v4.0.2
-        with:
-          path: flake.lock
-          key: flake-lock-${{ github.sha }}
-      - name: Cache update results
-        uses: actions/cache@v4.0.2
-        with:
-          path: |
-            update.stdout
-            update.stderr
-          key: update-${{ github.sha }}
-
-  check:
-    name: Run flake checks
-    needs: update
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
-        with:
-          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          forceInstallQemu: true
-      - name: Restore cached flake.lock
-        uses: actions/cache/restore@v4.0.2
-        with:
-          path: flake.lock
-          key: flake-lock-${{ github.sha }}
       - name: Run flake checks
         run: |
           nix flake check \
             1> check.stdout \
             2> check.stderr
-      - name: Cache check results
-        uses: actions/cache@v4.0.2
-        with:
-          path: |
-            check.stdout
-            check.stderr
-          key: check-${{ github.sha }}
-
-  create-pr:
-    name: Create PR
-    needs:
-      - update
-      - check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore cached update results
-        uses: actions/cache/restore@v4.0.2
-        with:
-          path: |
-            update.stdout
-            update.stderr
-          key: update-${{ github.sha }}
-      - name: Restore cached test results
-        uses: actions/cache/restore@v4.0.2
-        with:
-          path: |
-            check.stdout
-            check.stderr
-          key: check-${{ github.sha }}
-      - name: Set variables
+      - name: Build PR body
         id: vars
         run: |
           {
-          echo 'update-stdout<<EOF'
-          cat update.stdout
-          echo EOF
-          echo 'update-stderr<<EOF'
-          cat update.stderr
-          echo EOF
-          echo 'check-stdout<<EOF'
-          cat check.stdout
-          echo EOF
-          echo 'check-stderr<<EOF'
-          cat check.stderr
+          echo 'PR_BODY<<EOF'
+          cat <<GHO
+          ### Updated inputs
+          <details open>
+          \`\`\`sh
+          $(cat update.stdout)
+          \`\`\`
+          </details>
+
+          ### Check results
+
+          \`\`\`sh
+          $(cat check.stdout)
+          \`\`\`
+          <details>
+          <summary>Warnings</summary>
+          \`\`\`sh
+          $(cat check.stderr)
+          \`\`\`
+          </details>
+          GHO
           echo EOF
           } >> "$GITHUB_OUTPUT"
       - name: Create PR
@@ -107,24 +59,5 @@ jobs:
           COMMIT_MESSAGE: 'chore: Update flake inputs'
           PR_TITLE: 'chore: Update flake inputs'
           PR_BRANCH_NAME: update-flake-inputs
-          PR_BODY: |
-            ### Updated inputs
-
-            <details open>
-            ```sh
-            ${{ steps.vars.outputs.update-stdout }}
-            ```
-            </details>
-
-            ### Check results
-
-            ```sh
-            ${{ steps.vars.outputs.check-stdout }}
-            ```
-            <details>
-            <summary>Warnings</summary>
-            ```sh
-            ${{ steps.vars.outputs.check-stderr }}
-            ```
-            </details>
+          PR_BODY: ${{ steps.vars.outputs.PR_BODY }}
           GITHUB_TOKEN: ${{ secrets.GHA_TOKEN }}
