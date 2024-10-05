@@ -22,6 +22,8 @@ jobs:
             > update.stdout \
             2> update.stderr
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## Update
+
           ### Output
           \`\`\`sh
           $(cat update.stdout)
@@ -34,10 +36,13 @@ jobs:
           EOF
       - name: Run flake checks
         run: |
-          nix flake check \
+          nix flake check --all-systems \
             > check.stdout \
             2> check.stderr
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ---
+          ## Check
+
           ### Output
           \`\`\`sh
           $(cat check.stdout)

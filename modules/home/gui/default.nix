@@ -38,9 +38,15 @@ in {
         };
       };
 
-      services.nextcloud-client = {
-        enable = true;
-        startInBackground = true;
+      services = {
+        nextcloud-client = {
+          enable = true;
+          startInBackground = true;
+        };
+        trayscale = {
+          enable = true;
+          hideWindow = true;
+        };
       };
 
       xdg.mime.enable = true;

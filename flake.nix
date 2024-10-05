@@ -107,11 +107,6 @@
       flake = false;
     };
     nur.url = "github:nix-community/NUR";
-    omnix = {
-      url = "github:juspay/omnix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
-    };
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs";
