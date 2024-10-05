@@ -21,8 +21,8 @@ jobs:
           nix flake update \
           | tee --output-error /dev/tty \
             1> update.stdout \
-            2> update.stderr \
-          && exit "${PIPESTATUS[0]}"
+            2> update.stderr;
+          exit "${PIPESTATUS[0]}"
       - name: Cache flake.lock
         uses: actions/cache@v4.0.2
         with:
@@ -57,8 +57,8 @@ jobs:
           nix flake check \
           | tee --output-error /dev/tty \
             1> check.stdout \
-            2> check.stderr \
-          && exit "${PIPESTATUS[0]}"
+            2> check.stderr;
+          exit "${PIPESTATUS[0]}"
       - name: Cache check results
         uses: actions/cache@v4.0.2
         with:
