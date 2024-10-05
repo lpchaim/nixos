@@ -22,6 +22,8 @@ jobs:
           | tee --output-error /dev/tty \
             1> update.stdout \
             2> update.stderr;
+          echo "Exit code is supposed to be ${PIPESTATUS[0]}"
+          echo "PIPESTATUS 1 is ${PIPESTATUS[1]}"
           exit "${PIPESTATUS[0]}"
       - name: Cache flake.lock
         uses: actions/cache@v4.0.2
