@@ -19,7 +19,6 @@ jobs:
       - name: Update flake inputs
         run: |
           nix flake update \
-          | tee --output-error=warn /dev/tty \
             1> update.stdout \
             2> update.stderr
       - name: Cache flake.lock
@@ -54,7 +53,6 @@ jobs:
       - name: Run flake checks
         run: |
           nix flake check \
-          | tee --output-error=warn /dev/tty \
             1> check.stdout \
             2> check.stderr
       - name: Cache check results
