@@ -49,7 +49,7 @@
       ];
     in {
       get-ci-info.program =
-        pkgs.writeNushellScriptBin
+        pkgs.writers.writeNuBin
         "get-ci-info"
         # nu
         ''

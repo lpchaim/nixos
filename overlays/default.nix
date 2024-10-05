@@ -2,22 +2,22 @@
   inherit (inputs) self;
 in
   final: prev: {
-    inherit (inputs.omnix.packages.${prev.system}) omnix-cli;
     nix-conf = let
       homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
       nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
     in
       nixCfg;
-    writeNushellScript = name: text:
-      prev.writeScript name ''
-        #!${prev.nushell}/bin/nu
-
-        ${text}
-      '';
-    writeNushellScriptBin = name: text:
-      prev.writeScriptBin name ''
-        #!${prev.nushell}/bin/nu
-
-        ${text}
-      '';
+    # Temporary fix for xdg-desktop-portal-gnome
+    # See https://github.com/NixOS/nixpkgs/pull/345979
+    xdg-desktop-portal-gtk = prev.xdg-desktop-portal-gtk.overrideAttrs (old: {
+      buildInputs = [
+        prev.glib
+        prev.gtk3
+        prev.xdg-desktop-portal
+        prev.gsettings-desktop-schemas # settings exposed by settings portal
+        prev.gnome-desktop
+        prev.gnome-settings-daemon # schemas needed for settings api (mostly useless now that fonts were moved to g-d-s, just mouse and xsettings)
+      ];
+      mesonFlags = [];
+    });
   }

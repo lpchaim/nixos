@@ -188,11 +188,16 @@ in {
     tailscale = {
       enable = true;
       authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
+      authKeyParameters = {
+        ephemeral = false;
+        preauthorized = true;
+      };
       extraUpFlags = [
         "--accept-dns"
         "--accept-routes"
         "--advertise-exit-node"
         "--advertise-tags=tag:nixos"
+        "--operator=${shared.defaults.name.user}"
         "--reset" # Forces unspecified arguments to default values
         "--ssh"
       ];
