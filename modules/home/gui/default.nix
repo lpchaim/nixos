@@ -24,6 +24,7 @@ in {
     })
     {
       home.packages = with pkgs; [
+        logseq
         spotify-tray
         zapzap
         vesktop
