@@ -17,3 +17,9 @@ creation_rules:
       - *raspberrypi
       - *steamdeck
       - *wsl
+  - path_regex: secrets/hosts/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *master1
+      - *master2
+      - *desktop
