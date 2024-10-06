@@ -54,5 +54,16 @@ in {
       displayManager.sddm.enable = mkForce false;
       xserver.displayManager.gdm.enable = mkForce false;
     };
+
+    fileSystems."/run/media/${defaults.name.user}/sdcard" = {
+      device = "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1";
+      options = [
+        "defaults"
+        "subvol=@"
+        "compress=zstd"
+        "noatime"
+        "nofail"
+      ];
+    };
   };
 }
