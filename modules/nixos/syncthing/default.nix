@@ -53,19 +53,32 @@ in
             versioning = null;
             devices = allDevices;
           };
+          "${home}/Notes/Logseq" = {
+            id = "6ymhp-fehcm";
+            label = "Notes/Logseq";
+            type = "sendreceive";
+            versioning = null;
+            devices = allDevices;
+          };
           "${home}/.steam/steam/userdata/85204334/config/grid" = {
             id = "steam-custom-icons";
             label = "Steam/Custom Icons";
             type = "sendreceive";
             versioning = null;
-            devices = allDevices;
+            devices = ["desktop" "laptop" "steamdeck" "server"];
           };
         };
         devices = {
           desktop.id = "Q7UXFUW-Q4QWALL-AVBRBPW-Y2S44CV-IR4H3V4-OT2GH4V-6WCXBR4-STJXFQJ";
           desktop.name = "Desktop";
+          laptop.id = "VFFQPOF-XAPVKHO-4PUSIVT-ACYNHAZ-GOQBWC6-SEYBXGE-2MBBMRS-TJRD4QL";
+          laptop.name = "Laptop";
+          phone.id = "PDMAJC4-SIXM4NI-UDMSLPU-3QSBSM2-ZUBLQDU-MNCR2HH-XUJIG52-PH4IKQC";
+          phone.name = "Phone";
           server.id = "X5LHXQ6-NOCD2NO-RQ7FPLO-WFLLFRE-5BTTVL6-XLH3DAV-4ZIYI47-EEOVYAK";
           server.name = "Server";
+          steamdeck.id = "OBZRWRW-B7DYVZC-RL5JV3D-6YNWG4O-MAIN2GY-KTEBY6V-DWQK36S-5E2O7AB";
+          steamdeck.name = "Steam Deck";
         };
       };
     };

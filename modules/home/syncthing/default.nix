@@ -99,7 +99,13 @@ in
           qt\widgetstyle=
         EOF
       '';
-      Unit.X-Restart-Triggers = [syncthing syncthingtray];
+      Unit.X-Restart-Triggers = [
+        syncthing
+        syncthingtray
+        "syncthing.systemunit.service"
+        "syncthing-init.systemunit.service"
+        "syncthing-relay.systemunit.service"
+      ];
       Unit.X-SwitchMethod = "restart";
     };
   }
