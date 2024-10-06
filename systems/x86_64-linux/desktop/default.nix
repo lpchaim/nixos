@@ -21,6 +21,7 @@ in {
     ]);
 
   system.stateVersion = "23.11";
+  my.gaming.enable = true;
   my.security.secureboot.enable = true;
 
   fileSystems."/run/media/lpchaim/storage" = {
