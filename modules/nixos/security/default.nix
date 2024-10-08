@@ -32,6 +32,7 @@ lib.lpchaim.mkModule {
           config.security.pam.services.${svc}.text;
       in {
         "pam.d/login".text = lib.mkIf cfg.u2f.relaxed (lib.mkForce (patch "login"));
+        "pam.d/sshd".text = lib.mkForce (patch "sshd");
         "pam.d/sudo".text = lib.mkForce (patch "sudo");
       };
       security.pam = {
