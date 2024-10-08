@@ -106,7 +106,7 @@ in {
             kb_options = shared.kb.default.options;
             follow_mouse = 1;
             touchpad.natural_scroll = false;
-            resolve_binds_by_sym = true;
+            resolve_binds_by_sym = false;
           };
           device = [
             {
