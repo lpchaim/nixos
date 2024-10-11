@@ -185,25 +185,6 @@ in {
     };
     power-profiles-daemon.enable = true;
     printing.enable = true;
-    tailscale = {
-      enable = true;
-      authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
-      authKeyParameters = {
-        ephemeral = false;
-        preauthorized = true;
-      };
-      extraUpFlags = [
-        "--accept-dns"
-        "--accept-routes"
-        "--advertise-exit-node"
-        "--advertise-tags=tag:nixos"
-        "--operator=${shared.defaults.name.user}"
-        "--reset" # Forces unspecified arguments to default values
-        "--ssh"
-      ];
-      openFirewall = true;
-      useRoutingFeatures = "both";
-    };
     udisks2.enable = true;
   };
   services.xserver.enable = lib.mkDefault true;
