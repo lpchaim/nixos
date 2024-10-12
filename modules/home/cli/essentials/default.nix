@@ -43,6 +43,7 @@ in {
         nix-output-monitor
         nurl
         procs
+        progress
         rsync
         snowfallorg.flake
         tgpt
