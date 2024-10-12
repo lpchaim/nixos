@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.4.0](https://github.com/lpchaim/nixos/compare/v0.3.0...v0.4.0) (2024-10-12)
+
+
+### Features
+
+* Add basic declarative syncthing configuration ([23028dd](https://github.com/lpchaim/nixos/commit/23028dda6dba61feba13865944cdbf230c41a28e))
+* Add kdeconnect ([fe7d5fc](https://github.com/lpchaim/nixos/commit/fe7d5fc106bf9a4dd2b97de8a0c87a42b605abc3))
+* Add laptop + steamdeck to syncthing, misc improvements ([2a8b2f1](https://github.com/lpchaim/nixos/commit/2a8b2f110697c0f0410bb2c3c17a13a3fd7d2bbf))
+* Add Logseq ([e36b4a5](https://github.com/lpchaim/nixos/commit/e36b4a5717623f86c394202c43b1e9d62f42ce11))
+* Better tailscale module ([ba9178e](https://github.com/lpchaim/nixos/commit/ba9178eceb0cd244d16c436cff5b0af87ede16ef))
+* Better update flake CI workflow ([96eb61c](https://github.com/lpchaim/nixos/commit/96eb61cc8a70ec525d50e82739f6699db3805ee0))
+* **cli:** Add progress cli program ([29b604f](https://github.com/lpchaim/nixos/commit/29b604fd9ab62ef32b065916d64fe284713ff79b))
+* **steamdeck:** Auto mount steam deck sd card ([947e879](https://github.com/lpchaim/nixos/commit/947e879ec6cf7a2c4b07cb444d38a25b6674043e))
+* Weekly update + tailscale enhancements ([4e2cab0](https://github.com/lpchaim/nixos/commit/4e2cab0cb17faa95b7b638859a87af96b7d9ab83))
+
+
+### Bug Fixes
+
+* CI actions ([10d71f1](https://github.com/lpchaim/nixos/commit/10d71f17bbea8f674abf9dc7234597eb6017f1c8))
+* Disable most gaming features except for steam on laptop ([aff7cb9](https://github.com/lpchaim/nixos/commit/aff7cb90c4c375110cdd6da7e380503a1cd40a05))
+* Disable u2fAuth altogether for sshd service ([f1337f3](https://github.com/lpchaim/nixos/commit/f1337f328e310c6e4ee16642f8a407f3ccf9469e))
+* **hyprland:** Don't resolve binds by symbol ([55843a4](https://github.com/lpchaim/nixos/commit/55843a42ce337e494e4da1ca5490c2a5c8f28b44))
+* Multiline strings in update flake action ([d851f3a](https://github.com/lpchaim/nixos/commit/d851f3ac42ff33a5b03834f5a8fc83fce383b8a5))
+* Patch sshd PAM policy to relax login restrictions ([c1b186c](https://github.com/lpchaim/nixos/commit/c1b186c7e85d79eeb40bf98f978516f3ed5e1ea1))
+* Remove tee from update flake CI workflow ([b509255](https://github.com/lpchaim/nixos/commit/b509255417f720f80806b273a0db402cd8c274e4))
+* Steam deck home top level config argument ([b4b4dda](https://github.com/lpchaim/nixos/commit/b4b4dda6b715e5eaf776b0cefe1b8a37b61028d3))
+* Steam deck syncthing secrets formatting ([7c8ab69](https://github.com/lpchaim/nixos/commit/7c8ab6973034882e4f374e02ac3dbfb1b94cab18))
+* **steandeck:** Disable extra steam tweaks on steam deck ([c984a18](https://github.com/lpchaim/nixos/commit/c984a18cfe63f6ecdfc2eac6b9fcb839f83eb5b4))
+* tee --output-error missing actual argument ([48e92cd](https://github.com/lpchaim/nixos/commit/48e92cd00d209c412dd64ba1686dc94ae00f0104))
+* Update flake inputs CI workflow pipe exit status ([9c9f1c1](https://github.com/lpchaim/nixos/commit/9c9f1c13fb516a3b1c28339a74b4050c7af95ce5))
+
 ## [0.3.0](https://github.com/lpchaim/nixos/compare/v0.2.0...v0.3.0) (2024-10-04)
 
 
