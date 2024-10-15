@@ -20,5 +20,7 @@ in {
 
   networking.hostName = "laptop";
   system.stateVersion = "23.11";
+  my.gaming.steam.enable = true;
+  my.networking.tailscale.trusted = true;
   my.security.secureboot.enable = true;
 }

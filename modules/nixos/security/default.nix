@@ -37,6 +37,7 @@ lib.lpchaim.mkModule {
       security.pam = {
         services = {
           login.u2fAuth = true;
+          sshd.u2fAuth = false;
           sudo.u2fAuth = true;
         };
         sshAgentAuth.enable = true;
