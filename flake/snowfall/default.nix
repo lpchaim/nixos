@@ -2,6 +2,7 @@
   homeManagerModules,
   nixosModules,
   overlays,
+  ...
 }: {inputs, ...}: let
   inherit (snowfallLib.snowfall.attrs) merge-deep;
   inherit (snowfallLib.snowfall.internal.user-lib.home) mkHome;

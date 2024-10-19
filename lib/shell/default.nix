@@ -30,6 +30,7 @@
             ssh-to-age
             snowfallorg.flake
             sops
+            std
           ]);
       };
   };

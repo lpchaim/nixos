@@ -30,8 +30,11 @@ in {
       frequency = "daily";
       options = "--delete-older-than 7d";
     };
+    nix.extraOptions =
+      lib.optionalAttrs
+      (args ? osConfig)
+      args.osConfig.nix.extraOptions;
     nix.settings = shared.nix.settings;
-    nix.extraOptions = mkIf (args ? osConfig) args.osConfig.nix.extraOptions;
     systemd.user.startServices = "sd-switch";
   };
 }

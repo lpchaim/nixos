@@ -80,6 +80,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    haumea = {
+      url = "github:nix-community/haumea/v0.2.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     jovian.follows = "chaotic/jovian";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
@@ -125,6 +129,10 @@
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    std = {
+      url = "github:divnix/std";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
@@ -190,13 +198,15 @@
     in {
       systems = import inputs.systems;
       imports = let
-        importApplyWithDefaults = path:
-          importApply path {inherit inputs mkPkgs self;};
+        importApply' = path:
+          importApply path {inherit homeManagerModules inputs mkPkgs nixosModules overlays self;};
       in [
         inputs.git-hooks-nix.flakeModule
-        (importApply ./flake/snowfall {inherit homeManagerModules nixosModules overlays;})
-        (importApplyWithDefaults ./apps)
-        (importApplyWithDefaults ./devShells)
+        inputs.std.flakeModule
+        (importApply' ./flake/snowfall)
+        (importApply' ./flake/std.nix)
+        (importApply' ./apps)
+        (importApply' ./devShells)
       ];
       perSystem = {
         config,

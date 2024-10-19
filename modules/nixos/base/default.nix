@@ -4,17 +4,18 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }: let
+  inherit (inputs) self;
   inherit (lib) mkDefault;
   inherit (lib.lpchaim) shared;
-  inherit (lib.snowfall) fs;
   getFileSystemsByFsType = fsType:
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
 in {
   imports = [
-    (fs.get-file "modules/shared")
+    (self + /modules/shared)
   ];
 
   # Boot

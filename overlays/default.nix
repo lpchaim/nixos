@@ -2,6 +2,7 @@
   inherit (inputs) self;
 in
   final: prev: {
+    inherit (inputs.std.packages.${prev.system}) std;
     nix-conf = let
       homeCfg = self.legacyPackages.${prev.system}.homeConfigurations.minimal.config.home;
       nixCfg = homeCfg.file."${homeCfg.homeDirectory}/.config/nix/nix.conf".source;
