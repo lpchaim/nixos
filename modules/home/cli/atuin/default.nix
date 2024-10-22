@@ -3,7 +3,7 @@
   lib,
   pkgs,
   ...
-}:
+} @ args:
 lib.lpchaim.mkModule {
   inherit config;
   namespace = "my.modules.cli.atuin";
@@ -13,6 +13,7 @@ lib.lpchaim.mkModule {
     programs.atuin = {
       enable = true;
       settings = {
+        daemon.enabled = true;
         keymap_mode = "vim-insert";
         keymap_cursor.vim_insert = "steady-bar";
         keymap_cursor.vim_normal = "steady-block";
@@ -25,5 +26,49 @@ lib.lpchaim.mkModule {
         workspaces = true;
       };
     };
+    systemd.user.services =
+      {
+        atuin-daemon = {
+          Install.WantedBy = ["network-online.target"];
+          Service = {
+            ExecStart = "${pkgs.atuin}/bin/atuin daemon";
+            Restart = "on-failure";
+            RestartSec = "15";
+          };
+          Unit = {
+            Description = "atuin daemon";
+            After = ["network-online.target"];
+            X-Restart-Triggers = [
+              config.programs.atuin.package
+              config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
+            ];
+          };
+        };
+      }
+      // (lib.optionalAttrs (args ? osConfig)) {
+        atuin-login = {
+          Install.WantedBy = ["network-online.target"];
+          Service = {
+            Type = "oneshot";
+            ExecStart = pkgs.writeShellScriptBin "atuin-login" ''
+              if atuin status | grep -q "not logged in"; then
+                atuin login --username "$(cat ${args.osConfig.sops.secrets."atuin/username".path})" \
+                  --password "$(cat ${args.osConfig.sops.secrets."atuin/password".path})" \
+                  --key "$(cat ${args.osConfig.sops.secrets."atuin/key".path})"
+              fi
+            '';
+            Restart = "on-failure";
+            RestartSec = "15";
+          };
+          Unit = {
+            Description = "atuin login";
+            After = ["network-online.target"];
+            X-Restart-Triggers = [
+              config.programs.atuin.package
+              config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
+            ];
+          };
+        };
+      };
   };
 }
