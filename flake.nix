@@ -102,10 +102,6 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nu-scripts = {
-      url = "github:nushell/nu_scripts";
-      flake = false;
-    };
     nur.url = "github:nix-community/NUR";
     omnix = {
       url = "github:juspay/omnix";
