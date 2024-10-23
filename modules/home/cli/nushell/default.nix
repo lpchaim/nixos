@@ -24,12 +24,23 @@ in {
         pathsPerPkg =
           builtins.listToAttrs
           (builtins.map pkgToKeyVal ["git" "fzf"]);
+        nuScripts = pkgs.nu_scripts + /share/nu_scripts;
+        plugins = pkgs.nushellPlugins;
       in
         pkgs.runCommandNoCC "nushell-env" pathsPerPkg ''
           substituteAll ${./commands.nu} $out
           cat ${./env.nu} \
-          ${inputs.nu-scripts}/modules/formats/from-env.nu \
+          ${nuScripts}/modules/formats/from-env.nu \
           >> $out
+          cat <<EOF >> $out
+            plugin add ${plugins.formats}
+            plugin add ${plugins.gstat}
+            plugin add ${plugins.highlight}
+            plugin add ${plugins.net}
+            plugin add ${plugins.polars}
+            plugin add ${plugins.query}
+            plugin add ${plugins.units}
+            EOF
         '';
       shellAliases =
         config.programs.bash.shellAliases

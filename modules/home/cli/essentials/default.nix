@@ -87,7 +87,7 @@ in {
           "--group-directories-first"
         ];
         git = true;
-        icons = true;
+        icons = "auto";
       };
       fzf.enable = true;
       mcfly = {
