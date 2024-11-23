@@ -2,24 +2,23 @@
   config,
   lib,
   ...
-}:
-with lib; let
+} @ args: let
+  inherit (lib) getAttrFromPath mkIf;
   namespace = ["my" "modules" "de" "hyprland"];
   cfg = getAttrFromPath namespace config;
 in
   mkIf cfg.enable {
+    stylix.targets.hyprlock.enable = false;
     programs.hyprlock = {
       enable = true;
       settings = let
-        colors = config.lib.stylix.colors;
-        makeRgb = colorIndex: let
-          r = colors."base${colorIndex}-rgb-r";
-          g = colors."base${colorIndex}-rgb-g";
-          b = colors."base${colorIndex}-rgb-b";
-        in "rgb(${r},${g},${b})";
+        inherit (config.lib.stylix) colors;
       in {
         background = {
-          path = "screenshot";
+          path =
+            if (args ? osConfig && (lib.elem "nvidia" args.osConfig.services.xserver.videoDrivers))
+            then "${config.stylix.image}"
+            else "screenshot";
           blur_size = 3;
           blur_passes = 2;
         };
@@ -33,9 +32,11 @@ in
             dots_center = true;
             fade_on_empty = false;
             hide_input = false;
-            font_color = "rgb(0, 0, 0)";
-            inner_color = "rgba(200, 200, 200, 0.5)";
-            outer_color = "rgb(0, 0, 0)";
+            outer_color = "rgb(${colors.base03})";
+            inner_color = "rgb(${colors.base00})";
+            font_color = "rgb(${colors.base05})";
+            fail_color = "rgb(${colors.base08})";
+            check_color = "rgb(${colors.base0A})";
             placeholder_text = "";
             fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
             position = "0, -120";

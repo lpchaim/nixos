@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     distrobox
   ];
@@ -6,7 +11,7 @@
     docker = {
       enable = true;
       enableOnBoot = true;
-      enableNvidia = true;
+      enableNvidia = lib.elem "nvidia" config.services.xserver.videoDrivers;
     };
   };
 }
