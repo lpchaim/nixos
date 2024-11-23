@@ -31,6 +31,7 @@ in {
     options = [
       "defaults"
       "auto"
+      "exec"
       "nofail"
       "nosuid"
       "nodev"
