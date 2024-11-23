@@ -44,7 +44,7 @@
       inputs.hyprland.follows = "hyprland";
     };
     ags = {
-      url = "github:Aylur/ags";
+      url = "github:Aylur/ags/v1.8.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     astal = {
@@ -52,7 +52,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-aylur = {
-      url = "github:Aylur/dotfiles";
+      url = "github:Aylur/dotfiles/pre-astal";
       inputs.ags.follows = "ags";
       inputs.astal.follows = "astal";
       inputs.home-manager.follows = "home-manager";
