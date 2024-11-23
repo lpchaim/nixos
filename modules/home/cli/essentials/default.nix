@@ -44,16 +44,16 @@ in {
         nurl
         procs
         progress
+        python312Packages.howdoi
         rsync
         snowfallorg.flake
         tgpt
         tig
         yazi
         wget
-        python312Packages.howdoi
       ];
       sessionVariables = {
-        FLAKE = "${config.xdg.configHome}/nixos";
+        NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
       shellAliases = {
         gco = "git checkout";
@@ -84,7 +84,7 @@ in {
           "--group-directories-first"
         ];
         git = true;
-        icons = true;
+        icons = "auto";
       };
       fzf.enable = true;
       mcfly = {

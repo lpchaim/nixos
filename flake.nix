@@ -80,11 +80,13 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    jovian.follows = "chaotic/jovian";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.1";
+      url = "github:nix-community/lanzaboote";
       inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
@@ -121,7 +123,6 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "stable";
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";

@@ -36,8 +36,8 @@ in {
             "[workspace 10 silent] openrgb --startminimized"
           ];
           general = {
-            gaps_in = 5;
-            gaps_out = 10;
+            gaps_in = 2;
+            gaps_out = 5;
             border_size = 2;
             "col.active_border" = mkDefault "rgba(33ccffee) rgba(00ff99ee) 45deg";
             "col.inactive_border" = mkDefault "rgba(595959aa)";
@@ -49,10 +49,6 @@ in {
             rounding = 5;
             active_opacity = 0.9;
             inactive_opacity = 0.8;
-            drop_shadow = true;
-            shadow_range = 4;
-            shadow_render_power = 3;
-            "col.shadow" = mkDefault "rgba(1a1a1aee)";
             blur = {
               enabled = true;
               size = 10;
@@ -88,11 +84,9 @@ in {
             smart_split = true;
             smart_resizing = true;
             preserve_split = true;
-            no_gaps_when_only = 1;
           };
           master = {
             new_status = "master";
-            no_gaps_when_only = false;
           };
           misc = {
             disable_hyprland_logo = true;
