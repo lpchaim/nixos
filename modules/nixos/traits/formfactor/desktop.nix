@@ -13,6 +13,7 @@
       qmk_hid
       qmk-udev-rules
       via
+      waypipe
       wayvnc
     ];
 
