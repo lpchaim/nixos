@@ -28,6 +28,7 @@ in {
 
   config = {
     system.stateVersion = "24.05";
+    my.gaming.enable = false;
     my.gaming.steam.enable = true;
     my.security.u2f.relaxed = true;
 
@@ -53,6 +54,10 @@ in {
     services = mkIf config.jovian.steam.autoStart {
       displayManager.sddm.enable = mkForce false;
       xserver.displayManager.gdm.enable = mkForce false;
+    };
+    time = {
+      hardwareClockInLocalTime = mkForce false;
+      timeZone = mkForce null;
     };
 
     fileSystems."/run/media/${defaults.name.user}/sdcard" = {
