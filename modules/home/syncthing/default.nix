@@ -8,8 +8,12 @@
   syncthing = args.osConfig.services.syncthing.package;
 in
   lib.mkIf (args ? osConfig && args.osConfig.services.syncthing.enable) {
+    home.packages = [pkgs.syncthingtray];
     services.syncthing.tray.enable = true;
     systemd.user.services.syncthingtray = {
+      Service.ExecStart = lib.mkForce (pkgs.writeShellScript "syncthingtray-wait" ''
+        ${pkgs.syncthingtray}/bin/syncthingtray --wait
+      '');
       Service.ExecStartPre = pkgs.writeShellScript "setup-syncthingtray" ''
           cat <<EOF >> ~/.config/syncthingtray.ini
           [General]
