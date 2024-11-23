@@ -46,7 +46,7 @@ in {
 
   # Package manager
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
