@@ -32,7 +32,6 @@ in {
           exec-once = [
             "hypridle"
             "hyprpaper"
-            "xwaylandvideobridge"
             "[workspace 10 silent] steam -silent"
             "[workspace 10 silent] openrgb --startminimized"
           ];
@@ -129,26 +128,36 @@ in {
           monitor = [",highrr,auto,1"];
           opengl.nvidia_anti_flicker = true;
           windowrulev2 = let
-            mkRules = rules: matcher:
+            mkRules = matcher: rules:
               map (rule: "${rule},${matcher}") rules;
-            mkAutoFloatRules = mkRules [
-              "opacity 0.7 override"
-              "noinitialfocus"
-              "float"
-              "pin"
-              "move onscreen 100%-w-3% 100%-w-3%"
-              "size 20% 20%"
-            ];
+            mkAutoFloatRules = matcher:
+              mkRules matcher [
+                "opacity 0.7 override"
+                "noinitialfocus"
+                "float"
+                "pin"
+                "move onscreen 100%-w-3% 100%-w-3%"
+                "size 25% 25%"
+              ];
           in
             (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
             ++ (mkAutoFloatRules "initialTitle:^(Picture in picture)$")
-            ++ (mkAutoFloatRules "class:^(discord)$,initialTitle:^(Discord Popout)$")
-            ++ (mkRules
-              ["idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override"])
-            "class:^steam_app\d+$"
-            ++ (mkRules
-              ["maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override"])
-            "class:^(xwaylandvideobridge)$"
+            ++ (mkAutoFloatRules "class:^(discord|vesktop)$,initialTitle:^(Discord Popout)$")
+            ++ (mkRules "class:^steam_app\d+$" [
+              "fullscreen"
+              "idleinhibit focus"
+              "monitor 1"
+              "opacity 1.0 override"
+              "workspace 10"
+            ])
+            ++ (mkRules "class:^(xwaylandvideobridge)$" [
+              "maxsize 1 1"
+              "noanim"
+              "noblur"
+              "nofocus"
+              "noinitialfocus"
+              "opacity 0.0 override"
+            ])
             ++ [
               "stayfocused, class:^(rofi)$"
             ];
