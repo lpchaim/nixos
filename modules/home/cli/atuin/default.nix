@@ -29,7 +29,7 @@ lib.lpchaim.mkModule {
     systemd.user.services =
       {
         atuin-daemon = {
-          Install.WantedBy = ["network-online.target"];
+          Install.WantedBy = ["multi-user.target"];
           Service = {
             ExecStart = "${pkgs.atuin}/bin/atuin daemon";
             Restart = "on-failure";
@@ -37,7 +37,7 @@ lib.lpchaim.mkModule {
           };
           Unit = {
             Description = "atuin daemon";
-            After = ["network-online.target"];
+            After = ["multi-user.target"];
             X-Restart-Triggers = [
               config.programs.atuin.package
               config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
