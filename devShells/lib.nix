@@ -19,12 +19,9 @@
           ++ (with pkgs; [
             age
             alejandra
-            nh
             nil
-            nixos-generators
             nixpkgs-fmt
             ssh-to-age
-            snowfallorg.flake
             sops
           ]);
         shellHook =

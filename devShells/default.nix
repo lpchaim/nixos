@@ -19,7 +19,10 @@
           fish
           helix
           home-manager
+          nh
+          nixos-generators
           nixos-rebuild
+          snowfallorg.flake
           (writeShellScriptBin "flake-init" ''
             if [ ! -d "$FLAKE" ]; then
               mkdir -p "$FLAKE"
