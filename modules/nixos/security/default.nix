@@ -13,10 +13,15 @@ lib.lpchaim.mkModule {
     u2f = {
       control = lib.mkOption {
         inherit (options.security.pam.u2f.control) description type;
-        default = "requisite";
+        default = "sufficient";
       };
       relaxed = lib.mkOption {
         description = "Relax required to sufficient for less critical devices";
+        type = lib.types.bool;
+        default = false;
+      };
+      screenOffOnUnplug = lib.mkOption {
+        description = "Turn screen off on dongle removal";
         type = lib.types.bool;
         default = false;
       };
@@ -30,13 +35,17 @@ lib.lpchaim.mkModule {
           ["auth ${cfg.u2f.control} ${pkgs.pam_u2f}"]
           ["auth sufficient ${pkgs.pam_u2f}"]
           config.security.pam.services.${svc}.text;
+        needsPatch = cfg.u2f.control != "sufficient";
+        patchIfNeeded = svc:
+          lib.mkIf (cfg.u2f.relaxed && needsPatch) (lib.mkForce (patch svc));
       in {
-        "pam.d/login".text = lib.mkIf cfg.u2f.relaxed (lib.mkForce (patch "login"));
-        "pam.d/sudo".text = lib.mkForce (patch "sudo");
+        "pam.d/login".text = patchIfNeeded "login";
+        "pam.d/sudo".text = patchIfNeeded "sudo";
       };
       security.pam = {
         services = {
-          login.u2fAuth = true;
+          login.u2fAuth = false;
+          sshd.u2fAuth = true;
           sudo.u2fAuth = true;
         };
         sshAgentAuth.enable = true;
@@ -59,7 +68,7 @@ lib.lpchaim.mkModule {
       };
       services = {
         udev = {
-          extraRules = ''
+          extraRules = lib.mkIf cfg.u2f.screenOffOnUnplug ''
             ACTION=="remove", \
             ENV{ID_BUS}=="usb", \
             ENV{ID_MODEL_ID}=="0407", \

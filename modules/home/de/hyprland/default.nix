@@ -32,13 +32,12 @@ in {
           exec-once = [
             "hypridle"
             "hyprpaper"
-            "xwaylandvideobridge"
             "[workspace 10 silent] steam -silent"
             "[workspace 10 silent] openrgb --startminimized"
           ];
           general = {
-            gaps_in = 5;
-            gaps_out = 10;
+            gaps_in = 2;
+            gaps_out = 5;
             border_size = 2;
             "col.active_border" = mkDefault "rgba(33ccffee) rgba(00ff99ee) 45deg";
             "col.inactive_border" = mkDefault "rgba(595959aa)";
@@ -50,10 +49,6 @@ in {
             rounding = 5;
             active_opacity = 0.9;
             inactive_opacity = 0.8;
-            drop_shadow = true;
-            shadow_range = 4;
-            shadow_render_power = 3;
-            "col.shadow" = mkDefault "rgba(1a1a1aee)";
             blur = {
               enabled = true;
               size = 10;
@@ -89,11 +84,9 @@ in {
             smart_split = true;
             smart_resizing = true;
             preserve_split = true;
-            no_gaps_when_only = 1;
           };
           master = {
             new_status = "master";
-            no_gaps_when_only = false;
           };
           misc = {
             disable_hyprland_logo = true;
@@ -106,7 +99,7 @@ in {
             kb_options = shared.kb.default.options;
             follow_mouse = 1;
             touchpad.natural_scroll = false;
-            resolve_binds_by_sym = true;
+            resolve_binds_by_sym = false;
           };
           device = [
             {
@@ -129,26 +122,36 @@ in {
           monitor = [",highrr,auto,1"];
           opengl.nvidia_anti_flicker = true;
           windowrulev2 = let
-            mkRules = rules: matcher:
+            mkRules = matcher: rules:
               map (rule: "${rule},${matcher}") rules;
-            mkAutoFloatRules = mkRules [
-              "opacity 0.7 override"
-              "noinitialfocus"
-              "float"
-              "pin"
-              "move onscreen 100%-w-3% 100%-w-3%"
-              "size 20% 20%"
-            ];
+            mkAutoFloatRules = matcher:
+              mkRules matcher [
+                "opacity 0.7 override"
+                "noinitialfocus"
+                "float"
+                "pin"
+                "move onscreen 100%-w-3% 100%-w-3%"
+                "size 25% 25%"
+              ];
           in
             (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
             ++ (mkAutoFloatRules "initialTitle:^(Picture in picture)$")
-            ++ (mkAutoFloatRules "class:^(discord)$,initialTitle:^(Discord Popout)$")
-            ++ (mkRules
-              ["idleinhibit focus" "fullscreen" "monitor 1" "workspace 10" "opacity 1.0 override"])
-            "class:^steam_app\d+$"
-            ++ (mkRules
-              ["maxsize 1 1" "noanim" "noblur" "nofocus" "noinitialfocus" "opacity 0.0 override"])
-            "class:^(xwaylandvideobridge)$"
+            ++ (mkAutoFloatRules "class:^(discord|vesktop)$,initialTitle:^(Discord Popout)$")
+            ++ (mkRules "class:^steam_app\d+$" [
+              "fullscreen"
+              "idleinhibit focus"
+              "monitor 1"
+              "opacity 1.0 override"
+              "workspace 10"
+            ])
+            ++ (mkRules "class:^(xwaylandvideobridge)$" [
+              "maxsize 1 1"
+              "noanim"
+              "noblur"
+              "nofocus"
+              "noinitialfocus"
+              "opacity 0.0 override"
+            ])
             ++ [
               "stayfocused, class:^(rofi)$"
             ];

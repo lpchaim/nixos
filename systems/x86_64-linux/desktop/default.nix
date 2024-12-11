@@ -21,6 +21,8 @@ in {
     ]);
 
   system.stateVersion = "23.11";
+  my.gaming.enable = true;
+  my.networking.tailscale.trusted = true;
   my.security.secureboot.enable = true;
 
   fileSystems."/run/media/lpchaim/storage" = {
@@ -29,6 +31,7 @@ in {
     options = [
       "defaults"
       "auto"
+      "exec"
       "nofail"
       "nosuid"
       "nodev"

@@ -44,7 +44,7 @@
       inputs.hyprland.follows = "hyprland";
     };
     ags = {
-      url = "github:Aylur/ags";
+      url = "github:Aylur/ags/v1.8.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     astal = {
@@ -52,7 +52,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-aylur = {
-      url = "github:Aylur/dotfiles";
+      url = "github:Aylur/dotfiles/pre-astal";
       inputs.ags.follows = "ags";
       inputs.astal.follows = "astal";
       inputs.home-manager.follows = "home-manager";
@@ -80,11 +80,13 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    jovian.follows = "chaotic/jovian";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.1";
+      url = "github:nix-community/lanzaboote";
       inputs.flake-compat.follows = "flake-compat";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
@@ -103,11 +105,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    omnix = {
-      url = "github:juspay/omnix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
-    };
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -122,7 +119,6 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "stable";
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -212,6 +208,7 @@
           inherit pkgs;
           check.enable = true;
           settings = {
+            hooks.actionlint.enable = true;
             hooks.alejandra.enable = true;
             hooks.ripsecrets.enable = true;
           };

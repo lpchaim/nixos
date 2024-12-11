@@ -46,7 +46,7 @@ in {
 
   # Package manager
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = flakes nix-command
     '';
@@ -185,20 +185,6 @@ in {
     };
     power-profiles-daemon.enable = true;
     printing.enable = true;
-    tailscale = {
-      enable = true;
-      authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
-      extraUpFlags = [
-        "--accept-dns"
-        "--accept-routes"
-        "--advertise-exit-node"
-        "--advertise-tags=tag:nixos"
-        "--reset" # Forces unspecified arguments to default values
-        "--ssh"
-      ];
-      openFirewall = true;
-      useRoutingFeatures = "both";
-    };
     udisks2.enable = true;
   };
   services.xserver.enable = lib.mkDefault true;

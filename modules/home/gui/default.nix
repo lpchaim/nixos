@@ -3,7 +3,7 @@
   pkgs,
   lib,
   ...
-}:
+} @ args:
 with lib; let
   namespace = ["my" "modules" "gui"];
   cfg = getAttrFromPath namespace config;
@@ -24,6 +24,7 @@ in {
     })
     {
       home.packages = with pkgs; [
+        logseq
         spotify-tray
         zapzap
         vesktop
@@ -38,9 +39,20 @@ in {
         };
       };
 
-      services.nextcloud-client = {
-        enable = true;
-        startInBackground = true;
+      services = {
+        kdeconnect = mkIf (args ? osConfig) {
+          inherit (args.osConfig.programs.kdeconnect) package;
+          enable = true;
+          indicator = true;
+        };
+        nextcloud-client = {
+          enable = true;
+          startInBackground = true;
+        };
+        trayscale = {
+          enable = true;
+          hideWindow = true;
+        };
       };
 
       xdg.mime.enable = true;

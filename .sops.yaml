@@ -17,3 +17,21 @@ creation_rules:
       - *raspberrypi
       - *steamdeck
       - *wsl
+  - path_regex: secrets/hosts/desktop.yaml
+    key_groups:
+    - age:
+      - *master1
+      - *master2
+      - *desktop
+  - path_regex: secrets/hosts/laptop.yaml
+    key_groups:
+    - age:
+      - *master1
+      - *master2
+      - *laptop
+  - path_regex: secrets/hosts/steamdeck.yaml
+    key_groups:
+    - age:
+      - *master1
+      - *master2
+      - *steamdeck
