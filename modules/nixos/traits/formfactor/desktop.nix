@@ -1,9 +1,5 @@
 # Desktop-specific configurations
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ../pipewire.nix
     ../wayland.nix
@@ -17,10 +13,11 @@
       qmk_hid
       qmk-udev-rules
       via
+      waypipe
       wayvnc
     ];
 
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_zen;
+    boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     hardware.graphics.enable = true;
     hardware.keyboard.qmk.enable = true;

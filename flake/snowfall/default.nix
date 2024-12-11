@@ -18,7 +18,12 @@
     systems.modules.nixos = nixosModules;
     homes.modules = homeManagerModules;
 
-    channels-config = {allowUnfree = true;};
+    channels-config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "electron-27.3.11"
+      ];
+    };
     channels.nixpkgs-cuda.config = channels-config // {cudaSupport = true;};
     channels.nixpkgs-steamdeck.overlaysBuilder = channels: [
       inputs.jovian.overlays.default

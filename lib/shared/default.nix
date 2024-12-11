@@ -18,12 +18,11 @@ in {
       wallpaper = assetWithPrefix "wallpaper";
       profilePicture = assetWithPrefix "profile-picture";
     };
-    nix.settings = rec {
+    nix.settings = {
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command";
-      extra-substituters = extra-trusted-substituters;
       extra-trusted-substituters = [
         "https://hyprland.cachix.org"
         "https://lpchaim.cachix.org"

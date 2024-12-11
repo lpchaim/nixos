@@ -21,42 +21,39 @@ in {
     };
 
     home = {
-      packages = with pkgs;
-        [
-          bash
-          chafa
-          cheat
-          curl
-          delta
-          devenv
-          difftastic
-          du-dust
-          duf
-          fd
-          fx
-          hexyl
-          htop
-          inotify-tools
-          neofetch
-          ncdu
-          (nerdfonts.override {fonts = myNerdFonts;})
-          nh
-          nix-output-monitor
-          nurl
-          procs
-          rsync
-          snowfallorg.flake
-          tgpt
-          tig
-          yazi
-          wget
-          python312Packages.howdoi
-        ]
-        ++ (lib.optionals (pkgs.stdenv.isx86_64) [
-          omnix-cli
-        ]);
+      packages = with pkgs; [
+        bash
+        chafa
+        cheat
+        curl
+        delta
+        devenv
+        difftastic
+        du-dust
+        duf
+        fd
+        fx
+        hexyl
+        htop
+        inotify-tools
+        neofetch
+        ncdu
+        (nerdfonts.override {fonts = myNerdFonts;})
+        nh
+        nix-output-monitor
+        nurl
+        procs
+        progress
+        python312Packages.howdoi
+        rsync
+        snowfallorg.flake
+        tgpt
+        tig
+        yazi
+        wget
+      ];
       sessionVariables = {
-        FLAKE = "${config.xdg.configHome}/nixos";
+        NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
       shellAliases = {
         gco = "git checkout";

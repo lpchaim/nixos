@@ -4,15 +4,19 @@
   lib,
   pkgs,
   ...
-}: let
+} @ args: let
   inherit (inputs.home-manager.lib) hm;
 in
   lib.mkIf (config.my.modules.gui.enable) {
     programs.chromium = {
       enable = true;
-      commandLineArgs = [
-        "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
-      ];
+      commandLineArgs =
+        [
+          "--password-store=gnome"
+        ]
+        ++ (lib.optionals (args ? osConfig && (lib.elem "nvidia" args.osConfig.services.xserver.videoDrivers)) [
+          "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
+        ]);
       package = pkgs.brave;
     };
 
