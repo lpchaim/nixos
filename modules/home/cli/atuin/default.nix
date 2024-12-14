@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  osConfig ? null,
   pkgs,
   ...
-} @ args:
+}:
 lib.lpchaim.mkModule {
   inherit config;
   namespace = "my.modules.cli.atuin";

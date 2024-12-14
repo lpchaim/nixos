@@ -26,7 +26,7 @@
 }: let
   name = "ags";
 
-  ags = inputs.ags.packages.${system}.default.override {
+  ags = inputs.ags18.packages.${system}.default.override {
     extraPackages = [accountsservice];
   };
 

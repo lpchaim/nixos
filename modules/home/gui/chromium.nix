@@ -2,9 +2,10 @@
   config,
   inputs,
   lib,
+  osConfig ? null,
   pkgs,
   ...
-} @ args: let
+}: let
   inherit (inputs.home-manager.lib) hm;
 in
   lib.mkIf (config.my.modules.gui.enable) {
@@ -14,7 +15,7 @@ in
         [
           "--password-store=gnome"
         ]
-        ++ (lib.optionals (args ? osConfig && (lib.elem "nvidia" args.osConfig.services.xserver.videoDrivers)) [
+        ++ (lib.optionals (osConfig != null && (lib.elem "nvidia" osConfig.services.xserver.videoDrivers)) [
           "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
         ]);
       package = pkgs.brave;

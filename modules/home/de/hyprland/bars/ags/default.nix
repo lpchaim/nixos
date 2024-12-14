@@ -29,7 +29,7 @@ lib.lpchaim.mkModule {
             cp ${optionsFile} ~/.cache/ags/options.json
             chmod +w ~/.cache/ags/options.json
           '';
-          ExecStart = "${ags}/bin/ags";
+          ExecStart = "${lib.getExe ags}";
           Restart = "always";
           RestartSec = "5";
         };
