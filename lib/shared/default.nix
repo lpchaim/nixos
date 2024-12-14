@@ -23,12 +23,12 @@ in {
       builders-use-substitutes = true;
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command";
-      extra-trusted-substituters = [
+      extra-substituters = [
+        "https://nix-community.cachix.org"
+        "https://nyx.chaotic.cx"
         "https://hyprland.cachix.org"
         "https://lpchaim.cachix.org"
-        "https://nix-community.cachix.org"
         "https://nix-gaming.cachix.org"
-        "https://nyx.chaotic.cx"
         "https://snowflakeos.cachix.org"
       ];
       extra-trusted-public-keys = [

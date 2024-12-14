@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  osConfig ? null,
   pkgs,
   ...
-} @ args: let
+}: let
   inherit (lib) mkIf mkMerge;
 in
   lib.lpchaim.mkModule {
@@ -12,7 +13,7 @@ in
     namespace = "my.modules.gaming";
     configBuilder = cfg:
       mkMerge [
-        (mkIf (args ? osConfig && args.osConfig.programs.steam.enable) {
+        (mkIf (osConfig.programs.steam.enable or false) {
           home.file =
             lib.concatMapAttrs
             (_: package: {

@@ -1,8 +1,9 @@
 {
   config,
   lib,
+  osConfig ? null,
   ...
-} @ args: let
+}: let
   inherit (lib) getAttrFromPath mkIf;
   namespace = ["my" "modules" "de" "hyprland"];
   cfg = getAttrFromPath namespace config;
@@ -16,7 +17,7 @@ in
       in {
         background = {
           path =
-            if (args ? osConfig && (lib.elem "nvidia" args.osConfig.services.xserver.videoDrivers))
+            if (osConfig != null && (lib.elem "nvidia" osConfig.services.xserver.videoDrivers))
             then "${config.stylix.image}"
             else "screenshot";
           blur_size = 3;

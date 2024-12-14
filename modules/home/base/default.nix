@@ -1,8 +1,9 @@
 {
   config,
   lib,
+  osConfig ? null,
   ...
-} @ args: let
+}: let
   inherit (lib) mkDefault;
   inherit (lib.lpchaim) shared;
   inherit (lib.snowfall) fs;
@@ -25,14 +26,14 @@ in
       nix =
         {
           gc = {
-            automatic = true;
+            automatic = osConfig == null;
             frequency = "daily";
             options = "--delete-older-than=7d";
           };
           settings = shared.nix.settings;
         }
-        // (lib.optionalAttrs (args ? osConfig) {
-          inherit (args.osConfig.nix) extraOptions;
+        // (lib.optionalAttrs (osConfig != null) {
+          inherit (osConfig.nix) extraOptions;
         });
       systemd.user.startServices = "sd-switch";
     };

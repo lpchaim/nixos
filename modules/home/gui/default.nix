@@ -2,8 +2,9 @@
   config,
   pkgs,
   lib,
+  osConfig ? null,
   ...
-} @ args:
+}:
 with lib; let
   namespace = ["my" "modules" "gui"];
   cfg = getAttrFromPath namespace config;
@@ -40,8 +41,8 @@ in {
       };
 
       services = {
-        kdeconnect = mkIf (args ? osConfig) {
-          inherit (args.osConfig.programs.kdeconnect) package;
+        kdeconnect = mkIf (osConfig != null) {
+          inherit (osConfig.programs.kdeconnect) package;
           enable = true;
           indicator = true;
         };

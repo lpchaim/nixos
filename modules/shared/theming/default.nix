@@ -19,7 +19,7 @@ in {
     };
     fonts.monospace = {
       name = lib.mkDefault "JetBrainsMono Nerd Font";
-      package = lib.mkDefault (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];});
+      package = lib.mkDefault pkgs.nerd-fonts.jetbrains-mono;
     };
   };
 }

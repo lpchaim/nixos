@@ -1,13 +1,14 @@
 {
   lib,
   pkgs,
+  osConfig ? null,
   ...
-} @ args: let
+}: let
   # inherit (inputs.home-manager.lib) hm;
   inherit (pkgs) syncthingtray;
-  syncthing = args.osConfig.services.syncthing.package;
+  syncthing = osConfig.services.syncthing.package;
 in
-  lib.mkIf (args ? osConfig && args.osConfig.services.syncthing.enable) {
+  lib.mkIf (osConfig.services.syncthing.enable or false) {
     home.packages = [pkgs.syncthingtray];
     services.syncthing.tray.enable = true;
     systemd.user.services.syncthingtray = {
