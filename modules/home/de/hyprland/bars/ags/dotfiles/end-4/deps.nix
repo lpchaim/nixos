@@ -8,6 +8,7 @@ with p; [
   cairomm
   cliphist
   cmake
+  config.stylix.fonts.monospace.package
   coreutils
   curl
   dart-sass
@@ -34,7 +35,6 @@ with p; [
   libsForQt5.qt5ct
   material-symbols
   meson
-  (nerdfonts.override {fonts = ["JetBrainsMono" "SpaceMono"];})
   networkmanager
   nodejs
   ollama
