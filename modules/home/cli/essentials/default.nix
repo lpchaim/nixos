@@ -8,7 +8,6 @@ with lib; let
   inherit (lib.lpchaim.shared) defaults;
   namespace = ["my" "modules" "cli" "essentials"];
   cfg = lib.getAttrFromPath namespace config;
-  myNerdFonts = ["FiraCode" "JetBrainsMono" "Overpass" "SourceCodePro"];
 in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "essentials";
@@ -17,7 +16,7 @@ in {
   config = lib.mkIf cfg.enable {
     fonts.fontconfig = {
       enable = true;
-      defaultFonts.monospace = [config.stylix.fonts.monospace.name] ++ myNerdFonts;
+      defaultFonts.monospace = [config.stylix.fonts.monospace.name];
     };
 
     home = {
@@ -25,6 +24,7 @@ in {
         bash
         chafa
         cheat
+        config.stylix.fonts.monospace.package
         curl
         delta
         devenv
@@ -38,7 +38,6 @@ in {
         inotify-tools
         neofetch
         ncdu
-        (nerdfonts.override {fonts = myNerdFonts;})
         nh
         nix-output-monitor
         nurl

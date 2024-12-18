@@ -28,7 +28,7 @@ in
           gc = {
             automatic = osConfig == null;
             frequency = "daily";
-            options = "--delete-older-than=7d";
+            options = "--delete-older-than 7d";
           };
           settings = shared.nix.settings;
         }
