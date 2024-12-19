@@ -22,6 +22,7 @@ in {
         [
           appindicator
           blur-my-shell
+          caffeine
           clipboard-indicator
           dash-to-dock
           gsconnect
@@ -42,12 +43,12 @@ in {
           [
             "appindicatorsupport@rgcjonas.gmail.com"
             "blur-my-shell@aunetx"
+            "caffeine@patapon.info"
             "clipboard-indicator@tudmotu.com"
             "dash-to-dock@micxgx.gmail.com"
             "gsconnect@andyholmes.github.io"
             "show-desktop-button@amivaleo"
             "tailscale@joaophi.github.com"
-            # "trayIconsReloaded@selfmade.pl"
             "user-theme@gnome-shell-extensions.gcampax.github.com"
             "Vitals@CoreCoding.com"
           ]

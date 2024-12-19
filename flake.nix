@@ -43,14 +43,9 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
-    ags = {
-      url = "github:Aylur/ags/v1.8.2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    astal = {
-      url = "github:Aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    ags.url = "github:Aylur/ags";
+    ags18.url = "github:Aylur/ags/v1.8.2";
+    astal.url = "github:Aylur/astal";
     dotfiles-aylur = {
       url = "github:Aylur/dotfiles/pre-astal";
       inputs.ags.follows = "ags";
@@ -58,7 +53,6 @@
       inputs.home-manager.follows = "home-manager";
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     dotfiles-end-4 = {
       url = "github:end-4/dots-hyprland";
@@ -87,6 +81,10 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.flake-compat.follows = "flake-compat";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
@@ -153,10 +151,11 @@
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
+      lix-module.nixosModules.default
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nixos-generators.nixosModules.all-formats
-      nur.nixosModules.nur
+      nur.modules.nixos.default
       sops-nix.nixosModules.sops
       stylix.nixosModules.stylix
     ];
