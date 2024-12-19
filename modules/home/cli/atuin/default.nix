@@ -30,7 +30,7 @@ lib.lpchaim.mkModule {
     systemd.user.services =
       {
         atuin-daemon = {
-          Install.WantedBy = ["multi-user.target"];
+          Install.WantedBy = ["default.target"];
           Service = {
             ExecStart = "${pkgs.atuin}/bin/atuin daemon";
             Restart = "on-failure";
@@ -38,7 +38,7 @@ lib.lpchaim.mkModule {
           };
           Unit = {
             Description = "atuin daemon";
-            After = ["multi-user.target"];
+            After = ["default.target"];
             X-Restart-Triggers = [
               config.programs.atuin.package
               config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
@@ -46,20 +46,22 @@ lib.lpchaim.mkModule {
           };
         };
       }
-      // (lib.optionalAttrs (args ? osConfig)) {
+      // (lib.optionalAttrs (osConfig != null)) {
         atuin-login = {
           Install.WantedBy = ["network-online.target"];
           Service = {
             Type = "oneshot";
-            ExecStart = pkgs.writeShellScriptBin "atuin-login" ''
-              if atuin status | grep -q "not logged in"; then
-                atuin login --username "$(cat ${args.osConfig.sops.secrets."atuin/username".path})" \
-                  --password "$(cat ${args.osConfig.sops.secrets."atuin/password".path})" \
-                  --key "$(cat ${args.osConfig.sops.secrets."atuin/key".path})"
-              fi
-            '';
-            Restart = "on-failure";
-            RestartSec = "15";
+            ExecStart = let
+              secrets = osConfig.sops.secrets;
+            in
+              pkgs.writeShellScriptBin "atuin-login" ''
+                if atuin status | grep -q "not logged in"; then
+                  atuin login \
+                    --username "$(cat ${secrets."atuin/username".path})" \
+                    --password "$(cat ${secrets."atuin/password".path})" \
+                    --key "$(cat ${secrets."atuin/key".path})"
+                fi
+              '';
           };
           Unit = {
             Description = "atuin login";
