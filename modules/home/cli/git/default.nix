@@ -5,6 +5,7 @@
 }: let
   namespace = ["my" "modules" "cli" "git"];
   cfg = lib.getAttrFromPath namespace config;
+  inherit (lib.lpchaim.shared) defaults;
 in {
   options = lib.setAttrByPath namespace {
     enable = lib.mkEnableOption "git";
@@ -21,8 +22,8 @@ in {
           push.autoSetupRemote = true;
           pull.rebase = false;
         };
-        userEmail = "lpchaim@gmail.com";
-        userName = "Lucas Chaim";
+        userEmail = defaults.name.email;
+        userName = defaults.name.full;
       };
       lazygit.enable = lib.mkIf cfg.lazygit.enable true;
     };
