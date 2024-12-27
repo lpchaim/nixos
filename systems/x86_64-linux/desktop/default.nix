@@ -1,5 +1,6 @@
 {lib, ...}: let
   inherit (lib.lpchaim.nixos) getTraitModules;
+  inherit (lib.lpchaim.shared.defaults) name;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
 in {
   imports =
@@ -25,7 +26,7 @@ in {
   my.networking.tailscale.trusted = true;
   my.security.secureboot.enable = true;
 
-  fileSystems."/run/media/lpchaim/storage" = {
+  fileSystems."/run/media/${name.user}/storage" = {
     device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
     fsType = "ntfs3";
     options = [
