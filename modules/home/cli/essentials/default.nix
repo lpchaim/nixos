@@ -14,43 +14,39 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    fonts.fontconfig = {
-      enable = true;
-      defaultFonts.monospace = [config.stylix.fonts.monospace.name];
-    };
-
     home = {
-      packages = with pkgs; [
-        bash
-        chafa
-        cheat
-        config.stylix.fonts.monospace.package
-        curl
-        delta
-        devenv
-        difftastic
-        du-dust
-        duf
-        fd
-        fx
-        hexyl
-        htop
-        inotify-tools
-        neofetch
-        ncdu
-        nh
-        nix-output-monitor
-        nurl
-        procs
-        progress
-        python312Packages.howdoi
-        rsync
-        snowfallorg.flake
-        tgpt
-        tig
-        yazi
-        wget
-      ];
+      packages =
+        (with pkgs; [
+          bash
+          chafa
+          cheat
+          curl
+          delta
+          devenv
+          difftastic
+          du-dust
+          duf
+          fd
+          fx
+          hexyl
+          htop
+          inotify-tools
+          neofetch
+          ncdu
+          nh
+          nix-output-monitor
+          nurl
+          procs
+          progress
+          python312Packages.howdoi
+          rsync
+          snowfallorg.flake
+          tgpt
+          tig
+          yazi
+          wget
+        ])
+        ++ config.stylix.fonts.packages;
       sessionVariables = {
         NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
