@@ -17,7 +17,8 @@
       wayvnc
     ];
 
-    boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    boot.kernelPackages = pkgs.linuxPackages_cachyos;
+    services.scx.enable = true; # By default uses scx_rustland scheduler
 
     hardware.graphics.enable = true;
     hardware.keyboard.qmk.enable = true;

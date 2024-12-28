@@ -22,7 +22,7 @@ in {
           push.autoSetupRemote = true;
           pull.rebase = false;
         };
-        userEmail = defaults.name.email;
+        userEmail = defaults.email.main;
         userName = defaults.name.full;
       };
       lazygit.enable = lib.mkIf cfg.lazygit.enable true;

@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  package = config.services.hardware.openrgb.package;
+  inherit (config.services.hardware.openrgb) package;
 in {
   environment.systemPackages = [package];
   services.hardware.openrgb = {
