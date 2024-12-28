@@ -14,7 +14,10 @@ lib.lpchaim.mkModule {
     programs.atuin = {
       enable = true;
       settings = {
+        auto_sync = true;
         daemon.enabled = true;
+        dialect = "uk";
+        inline_height = 25;
         keymap_mode = "vim-insert";
         keymap_cursor.vim_insert = "steady-bar";
         keymap_cursor.vim_normal = "steady-block";
@@ -23,6 +26,7 @@ lib.lpchaim.mkModule {
         search_mode = "fuzzy";
         filter_mode_shell_up_key_binding = "host";
         search_mode_shell_up_key_binding = "prefix";
+        store_failed = false;
         sync_frequency = "15m";
         workspaces = true;
       };
