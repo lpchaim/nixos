@@ -1,4 +1,9 @@
-{lib, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.shared.defaults) name;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
@@ -40,7 +45,18 @@ in {
       "uid=1000"
       "gid=1000"
       "iocharset=utf8"
-      "uhelper=udisks2"
+      "x-gvfs-show"
     ];
+  };
+
+  systemd.services.storage-fsck = let
+    path = config.fileSystems."/run/media/${name.user}/storage".device;
+  in {
+    description = "Checks NTFS filesystem before mounting";
+    before = ["run-media-${name.user}-storage.mount"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.ntfs3g}/bin/ntfsfix ${path} --clear-dirty";
+    };
   };
 }
