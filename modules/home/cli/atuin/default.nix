@@ -56,7 +56,7 @@ lib.lpchaim.mkModule {
           Service = {
             Type = "oneshot";
             ExecStart = let
-              secrets = osConfig.sops.secrets;
+              inherit (osConfig.sops) secrets;
             in
               pkgs.writeShellScriptBin "atuin-login" ''
                 if atuin status | grep -q "not logged in"; then
