@@ -32,17 +32,5 @@
     systems.hosts.desktop.channelName = "nixpkgs-cuda";
     systems.hosts.steamdeck.channelName = "nixpkgs-steamdeck";
   };
-  flake = merge-deep [
-    (snowfallLib.mkFlake snowfallConfig)
-    (inputs.flake-utils.lib.eachDefaultSystem (system: {
-      legacyPackages.homeConfigurations.minimal = mkHome {
-        inherit system;
-        inherit (snowfallConfig.homes) modules;
-      };
-      legacyPackages.nixosConfigurations.minimal = mkSystem {
-        inherit system;
-        modules = snowfallConfig.systems.modules.nixos;
-      };
-    }))
-  ];
+  flake = snowfallLib.mkFlake snowfallConfig;
 in {inherit flake;}

@@ -1,14 +1,8 @@
-{lib, ...}: let
-  inherit (lib.lpchaim.home) getTraitModules;
-in {
-  imports = getTraitModules [
-    "non-nixos"
-    "work"
-  ];
-
-  config.home = rec {
-    stateVersion = "23.05";
-    username = "cheina";
-    homeDirectory = "/home/${username}";
+{
+  my.traits = {
+    non-nixos.enable = true;
+    work.enable = true;
   };
+
+  home.stateVersion = "23.05";
 }

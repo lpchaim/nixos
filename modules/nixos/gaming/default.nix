@@ -9,7 +9,9 @@
 in {
   options.my.gaming = {
     enable = lib.mkEnableOption "gaming tweaks";
-    steam.enable = lib.mkEnableOption "steam tweaks" // {default = config.my.gaming.enable;};
+    steam.enable =
+      lib.mkEnableOption "steam tweaks"
+      // {default = config.my.gaming.enable;};
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {

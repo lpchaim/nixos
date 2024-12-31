@@ -7,9 +7,9 @@
   inherit (cfg) enable;
 in {
   options.my.modules.cli.editors = {
-    enable = lib.mkEnableOption "editors";
-    kakoune.enable = lib.mkEnableOption "kakoune" // {inherit enable;};
-    vim.enable = lib.mkEnableOption "vim" // {inherit enable;};
+    enable = lib.mkEnableOption "editors" // {default = config.my.modules.cli.enable;};
+    kakoune.enable = lib.mkEnableOption "kakoune" // {default = enable;};
+    vim.enable = lib.mkEnableOption "vim" // {default = enable;};
   };
 
   config = lib.mkIf cfg.enable {

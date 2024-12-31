@@ -15,7 +15,7 @@ in {
 
   options.my.modules.enable =
     lib.mkEnableOption "root home config"
-    // {enable = true;};
+    // {default = true;};
   config = lib.mkIf cfg.enable {
     programs.home-manager.enable = mkDefault true;
     nix =

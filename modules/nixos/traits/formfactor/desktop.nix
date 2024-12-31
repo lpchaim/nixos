@@ -1,11 +1,19 @@
 # Desktop-specific configurations
-{pkgs, ...}: {
-  imports = [
-    ../pipewire.nix
-    ../wayland.nix
-  ];
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.my.traits.formfactor.desktop;
+in {
+  options.my.traits.formfactor.desktop.enable = lib.mkEnableOption "desktop trait";
+  config = lib.mkIf cfg.enable {
+    my.traits = {
+      pipewire.enable = true;
+      wayland.enable = true;
+    };
 
-  config = {
     environment.systemPackages = with pkgs; [
       nix-software-center
       piper

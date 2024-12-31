@@ -4,29 +4,25 @@
   pkgs,
   ...
 }: let
-  inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.shared.defaults) name;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
 in {
-  imports =
-    [
-      ./hardware-configuration.nix
-      (mkStorage {
-        device = "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD";
-        swapSize = "35G";
-      })
-    ]
-    ++ (getTraitModules [
-      "composite/base"
-      "formfactor/desktop"
-      "de/gnome"
-      "de/hyprland"
-      "gaming"
-      "gpu/nvidia"
-      "misc/rgb"
-    ]);
+  imports = [
+    ./hardware-configuration.nix
+    (mkStorage {
+      device = "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD";
+      swapSize = "35G";
+    })
+  ];
 
-  system.stateVersion = "23.11";
+  my.traits = {
+    composite.base.enable = true;
+    formfactor.desktop.enable = true;
+    de.gnome.enable = true;
+    de.hyprland.enable = true;
+    gpu.nvidia.enable = true;
+    misc.rgb.enable = true;
+  };
   my.gaming.enable = true;
   my.networking.tailscale.trusted = true;
   my.security.secureboot.enable = true;
@@ -59,4 +55,6 @@ in {
       ExecStart = "${pkgs.ntfs3g}/bin/ntfsfix ${path} --clear-dirty";
     };
   };
+
+  system.stateVersion = "23.11";
 }

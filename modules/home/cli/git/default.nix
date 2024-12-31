@@ -8,7 +8,7 @@
 in {
   options.my.modules.cli.git = {
     enable = lib.mkEnableOption "git";
-    lazygit.enable = lib.mkEnableOption "lazygit" // {inherit (cfg) enable;};
+    lazygit.enable = lib.mkEnableOption "lazygit" // {default = cfg.enable;};
   };
 
   config = lib.mkIf cfg.enable {
