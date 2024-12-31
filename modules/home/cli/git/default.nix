@@ -3,13 +3,12 @@
   lib,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "git"];
-  cfg = lib.getAttrFromPath namespace config;
   inherit (lib.lpchaim.shared) defaults;
+  cfg = config.my.modules.cli.git;
 in {
-  options = lib.setAttrByPath namespace {
+  options.my.modules.cli.git = {
     enable = lib.mkEnableOption "git";
-    lazygit.enable = lib.mkEnableOption "lazygit";
+    lazygit.enable = lib.mkEnableOption "lazygit" // {inherit (cfg) enable;};
   };
 
   config = lib.mkIf cfg.enable {
@@ -25,7 +24,7 @@ in {
         userEmail = defaults.email.main;
         userName = defaults.name.full;
       };
-      lazygit.enable = lib.mkIf cfg.lazygit.enable true;
+      lazygit.enable = cfg.lazygit.enable;
     };
   };
 }

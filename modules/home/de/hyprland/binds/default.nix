@@ -9,7 +9,6 @@
     concatStringsSep
     elemAt
     genList
-    getAttrFromPath
     mkEnableOption
     mkIf
     mkMerge
@@ -17,8 +16,7 @@
     setAttrByPath
     ;
 
-  namespace = ["my" "modules" "de" "hyprland" "binds"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland.binds;
 
   makeDirectional = {
     cmd,
@@ -49,7 +47,7 @@
     in "${trigger}, ${getKey i}, ${cmd}, ${getWorkspace i}")
     (range 1 10);
 in {
-  options = setAttrByPath namespace {
+  options.my.modules.de.hyprland.binds = {
     enable = mkEnableOption "bindings";
     enableFnKeys = lib.mkEnableOption "function key bindings";
   };

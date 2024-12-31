@@ -6,12 +6,9 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "hyprland" "plugins"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland.plugins;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "Hyprland plugins";
-  };
+  options.my.modules.de.hyprland.plugins.enable = mkEnableOption "Hyprland plugins";
 
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = {

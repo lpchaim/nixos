@@ -3,25 +3,29 @@
   pkgs,
   lib,
   ...
-}:
-with builtins;
-with lib; let
-  namespace = ["my" "modules" "cli" "tmux"];
-  cfg = lib.getAttrFromPath namespace config;
+}: let
+  cfg = config.my.modules.cli.tmux;
   defaultClipboard = "clipboard"; # clipboard, primary, secondary
   termBasic = "screen-256color";
   termFull = "xterm-256color";
 in {
-  options = lib.setAttrByPath namespace {
+  options.my.modules.cli.tmux = {
     enable = lib.mkEnableOption "tmux";
     theme = lib.mkOption {
       description = "Which theme to use.";
-      type = types.enum ["catppuccin" "tmux-powerline"];
+      type = lib.types.enum ["catppuccin" "tmux-powerline"];
       default = "catppuccin";
     };
   };
 
-  config = lib.mkIf cfg.enable ({
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      my.modules.cli.tmux = {
+        catppuccin.enable = cfg.theme == "catppuccin";
+        tmux-powerline.enable = cfg.theme == "tmux-powerline";
+      };
+    }
+    {
       home.sessionVariables.TERM = termFull;
 
       home.packages = with pkgs; [
@@ -155,8 +159,5 @@ in {
         };
       };
     }
-    // lib.setAttrByPath namespace {
-      catppuccin.enable = cfg.theme == "catppuccin";
-      tmux-powerline.enable = cfg.theme == "tmux-powerline";
-    });
+  ]);
 }

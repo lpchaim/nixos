@@ -4,14 +4,11 @@ args @ {
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "starship"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.starship;
   settings = import ./settings.nix;
   util = import ./util.nix args;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "starship";
-  };
+  options.my.modules.cli.starship.enable = lib.mkEnableOption "starship";
 
   config = lib.mkIf cfg.enable {
     programs.starship = {

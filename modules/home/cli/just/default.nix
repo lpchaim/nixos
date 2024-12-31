@@ -3,19 +3,18 @@
   lib,
   pkgs,
   ...
-}:
-lib.lpchaim.mkModule {
-  inherit config;
-  namespace = "my.modules.cli.just";
-  description = "just task runner";
-  options = {
+}: let
+  cfg = config.my.modules.cli.just;
+in {
+  options.my.modules.cli.just = {
+    enable = lib.mkEnableOption "just task runner";
     extraConfig = lib.mkOption {
       description = "extra text to append to justfile";
       type = lib.types.lines;
       default = "";
     };
   };
-  configBuilder = cfg: {
+  config = lib.mkIf cfg.enable {
     home = {
       packages = [pkgs.just];
       file.".justfile".text = lib.trim ''

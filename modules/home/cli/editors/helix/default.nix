@@ -3,9 +3,11 @@
   lib,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "editors" "helix"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.editors.helix;
 in {
+  options.my.modules.cli.editors.helix.enable =
+    lib.mkEnableOption "helix"
+    // {inherit (config.my.modules.cli.editors) enable;};
   config = lib.mkIf cfg.enable {
     programs.helix = {
       enable = true;

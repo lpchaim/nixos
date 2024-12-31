@@ -4,20 +4,11 @@
   lib,
   ...
 }: let
-  inherit
-    (lib)
-    getAttrFromPath
-    mkEnableOption
-    mkForce
-    setAttrByPath
-    ;
+  inherit (lib) mkEnableOption mkForce;
   inherit (inputs.home-manager.lib.hm.generators) toKDL;
-  namespace = ["my" "modules" "cli" "zellij"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.zellij;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "zellij";
-  };
+  options.my.modules.cli.zellij.enable = mkEnableOption "zellij";
 
   config = lib.mkIf cfg.enable {
     programs = {

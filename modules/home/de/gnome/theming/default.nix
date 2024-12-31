@@ -1,16 +1,13 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "gnome" "theming"];
-  cfg = getAttrFromPath namespace config;
-  toTitle = str: "${lib.toUpper (lib.substring 0 1 str)}${lib.substring 1 (lib.stringLength str) str}";
+  cfg = config.my.modules.de.gnome.theming;
 in {
-  options = setAttrByPath namespace {
+  options.my.modules.de.gnome.theming = {
     enable = mkEnableOption "theming tweaks";
     enableGtkTheme = mkEnableOption "custom GTK theme";
     enableGnomeShellTheme = mkEnableOption "custom GNOME Shell theme";

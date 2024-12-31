@@ -4,9 +4,8 @@
   osConfig ? null,
   ...
 }: let
-  inherit (lib) getAttrFromPath mkIf;
-  namespace = ["my" "modules" "de" "hyprland"];
-  cfg = getAttrFromPath namespace config;
+  inherit (lib) mkIf;
+  cfg = config.my.modules.de.hyprland;
 in
   mkIf cfg.enable {
     stylix.targets.hyprlock.enable = false;

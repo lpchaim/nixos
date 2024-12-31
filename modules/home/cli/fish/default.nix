@@ -3,12 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-lib.lpchaim.mkModule {
-  inherit config;
-  namespace = "my.modules.cli.fish";
-  description = "fish shell";
-  configBuilder = cfg: {
+}: let
+  cfg = config.my.modules.cli.fish;
+in {
+  options.my.modules.cli.fish.enable = lib.mkEnableOption "fish shell";
+  config = lib.mkIf cfg.enable {
     programs.fish = {
       inherit (config.home) shellAliases;
       enable = true;

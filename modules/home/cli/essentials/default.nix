@@ -6,12 +6,9 @@
 }:
 with lib; let
   inherit (lib.lpchaim.shared) defaults;
-  namespace = ["my" "modules" "cli" "essentials"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.essentials;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "essentials";
-  };
+  options.my.modules.cli.essentials.enable = lib.mkEnableOption "essentials";
 
   config = lib.mkIf cfg.enable {
     home = {

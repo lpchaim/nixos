@@ -5,12 +5,9 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "gnome" "extensions" "dash-to-panel"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.gnome.extensions.dash-to-panel;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "Dash to Panel.";
-  };
+  options.my.modules.de.gnome.extensions.dash-to-panel.enable = mkEnableOption "Dash to Panel.";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs.gnomeExtensions; [

@@ -4,12 +4,11 @@
   osConfig ? null,
   pkgs,
   ...
-}:
-lib.lpchaim.mkModule {
-  inherit config;
-  namespace = "my.modules.cli.atuin";
-  description = "atuin";
-  configBuilder = cfg: {
+}: let
+  cfg = config.my.modules.cli.atuin;
+in {
+  options.my.modules.cli.atuin.enable = lib.mkEnableOption "atuin";
+  config = lib.mkIf cfg.enable {
     programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {
       enable = true;

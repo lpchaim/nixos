@@ -1,16 +1,12 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "nushell"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.nushell;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "nushell";
-  };
+  options.my.modules.cli.nushell.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
     programs.nushell = {
