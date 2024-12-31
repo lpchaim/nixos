@@ -6,20 +6,15 @@
   ...
 }: let
   inherit (lib) mkIf mkMerge;
-in
-  lib.lpchaim.mkModule {
-    inherit config;
-    description = "gaming config";
-    namespace = "my.modules.gaming";
-    configBuilder = cfg:
-      mkMerge [
-        (mkIf (osConfig.programs.steam.enable or false) {
-          home.file =
-            lib.concatMapAttrs
-            (_: package: {
-              ".local/share/Steam/compatibilitytools.d/${package.version}".source = "${package.steamcompattool}";
-            })
-            pkgs.proton-ge-bin-versions;
-        })
-      ];
-  }
+  cfg = config.my.modules.gaming;
+in {
+  options.my.modules.gaming.enable = lib.mkEnableOption "gaming tweaks";
+  config = mkIf (cfg.enable && osConfig != null && osConfig.programs.steam.enable) {
+    home.file =
+      lib.concatMapAttrs
+      (_: package: {
+        ".local/share/Steam/compatibilitytools.d/${package.version}".source = "${package.steamcompattool}";
+      })
+      pkgs.proton-ge-bin-versions;
+  };
+}

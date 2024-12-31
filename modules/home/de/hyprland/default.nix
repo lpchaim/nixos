@@ -6,24 +6,23 @@
 }:
 with lib; let
   inherit (lib.lpchaim) shared;
-  namespace = ["my" "modules" "de" "hyprland"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "Hyprland customizations";
-  };
+  options.my.modules.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
 
   config = mkIf cfg.enable (mkMerge [
-    (setAttrByPath namespace {
-      bars.ags.enable = mkDefault cfg.enable;
-      bars.ags.dotfiles.aylur.enable = mkDefault cfg.bars.ags.enable;
-      binds.enableFnKeys = mkDefault cfg.bars.ags.enable;
-      bars.waybar.enable = mkDefault false;
-      binds.enable = mkDefault cfg.enable;
-      launchers.rofi.enable = mkDefault cfg.enable;
-      osd.swayosd.enable = mkDefault false;
-      plugins.enable = mkDefault false;
-    })
+    {
+      my.modules.de.hyprland = {
+        bars.ags.enable = mkDefault cfg.enable;
+        bars.ags.dotfiles.aylur.enable = mkDefault cfg.bars.ags.enable;
+        binds.enableFnKeys = mkDefault cfg.bars.ags.enable;
+        bars.waybar.enable = mkDefault false;
+        binds.enable = mkDefault cfg.enable;
+        launchers.rofi.enable = mkDefault cfg.enable;
+        osd.swayosd.enable = mkDefault false;
+        plugins.enable = mkDefault false;
+      };
+    }
     {
       wayland.windowManager.hyprland = {
         enable = true;

@@ -3,21 +3,12 @@
   pkgs,
   lib,
   ...
-}:
-with builtins;
-with lib; let
-  namespace = ["my" "modules" "cli" "tmux" "tmux-powerline"];
-  cfg = lib.getAttrFromPath namespace config;
+}: let
+  cfg = config.my.modules.cli.tmux.tmux-powerline;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = mkOption {
-      description = "Whether to enable tmux-powerline.";
-      type = types.bool;
-      default = false;
-    };
-  };
+  options.my.modules.cli.tmux.tmux-powerline.enable = lib.mkEnableOption "tmux-powerline.";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.tmux.plugins = with pkgs.tmuxPlugins; [
       (mkTmuxPlugin {
         pluginName = "tmux-powerline";

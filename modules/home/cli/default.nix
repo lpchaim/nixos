@@ -2,23 +2,16 @@
   config,
   lib,
   ...
-}:
-with lib; let
-  namespace = ["my" "modules" "cli"];
-  cfg = getAttrFromPath namespace config;
+}: let
+  inherit (lib) mkDefault mkEnableOption mkIf;
+  cfg = config.my.modules.cli;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "custom modules";
-  };
+  options.my.modules.cli.enable =
+    mkEnableOption "cli modules"
+    // {default = true;};
 
-  config = setAttrByPath namespace {
-    editors = mkIf cfg.enable {
-      enable = mkDefault true;
-      helix.enable = mkDefault true;
-      kakoune.enable = mkDefault true;
-      neovim.enable = mkDefault true;
-      vim.enable = mkDefault true;
-    };
+  config.my.modules.cli = mkIf cfg.enable {
+    editors.enable = mkDefault true;
     essentials.enable = mkDefault true;
     fish.enable = mkDefault true;
     git = {

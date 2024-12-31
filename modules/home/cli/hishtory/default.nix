@@ -3,14 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
-  namespace = ["my" "modules" "cli" "hishtory"];
-  cfg = getAttrFromPath namespace config;
+}: let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.my.modules.cli.hishtory;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "hishtory";
-  };
+  options.my.modules.cli.hishtory.enable = mkEnableOption "hishtory";
 
   config = mkIf cfg.enable {
     home = {

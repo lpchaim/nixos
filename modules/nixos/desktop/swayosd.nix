@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "services" "swayosd"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.services.swayosd;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "swayosd libinput backend";
-  };
+  options.my.services.swayosd.enable = lib.mkEnableOption "swayosd libinput backend";
 
   config = lib.mkIf cfg.enable {
     systemd.packages = [pkgs.swayosd];

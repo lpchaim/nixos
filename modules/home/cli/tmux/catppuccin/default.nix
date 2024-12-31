@@ -7,10 +7,9 @@
 }:
 with builtins;
 with lib; let
-  namespace = ["my" "modules" "cli" "tmux" "catppuccin"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.tmux.catppuccin;
 in {
-  options = lib.setAttrByPath namespace {
+  options.my.modules.cli.tmux.catppuccin = {
     enable = mkOption {
       description = "Whether to enable catppuccin.";
       type = types.bool;

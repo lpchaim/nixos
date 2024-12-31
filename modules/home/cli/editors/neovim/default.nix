@@ -3,9 +3,11 @@
   lib,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "editors" "neovim"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.editors.neovim;
 in {
+  options.my.modules.cli.editors.neovim.enable =
+    lib.mkEnableOption "neovim"
+    // {inherit (config.my.modules.cli.editors) enable;};
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;

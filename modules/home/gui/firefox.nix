@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "gui" "firefox"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.gui.firefox;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "Mozilla Firefox";
-  };
+  options.my.modules.gui.firefox.enable = lib.mkEnableOption "Mozilla Firefox";
 
   config = lib.mkIf cfg.enable {
     programs.firefox = {

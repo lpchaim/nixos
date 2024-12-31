@@ -6,8 +6,7 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "gui"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.gui;
 in {
   imports = [
     ./chromium.nix
@@ -15,14 +14,10 @@ in {
     ./mangohud.nix
   ];
 
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "gui apps";
-  };
+  options.my.modules.gui.enable = mkEnableOption "gui apps";
 
   config = mkIf cfg.enable (mkMerge [
-    (setAttrByPath namespace {
-      firefox.enable = mkDefault true;
-    })
+    {my.modules.gui.firefox.enable = mkDefault true;}
     {
       home.packages = with pkgs; [
         logseq

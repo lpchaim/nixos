@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "de" "hyprland" "osd" "swayosd"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland.osd.swayosd;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "sway-osd";
-  };
+  options.my.modules.de.hyprland.osd.swayosd.enable = lib.mkEnableOption "sway-osd";
 
   config = lib.mkIf cfg.enable {
     my.modules.de.hyprland.binds.enableFnKeys = lib.mkForce false;

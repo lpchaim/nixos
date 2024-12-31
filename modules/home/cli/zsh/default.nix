@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "zsh"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.zsh;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "zsh";
-  };
+  options.my.modules.cli.zsh.enable = lib.mkEnableOption "zsh";
 
   config = lib.mkIf cfg.enable {
     programs.zsh = {

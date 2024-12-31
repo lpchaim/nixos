@@ -5,13 +5,10 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "gnome" "extensions"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.gnome.extensions;
   pre43 = versionOlder pkgs.gnome-shell.version "43";
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "GNOME Shell extensions";
-  };
+  options.my.modules.de.gnome.extensions.enable = mkEnableOption "GNOME Shell extensions";
 
   config = mkIf cfg.enable {
     home.packages = with pkgs;

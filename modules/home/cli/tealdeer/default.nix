@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "tealdeer"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.tealdeer;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "nushell";
-  };
+  options.my.modules.cli.tealdeer.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
     home.packages = [pkgs.tealdeer];

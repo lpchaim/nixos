@@ -4,12 +4,9 @@
   pkgs,
   ...
 }: let
-  namespace = ["my" "modules" "de" "hyprland" "launchers" "rofi"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland.launchers.rofi;
 in {
-  options = lib.setAttrByPath namespace {
-    enable = lib.mkEnableOption "rofi";
-  };
+  options.my.modules.de.hyprland.launchers.rofi.enable = lib.mkEnableOption "rofi";
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings.bindr = [

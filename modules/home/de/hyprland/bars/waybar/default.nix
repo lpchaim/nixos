@@ -5,12 +5,9 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "hyprland" "bars" "waybar"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland.bars.waybar;
 in {
-  options = setAttrByPath namespace {
-    enable = mkEnableOption "Waybar";
-  };
+  options.my.modules.de.hyprland.bars.waybar.enable = mkEnableOption "Waybar";
 
   config = mkIf cfg.enable {
     programs.waybar = {

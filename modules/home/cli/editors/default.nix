@@ -3,15 +3,13 @@
   lib,
   ...
 }: let
-  namespace = ["my" "modules" "cli" "editors"];
-  cfg = lib.getAttrFromPath namespace config;
+  cfg = config.my.modules.cli.editors;
+  inherit (cfg) enable;
 in {
-  options = lib.setAttrByPath namespace {
+  options.my.modules.cli.editors = {
     enable = lib.mkEnableOption "editors";
-    helix.enable = lib.mkEnableOption "helix";
-    kakoune.enable = lib.mkEnableOption "kakoune";
-    neovim.enable = lib.mkEnableOption "neovim";
-    vim.enable = lib.mkEnableOption "vim";
+    kakoune.enable = lib.mkEnableOption "kakoune" // {inherit enable;};
+    vim.enable = lib.mkEnableOption "vim" // {inherit enable;};
   };
 
   config = lib.mkIf cfg.enable {

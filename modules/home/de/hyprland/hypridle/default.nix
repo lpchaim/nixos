@@ -5,8 +5,7 @@
   ...
 }:
 with lib; let
-  namespace = ["my" "modules" "de" "hyprland"];
-  cfg = getAttrFromPath namespace config;
+  cfg = config.my.modules.de.hyprland;
 in
   mkIf cfg.enable {
     services.hypridle = {
