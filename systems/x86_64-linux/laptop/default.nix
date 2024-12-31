@@ -1,26 +1,23 @@
 {lib, ...}: let
-  inherit (lib.lpchaim.nixos) getTraitModules;
   inherit (lib.lpchaim.storage.btrfs) mkStorage;
 in {
-  imports =
-    [
-      ./hardware-configuration.nix
-      (mkStorage {
-        device = "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890";
-        swapSize = "17G";
-      })
-    ]
-    ++ (getTraitModules [
-      "composite/base"
-      "formfactor/laptop"
-      "de/gnome"
-      "de/hyprland"
-      "gaming"
-    ]);
+  imports = [
+    ./hardware-configuration.nix
+    (mkStorage {
+      device = "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890";
+      swapSize = "17G";
+    })
+  ];
 
-  networking.hostName = "laptop";
-  system.stateVersion = "23.11";
+  my.traits = {
+    composite.base.enable = true;
+    formfactor.laptop.enable = true;
+    de.gnome.enable = true;
+    de.hyprland.enable = true;
+  };
   my.gaming.steam.enable = true;
   my.networking.tailscale.trusted = true;
   my.security.secureboot.enable = true;
+
+  system.stateVersion = "23.11";
 }

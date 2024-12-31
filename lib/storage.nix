@@ -1,5 +1,5 @@
 {
-  storage.btrfs.mkStorage = {
+  btrfs.mkStorage = {
     device,
     bootSize ? "512M",
     swapSize,

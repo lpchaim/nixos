@@ -1,13 +1,11 @@
-{lib, ...}: let
-  inherit (lib.lpchaim.home) getTraitModules;
-in {
-  imports = getTraitModules [
-    "de/gnome"
-    "de/hyprland"
-    "apps/gui"
-    "apps/media"
-    "llm/high"
-  ];
+{
+  my.traits = {
+    de.gnome.enable = true;
+    de.hyprland.enable = true;
+    apps.gui.enable = true;
+    apps.media.enable = true;
+    llm.high.enable = true;
+  };
 
-  config.home.stateVersion = "24.11";
+  home.stateVersion = "24.11";
 }

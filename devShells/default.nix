@@ -34,7 +34,6 @@
           '')
         ];
         shellHook = ''
-          export NIX_CONFIG="${builtins.readFile pkgs.nix-conf}"
           export EDITOR=hx
           export NH_FLAKE="$HOME/.config/nixos"
         '';

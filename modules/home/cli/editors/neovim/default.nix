@@ -7,7 +7,7 @@
 in {
   options.my.modules.cli.editors.neovim.enable =
     lib.mkEnableOption "neovim"
-    // {inherit (config.my.modules.cli.editors) enable;};
+    // {default = config.my.modules.cli.editors.enable;};
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;

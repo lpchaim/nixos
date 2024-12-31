@@ -9,26 +9,30 @@
 }: let
   inherit (lib.lpchaim.shared) defaults;
   userName = defaults.name.user;
+  cfg = config.my.traits.users;
 in {
-  users = {
-    mutableUsers = false;
-    groups.${userName} = {
-      gid = 1000;
-    };
-    extraUsers = {
-      ${userName} = {
-        uid = 1000;
-        home = "/home/${userName}";
-        description = defaults.name.full;
-        isNormalUser = true;
-        group = userName;
-        extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
-        shell = pkgs.${defaults.shell};
-        hashedPasswordFile = "${config.sops.secrets."password".path}";
+  options.my.traits.users.enable = lib.mkEnableOption "users trait";
+  config = lib.mkIf cfg.enable {
+    users = {
+      mutableUsers = false;
+      groups.${userName} = {
+        gid = 1000;
       };
-      root.hashedPassword = null;
+      extraUsers = {
+        ${userName} = {
+          uid = 1000;
+          home = "/home/${userName}";
+          description = defaults.name.full;
+          isNormalUser = true;
+          group = userName;
+          extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
+          shell = pkgs.${defaults.shell};
+          hashedPasswordFile = "${config.sops.secrets."password".path}";
+        };
+        root.hashedPassword = null;
+      };
     };
+    nix.settings.trusted-users = ["root" "@wheel"];
+    systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
   };
-  nix.settings.trusted-users = ["root" "@wheel"];
-  systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
 }
