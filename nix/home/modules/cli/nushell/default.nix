@@ -3,41 +3,29 @@
   lib,
   pkgs,
   ...
-}: let
+} @ args: let
   cfg = config.my.modules.cli.nushell;
+  nuScripts = pkgs.nu_scripts + /share/nu_scripts;
 in {
   options.my.modules.cli.nushell.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
     programs.nushell = {
       enable = true;
-      configFile.source = ./config.nu;
-      envFile.source = let
-        pkgToKeyVal = name: {
-          inherit name;
-          value = "${pkgs.${name}}/bin/${name}";
-        };
-        pathsPerPkg =
-          builtins.listToAttrs
-          (builtins.map pkgToKeyVal ["git" "fzf"]);
-        nuScripts = pkgs.nu_scripts + /share/nu_scripts;
-        plugins = pkgs.nushellPlugins;
-      in
-        pkgs.runCommandNoCC "nushell-env" pathsPerPkg ''
-          substituteAll ${./commands.nu} $out
-          cat ${./env.nu} \
-          ${nuScripts}/modules/formats/from-env.nu \
-          >> $out
-          cat <<EOF >> $out
-            plugin add ${plugins.formats}
-            plugin add ${plugins.gstat}
-            plugin add ${plugins.highlight}
-            plugin add ${plugins.net}
-            plugin add ${plugins.polars}
-            plugin add ${plugins.query}
-            plugin add ${plugins.units}
-            EOF
-        '';
+      configFile.text = import ./config.nix;
+      envFile.text = ''
+        ${builtins.readFile ./env.nu}
+
+        ${import ./commands.nix args}
+
+        source "${nuScripts}/modules/formats/from-env.nu"
+      '';
+      plugins = with pkgs.nushellPlugins; [
+        formats
+        polars
+        query
+        units
+      ];
       shellAliases =
         config.programs.bash.shellAliases
         // config.home.shellAliases
