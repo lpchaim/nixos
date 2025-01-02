@@ -15,9 +15,7 @@ in {
     }
   ];
 
-  my.traits = {
-    composite.base.enable = true;
-  };
+  my.profiles.graphical = false;
   my.security.u2f.relaxed = true;
 
   hardware.graphics.enable = false;

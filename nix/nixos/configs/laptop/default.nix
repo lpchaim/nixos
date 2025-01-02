@@ -10,21 +10,15 @@ in {
     })
     {
       home-manager.users.${name.user} = {
-        my.traits = {
-          apps.gui.enable = true;
-          apps.media.enable = true;
-        };
-
         home.stateVersion = "23.05";
       };
     }
   ];
 
-  my.traits = {
-    composite.base.enable = true;
-    formfactor.laptop.enable = true;
-    de.gnome.enable = true;
-    de.hyprland.enable = true;
+  my.profiles = {
+    formfactor.laptop = true;
+    de.gnome = true;
+    de.hyprland = true;
   };
   my.gaming.steam.enable = true;
   my.networking.tailscale.trusted = true;

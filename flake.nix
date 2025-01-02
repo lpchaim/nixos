@@ -1,7 +1,8 @@
 {
-  description = "Defines my personal systems, homes and whatnot";
+  description = "Defines my personal systems/home configs and whatnot";
 
   outputs = {self, ...} @ inputs: let
+    inherit (inputs.nixpkgs) lib;
     inherit (self.lib) mkPkgs;
   in
     inputs.flake-parts.lib.mkFlake
@@ -12,7 +13,6 @@
       ...
     }: let
       inherit (flake-parts-lib) importApply;
-      inherit (inputs.nixpkgs) lib;
       importApply' = path: importApply path {inherit inputs self systems;};
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
@@ -124,7 +124,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-software-center.url = "github:vlinkz/nix-software-center";
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
     sops-nix = {

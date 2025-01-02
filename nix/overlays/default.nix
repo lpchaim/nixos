@@ -27,6 +27,5 @@ in [
   inputs.chaotic.overlays.default
   inputs.nh.overlays.default
   inputs.nix-gaming.overlays.default
-  inputs.nix-software-center.overlays.pkgs
   inputs.nixneovimplugins.overlays.default
 ]

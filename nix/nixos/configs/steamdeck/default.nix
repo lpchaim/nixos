@@ -17,11 +17,6 @@ in {
     })
     {
       home-manager.users.${name.user} = {
-        my.traits = {
-          apps.gui.enable = true;
-          apps.media.enable = true;
-        };
-
         dconf.settings."org/gnome/shell".favorite-apps = ["steam.desktop"];
 
         home.stateVersion = "24.05";
@@ -29,11 +24,9 @@ in {
     }
   ];
 
-  my.traits = {
-    users.enable = true;
-    wayland.enable = true;
-    pipewire.enable = true;
-    de.gnome.enable = true;
+  my.profiles = {
+    kernel = false;
+    de.gnome = true;
   };
   my.gaming.enable = false;
   my.gaming.steam.enable = true;
