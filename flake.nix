@@ -13,7 +13,7 @@
       ...
     }: let
       inherit (flake-parts-lib) importApply;
-      importApply' = path: importApply path {inherit inputs self systems;};
+      importApply' = path: importApply path {inherit inputs systems;};
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
       inherit systems;
