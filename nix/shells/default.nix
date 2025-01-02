@@ -1,4 +1,6 @@
-{self, ...}: {
+{inputs, ...}: let
+  inherit (inputs) self;
+in {
   perSystem = {
     config,
     inputs',

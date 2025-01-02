@@ -28,16 +28,15 @@ in {
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command";
       extra-substituters = [
-        "https://hyprland.cachix.org"
+        # Nixos, nix-community and chaotic are set by default
         "https://lpchaim.cachix.org"
+        "https://hyprland.cachix.org"
         "https://nix-gaming.cachix.org"
-        "https://snowflakeos.cachix.org"
       ];
       extra-trusted-public-keys = [
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "lpchaim.cachix.org-1:2xOuvojcUDNhJRzCpvgewQ2DdNZz3QzGVV4Z/7C+Lio="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        "snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70="
       ];
       keep-derivations = true;
       keep-outputs = true;

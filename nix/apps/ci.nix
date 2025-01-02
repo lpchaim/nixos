@@ -1,5 +1,5 @@
 {
-  self,
+  inputs,
   systems,
   ...
 }: {
@@ -10,6 +10,7 @@
     ...
   }: let
     inherit systems;
+    inherit (inputs) self;
     pkgs = self.pkgs.${system};
   in {
     apps.get-ci-info.program = let
