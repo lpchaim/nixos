@@ -1,12 +1,14 @@
 {
   config,
   inputs,
+  lib,
   ...
 }: let
   inherit (inputs) self;
   inherit (inputs.self.lib) isNvidia;
   inherit (inputs.self.lib.loaders) listDefault;
   inherit (inputs.self.lib.shared) nix;
+  inherit (lib) mkDefault;
 in {
   imports =
     ["${self}/nix/shared"]
@@ -24,8 +26,17 @@ in {
       stylix.nixosModules.stylix
     ]);
 
+  my.profiles = {
+    graphical = mkDefault true;
+    kernel = mkDefault true;
+    users = mkDefault true;
+  };
+
   nix.gc = {
-    automatic = (config.programs.nh.clean.enable or false) == false;
+    automatic = let
+      nhCfg = config.programs.nh;
+    in
+      !nhCfg.enable || !nhCfg.clean.enable;
     dates = "weekly";
   };
   nixpkgs.config =

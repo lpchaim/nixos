@@ -15,23 +15,17 @@ in {
     })
     {
       home-manager.users.${name.user} = {
-        my.traits = {
-          apps.gui.enable = true;
-          apps.media.enable = true;
-        };
-
         home.stateVersion = "24.11";
       };
     }
   ];
 
-  my.traits = {
-    composite.base.enable = true;
-    formfactor.desktop.enable = true;
-    de.gnome.enable = true;
-    de.hyprland.enable = true;
-    gpu.nvidia.enable = true;
-    misc.rgb.enable = true;
+  my.profiles = {
+    formfactor.desktop = true;
+    de.gnome = true;
+    de.hyprland = true;
+    hardware.gpu.nvidia = true;
+    hardware.rgb = true;
   };
   my.gaming.enable = true;
   my.networking.tailscale.trusted = true;

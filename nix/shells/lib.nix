@@ -6,9 +6,9 @@
 }: {
   mkShell = args: let
     shellHook = args.shellHook or "";
-    nativeBuildInputs = args.nativeBuildInputs or [];
+    nativeBuildInputs = args.packages or [];
     fullArgs =
-      args
+      (builtins.removeAttrs args ["packages"])
       // {
         nativeBuildInputs =
           nativeBuildInputs
