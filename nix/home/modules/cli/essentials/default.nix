@@ -38,6 +38,7 @@ in {
           progress
           python312Packages.howdoi
           rsync
+          termshot
           tgpt
           tig
           yazi

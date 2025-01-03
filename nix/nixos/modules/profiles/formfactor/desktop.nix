@@ -14,6 +14,8 @@ in {
       wayland = true;
     };
 
+    nix.package = pkgs.lix;
+
     environment.systemPackages = with pkgs; [
       piper
       qmk

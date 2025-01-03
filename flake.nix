@@ -20,6 +20,7 @@
       imports = [
         (importApply' ./nix/apps)
         (importApply' ./nix/modules)
+        (importApply' ./nix/packages)
         (importApply' ./nix/shells)
       ];
       perSystem = {pkgs, ...}: {
@@ -28,6 +29,9 @@
       flake = {
         lib = import ./nix/lib {inherit inputs;};
         pkgs = lib.genAttrs systems (system: mkPkgs {inherit system;});
+        schemas =
+          inputs.flake-schemas.schemas
+          // (import ./nix/schemas {inherit inputs systems;});
       };
     });
 
@@ -36,6 +40,7 @@
     nixpkgs.follows = "unstable";
     stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
 
     # Home Manager
     home-manager = {
@@ -97,6 +102,7 @@
     };
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     haumea = {
       url = "github:nix-community/haumea/v0.2.2";

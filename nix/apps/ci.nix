@@ -13,7 +13,7 @@
     inherit (inputs) self;
     pkgs = self.pkgs.${system};
   in {
-    apps.get-ci-info.program = let
+    apps.generate-ci-matrix = let
       getOutputInfo = mkDerivationPath: output:
         lib.mapAttrsToList
         (name: subject: {
@@ -25,11 +25,20 @@
       getNestedOutputInfo = mkDerivationPath: output:
         lib.concatMap (system: getOutputInfo (mkDerivationPath system) output.${system})
         systems;
-      ciInfo = {
+      ciInfo = let
+        standaloneHomeConfigurations =
+          lib.filterAttrs
+          (name: _: let
+            parts = lib.splitString "@" name;
+            host = lib.last parts;
+          in
+            !(self.nixosConfigurations ? ${host}))
+          self.homeConfigurations;
+      in {
         homeConfigurations =
           getOutputInfo
           (name: ''.#homeConfigurations."${name}".activationPackage'')
-          self.homeConfigurations;
+          standaloneHomeConfigurations;
         nixosConfigurations =
           getOutputInfo
           (name: ''.#nixosConfigurations."${name}".config.system.build.toplevel'')
@@ -47,29 +56,33 @@
         builtins.toJSON
         (pkgs.writeText "ci-info")
       ];
-    in
-      pkgs.writers.writeNuBin
-      "get-ci-info"
-      # nu
-      ''
-        # Prints available outputs as JSON
-        def main [
-          --system: string = all  # Filter by system
-          --output: string = all  # Only include the specified output
-        ]: nothing -> string {
-          open "${ciInfoFile}"
-          | from json
-          | if $system != all {
-            transpose
-            | filter { get column1 | columns | 'system' in $in }
-            | update column1 { where system == $system }
-            | transpose --header-row --as-record
-          } else $in
-          | if $output != all {
-            get --ignore-errors $output | default []
-          } else $in
-          | to json --raw
-        }
-      '';
+      program =
+        pkgs.writers.writeNuBin
+        "cimatrix"
+        # nu
+        ''
+          # Prints available outputs as JSON
+          def main [
+            --system: string = all  # Filter by system
+            --output: string = all  # Only include the specified output
+          ]: nothing -> string {
+            open "${ciInfoFile}"
+            | from json
+            | if $system != all {
+              transpose
+              | filter { get column1 | columns | 'system' in $in }
+              | update column1 { where system == $system }
+              | transpose --header-row --as-record
+            } else $in
+            | if $output != all {
+              get --ignore-errors $output | default []
+            } else $in
+            | to json --raw
+          }
+        '';
+    in {
+      inherit program;
+      meta.description = "Generates a GitHub Actions build matrix";
+    };
   };
 }
