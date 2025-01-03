@@ -1,5 +1,5 @@
 .direnv
 .justfile
 .pre-commit-config.yaml
-home.nix
-result
+/home.nix
+/result
