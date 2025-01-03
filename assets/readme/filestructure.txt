@@ -1,0 +1,36 @@
+./nix
+├── apps
+│   ├── assets.nix
+│   ├── ci.nix
+│   └── default.nix
+├── home
+│   ├── configs
+│   └── modules
+├── lib
+│   ├── default.nix
+│   ├── loaders.nix
+│   ├── shared.nix
+│   ├── shell.nix
+│   ├── storage
+│   └── strings.nix
+├── modules
+│   ├── default.nix
+│   ├── ezConfigs.nix
+│   └── gitHooks.nix
+├── nixos
+│   ├── configs
+│   └── modules
+├── overlays
+│   └── default.nix
+├── packages
+│   └── default.nix
+├── schemas
+│   ├── default.nix
+│   ├── lib.nix
+│   └── pkgs.nix
+├── shared
+│   ├── default.nix
+│   └── theming
+└── shells
+    ├── default.nix
+    └── lib.nix

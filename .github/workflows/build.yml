@@ -27,10 +27,10 @@ jobs:
       - id: matrix
         run: |
           {
-          echo "packages=$(nix run .#get-ci-info -- --system x86_64-linux --output packages)"
-          echo "devShells=$(nix run .#get-ci-info -- --system x86_64-linux --output devShells)"
-          echo "homeConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output homeConfigurations)"
-          echo "nixosConfigurations=$(nix run .#get-ci-info -- --system x86_64-linux --output nixosConfigurations)"
+          echo "packages=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output packages)"
+          echo "devShells=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output devShells)"
+          echo "homeConfigurations=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output homeConfigurations)"
+          echo "nixosConfigurations=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output nixosConfigurations)"
           } >> "$GITHUB_OUTPUT"
 
   build-packages:
@@ -52,7 +52,7 @@ jobs:
           nix build ${{ matrix.derivation }}
 
   build-devshells:
-    name: Build devShells
+    name: Build development shells
     needs: inventory
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.devShells)) != '[]' }}
     strategy:
@@ -70,7 +70,7 @@ jobs:
           nix build ${{ matrix.derivation }}
 
   build-homes:
-    name: Build homeConfigurations
+    name: Build standalone home configurations
     needs: inventory
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.homeConfigurations)) != '[]' }}
     strategy:

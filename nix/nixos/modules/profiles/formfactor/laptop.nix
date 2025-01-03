@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.my.profiles.formfactor.laptop;
@@ -12,6 +13,8 @@ in {
       pipewire = true;
       wayland = true;
     };
+
+    nix.package = pkgs.lix;
 
     hardware.graphics.enable = true;
     hardware.sensor.iio.enable = true;
