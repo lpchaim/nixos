@@ -2,20 +2,12 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.my.profiles.formfactor.laptop;
 in {
   options.my.profiles.formfactor.laptop = lib.mkEnableOption "laptop profile";
   config = lib.mkIf cfg {
-    my.profiles = {
-      pipewire = true;
-      wayland = true;
-    };
-
-    nix.package = pkgs.lix;
-
     hardware.graphics.enable = true;
     hardware.sensor.iio.enable = true;
 

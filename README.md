@@ -1,9 +1,18 @@
+[ez-configs]: https://github.com/ehllie/ez-configs/
 [haumea]: https://github.com/nix-community/haumea
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
 [stylix]: https://github.com/danth/stylix
 
-![Screenshot of my desktop with fasfetch on top](assets/readme/screenshot.png)
+<p align="center">
+    <a href="https://github.com/lpchaim/nixos/actions/workflows/build.yml">
+        <img src="https://github.com/lpchaim/nixos/actions/workflows/build.yml/badge.svg" title="Build flake outputs"/>
+    </a>
+</p>
+
+<p align="center">
+    <img src="assets/readme/screenshot.png" title="Screenshot of my desktop with fasfetch on top"/>
+</p>
 
 ---
 
@@ -15,7 +24,7 @@ This is mainly for my NixOS configurations, but it also has a couple standalone 
 
 - Simple, easy to parse and short system/home configurations
     - Minimal boilerplate
-    - Largely orthogonal `profiles` instead of one-off module options, e.g. enable `my.profile.gaming = true` instead of specifying several options per host
+    - Largely orthogonal `profiles` instead of one-off module options, e.g. enable `my.profiles.gaming = true` instead of specifying several options per host
 - Good separation of concerns and modularity, I dislike how monolithic flakes tend to turn out
     - Huge shoutout to [flake-parts] for helping with this!
 - No libraries with too much magic behind how they work
