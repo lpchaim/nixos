@@ -1,4 +1,4 @@
-name: Build flake outputs
+name: Build
 
 on:
   workflow_dispatch:
@@ -6,11 +6,11 @@ on:
     branches:
       - main
     paths:
-      - '/assets/**'
-      - '/flake.nix'
-      - '/flake.lock'
-      - '/nix/**'
-      - '/secrets/**'
+      - 'assets/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'nix/**'
+      - 'secrets/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,7 +27,7 @@ jobs:
       nixosConfigurations: ${{ steps.matrix.outputs.nixosConfigurations }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - id: matrix
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: aarch64-linux
