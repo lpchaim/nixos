@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.0.0) (2025-01-05)
+
+
+### Features
+
+* Better pull workflow settings ([3dcc039](https://github.com/lpchaim/nixos/commit/3dcc039adf24fa01019b50a8604b9bd827a99f2d))
+* Remove lix ([62ded98](https://github.com/lpchaim/nixos/commit/62ded98b9d3957ed920d5e3894927b261813647d))
+* Tweak README.md ([7259e80](https://github.com/lpchaim/nixos/commit/7259e80ef3781b82dd8306fad1fe5a9c69d74bf0))
+
+
+### Miscellaneous Chores
+
+* Release 1.0.0 ([4c5c575](https://github.com/lpchaim/nixos/commit/4c5c5755146b6f74b7efba5fd2650fb15be67d03))
+
 ## [1.0.0](https://github.com/lpchaim/nixos/compare/v0.3.0...v1.0.0) (2025-01-03)
 
 
