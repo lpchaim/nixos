@@ -8,8 +8,8 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.shared) defaults;
-  userName = defaults.name.user;
+  inherit (inputs.self.lib.config) name shell;
+  userName = name.user;
   cfg = config.my.profiles.users;
 in {
   options.my.profiles.users = lib.mkEnableOption "users profile";
@@ -23,11 +23,11 @@ in {
         ${userName} = {
           uid = 1000;
           home = "/home/${userName}";
-          description = defaults.name.full;
+          description = name.full;
           isNormalUser = true;
           group = userName;
           extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
-          shell = pkgs.${defaults.shell};
+          shell = pkgs.${shell};
           hashedPasswordFile = "${config.sops.secrets."password".path}";
         };
         root.hashedPassword = null;

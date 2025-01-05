@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.shared) defaults;
+  inherit (inputs.self.lib.config) name;
 in {
   sops.secrets = let
-    owner = defaults.name.user;
+    owner = name.user;
   in {
     "atuin/username" = {inherit owner;};
     "atuin/password" = {inherit owner;};

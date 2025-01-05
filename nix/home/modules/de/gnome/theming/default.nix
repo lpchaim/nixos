@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.shared.defaults) profilePicture wallpaper;
+  inherit (inputs.self.lib.config) profilePicture wallpaper;
   cfg = config.my.modules.de.gnome.theming;
 in {
   options.my.modules.de.gnome.theming = {

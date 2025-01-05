@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.shared.defaults) name;
+  inherit (inputs.self.lib.config) name;
 in {
   home = rec {
     username = "${name.user}";
