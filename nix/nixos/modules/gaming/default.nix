@@ -6,7 +6,7 @@
   ...
 }: let
   inherit (inputs.self.lib) isNvidia;
-  inherit (inputs.self.lib.shared) defaults;
+  inherit (inputs.self.lib.config) name;
   cfg = config.my.gaming;
 in {
   options.my.gaming = {
@@ -52,7 +52,7 @@ in {
       };
       security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
 
-      users.extraUsers.${defaults.name.user}.extraGroups = ["gamemode"];
+      users.extraUsers.${name.user}.extraGroups = ["gamemode"];
     })
     (lib.mkIf cfg.steam.enable {
       hardware.steam-hardware.enable = true;

@@ -1,21 +1,20 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
+  inherit (inputs.self.lib.loaders) listNonDefault;
   cfg = config.my.modules.de.gnome.extensions;
-  pre43 = versionOlder pkgs.gnome-shell.version "43";
+  pre43 = lib.versionOlder pkgs.gnome-shell.version "43";
 in {
-  options.my.modules.de.gnome.extensions.enable = mkEnableOption "GNOME Shell extensions";
+  options.my.modules.de.gnome.extensions.enable = lib.mkEnableOption "GNOME Shell extensions";
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
-        gnome-tweaks
-      ]
-      ++ (with gnomeExtensions;
+  config = lib.mkIf cfg.enable {
+    home.packages =
+      [pkgs.gnome-tweaks]
+      ++ (with pkgs.gnomeExtensions;
         [
           appindicator
           blur-my-shell
@@ -29,7 +28,7 @@ in {
           user-themes
           vitals
         ]
-        ++ optionals pre43 [
+        ++ lib.optionals pre43 [
           sound-output-device-chooser
         ]);
 
@@ -49,7 +48,7 @@ in {
             "user-theme@gnome-shell-extensions.gcampax.github.com"
             "Vitals@CoreCoding.com"
           ]
-          ++ optionals pre43 [
+          ++ lib.optionals pre43 [
             "sound-output-device-chooser@kgshank.net"
           ];
       };
@@ -75,7 +74,5 @@ in {
     };
   };
 
-  imports = [
-    ./dash-to-panel.nix
-  ];
+  imports = listNonDefault ./.;
 }

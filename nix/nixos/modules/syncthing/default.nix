@@ -4,9 +4,8 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.shared) defaults;
-
-  home = "/home/${defaults.name.user}";
+  inherit (inputs.self.lib.config) name;
+  home = "/home/${name.user}";
   sopsFile = "${inputs.self}/secrets/hosts/${config.networking.hostName}.yaml";
 in
   lib.mkIf (lib.pathExists sopsFile) {
@@ -32,8 +31,8 @@ in
       enable = true;
       relay.enable = true;
       openDefaultPorts = true;
-      user = defaults.name.user;
-      group = defaults.name.user;
+      user = name.user;
+      group = name.user;
       cert = config.sops.secrets."syncthing/cert".path;
       key = config.sops.secrets."syncthing/key".path;
       dataDir = "${home}/Syncthing";

@@ -1,8 +1,7 @@
-{inputs, ...}: {
-  imports = [
-    ./atuin.nix
-    ./extraNixOptions.nix
-  ];
+{inputs, ...}: let
+  inherit (inputs.self.lib.loaders) listNonDefault;
+in {
+  imports = listNonDefault ./.;
 
   sops = {
     defaultSopsFile = inputs.self + /secrets/default.yaml;

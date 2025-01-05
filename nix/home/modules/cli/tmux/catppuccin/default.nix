@@ -4,25 +4,23 @@
   pkgs,
   lib,
   ...
-}:
-with builtins;
-with lib; let
+}: let
   cfg = config.my.modules.cli.tmux.catppuccin;
 in {
   options.my.modules.cli.tmux.catppuccin = {
-    enable = mkOption {
+    enable = lib.mkOption {
       description = "Whether to enable catppuccin.";
-      type = types.bool;
+      type = lib.types.bool;
       default = false;
     };
-    flavor = mkOption {
+    flavor = lib.mkOption {
       description = "The theme to use.";
-      type = types.enum ["frappe" "macchiato" "mocha"];
+      type = lib.types.enum ["frappe" "macchiato" "mocha"];
       default = "mocha";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.tmux.plugins = with pkgs.tmuxPlugins; [
       {
         plugin = catppuccin;
