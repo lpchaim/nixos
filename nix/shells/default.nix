@@ -1,5 +1,6 @@
-{inputs, ...}: let
+{inputs, ...} @ args: let
   inherit (inputs) self;
+  inherit ((import ../lib args).config) flake repo;
 in {
   perSystem = {
     config,
@@ -33,10 +34,10 @@ in {
             nixos-generators
             nixos-rebuild
             (writeShellScriptBin "flake-init" ''
-              if [ ! -d "$FLAKE" ]; then
-                mkdir -p "$FLAKE"
-                git clone --branch develop 'https://github.com/lpchaim/nixos' "$FLAKE"
-                echo "Repo checked out at $FLAKE"
+              if [ ! -d "${flake.path}" ]; then
+                mkdir -p "${flake.path}"
+                git clone --branch develop '${repo.main}' "${flake.path}"
+                echo "Repo checked out at ${flake.path}"
               else
                 echo 'Repo exists, nothing to do'
               fi
@@ -44,7 +45,7 @@ in {
           ]);
         shellHook = ''
           export EDITOR=hx
-          export NH_FLAKE="$HOME/.config/nixos"
+          export NH_FLAKE="${flake.path}"
         '';
       };
       rust = mkShell {

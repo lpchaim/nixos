@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.shared.defaults) wallpaper;
+  inherit (inputs.self.lib.config) wallpaper;
   base16 = pkgs.base16-schemes + /share/themes;
 in {
   stylix = {

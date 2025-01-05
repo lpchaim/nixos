@@ -12,6 +12,6 @@
   };
   console.useXkbConfig = true; # use xkb.options in tty.
   services.xserver.xkb = {
-    inherit (inputs.self.lib.shared.kb.default) layout options variant;
+    inherit (inputs.self.lib.config.kb.default) layout options variant;
   };
 }

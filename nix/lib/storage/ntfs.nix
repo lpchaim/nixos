@@ -1,10 +1,9 @@
 {
   inputs,
   lib,
-  root,
   ...
-}: let
-  inherit (root) mkPreMountFsck;
+} @ args: let
+  inherit (import ./. args) mkPreMountFsck;
 in {
   mkSecondaryStorage = {
     device,

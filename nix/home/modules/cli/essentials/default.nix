@@ -4,9 +4,8 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
-  inherit (inputs.self.lib.shared) defaults;
+}: let
+  inherit (inputs.self.lib.config) shell;
   cfg = config.my.modules.cli.essentials;
 in {
   options.my.modules.cli.essentials.enable = lib.mkEnableOption "essentials";
@@ -58,7 +57,7 @@ in {
       };
     };
 
-    programs.${defaults.shell}.enable = config.programs ? "${defaults.shell}";
+    programs.${shell}.enable = config.programs ? "${shell}";
     programs = {
       bat.enable = true;
       broot.enable = true;
@@ -81,7 +80,7 @@ in {
       };
       fzf.enable = true;
       mcfly = {
-        enable = mkDefault true;
+        enable = lib.mkDefault true;
         fuzzySearchFactor = 2;
         keyScheme = "vim";
       };

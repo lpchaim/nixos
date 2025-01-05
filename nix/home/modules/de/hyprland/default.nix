@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) shared;
+  inherit (inputs.self.lib.config) kb;
   cfg = config.my.modules.de.hyprland;
 in {
   options.my.modules.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
@@ -93,9 +93,9 @@ in {
             vrr = 2; # Fullscreen only
           };
           input = {
-            kb_layout = shared.kb.default.layout;
-            kb_variant = shared.kb.default.variant;
-            kb_options = shared.kb.default.options;
+            kb_layout = kb.default.layout;
+            kb_variant = kb.default.variant;
+            kb_options = kb.default.options;
             follow_mouse = 1;
             touchpad.natural_scroll = false;
             resolve_binds_by_sym = false;
@@ -103,8 +103,8 @@ in {
           device = [
             {
               name = "keychron--keychron-link--keyboard";
-              kb_layout = shared.kb.us.layout;
-              kb_variant = shared.kb.us.variant;
+              kb_layout = kb.us.layout;
+              kb_variant = kb.us.variant;
             }
           ];
           binds.workspace_center_on = 1; # Last active

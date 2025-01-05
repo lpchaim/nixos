@@ -6,7 +6,7 @@
   ...
 }: let
   inherit (lib) mkDefault;
-  inherit (inputs.self.lib) shared;
+  inherit (inputs.self.lib.config.nix) settings;
   cfg = config.my.modules;
 in {
   options.my.modules.enable =
@@ -16,12 +16,12 @@ in {
     programs.home-manager.enable = mkDefault true;
     nix =
       {
+        inherit settings;
         gc = {
           automatic = osConfig == {};
           frequency = "daily";
           options = "--delete-older-than 7d";
         };
-        settings = shared.nix.settings;
       }
       // (lib.optionalAttrs (osConfig != {}) {
         inherit (osConfig.nix) extraOptions;

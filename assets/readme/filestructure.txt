@@ -7,9 +7,9 @@
 │   ├── configs
 │   └── modules
 ├── lib
+│   ├── config.nix
 │   ├── default.nix
 │   ├── loaders.nix
-│   ├── shared.nix
 │   ├── shell.nix
 │   ├── storage
 │   └── strings.nix
@@ -30,7 +30,7 @@
 │   └── pkgs.nix
 ├── shared
 │   ├── default.nix
-│   └── theming
+│   └── theming.nix
 └── shells
     ├── default.nix
     └── lib.nix

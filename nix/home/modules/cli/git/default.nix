@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.shared) defaults;
+  inherit (inputs.self.lib.config) email name;
   cfg = config.my.modules.cli.git;
 in {
   options.my.modules.cli.git = {
@@ -22,8 +22,8 @@ in {
           push.autoSetupRemote = true;
           pull.rebase = false;
         };
-        userEmail = defaults.email.main;
-        userName = defaults.name.full;
+        userEmail = email.main;
+        userName = name.full;
       };
       lazygit.enable = cfg.lazygit.enable;
     };
