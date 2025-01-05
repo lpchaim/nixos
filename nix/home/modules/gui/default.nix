@@ -5,16 +5,15 @@
   lib,
   osConfig ? {},
   ...
-}:
-with lib; let
+}: let
   inherit (inputs.self.lib.loaders) listNonDefault;
   cfg = config.my.modules.gui;
 in {
   imports = listNonDefault ./.;
 
-  options.my.modules.gui.enable = mkEnableOption "gui apps";
+  options.my.modules.gui.enable = lib.mkEnableOption "gui apps";
 
-  config = mkIf cfg.enable (mkMerge [
+  config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       home.packages = with pkgs; [
         logseq
@@ -33,7 +32,7 @@ in {
       };
 
       services = {
-        kdeconnect = mkIf (osConfig != {}) {
+        kdeconnect = lib.mkIf (osConfig != {}) {
           inherit (osConfig.programs.kdeconnect) package;
           enable = true;
           indicator = true;
