@@ -1,23 +1,20 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   osConfig ? {},
   ...
 }:
 with lib; let
+  inherit (inputs.self.lib.loaders) listNonDefault;
   cfg = config.my.modules.gui;
 in {
-  imports = [
-    ./chromium.nix
-    ./firefox.nix
-    ./mangohud.nix
-  ];
+  imports = listNonDefault ./.;
 
   options.my.modules.gui.enable = mkEnableOption "gui apps";
 
   config = mkIf cfg.enable (mkMerge [
-    {my.modules.gui.firefox.enable = mkDefault true;}
     {
       home.packages = with pkgs; [
         logseq
