@@ -2,26 +2,25 @@
   config,
   lib,
   ...
-}:
-with lib; let
+}: let
   cfg = config.my.modules.de.gnome;
 in {
-  options.my.modules.de.gnome.enable = mkEnableOption "GTK/GNOME Shell customizations";
+  options.my.modules.de.gnome.enable = lib.mkEnableOption "GTK/GNOME Shell customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       my.modules.de.gnome = {
         extensions = {
-          enable = mkDefault true;
-          dash-to-panel.enable = mkDefault true;
+          enable = lib.mkDefault true;
+          dash-to-panel.enable = lib.mkDefault true;
         };
         theming = {
-          enable = mkDefault true;
-          enableGtkTheme = mkDefault cfg.theming.enable;
-          enableGnomeShellTheme = mkDefault cfg.theming.enable;
-          enableIconTheme = mkDefault cfg.theming.enable;
-          enableCursorTheme = mkDefault cfg.theming.enable;
-          preferDarkTheme = mkDefault cfg.theming.enable;
+          enable = lib.mkDefault true;
+          enableGtkTheme = lib.mkDefault cfg.theming.enable;
+          enableGnomeShellTheme = lib.mkDefault cfg.theming.enable;
+          enableIconTheme = lib.mkDefault cfg.theming.enable;
+          enableCursorTheme = lib.mkDefault cfg.theming.enable;
+          preferDarkTheme = lib.mkDefault cfg.theming.enable;
         };
       };
     }
