@@ -6,10 +6,15 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   inherit (inputs.home-manager.lib) hm;
-in
-  lib.mkIf (config.my.modules.gui.enable) {
+  inherit (inputs.self.lib) isNvidia;
+  cfg = config.my.modules.gui.chromium;
+in {
+  options.my.modules.gui.chromium.enable =
+    lib.mkEnableOption "custom chromium"
+    // {default = config.my.modules.gui.enable;};
+
+  config = lib.mkIf cfg.enable {
     programs.chromium = {
       enable = true;
       commandLineArgs =
@@ -39,4 +44,5 @@ in
         '';
     in
       lib.mkIf (package == pkgs.brave) script;
-  }
+  };
+}
