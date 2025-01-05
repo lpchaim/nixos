@@ -18,7 +18,6 @@ in {
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
-      lix-module.nixosModules.default
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nur.modules.nixos.default
