@@ -18,8 +18,12 @@ in {
     ];
   in {
     devShells = {
-      default = mkShell {packages = basePackages;};
+      default = mkShell {
+        meta.description = "Minimal shell with cli essentials";
+        packages = basePackages;
+      };
       deploy = mkShell {
+        meta.description = "Extra deployment utilities built-in";
         packages =
           basePackages
           ++ (with pkgs; [
@@ -44,6 +48,7 @@ in {
         '';
       };
       rust = mkShell {
+        meta.description = "For building Rust projects";
         packages = with pkgs; [
           cargo
           openssl
