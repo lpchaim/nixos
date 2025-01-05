@@ -13,11 +13,15 @@ in {
       "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
       "$mod, R, exec, pkill rofi || rofi -show run"
       "$mod, W, exec, pkill rofi || rofi -show window"
+      "$mod, period, exec, pkill rofi || rofi -modi emoji -show emoji"
     ];
 
     programs.rofi = {
       enable = true;
       package = pkgs.rofi-wayland;
+      plugins = with pkgs; [
+        rofi-emoji-wayland
+      ];
       extraConfig = {
         modes = "run,drun,window,filebrowser,recursivebrowser,ssh,keys,combi";
         modi = "run,drun,window,recursivebrowser,ssh";
