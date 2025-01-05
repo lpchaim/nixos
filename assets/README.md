@@ -5,9 +5,12 @@
 [stylix]: https://github.com/danth/stylix
 
 <p align="center">
-    <a href="https://github.com/lpchaim/nixos/actions/workflows/build.yml">
-        <img src="https://github.com/lpchaim/nixos/actions/workflows/build.yml/badge.svg" title="Build flake outputs"/>
-    </a>
+    <i href="https://github.com/lpchaim/nixos/actions/workflows/check.yml">
+        <img src="https://github.com/lpchaim/nixos/actions/workflows/check.yml/badge.svg" title="Checks flake outputs"/>
+    </i>
+    <i href="https://github.com/lpchaim/nixos/actions/workflows/build.yml">
+        <img src="https://github.com/lpchaim/nixos/actions/workflows/build.yml/badge.svg" title="Builds flake outputs"/>
+    </i>
 </p>
 
 <p align="center">
