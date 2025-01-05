@@ -1,6 +1,5 @@
-args: {
-  imports = [
-    (import ./ezConfigs.nix args)
-    (import ./gitHooks.nix args)
-  ];
+args: let
+  inherit ((import ../lib args).loaders) listNonDefault;
+in {
+  imports = listNonDefault ./.;
 }

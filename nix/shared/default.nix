@@ -1,10 +1,9 @@
 {inputs, ...}: let
   inherit (inputs) self;
   inherit (inputs.self.lib) shared;
+  inherit (inputs.self.lib.loaders) listNonDefault;
 in {
-  imports = [
-    ./theming
-  ];
+  imports = listNonDefault ./.;
 
   nix = {
     inherit (shared.nix) settings;
