@@ -1,0 +1,31 @@
+name: Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'assets/**'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'nix/**'
+      - 'secrets/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inventory:
+    name: Run flake checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/nix-setup
+        with:
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          forceInstallQemu: true
+      - run: |
+          nix flake check --all-systems .
