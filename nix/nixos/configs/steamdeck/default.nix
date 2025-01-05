@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (lib) mkIf mkForce;
-  inherit (inputs.self.lib.shared.defaults) name;
+  inherit (inputs.self.lib.config) name;
   inherit (inputs.self.lib.storage.btrfs) mkStorage;
 in {
   imports = [

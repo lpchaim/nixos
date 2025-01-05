@@ -3,13 +3,12 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfg = config.my.modules.de.hyprland.bars.waybar;
 in {
-  options.my.modules.de.hyprland.bars.waybar.enable = mkEnableOption "Waybar";
+  options.my.modules.de.hyprland.bars.waybar.enable = lib.mkEnableOption "Waybar";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.waybar = {
       enable = true;
       settings = {

@@ -5,7 +5,7 @@
   options,
   ...
 }: let
-  inherit (inputs.self.lib) shared;
+  inherit (inputs.self.lib.config) name;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {
@@ -50,7 +50,7 @@ in {
           "--accept-dns"
           "--accept-routes"
           "--advertise-tags=${formattedTags}"
-          "--operator=${shared.defaults.name.user}"
+          "--operator=${name.user}"
           "--reset" # Forces unspecified arguments to default values
           "--ssh"
         ]

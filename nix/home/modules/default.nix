@@ -6,8 +6,8 @@
   ...
 }: let
   inherit (inputs) self;
+  inherit (inputs.self.lib.config) nix;
   inherit (inputs.self.lib.loaders) listDefault;
-  inherit (inputs.self.lib.shared) nix;
 in {
   imports =
     ["${self}/nix/shared"]

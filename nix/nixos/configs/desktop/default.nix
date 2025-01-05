@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  inherit (inputs.self.lib.shared.defaults) name;
+  inherit (inputs.self.lib.config) name;
   inherit (inputs.self.lib.storage.btrfs) mkStorage;
   inherit (inputs.self.lib.storage.ntfs) mkSecondaryStorage;
 in {

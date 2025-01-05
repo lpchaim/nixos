@@ -9,14 +9,14 @@
       (x: assets + /${x})
     ];
 in {
-  defaults = {
-    name.user = "lpchaim";
-    name.full = "Lucas Chaim";
-    email.main = "lpchaim@proton.me";
-    shell = "fish";
-    wallpaper = assetWithPrefix "wallpaper";
-    profilePicture = assetWithPrefix "profile-picture";
-  };
+  name.user = "lpchaim";
+  name.full = "Lucas Chaim";
+  email.main = "lpchaim@proton.me";
+  flake.path = "~/.config/nixos";
+  repo.main = "https://github.lpcha.im";
+  shell = "fish";
+  wallpaper = assetWithPrefix "wallpaper";
+  profilePicture = assetWithPrefix "profile-picture";
   nix = {
     pkgs.config = {
       allowUnfree = true;

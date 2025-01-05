@@ -3,12 +3,11 @@
   lib,
   osConfig ? {},
   ...
-}:
-with lib; let
+}: let
   cfg = config.my.modules.gui.mangohud;
 in {
   options.my.modules.gui.mangohud.enable =
-    mkEnableOption "gui apps"
+    lib.mkEnableOption "gui apps"
     // {
       default =
         config.my.modules.gui.enable

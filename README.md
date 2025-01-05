@@ -12,6 +12,7 @@
         <img src="https://github.com/lpchaim/nixos/actions/workflows/build.yml/badge.svg" title="Builds flake outputs"/>
     </i>
 </p>
+
 <p align="center">
     <img src="assets/readme/screenshot.png" title="Screenshot of my desktop with fasfetch on top"/>
 </p>
@@ -40,7 +41,7 @@ As an example, this is a working NixOS configuration describing my main rig.
 
 ```nix
 {inputs, ...}: let
-  inherit (inputs.self.lib.shared.defaults) name;
+  inherit (inputs.self.lib.config) name;
   inherit (inputs.self.lib.storage.btrfs) mkStorage;
   inherit (inputs.self.lib.storage.ntfs) mkSecondaryStorage;
 in {
@@ -103,9 +104,9 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 │   ├── configs
 │   └── modules
 ├── lib
+│   ├── config.nix
 │   ├── default.nix
 │   ├── loaders.nix
-│   ├── shared.nix
 │   ├── shell.nix
 │   ├── storage
 │   └── strings.nix
@@ -126,7 +127,7 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 │   └── pkgs.nix
 ├── shared
 │   ├── default.nix
-│   └── theming
+│   └── theming.nix
 └── shells
     ├── default.nix
     └── lib.nix
@@ -146,10 +147,12 @@ git+file:///home/lpchaim/.config/nixos
 ├───apps
 │   ├───aarch64-linux
 │   │   ├───generate-assets: app
-│   │   └───generate-ci-matrix: app
+│   │   ├───generate-ci-matrix: app
+│   │   └───render-readme: app
 │   └───x86_64-linux
 │       ├───generate-assets: app
-│       └───generate-ci-matrix: app
+│       ├───generate-ci-matrix: app
+│       └───render-readme: app
 ├───checks
 │   ├───aarch64-linux
 │   │   └───pre-commit: CI test [pre-commit-run]
@@ -187,10 +190,10 @@ git+file:///home/lpchaim/.config/nixos
 ├───legacyPackages
 │   └───(skipped; use '--legacy' to show)
 ├───lib
+│   ├───config: library namespace
 │   ├───isNvidia: library function
 │   ├───loaders: library namespace
 │   ├───mkPkgs: library function
-│   ├───shared: library namespace
 │   ├───shell: library namespace
 │   ├───storage: library namespace
 │   └───strings: library namespace

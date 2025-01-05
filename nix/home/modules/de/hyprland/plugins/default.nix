@@ -4,13 +4,12 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfg = config.my.modules.de.hyprland.plugins;
 in {
-  options.my.modules.de.hyprland.plugins.enable = mkEnableOption "Hyprland plugins";
+  options.my.modules.de.hyprland.plugins.enable = lib.mkEnableOption "Hyprland plugins";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = {
       bind = [
         "SUPER, apostrophe, hyprexpo:expo, toggle"

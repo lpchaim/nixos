@@ -3,11 +3,10 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfg = config.my.modules.de.hyprland;
 in
-  mkIf cfg.enable {
+  lib.mkIf cfg.enable {
     services.hypridle = {
       enable = true;
       settings = {
