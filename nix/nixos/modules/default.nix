@@ -27,6 +27,8 @@ in {
 
   my.profiles = {
     graphical = mkDefault true;
+    wayland = mkDefault config.my.profiles.graphical;
+    pipewire = mkDefault true;
     kernel = mkDefault true;
     users = mkDefault true;
   };

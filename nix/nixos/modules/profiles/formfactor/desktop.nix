@@ -9,11 +9,6 @@
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
   config = lib.mkIf cfg {
-    my.profiles = {
-      pipewire = true;
-      wayland = true;
-    };
-
     environment.systemPackages = with pkgs; [
       piper
       qmk
