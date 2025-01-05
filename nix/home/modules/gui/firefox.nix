@@ -6,7 +6,9 @@
 }: let
   cfg = config.my.modules.gui.firefox;
 in {
-  options.my.modules.gui.firefox.enable = lib.mkEnableOption "Mozilla Firefox";
+  options.my.modules.gui.firefox.enable =
+    lib.mkEnableOption "custom firefox"
+    // {default = config.my.modules.gui.enable;};
 
   config = lib.mkIf cfg.enable {
     programs.firefox = {
