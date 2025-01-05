@@ -1,6 +1,5 @@
-{lib, ...}: {
-  imports = lib.pipe ./. [
-    lib.filesystem.listFilesRecursive
-    (builtins.filter (path: ! (lib.hasSuffix "default.nix" path)))
-  ];
+{inputs, ...}: let
+  inherit (inputs.self.lib.loaders) listNonDefault;
+in {
+  imports = listNonDefault ./.;
 }
