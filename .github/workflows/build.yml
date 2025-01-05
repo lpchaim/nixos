@@ -5,9 +5,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '/assets/**'
+      - '/flake.nix'
+      - '/flake.lock'
+      - '/nix/**'
+      - '/secrets/**'
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
