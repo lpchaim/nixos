@@ -8,7 +8,7 @@
 in {
   options.my.profiles.kernel = lib.mkEnableOption "kernel profile";
   config = lib.mkIf cfg {
-    boot = {
+    boot = lib.mkIf (!(config ? jovian)) {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       kernelModules = [
         "i2c-dev"
