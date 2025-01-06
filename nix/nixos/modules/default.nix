@@ -2,11 +2,10 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib) isNvidia;
-  inherit (inputs.self.lib.config) nix;
   inherit (inputs.self.lib.loaders) listDefault;
   inherit (lib) mkDefault;
 in {
@@ -32,15 +31,28 @@ in {
     kernel = mkDefault true;
     users = mkDefault true;
   };
-
-  nix.gc = {
-    automatic = let
-      nhCfg = config.programs.nh;
-    in
-      !nhCfg.enable || !nhCfg.clean.enable;
-    dates = "weekly";
+  my.modules = {
+    nix.enable = mkDefault true;
+    theming.enable = mkDefault true;
+    zram.enable = mkDefault true;
   };
-  nixpkgs.config =
-    nix.pkgs.config
-    // {enableCuda = isNvidia config;};
+  my.networking.tailscale.enable = mkDefault true;
+  my.security.enable = mkDefault true;
+
+  environment.systemPackages = with pkgs; [
+    android-udev-rules
+    helix
+    sbctl
+    vim
+    wget
+  ];
+  home-manager = {
+    backupFileExtension = "backup";
+    useGlobalPkgs = true;
+    useUserPackages = true;
+  };
+  systemd = {
+    targets.network-online.wantedBy = pkgs.lib.mkForce [];
+    services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
+  };
 }

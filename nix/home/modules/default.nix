@@ -1,13 +1,11 @@
 {
   inputs,
   lib,
-  osConfig ? {},
-  pkgs,
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.config) nix;
   inherit (inputs.self.lib.loaders) listDefault;
+  inherit (lib) mkDefault;
 in {
   imports =
     ["${self}/nix/shared"]
@@ -23,10 +21,11 @@ in {
       wayland-pipewire-idle-inhibit.homeModules.default
     ]);
 
-  nix.package = lib.mkForce (osConfig.nix.package or pkgs.nix);
-  nixpkgs = lib.mkIf (osConfig == {} || !osConfig.home-manager.useGlobalPkgs) {
-    config =
-      nix.pkgs.config
-      // {enableCuda = osConfig.nix.config.enableCuda or false;};
+  my.modules = {
+    cli.enable = mkDefault true;
+    nix.enable = mkDefault true;
   };
+
+  programs.home-manager.enable = lib.mkDefault true;
+  systemd.user.startServices = "sd-switch";
 }

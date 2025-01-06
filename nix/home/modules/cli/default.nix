@@ -6,9 +6,7 @@
   inherit (lib) mkDefault mkEnableOption mkIf;
   cfg = config.my.modules.cli;
 in {
-  options.my.modules.cli.enable =
-    mkEnableOption "cli modules"
-    // {default = true;};
+  options.my.modules.cli.enable = mkEnableOption "cli modules";
 
   config.my.modules.cli = mkIf cfg.enable {
     editors.enable = mkDefault true;
