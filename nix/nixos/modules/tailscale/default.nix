@@ -9,7 +9,7 @@
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {
-    enable = lib.mkEnableOption "tailscale" // {default = true;};
+    enable = lib.mkEnableOption "tailscale";
     authKeyParameters =
       options.services.tailscale.authKeyParameters
       // {

@@ -8,7 +8,7 @@
   cfg = config.my.security;
 in {
   options.my.security = {
-    enable = lib.mkEnableOption "security settings" // {default = true;};
+    enable = lib.mkEnableOption "security settings";
     u2f = {
       control = lib.mkOption {
         inherit (options.security.pam.u2f.control) description type;
