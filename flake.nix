@@ -79,10 +79,6 @@
       inputs.hyprland.follows = "hyprland";
       inputs.hyprland-plugins.follows = "hyprland-plugins";
     };
-    dotfiles-end-4 = {
-      url = "github:end-4/dots-hyprland";
-      flake = false;
-    };
 
     # Misc
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

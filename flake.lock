@@ -346,22 +346,6 @@
         "type": "github"
       }
     },
-    "dotfiles-end-4": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1731421127,
-        "narHash": "sha256-PDlsLqx04t1NyYn5Rlyh7gsytFjDxz9VKMlC6r1GxlA=",
-        "owner": "end-4",
-        "repo": "dots-hyprland",
-        "rev": "4ed4bf23942abf47a0fb474be4975bc088d641db",
-        "type": "github"
-      },
-      "original": {
-        "owner": "end-4",
-        "repo": "dots-hyprland",
-        "type": "github"
-      }
-    },
     "ez-configs": {
       "inputs": {
         "flake-parts": [
@@ -408,7 +392,7 @@
         "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
         "revCount": 57,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.0.1/018afb31-abd1-7bff-a5e4-cff7e18efb7a/source.tar.gz?rev=0f9255e01c2351cc7d116c072cb317785dd33b33&revCount=57"
+        "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.0.1/018afb31-abd1-7bff-a5e4-cff7e18efb7a/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -2264,7 +2248,6 @@
         "devenv": "devenv",
         "disko": "disko",
         "dotfiles-aylur": "dotfiles-aylur",
-        "dotfiles-end-4": "dotfiles-end-4",
         "ez-configs": "ez-configs",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts_2",
