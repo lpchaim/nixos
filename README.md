@@ -1,7 +1,10 @@
+[ags]: https://github.com/Aylur/ags
+[dotfiles]: https://github.com/Aylur/dotfiles
 [ez-configs]: https://github.com/ehllie/ez-configs/
-[haumea]: https://github.com/nix-community/haumea
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
+[haumea]: https://github.com/nix-community/haumea
+[rofi]: https://github.com/davatorium/rofi
 [stylix]: https://github.com/danth/stylix
 
 <p align="center">
@@ -42,24 +45,10 @@ As an example, this is a working NixOS configuration describing my main rig.
 ```nix
 {inputs, ...}: let
   inherit (inputs.self.lib.config) name;
-  inherit (inputs.self.lib.storage.btrfs) mkStorage;
-  inherit (inputs.self.lib.storage.ntfs) mkSecondaryStorage;
 in {
   imports = [
     ./hardware-configuration.nix
-    (mkStorage {
-      device = "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD";
-      swapSize = "35G";
-    })
-    (mkSecondaryStorage {
-      device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
-      mountPoint = "/run/media/${name.user}/storage";
-    })
-    {
-      home-manager.users.${name.user} = {
-        home.stateVersion = "24.11";
-      };
-    }
+    ./storage.nix
   ];
 
   my.profiles = {
@@ -74,12 +63,13 @@ in {
   my.security.secureboot.enable = true;
 
   system.stateVersion = "23.11";
+  home-manager.users.${name.user}.home.stateVersion = "24.11";
 }
 ```
 
 ## Look and feel
 
-I daily drive Hyprland with a slightly tweaked version of aylur's ags dotfiles and rofi as an app launcher.
+I daily drive Hyprland with a slightly tweaked version of aylur's [ags] [dotfiles] and [rofi] as an app launcher.
 
 My systems wouldn't look even halfway as good without [stylix] doing all the heavy-lifting in my stead.
 The color scheme used in my screenshots is `stella`.

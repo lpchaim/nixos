@@ -1,75 +1,25 @@
 {
-  config,
   inputs,
-  lib,
+  ezModules,
   ...
 }: let
-  inherit (lib) mkIf mkForce;
   inherit (inputs.self.lib.config) name;
-  inherit (inputs.self.lib.storage.btrfs) mkStorage;
 in {
   imports = [
-    inputs.jovian.nixosModules.default
+    ezModules.steamos
     ./hardware-configuration.nix
-    (mkStorage {
-      device = "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463";
-      swapSize = "17G";
-    })
-    {
-      home-manager.users.${name.user} = {
-        dconf.settings."org/gnome/shell".favorite-apps = ["steam.desktop"];
-
-        home.stateVersion = "24.05";
-      };
-    }
+    ./storage.nix
   ];
 
   my.profiles = {
-    kernel = false;
     de.gnome = true;
+    kernel = false;
   };
   my.gaming.enable = false;
   my.gaming.steam.enable = true;
+  my.modules.steamos.enable = true;
   my.security.u2f.relaxed = true;
 
-  jovian = {
-    steam = {
-      inherit (name) user;
-      enable = true;
-      autoStart = true;
-      desktopSession = "gnome";
-    };
-    steamos = {
-      enableMesaPatches = true;
-      useSteamOSConfig = true;
-    };
-    decky-loader.enable = true;
-    devices.steamdeck = {
-      enable = true;
-      autoUpdate = true;
-      enableGyroDsuService = true;
-    };
-  };
-
-  services = mkIf config.jovian.steam.autoStart {
-    displayManager.sddm.enable = mkForce false;
-    xserver.displayManager.gdm.enable = mkForce false;
-  };
-  time = {
-    hardwareClockInLocalTime = mkForce false;
-    timeZone = mkForce null;
-  };
-
-  fileSystems."/run/media/${name.user}/sdcard" = {
-    device = "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1";
-    options = [
-      "defaults"
-      "subvol=@"
-      "compress=zstd"
-      "noatime"
-      "nofail"
-    ];
-  };
-
   system.stateVersion = "24.05";
+  home-manager.users.${name.user}.home.stateVersion = "24.05";
 }
