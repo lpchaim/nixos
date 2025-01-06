@@ -34,11 +34,11 @@ git+file:///home/lpchaim/.config/nixos
 │   ├───"lpchaim@raspberrypi": Home Manager configuration [home-manager-generation]
 │   └───"lpchaim@steamdeck": Home Manager configuration [home-manager-generation]
 ├───homeModules
-│   ├───base: Home Manager module
 │   ├───cli: Home Manager module
 │   ├───default: Home Manager module
 │   ├───gaming: Home Manager module
 │   ├───gui: Home Manager module
+│   ├───nix: Home Manager module
 │   ├───profiles: Home Manager module
 │   ├───syncthing: Home Manager module
 │   └───theming: Home Manager module
@@ -58,7 +58,6 @@ git+file:///home/lpchaim/.config/nixos
 │   ├───raspberrypi: NixOS configuration [nixos-system-raspberrypi-25.05.20241229.88195a9]
 │   └───steamdeck: NixOS configuration [nixos-system-steamdeck-25.05.20241229.88195a9]
 ├───nixosModules
-│   ├───base: NixOS module
 │   ├───boot: NixOS module
 │   ├───default: NixOS module
 │   ├───desktop: NixOS module
@@ -67,14 +66,18 @@ git+file:///home/lpchaim/.config/nixos
 │   ├───kdeconnect: NixOS module
 │   ├───locale: NixOS module
 │   ├───networking: NixOS module
+│   ├───nix: NixOS module
 │   ├───profiles: NixOS module
 │   ├───programs: NixOS module
 │   ├───secrets: NixOS module
 │   ├───secureboot: NixOS module
 │   ├───security: NixOS module
 │   ├───services: NixOS module
+│   ├───steamos: NixOS module
 │   ├───syncthing: NixOS module
-│   └───tailscale: NixOS module
+│   ├───tailscale: NixOS module
+│   ├───theming: NixOS module
+│   └───zram: NixOS module
 ├───overlays
 ├───packages
 │   ├───aarch64-linux
