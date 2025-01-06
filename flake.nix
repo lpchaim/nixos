@@ -53,7 +53,6 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
@@ -84,7 +83,6 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     devenv = {
       url = "github:cachix/devenv";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -96,7 +94,6 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
@@ -110,7 +107,6 @@
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
@@ -134,7 +130,6 @@
     };
     stylix = {
       url = "github:danth/stylix";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
