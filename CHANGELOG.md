@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.0.0) (2025-01-06)
+
+
+### Features
+
+* Add Check CI action, small fixes ([20b4aaa](https://github.com/lpchaim/nixos/commit/20b4aaa1279e9cffde3f3e6c40a101cd029c153e))
+* Better pull workflow settings ([3dcc039](https://github.com/lpchaim/nixos/commit/3dcc039adf24fa01019b50a8604b9bd827a99f2d))
+* Break up base modules ([1b2c7c2](https://github.com/lpchaim/nixos/commit/1b2c7c26642fe1d74a274fe1fb3c2eec0fb63372))
+* Dedicated steamos module ([ef20e40](https://github.com/lpchaim/nixos/commit/ef20e40ec94ffc43093a203864abf4b262ece560))
+* Remove lix ([62ded98](https://github.com/lpchaim/nixos/commit/62ded98b9d3957ed920d5e3894927b261813647d))
+* Rework lib/shared as lib/config ([ecf06d8](https://github.com/lpchaim/nixos/commit/ecf06d8d88117442d2daf55778c8706bbdaf06e6))
+* Tweak README.md ([7259e80](https://github.com/lpchaim/nixos/commit/7259e80ef3781b82dd8306fad1fe5a9c69d74bf0))
+
+
+### Bug Fixes
+
+* Tweak GUI module defaults ([77fb195](https://github.com/lpchaim/nixos/commit/77fb195474b291d8a676b2bd029c443900435db6))
+* Update README.md, add missing links ([7cd3780](https://github.com/lpchaim/nixos/commit/7cd3780a6d3fc31658da7e4e83ac598a36a470f6))
+
+
+### Miscellaneous Chores
+
+* Release 1.0.0 ([4c5c575](https://github.com/lpchaim/nixos/commit/4c5c5755146b6f74b7efba5fd2650fb15be67d03))
+
 ## [1.0.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.0.0) (2025-01-05)
 
 
