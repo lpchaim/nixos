@@ -7,11 +7,7 @@
   in
     inputs.flake-parts.lib.mkFlake
     {inherit inputs;}
-    ({
-      self,
-      flake-parts-lib,
-      ...
-    }: let
+    ({flake-parts-lib, ...}: let
       inherit (flake-parts-lib) importApply;
       importApply' = path: importApply path {inherit inputs systems;};
       systems = ["aarch64-linux" "x86_64-linux"];
@@ -109,6 +105,7 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    make-shell.url = "github:nicknovitski/make-shell";
     nh = {
       url = "github:viperML/nh";
       inputs.nixpkgs.follows = "nixpkgs";

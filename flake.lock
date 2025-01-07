@@ -450,6 +450,22 @@
     "flake-compat_5": {
       "flake": false,
       "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_6": {
+      "flake": false,
+      "locked": {
         "lastModified": 1673956053,
         "narHash": "sha256-4gtG9iQuiKITOjNQQeQIpoIB6b16fm+504Ch3sNKLd8=",
         "owner": "edolstra",
@@ -463,7 +479,7 @@
         "type": "github"
       }
     },
-    "flake-compat_6": {
+    "flake-compat_7": {
       "locked": {
         "lastModified": 1696426674,
         "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
@@ -477,7 +493,7 @@
         "url": "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz"
       }
     },
-    "flake-compat_7": {
+    "flake-compat_8": {
       "flake": false,
       "locked": {
         "lastModified": 1733328505,
@@ -493,7 +509,7 @@
         "type": "github"
       }
     },
-    "flake-compat_8": {
+    "flake-compat_9": {
       "flake": false,
       "locked": {
         "lastModified": 1733328505,
@@ -1506,6 +1522,24 @@
         "type": "github"
       }
     },
+    "make-shell": {
+      "inputs": {
+        "flake-compat": "flake-compat_5"
+      },
+      "locked": {
+        "lastModified": 1733933815,
+        "narHash": "sha256-9JjM7eT66W4NJAXpGUsdyAFXhBxFWR2Z9LZwUa7Hli0=",
+        "owner": "nicknovitski",
+        "repo": "make-shell",
+        "rev": "ffeceae9956df03571ea8e96ef77c2924f13a63c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nicknovitski",
+        "repo": "make-shell",
+        "type": "github"
+      }
+    },
     "matugen": {
       "inputs": {
         "nixpkgs": "nixpkgs_7"
@@ -1835,7 +1869,7 @@
     },
     "nixpkgs-schemas": {
       "inputs": {
-        "flake-compat": "flake-compat_5",
+        "flake-compat": "flake-compat_6",
         "flake-parts": "flake-parts_5",
         "flake-schemas": "flake-schemas_3",
         "libgit2": "libgit2_2",
@@ -2102,7 +2136,7 @@
     "nixvim": {
       "inputs": {
         "devshell": "devshell",
-        "flake-compat": "flake-compat_6",
+        "flake-compat": "flake-compat_7",
         "flake-parts": "flake-parts_6",
         "git-hooks": "git-hooks_2",
         "home-manager": [
@@ -2301,6 +2335,7 @@
         "hyprland-plugins": "hyprland-plugins",
         "jovian": "jovian_2",
         "lanzaboote": "lanzaboote",
+        "make-shell": "make-shell",
         "nh": "nh",
         "nix-gaming": "nix-gaming",
         "nix-index-database": "nix-index-database",
@@ -2363,7 +2398,7 @@
     },
     "spicetify-nix": {
       "inputs": {
-        "flake-compat": "flake-compat_7",
+        "flake-compat": "flake-compat_8",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -2404,7 +2439,7 @@
         "base16-fish": "base16-fish",
         "base16-helix": "base16-helix",
         "base16-vim": "base16-vim",
-        "flake-compat": "flake-compat_8",
+        "flake-compat": "flake-compat_9",
         "flake-utils": "flake-utils_4",
         "gnome-shell": "gnome-shell",
         "home-manager": [
