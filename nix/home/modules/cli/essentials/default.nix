@@ -53,6 +53,9 @@ in {
         gds = "git diff --staged";
         gl = "git log";
         glg = "git log --graph";
+        gp = "git pull";
+        gs = "git switch";
+        gsc = "git switch --create";
         gst = "git status";
       };
     };
