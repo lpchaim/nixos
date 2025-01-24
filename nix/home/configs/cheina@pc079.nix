@@ -9,4 +9,6 @@
     homeDirectory = "/home/${username}";
     stateVersion = "23.05";
   };
+
+  programs.atuin.daemon.enable = false;
 }
