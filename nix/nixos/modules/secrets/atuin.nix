@@ -1,18 +1,20 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }: let
   inherit (inputs.self.lib.config) name;
 in {
-  sops.secrets = let
-    owner = name.user;
-  in {
-    "atuin/username" = {inherit owner;};
-    "atuin/password" = {inherit owner;};
-    "atuin/key" = {inherit owner;};
-  };
+  sops.secrets =
+    lib.genAttrs
+    [
+      "atuin/key"
+      "atuin/password"
+      "atuin/username"
+    ]
+    (_: {owner = name.user;});
   environment = {
     systemPackages = [
       (pkgs.writeShellScriptBin "atuin-init" ''
