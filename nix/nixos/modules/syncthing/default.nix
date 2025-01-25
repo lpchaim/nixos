@@ -9,16 +9,16 @@
   sopsFile = "${inputs.self}/secrets/hosts/${config.networking.hostName}.yaml";
 in
   lib.mkIf (lib.pathExists sopsFile) {
-    sops.secrets = {
-      "syncthing/cert" = {
+    sops.secrets =
+      lib.genAttrs
+      [
+        "syncthing/cert"
+        "syncthing/key"
+      ]
+      (_: {
         inherit sopsFile;
         mode = "0440";
-      };
-      "syncthing/key" = {
-        inherit sopsFile;
-        mode = "0440";
-      };
-    };
+      });
 
     systemd.services.syncthing.preStart = let
       paths = builtins.attrNames config.services.syncthing.settings.folders;
