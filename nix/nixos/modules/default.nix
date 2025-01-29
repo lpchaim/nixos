@@ -6,12 +6,12 @@
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.loaders) listDefault;
+  inherit (inputs.self.lib.loaders) listDefaultRecursive;
   inherit (lib) mkDefault;
 in {
   imports =
     ["${self}/nix/shared"]
-    ++ (listDefault ./.)
+    ++ (listDefaultRecursive ./.)
     ++ (with inputs; [
       chaotic.nixosModules.default
       disko.nixosModules.disko

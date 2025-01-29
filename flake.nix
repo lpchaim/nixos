@@ -92,7 +92,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ez-configs = {
-      url = "github:ehllie/ez-configs";
+      url = "github:lpchaim/ez-configs";
       inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
