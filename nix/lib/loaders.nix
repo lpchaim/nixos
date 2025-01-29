@@ -7,13 +7,21 @@
   list = {
     path,
     filterFn ? (x: true),
+    recursive ? false,
   }:
     lib.pipe path [
       (path:
-        inputs.haumea.lib.load {
-          src = path;
-          loader = inputs.haumea.lib.loaders.path;
-        })
+        if recursive
+        then
+          (inputs.haumea.lib.load {
+            src = path;
+            loader = inputs.haumea.lib.loaders.path;
+          })
+        else
+          (lib.pipe path [
+            builtins.readDir
+            (builtins.mapAttrs (name: _: path + /${name}))
+          ]))
       (attr: builtins.removeAttrs attr ["default"])
       (lib.collect builtins.isPath)
       (builtins.filter (path: filterFn path))
@@ -32,11 +40,27 @@
       filterFn = lib.hasSuffix "default.nix";
     };
 
+  # Lists files ending in default.nix recursively
+  listDefaultRecursive = path:
+    list {
+      inherit path;
+      filterFn = lib.hasSuffix "default.nix";
+      recursive = true;
+    };
+
   # Lists files not ending in default.nix
   listNonDefault = path:
     list {
       inherit path;
       filterFn = path: ! (lib.hasSuffix "default.nix" path);
+    };
+
+  # Lists files not ending in default.nix
+  listNonDefaultRecursive = path:
+    list {
+      inherit path;
+      filterFn = path: ! (lib.hasSuffix "default.nix" path);
+      recursive = true;
     };
 
   # Loads modules while preserving directory structure
