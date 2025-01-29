@@ -24,6 +24,7 @@ in {
   my.modules = {
     cli.enable = mkDefault true;
     nix.enable = mkDefault true;
+    scripts.enable = mkDefault true;
   };
 
   programs.home-manager.enable = lib.mkDefault true;
