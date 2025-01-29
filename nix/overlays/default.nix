@@ -23,6 +23,18 @@ in [
     in
       legacyPackages
       // {"latest" = latestPackage;};
+    pythonPackagesExtensions =
+      prev.pythonPackagesExtensions
+      ++ [
+        (pyfinal: pyprev: {
+          mss = pyprev.mss.overridePythonAttrs (oldAttrs: {
+            doCheck = false;
+            prePatch = ''
+              rm -rf src/tests/*
+            '';
+          });
+        })
+      ];
   })
   inputs.chaotic.overlays.default
   inputs.nh.overlays.default

@@ -30,7 +30,7 @@ in {
     gvfs.enable = true;
     libinput.enable = true;
     ollama = {
-      enable = true;
+      enable = mkDefault false;
       openFirewall = true;
       host = "127.0.0.1";
       port = 11434;

@@ -20,5 +20,5 @@ in {
   isNvidia = config: let
     drivers = config.services.xserver.videoDrivers or [];
   in
-    lib.elem "nvidia" drivers;
+    builtins.elem "nvidia" drivers;
 }

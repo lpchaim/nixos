@@ -5,7 +5,6 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   cfg = config.my.profiles.virtualisation;
 in {
   options.my.profiles.virtualisation = lib.mkEnableOption "virtualisation profile";
@@ -17,7 +16,6 @@ in {
       docker = {
         enable = true;
         enableOnBoot = true;
-        enableNvidia = isNvidia config;
       };
     };
   };
