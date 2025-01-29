@@ -27,7 +27,7 @@ in {
     nixpkgs = lib.mkIf (osConfig == {} || !osConfig.home-manager.useGlobalPkgs) {
       config =
         nix.pkgs.config
-        // {enableCuda = osConfig.nix.config.enableCuda or false;};
+        // {cudaSupport = osConfig.nix.config.cudaSupport or false;};
     };
   };
 }

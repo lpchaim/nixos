@@ -24,7 +24,13 @@
       };
       flake = {
         lib = import ./nix/lib {inherit inputs;};
-        pkgs = lib.genAttrs systems (system: mkPkgs {inherit system;});
+        pkgs = let
+          mkPkgs' = nixpkgs:
+            lib.genAttrs systems (system: mkPkgs {inherit nixpkgs system;});
+        in
+          (mkPkgs' inputs.nixpkgs)
+          // {stable = mkPkgs' inputs.stable;}
+          // {unstable = mkPkgs' inputs.unstable;};
         schemas =
           inputs.flake-schemas.schemas
           // (import ./nix/schemas {inherit inputs systems;});
