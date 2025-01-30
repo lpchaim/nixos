@@ -1,9 +1,11 @@
 args: let
-  inherit ((import ../lib args).loaders) listNonDefault;
+  inherit ((import ../lib args).loaders) callPackageNonDefault;
 in {
-  imports =
-    (listNonDefault ./.)
-    ++ [
-      ./scripts
-    ];
+  imports = [
+    ./scripts
+  ];
+
+  perSystem = {pkgs, ...}: {
+    packages = callPackageNonDefault ./. pkgs;
+  };
 }

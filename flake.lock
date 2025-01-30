@@ -2754,7 +2754,7 @@
       "locked": {
         "dir": "packaging/nix",
         "lastModified": 1737834175,
-        "narHash": "sha256-uHTE0PWZ9A/uLCAlx36z3pdDfIEdu5Jsnt4bJW4KYLY=",
+        "narHash": "sha256-fhyc89qqYM3ql0k4hJVibAhXvEXOch96hnsEGB7Av3I=",
         "ref": "refs/heads/main",
         "rev": "4d1860eefd79d6c04e964774155dbe13be65121a",
         "revCount": 911,
