@@ -1,7 +1,7 @@
 args: let
-  inherit ((import ../../lib args).loaders) loadNonDefault;
+  inherit ((import ../../lib args).loaders) callPackageNonDefault;
 in {
-  perSystem = {pkgs, ...} @ args: {
-    legacyPackages.scripts = loadNonDefault ./. args;
+  perSystem = {pkgs, ...}: {
+    legacyPackages.scripts = callPackageNonDefault ./. pkgs;
   };
 }

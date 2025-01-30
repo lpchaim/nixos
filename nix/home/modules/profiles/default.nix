@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  inherit (inputs.self.lib.loaders) listNonDefault;
+  inherit (inputs.self.lib.loaders) listNonDefaultRecursive;
 in {
-  imports = listNonDefault ./.;
+  imports = listNonDefaultRecursive ./.;
 }

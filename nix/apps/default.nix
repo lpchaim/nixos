@@ -1,5 +1,5 @@
 args: let
-  inherit ((import ../lib args).loaders) importNonDefault;
+  inherit ((import ../lib args).loaders) listNonDefault;
 in {
-  imports = importNonDefault ./. args;
+  imports = listNonDefault ./.;
 }
