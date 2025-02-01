@@ -5,7 +5,9 @@ in {
     ./scripts
   ];
 
-  perSystem = {pkgs, ...}: {
+  perSystem = {self', ...}: let
+    inherit (self'.legacyPackages) pkgs;
+  in {
     packages = callPackageNonDefault ./. pkgs;
   };
 }

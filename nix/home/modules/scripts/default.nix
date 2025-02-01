@@ -14,6 +14,21 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = builtins.attrValues config.my.modules.scripts.byName;
+    home.packages = builtins.attrValues cfg.byName;
+    home.file =
+      lib.mkIf config.programs.carapace.enable
+      (lib.concatMapAttrs
+        (name: script: {
+          ".config/carapace/specs/${name}.yaml".source =
+            pkgs.runCommand
+            "nushell-carapace-spec-${name}"
+            {buildInputs = [script cfg.byName.nu-generate-carapace-spec];}
+            ''
+              ${name} --help \
+              | nu-generate-carapace-spec \
+              > $out
+            '';
+        })
+        cfg.byName);
   };
 }

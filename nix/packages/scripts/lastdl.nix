@@ -1,9 +1,5 @@
-{
-  writers,
-  xdg-user-dirs,
-  ...
-}:
-writers.writeNuBin "lastdl"
+{pkgs, ...}:
+pkgs.writers.writeNuBin "lastdl"
 # nu
 ''
 
@@ -12,7 +8,7 @@ writers.writeNuBin "lastdl"
     --short # Print the filename instead of full path
     --quote # Print the raw path with added quotes
   ]: nothing -> string {
-    ls (${xdg-user-dirs}/bin/xdg-user-dir DOWNLOAD)
+    ls (${pkgs.xdg-user-dirs}/bin/xdg-user-dir DOWNLOAD)
     | where type == file
     | sort-by modified
     | last
