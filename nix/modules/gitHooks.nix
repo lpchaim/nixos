@@ -7,9 +7,10 @@
     config,
     system,
     pkgs,
+    self',
     ...
   }: let
-    pkgs = inputs.self.pkgs.${system};
+    inherit (self'.legacyPackages) pkgs;
   in {
     pre-commit = {
       inherit pkgs;
