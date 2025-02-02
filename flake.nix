@@ -16,6 +16,7 @@
       imports = [
         (importApply' ./nix/apps)
         (importApply' ./nix/modules)
+        (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
         (importApply' ./nix/shells)
       ];
