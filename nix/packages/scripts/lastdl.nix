@@ -1,18 +1,13 @@
-{
-  writers,
-  xdg-user-dirs,
-  ...
-}:
-writers.writeNuBin "lastdl"
+{pkgs, ...}:
+pkgs.writeNuScriptBin "lastdl"
 # nu
 ''
-
   # Print the last downloaded file
   def main [
     --short # Print the filename instead of full path
     --quote # Print the raw path with added quotes
   ]: nothing -> string {
-    ls (${xdg-user-dirs}/bin/xdg-user-dir DOWNLOAD)
+    ls (${pkgs.xdg-user-dirs}/bin/xdg-user-dir DOWNLOAD)
     | where type == file
     | sort-by modified
     | last
