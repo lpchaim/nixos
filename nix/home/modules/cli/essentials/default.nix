@@ -28,6 +28,7 @@ in {
           hexyl
           htop
           inotify-tools
+          inshellisense
           neofetch
           ncdu
           nh
@@ -45,6 +46,8 @@ in {
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {
+        CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
+        MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
         NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
       shellAliases = {
