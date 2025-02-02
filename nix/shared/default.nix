@@ -1,12 +1,12 @@
 {inputs, ...}: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.config.nix) settings;
-  inherit (inputs.self.lib.loaders) listNonDefault;
+  inherit (self.lib.config.nix) settings;
+  inherit (self.lib.loaders) listNonDefault;
 in {
   imports = listNonDefault ./.;
 
   nix = {
     inherit settings;
   };
-  nixpkgs.overlays = import "${self}/nix/overlays" {inherit inputs;};
+  nixpkgs.overlays = builtins.attrValues self.overlays;
 }

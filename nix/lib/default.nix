@@ -1,7 +1,7 @@
 {inputs, ...} @ topLevelArgs: let
   inherit (inputs.nixpkgs) lib;
   args = topLevelArgs // {inherit lib;};
-  overlays = import "${inputs.self}/nix/overlays" {inherit inputs;};
+  overlays = builtins.attrValues inputs.self.overlays;
 in {
   config = import ./config.nix args;
   loaders = import ./loaders.nix args;
