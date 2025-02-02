@@ -4,6 +4,7 @@
   ...
 }: {
   perSystem = {
+    self',
     config,
     lib,
     system,
@@ -11,7 +12,7 @@
   }: let
     inherit systems;
     inherit (inputs) self;
-    pkgs = self.pkgs.${system};
+    inherit (self'.legacyPackages) pkgs;
   in {
     apps.generate-ci-matrix = let
       getOutputInfo = mkDerivationPath: output:

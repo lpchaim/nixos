@@ -1,10 +1,7 @@
 {
   description = "Defines my personal systems/home configs and whatnot";
 
-  outputs = {self, ...} @ inputs: let
-    inherit (inputs.nixpkgs) lib;
-    inherit (self.lib) mkPkgs;
-  in
+  outputs = {self, ...} @ inputs:
     inputs.flake-parts.lib.mkFlake
     {inherit inputs;}
     ({flake-parts-lib, ...}: let
@@ -20,18 +17,20 @@
         (importApply' ./nix/packages)
         (importApply' ./nix/shells)
       ];
-      perSystem = {pkgs, ...}: {
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: {
+        _module.args.pkgs = self.legacyPackages.${system}.pkgs;
         formatter = pkgs.alejandra;
+        legacyPackages.pkgs = self.lib.mkPkgs {
+          inherit system;
+          inherit (inputs) nixpkgs;
+        };
       };
       flake = {
         lib = import ./nix/lib {inherit inputs;};
-        pkgs = let
-          mkPkgs' = nixpkgs:
-            lib.genAttrs systems (system: mkPkgs {inherit nixpkgs system;});
-        in
-          (mkPkgs' inputs.nixpkgs)
-          // {stable = mkPkgs' inputs.stable;}
-          // {unstable = mkPkgs' inputs.unstable;};
         schemas =
           inputs.flake-schemas.schemas
           // (import ./nix/schemas {inherit inputs systems;});
