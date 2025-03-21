@@ -18,9 +18,9 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        # osu-stable # @TODO Reenable when I figure out why nix-gaming's cachix doesn't ever seem to work
-        parsec-bin
         lutris
+        osu-lazer-bin
+        parsec-bin
         # wine-discord-ipc-bridge
         (pkgs.wrapOBS {
           plugins = (
