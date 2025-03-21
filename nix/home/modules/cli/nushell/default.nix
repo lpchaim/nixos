@@ -21,10 +21,7 @@ in {
         source "${nuScripts}/modules/formats/from-env.nu"
       '';
       plugins = with pkgs.nushellPlugins; [
-        formats
-        polars
         query
-        units
       ];
       shellAliases =
         config.programs.bash.shellAliases

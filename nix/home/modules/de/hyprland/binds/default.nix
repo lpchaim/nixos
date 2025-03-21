@@ -13,7 +13,6 @@
     mkIf
     mkMerge
     range
-    setAttrByPath
     ;
 
   cfg = config.my.modules.de.hyprland.binds;
@@ -64,7 +63,15 @@ in {
               "$mod, B, exec, firefox"
               "$mod, E, exec, nautilus"
               "CTRL ALT, L, exec, pidof hyprlock || hyprlock"
-              ", Print, exec, pidof grimblast || grimblast copy area --freze"
+              "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
+              "$mod ALT, F11, exec, pidof grimblast || grimblast copy active --notify"
+              "$mod SHIFT, F11, exec, pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
+                # Workaround for grimblast --freeze not actually freezing, see https://github.com/hyprwm/contrib/issues/37#issuecomment-1558933363
+                hyprpicker -r -n -z &
+                hyprpicker_pid=$!
+                grimblast copy area --notify
+                kill "$hyprpicker_pid"
+              ''}"
 
               # "$mod CTRL, Z, pseudo," # dwindle
               "$mod, X, togglesplit," # dwindle
