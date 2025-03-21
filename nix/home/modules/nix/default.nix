@@ -24,7 +24,7 @@ in {
       // (lib.optionalAttrs (osConfig != {}) {
         inherit (osConfig.nix) extraOptions;
       });
-    nixpkgs = lib.mkIf (osConfig == {} || !osConfig.home-manager.useGlobalPkgs) {
+    nixpkgs = lib.mkIf (osConfig == {}) {
       config =
         nix.pkgs.config
         // {cudaSupport = osConfig.nix.config.cudaSupport or false;};

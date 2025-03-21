@@ -16,17 +16,16 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       home.packages = with pkgs; [
-        logseq
-        spotify-tray
-        zapzap
+        obsidian
         vesktop
+        zapzap
       ];
 
       programs = {
         vscode = {
           enable = true;
           package = pkgs.vscode.fhs;
-          enableExtensionUpdateCheck = true;
+          profiles.default.enableExtensionUpdateCheck = true;
           mutableExtensionsDir = true;
         };
       };

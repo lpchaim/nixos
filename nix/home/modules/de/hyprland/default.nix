@@ -206,7 +206,7 @@ in {
           hyprpaper
           hyprpicker
           wlinhibit
-          xwaylandvideobridge
+          kdePackages.xwaylandvideobridge
         ];
       };
 

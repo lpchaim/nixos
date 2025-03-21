@@ -14,6 +14,9 @@ in {
     programs = {
       zellij = {
         enable = true;
+        enableBashIntegration = false;
+        enableFishIntegration = false;
+        enableZshIntegration = false;
         settings = {
           session_serialization = true;
           pane_viewport_serialization = true;
