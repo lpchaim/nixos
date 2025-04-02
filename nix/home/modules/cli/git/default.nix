@@ -19,8 +19,9 @@ in {
         delta.enable = true;
         extraConfig = {
           init.defaultBranch = "main";
+          pull.rebase = true;
           push.autoSetupRemote = true;
-          pull.rebase = false;
+          rebase.autoStash = true;
         };
         userEmail = email.main;
         userName = name.full;
