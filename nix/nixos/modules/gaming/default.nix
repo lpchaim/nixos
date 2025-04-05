@@ -23,19 +23,14 @@ in {
         parsec-bin
         # wine-discord-ipc-bridge
         (pkgs.wrapOBS {
-          plugins = (
-            (with pkgs.obs-studio-plugins; [
-              input-overlay
-              obs-pipewire-audio-capture
-              obs-scale-to-sound
-              obs-vaapi
-              obs-vkcapture
-              wlrobs
-            ])
-            ++ (lib.optionals (isNvidia config) [
-              pkgs.obs-studio-plugins.obs-nvfbc
-            ])
-          );
+          plugins = with pkgs.obs-studio-plugins; [
+            input-overlay
+            obs-pipewire-audio-capture
+            obs-scale-to-sound
+            obs-vaapi
+            obs-vkcapture
+            wlrobs
+          ];
         })
       ];
 
