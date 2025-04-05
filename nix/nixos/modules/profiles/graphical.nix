@@ -8,5 +8,6 @@ in {
   options.my.profiles.graphical = lib.mkEnableOption "graphical profile";
   config = {
     services.xserver.enable = cfg;
+    boot.plymouth.enable = true;
   };
 }
