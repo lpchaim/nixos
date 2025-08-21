@@ -10,17 +10,16 @@ in
   # nu
   ''
     # Creates a record representation of a command's --help output
-    def main [
-      command?: string
-    ]: nothing -> string {
+    def main []: string -> any {
       let sections = $in
         | split row --regex "\n\n"
+        | where { str trim | $in != "" }
         | each {
           parse --regex '^(?<header>[^:]+:)?\n?(?<contents>.*(?:\n.*)*)?'
-          | update header { str replace --regex ':$' "" | str downcase }
+          | update header { default "" | str replace --regex ':$' "" | str downcase }
           | update contents { ${lib.getExe leastspaces} }
         }
-        | filter { $in.header != "" or $in.content != "" }
+        | where { $in.header != "" or $in.content != "" }
         | flatten
       let description = $sections
         | where header == ""
@@ -61,7 +60,7 @@ in
       default: string
     ]: record -> string {
       $in
-      | get --ignore-errors $field
+      | get --optional $field
       | default $default
     }
   ''

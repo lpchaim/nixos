@@ -10,7 +10,7 @@ in
   # nu
   ''
     # Converts the output of nu --help to a carapace spec
-    def main []: nothing -> any {
+    def main []: string -> string {
       let sections = $in
         | ${lib.getExe nu-parse-help}
         | from json
