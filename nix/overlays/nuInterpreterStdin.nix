@@ -12,9 +12,9 @@ in (final: prev: let
     });
 in rec {
   # Based on the original implementation, see https://noogle.dev/f/pkgs/writers/writeNu
-  writeNuScript = name: argsOrScript:
+  writeNuScriptStdin = name: argsOrScript:
     if lib.isAttrs argsOrScript && !lib.isDerivation argsOrScript
     then patch (makeScriptWriter (argsOrScript // {inherit interpreter;}) name)
     else patch (makeScriptWriter {inherit interpreter;} name argsOrScript);
-  writeNuScriptBin = name: writeNuScript "/bin/${name}";
+  writeNuScriptStdinBin = name: writeNuScriptStdin "/bin/${name}";
 })

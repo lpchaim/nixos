@@ -1,5 +1,5 @@
 {pkgs, ...}:
-pkgs.writeNuScriptBin "lastdl"
+pkgs.writeNuScriptStdinBin "lastdl"
 # nu
 ''
   # Print the last downloaded file
