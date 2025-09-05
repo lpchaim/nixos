@@ -13,11 +13,11 @@ in {
     ++ (with inputs; [
       ags.homeManagerModules.default
       chaotic.homeManagerModules.default
-      nix-index-database.hmModules.nix-index
-      nixvim.homeManagerModules.nixvim
+      nix-index-database.homeModules.nix-index
+      nixvim.homeModules.nixvim
       sops-nix.homeManagerModules.sops
       spicetify-nix.homeManagerModules.default
-      stylix.homeManagerModules.stylix
+      stylix.homeModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
     ]);
 
