@@ -26,12 +26,9 @@ in {
             ".config/carapace/specs/${name}.yaml".source =
               pkgs.runCommand
               "nushell-carapace-spec-${name}"
-              {
-                buildInputs = [script cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];
-                nativeBuildInputs = [script cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];
-              }
+              {buildInputs = [cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];}
               ''
-                echo "${getExe script}" \
+                cat '${getExe script}' \
                 | nu-inspect --name $name \
                 | nu-generate-carapace-spec \
                 > $out

@@ -6,12 +6,13 @@
 pkgs.writeNuScriptStdinBin "nu-inspect"
 # nu
 ''
-  # Outputs structured command data based on nushell script at given path
+  # Outputs structured command data based on nushell script contents
   def main [
     --name: string = "main"
   ]: string -> string {
+    $in | save ./tmp.nu
     ${lib.getExe pkgs.nushell} --commands $"
-      source '($in)'
+      source './tmp.nu'
 
       help commands
       | where name == 'main'

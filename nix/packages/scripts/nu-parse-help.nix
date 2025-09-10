@@ -60,7 +60,7 @@ in
       default: string
     ]: record -> string {
       $in
-      | get --optional $field
+      | get --ignore-errors $field
       | default $default
     }
   ''
