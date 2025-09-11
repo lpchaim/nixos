@@ -5,6 +5,7 @@
   pkgs,
   ...
 }: let
+  inherit (lib) getExe;
   cfg = config.my.modules.scripts;
 in {
   options.my.modules.scripts = {
@@ -25,9 +26,10 @@ in {
             ".config/carapace/specs/${name}.yaml".source =
               pkgs.runCommand
               "nushell-carapace-spec-${name}"
-              {buildInputs = [script cfg.byName.nu-generate-carapace-spec];}
+              {buildInputs = [cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];}
               ''
-                ${name} --help \
+                cat '${getExe script}' \
+                | nu-inspect --name $name \
                 | nu-generate-carapace-spec \
                 > $out
               '';

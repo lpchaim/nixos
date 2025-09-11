@@ -1,5 +1,5 @@
 {pkgs, ...}:
-pkgs.writeNuScriptBin "leastspaces"
+pkgs.writeNuScriptStdinBin "leastspaces"
 # nu
 ''
   # Computes the least prepending spaces present in any line of the supplied text
