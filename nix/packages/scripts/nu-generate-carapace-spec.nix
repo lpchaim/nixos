@@ -1,31 +1,23 @@
-{
-  self',
-  lib,
-  pkgs,
-  ...
-}: let
-  inherit (self'.legacyPackages.scripts) nu-parse-help;
-in
-  pkgs.writeNuScriptBin "nu-generate-carapace-spec"
-  # nu
-  ''
-    # Converts the output of nu --help to a carapace spec
-    def main []: string -> string {
-      let sections = $in
-        | ${lib.getExe nu-parse-help}
-        | from json
-
-      {
-        name: $sections.name
-        description: $sections.description
-        flags: ($sections.flags
-          | each { [
-            $in.switches
-            $in.description
-          ] }
-          | into record)
-      }
-      | to yaml
-      | str replace --all --regex '\\e\[\d*m' "" # Don't even ask
-    }
-  ''
+{pkgs, ...}:
+pkgs.writeNuScriptStdinBin "nu-generate-carapace-spec"
+# nu
+''
+  # Generates carapace completion spec based on structured command metadata
+  def main []: string -> string {
+    $in
+    | from nuon
+    | insert flags ($in.params
+        | each { [
+          ($in.name
+            | parse --regex '^(?<full>--\w*)(?:\s*\((?<abbr>-\w*)\))?'
+            | first
+            | select abbr full | values
+            | where { is-not-empty }
+            | str join ', ')
+          $in.description
+        ] }
+        | into record)
+    | select name description flags
+    | to yaml
+  }
+''

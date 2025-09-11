@@ -6,7 +6,7 @@
 }: let
   inherit (self'.legacyPackages.scripts) leastspaces;
 in
-  pkgs.writeNuScriptBin "nu-parse-help"
+  pkgs.writeNuScriptStdinBin "nu-parse-help"
   # nu
   ''
     # Creates a record representation of a command's --help output
@@ -60,7 +60,7 @@ in
       default: string
     ]: record -> string {
       $in
-      | get --optional $field
+      | get --ignore-errors $field
       | default $default
     }
   ''

@@ -6,11 +6,11 @@
 }: let
   inherit (self'.legacyPackages.scripts) nu-parse-help;
 in
-  pkgs.writeNuScriptBin "nu-generate-manpage"
+  pkgs.writeNuScriptStdinBin "nu-generate-manpage"
   # nu
   ''
     # Converts the output of nu --help to a crude manpage
-    def main []: nothing -> any {
+    def main []: string -> any {
       let sections = $in
         | ${lib.getExe nu-parse-help}
         | from json
