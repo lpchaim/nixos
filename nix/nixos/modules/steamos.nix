@@ -21,10 +21,7 @@ in {
         autoStart = true;
         desktopSession = "gnome";
       };
-      steamos = {
-        enableMesaPatches = true;
-        useSteamOSConfig = true;
-      };
+      steamos.useSteamOSConfig = true;
       decky-loader.enable = true;
       devices.steamdeck = {
         enable = true;
