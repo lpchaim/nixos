@@ -26,6 +26,6 @@ jobs:
       - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          forceInstallQemu: true
+      - uses: ./.github/actions/qemu-setup
       - run: |
           nix flake check --all-systems .

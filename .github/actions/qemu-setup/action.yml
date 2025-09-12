@@ -1,0 +1,10 @@
+name: Setup qemu
+description: Installs qemu for aarch64 emulation
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install qemu
+      shell: bash
+      run: |
+        sudo apt-get install -y qemu-user-static

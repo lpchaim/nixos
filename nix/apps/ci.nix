@@ -71,12 +71,12 @@
             | from json
             | if $system != all {
               transpose
-              | filter { get column1 | columns | 'system' in $in }
+              | where { get column1 | columns | 'system' in $in }
               | update column1 { where system == $system }
               | transpose --header-row --as-record
             } else $in
             | if $output != all {
-              get --ignore-errors $output | default []
+              get --optional $output | default []
             } else $in
             | to json --raw
           }
