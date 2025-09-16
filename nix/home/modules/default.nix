@@ -14,6 +14,7 @@ in {
       caelestia.homeManagerModules.default
       chaotic.homeManagerModules.default
       nix-index-database.homeModules.nix-index
+      nix-flatpak.homeManagerModules.nix-flatpak
       nixvim.homeModules.nixvim
       sops-nix.homeManagerModules.sops
       spicetify-nix.homeManagerModules.default

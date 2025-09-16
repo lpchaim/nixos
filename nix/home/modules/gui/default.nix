@@ -57,6 +57,16 @@ in {
       xdg.systemDirs.data = [
         "${config.home.homeDirectory}/.nix-profile/share/applications"
       ];
+
+      services.flatpak = {
+        overrides.global.Environment.XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+        packages = [
+          "com.fightcade.Fightcade"
+          "com.github.tchx84.Flatseal"
+        ];
+        uninstallUnmanaged = false;
+        update.auto.enable = true;
+      };
     }
   ]);
 }
