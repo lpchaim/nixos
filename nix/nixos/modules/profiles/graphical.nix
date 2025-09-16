@@ -9,6 +9,7 @@ in {
   options.my.profiles.graphical = lib.mkEnableOption "graphical profile";
   config = {
     boot.plymouth.enable = true;
+    services.flatpak.enable = true;
     services.xserver.enable = cfg;
     xdg.portal = {
       enable = true;
