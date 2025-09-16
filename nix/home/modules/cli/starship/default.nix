@@ -1,24 +1,37 @@
-args @ {
+{
   config,
   lib,
   pkgs,
   ...
 }: let
   cfg = config.my.modules.cli.starship;
-  settings = import ./settings.nix;
-  util = import ./util.nix args;
 in {
   options.my.modules.cli.starship.enable = lib.mkEnableOption "starship";
 
   config = lib.mkIf cfg.enable {
     programs.starship = {
       enable = true;
-      settings = let
-        tomlContents = util.getPresetFiles ["nerd-font-symbols"];
-        allSettings = (map fromTOML tomlContents) ++ [settings];
-        mergedSettings = builtins.foldl' (l: r: pkgs.lib.recursiveUpdate l r) {} allSettings;
-      in
-        mergedSettings;
+      settings = {
+        aws.disabled = true;
+        php.symbol = " ";
+      };
     };
+    home.file.${config.programs.starship.configPath}.source =
+      lib.mkForce
+      (pkgs.runCommand
+        "starship-settings"
+        {buildInputs = [pkgs.nushell pkgs.starship];}
+        ''
+          nu --commands "
+            starship preset nerd-font-symbols
+            | from toml
+            | merge deep (
+              open ${pkgs.writeText "starship-settings" (builtins.toJSON config.programs.starship.settings)}
+              | from json
+            )
+            | to toml
+          " \
+          > $out
+        '');
   };
 }
