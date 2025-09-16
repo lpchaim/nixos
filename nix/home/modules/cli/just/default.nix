@@ -18,7 +18,7 @@ in {
     home = {
       packages = [pkgs.just];
       file.".justfile".text = lib.trim ''
-        ${builtins.readFile ./justfile}
+        ${import ./justfile.nix}
         ${cfg.extraConfig}
       '';
       shellAliases = {
