@@ -15,6 +15,7 @@ in {
       lib.mkEnableOption "steam tweaks"
       // {default = config.my.gaming.enable;};
   };
+
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
@@ -32,6 +33,7 @@ in {
             wlrobs
           ];
         })
+        protonup-qt
       ];
 
       services.pipewire.lowLatency.enable = true;
@@ -64,7 +66,6 @@ in {
             OBS_VKCAPTURE = true;
           };
         };
-        extraCompatPackages = builtins.attrValues pkgs.proton-ge-bin-versions;
         gamescopeSession.enable = true;
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
