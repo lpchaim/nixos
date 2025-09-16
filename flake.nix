@@ -59,6 +59,10 @@
     };
 
     # Hyprland
+    caelestia = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-hyprspace = {
       url = "github:KZDKM/Hyprspace";
@@ -67,17 +71,6 @@
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
-    };
-    ags.url = "github:Aylur/ags";
-    ags18.url = "github:Aylur/ags/v1.8.2";
-    astal.url = "github:Aylur/astal";
-    dotfiles-aylur = {
-      url = "github:Aylur/dotfiles/pre-astal";
-      inputs.ags.follows = "ags";
-      inputs.astal.follows = "astal";
-      inputs.home-manager.follows = "home-manager";
-      inputs.hyprland.follows = "hyprland";
-      inputs.hyprland-plugins.follows = "hyprland-plugins";
     };
 
     # Misc

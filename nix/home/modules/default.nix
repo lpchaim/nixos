@@ -11,7 +11,7 @@ in {
     ["${self}/nix/shared"]
     ++ (listDefaultRecursive ./.)
     ++ (with inputs; [
-      ags.homeManagerModules.default
+      caelestia.homeManagerModules.default
       chaotic.homeManagerModules.default
       nix-index-database.homeModules.nix-index
       nixvim.homeModules.nixvim
