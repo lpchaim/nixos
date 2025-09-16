@@ -39,7 +39,6 @@ in {
       let
         destinationPath = config.home.homeDirectory;
       in {
-        home.file."${destinationPath}/.face".source = profilePicture;
         home.file."${destinationPath}/.wallpaper".source = wallpaper;
 
         dconf.settings = {

@@ -20,7 +20,7 @@ in {
   nix = {
     pkgs.config = {
       allowUnfree = true;
-      permittedInsecurePackages = ["electron-27.3.11"];
+      permittedInsecurePackages = ["electron-27.3.11" "qtwebengine-5.15.19"];
     };
     settings = {
       accept-flake-config = true;

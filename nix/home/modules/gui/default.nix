@@ -21,6 +21,13 @@ in {
         zapzap
       ];
 
+      home.file = let
+        inherit (inputs.self.lib.config) profilePicture wallpaper;
+      in {
+        "${config.home.homeDirectory}/.face".source = profilePicture;
+        "${config.xdg.userDirs.pictures}/Wallpapers/${builtins.baseNameOf wallpaper}".source = wallpaper;
+      };
+
       programs = {
         vscode = {
           enable = true;
