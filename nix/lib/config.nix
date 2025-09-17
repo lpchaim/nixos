@@ -10,7 +10,7 @@
     ];
 in {
   name.user = "lpchaim";
-  name.full = "Lucas Chaim";
+  name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
   flake.path = "~/.config/nixos";
   repo.main = "https://github.lpcha.im";
