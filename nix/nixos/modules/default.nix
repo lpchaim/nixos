@@ -6,13 +6,10 @@
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.loaders) listDefaultRecursive;
   inherit (lib) mkDefault;
 in {
   imports =
-    ["${self}/nix/shared"]
-    ++ (listDefaultRecursive ./.)
-    ++ (with inputs; [
+    (with inputs; [
       chaotic.nixosModules.default
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
@@ -22,7 +19,28 @@ in {
       nur.modules.nixos.default
       sops-nix.nixosModules.sops
       stylix.nixosModules.stylix
-    ]);
+    ])
+    ++ [
+      "${self}/nix/shared"
+      ./boot
+      ./desktop
+      ./gaming
+      ./hardware
+      ./kdeconnect
+      ./locale
+      ./networking
+      ./nix
+      ./profiles
+      ./programs
+      ./secrets
+      ./secureboot
+      ./security
+      ./services
+      ./syncthing
+      ./tailscale
+      ./theming
+      ./zram
+    ];
 
   my.profiles = {
     graphical = mkDefault true;

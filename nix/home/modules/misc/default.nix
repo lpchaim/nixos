@@ -1,5 +1,5 @@
 {
   imports = [
-    ./swayosd.nix
+    ./llm
   ];
 }

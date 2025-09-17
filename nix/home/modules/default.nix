@@ -4,13 +4,10 @@
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.loaders) listDefaultRecursive;
   inherit (lib) mkDefault;
 in {
   imports =
-    ["${self}/nix/shared"]
-    ++ (listDefaultRecursive ./.)
-    ++ (with inputs; [
+    (with inputs; [
       caelestia.homeManagerModules.default
       chaotic.homeManagerModules.default
       nix-index-database.homeModules.nix-index
@@ -20,7 +17,19 @@ in {
       spicetify-nix.homeManagerModules.default
       stylix.homeModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
-    ]);
+    ])
+    ++ [
+      "${self}/nix/shared"
+      ./cli
+      ./de
+      ./gui
+      ./misc
+      ./nix
+      ./profiles
+      ./scripts
+      ./syncthing
+      ./theming
+    ];
 
   my.modules = {
     cli.enable = mkDefault true;

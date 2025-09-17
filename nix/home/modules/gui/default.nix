@@ -6,10 +6,13 @@
   osConfig ? {},
   ...
 }: let
-  inherit (inputs.self.lib.loaders) listNonDefault;
   cfg = config.my.modules.gui;
 in {
-  imports = listNonDefault ./.;
+  imports = [
+    ./chromium.nix
+    ./firefox.nix
+    ./mangohud.nix
+  ];
 
   options.my.modules.gui.enable = lib.mkEnableOption "gui apps";
 

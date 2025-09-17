@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   programs.nixvim = {
     keymaps = let
       makeKeymap = mode: key: action: raw: {
@@ -23,15 +19,15 @@
     plugins = {
       treesitter = {
         enable = true;
-        incrementalSelection = {
-          enable = true;
-          # keymaps = {
-          #   initSelection = "<A-o>";
-          #   nodeDecremental = "<A-i>";
-          #   nodeIncremental = "<A-o>";
-          # };
-        };
-        moduleConfig = {
+        settings = {
+          incremental_selection = {
+            enable = true;
+            # keymaps = {
+            #   init_selection = "<A-o>";
+            #   node_decremental = "<A-i>";
+            #   node_incremental = "<A-o>";
+            # };
+          };
           # node_movement = {
           #   enable = true;
           #   keymaps = {

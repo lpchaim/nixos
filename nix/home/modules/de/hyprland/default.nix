@@ -8,6 +8,16 @@
   inherit (inputs.self.lib.config) kb;
   cfg = config.my.modules.de.hyprland;
 in {
+  imports = [
+    ./bars
+    ./binds
+    ./hypridle
+    ./hyprlock
+    ./launchers
+    ./osd
+    ./plugins
+  ];
+
   options.my.modules.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [

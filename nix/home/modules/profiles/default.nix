@@ -1,5 +1,11 @@
-{inputs, ...}: let
-  inherit (inputs.self.lib.loaders) listNonDefaultRecursive;
-in {
-  imports = listNonDefaultRecursive ./.;
+{
+  imports = [
+    ./apps
+    ./de
+    ./graphical.nix
+    ./llm
+    ./standalone.nix
+    ./wayland.nix
+    ./work.nix
+  ];
 }

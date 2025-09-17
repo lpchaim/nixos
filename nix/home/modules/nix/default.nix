@@ -25,9 +25,7 @@ in {
         inherit (osConfig.nix) extraOptions;
       });
     nixpkgs = lib.mkIf (osConfig == {}) {
-      config =
-        nix.pkgs.config
-        // {cudaSupport = osConfig.nix.config.cudaSupport or false;};
+      inherit (nix.pkgs) config;
       overlays = builtins.attrValues inputs.self.overlays;
     };
   };

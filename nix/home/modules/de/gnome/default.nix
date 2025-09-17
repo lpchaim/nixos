@@ -5,6 +5,11 @@
 }: let
   cfg = config.my.modules.de.gnome;
 in {
+  imports = [
+    ./extensions
+    ./theming
+  ];
+
   options.my.modules.de.gnome.enable = lib.mkEnableOption "GTK/GNOME Shell customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
