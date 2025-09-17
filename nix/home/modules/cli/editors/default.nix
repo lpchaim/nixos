@@ -6,6 +6,11 @@
   cfg = config.my.modules.cli.editors;
   inherit (cfg) enable;
 in {
+  imports = [
+    ./helix
+    ./neovim
+  ];
+
   options.my.modules.cli.editors = {
     enable = lib.mkEnableOption "editors" // {default = config.my.modules.cli.enable;};
     kakoune.enable = lib.mkEnableOption "kakoune" // {default = enable;};

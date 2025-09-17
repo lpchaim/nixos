@@ -6,6 +6,22 @@
   inherit (lib) mkDefault mkEnableOption mkIf;
   cfg = config.my.modules.cli;
 in {
+  imports = [
+    ./atuin
+    ./editors
+    ./essentials
+    ./fish
+    ./git
+    ./hishtory
+    ./just
+    ./nushell
+    ./starship
+    ./tealdeer
+    ./tmux
+    ./zellij
+    ./zsh
+  ];
+
   options.my.modules.cli.enable = mkEnableOption "cli modules";
 
   config.my.modules.cli = mkIf cfg.enable {

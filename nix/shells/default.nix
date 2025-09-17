@@ -1,9 +1,11 @@
-{inputs, ...} @ args: let
-  inherit ((import ../lib args).loaders) listNonDefault;
-in {
-  imports =
-    [inputs.make-shell.flakeModules.default]
-    ++ (listNonDefault ./.);
+{inputs, ...}: {
+  imports = [
+    inputs.make-shell.flakeModules.default
+    ./deploy.nix
+    ./nix.nix
+    ./rust.nix
+    ./minimal.nix
+  ];
 
   perSystem = {
     config,
