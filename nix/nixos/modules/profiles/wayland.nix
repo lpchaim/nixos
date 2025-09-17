@@ -12,7 +12,7 @@ in {
     lib.mkEnableOption "wayland profile"
     // {default = config.my.profiles.graphical;};
   config = lib.mkIf cfg {
-    services.xserver.displayManager.gdm.wayland = true;
+    services.displayManager.gdm.wayland = true;
     programs.xwayland.enable = true;
 
     environment.sessionVariables.NIXOS_OZONE_WL = "1";

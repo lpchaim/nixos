@@ -5,8 +5,5 @@
 in {
   imports = listNonDefault ./.;
 
-  nix = {
-    inherit settings;
-  };
-  nixpkgs.overlays = builtins.attrValues self.overlays;
+  nix = {inherit settings;};
 }

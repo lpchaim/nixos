@@ -21,7 +21,7 @@ in {
         [
           "--password-store=gnome"
         ]
-        ++ (lib.optionals (osConfig != {} && (isNvidia osConfig)) [
+        ++ (lib.optionals (isNvidia osConfig) [
           "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
         ]);
       package = pkgs.brave;
