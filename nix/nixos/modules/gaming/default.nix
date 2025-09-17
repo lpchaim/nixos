@@ -23,31 +23,40 @@ in {
         osu-lazer-bin
         parsec-bin
         # wine-discord-ipc-bridge
-        (pkgs.wrapOBS {
-          plugins = with pkgs.obs-studio-plugins; [
-            input-overlay
-            obs-pipewire-audio-capture
-            obs-scale-to-sound
-            obs-vaapi
-            obs-vkcapture
-            wlrobs
-          ];
-        })
         protonup-qt
       ];
 
-      services.pipewire.lowLatency.enable = true;
+      programs = {
+        gamemode = {
+          enable = true;
+          enableRenice = true;
+        };
+        gamescope = {
+          enable = true;
+          capSysNice = true;
+        };
+        obs-studio = {
+          enable = true;
+          enableVirtualCamera = true;
+          plugins =
+            (with pkgs.obs-studio-plugins; [
+              input-overlay
+              obs-pipewire-audio-capture
+              obs-scale-to-sound
+              obs-vaapi
+              obs-vkcapture
+              wlrobs
+            ])
+            ++ (lib.optionals (isNvidia config) [
+              # pkgs.obs-studio-plugins.obs-nvfbc
+            ]);
+        };
+      };
+
+      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
       security.rtkit.enable = true; # make pipewire realtime-capable
 
-      programs.gamemode = {
-        enable = true;
-        enableRenice = true;
-      };
-      programs.gamescope = {
-        enable = true;
-        capSysNice = true;
-      };
-      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
+      services.pipewire.lowLatency.enable = true;
 
       users.extraUsers.${name.user}.extraGroups = ["gamemode"];
     })
