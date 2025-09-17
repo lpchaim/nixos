@@ -86,6 +86,7 @@ in {
       ])
       ++ lib.optionals config.my.profiles.graphical [
         pkgs.yubioath-flutter
+        pkgs.yubikey-manager
       ];
     sops.secrets.u2f-mappings = {
       group = "wheel";
