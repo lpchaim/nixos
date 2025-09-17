@@ -40,10 +40,17 @@ in
       settings = {
         gui.theme = "black";
         options.relaysEnabled = true;
-        options.urAccepted = -1;
+        options.urAccepted = -1; # For no and don't ask again
+        options.localAnnounceEnabled = true;
         startBrowser = false;
         folders = let
-          allDevices = builtins.attrNames config.services.syncthing.settings.devices;
+          computers = ["desktop" "laptop" "steamdeck" "server"];
+          phones = ["pixel7" "galaxyS23"];
+          allDevices = computers ++ phones;
+          trashVersioning = {
+            type = "trashcan";
+            params.cleanoutDays = "30";
+          };
         in {
           "${home}/Sync" = {
             id = "default";
@@ -56,7 +63,14 @@ in
             id = "6ymhp-fehcm";
             label = "Notes/Logseq";
             type = "sendreceive";
-            versioning = null;
+            versioning = trashVersioning;
+            devices = allDevices;
+          };
+          "${home}/Notes/Obsidian" = {
+            id = "tgnpg-efws9";
+            label = "Obsidian";
+            type = "sendreceive";
+            versioning = trashVersioning;
             devices = allDevices;
           };
           "${home}/.steam/steam/userdata/85204334/config/grid" = {
@@ -64,7 +78,7 @@ in
             label = "Steam/Custom Icons";
             type = "sendreceive";
             versioning = null;
-            devices = ["desktop" "laptop" "steamdeck" "server"];
+            devices = computers;
           };
         };
         devices = {
@@ -72,8 +86,10 @@ in
           desktop.name = "Desktop";
           laptop.id = "VFFQPOF-XAPVKHO-4PUSIVT-ACYNHAZ-GOQBWC6-SEYBXGE-2MBBMRS-TJRD4QL";
           laptop.name = "Laptop";
-          phone.id = "PDMAJC4-SIXM4NI-UDMSLPU-3QSBSM2-ZUBLQDU-MNCR2HH-XUJIG52-PH4IKQC";
-          phone.name = "Phone";
+          pixel7.id = "PDMAJC4-SIXM4NI-UDMSLPU-3QSBSM2-ZUBLQDU-MNCR2HH-XUJIG52-PH4IKQC";
+          pixel7.name = "Pixel 7 Pro";
+          galaxyS23.id = "DPARDTW-7LHI6VK-CRKEYI4-VK6BWWP-DMW6KOG-6LWAT4O-QFGDFPR-XVO6RAF";
+          galaxyS23.name = "Galaxy S23";
           server.id = "X5LHXQ6-NOCD2NO-RQ7FPLO-WFLLFRE-5BTTVL6-XLH3DAV-4ZIYI47-EEOVYAK";
           server.name = "Server";
           steamdeck.id = "OBZRWRW-B7DYVZC-RL5JV3D-6YNWG4O-MAIN2GY-KTEBY6V-DWQK36S-5E2O7AB";
