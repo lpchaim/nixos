@@ -14,6 +14,7 @@ in {
     home = {
       packages =
         (with pkgs; [
+          _7zz # Just 7-zip
           asciinema
           bash
           chafa
@@ -25,19 +26,25 @@ in {
           du-dust
           duf
           fd
+          ffmpeg
+          file
           fx
           hexyl
           htop
+          imagemagick
           inotify-tools
           inshellisense
+          jq
           neofetch
           ncdu
           nh
           nix-output-monitor
           nurl
+          poppler
           procs
           progress
           python312Packages.howdoi
+          resvg
           rsync
           termshot
           tgpt
