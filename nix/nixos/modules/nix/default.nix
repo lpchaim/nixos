@@ -21,6 +21,7 @@ in {
     };
     nixpkgs = {
       inherit (nix.pkgs) config;
+      overlays = builtins.attrValues inputs.self.overlays;
     };
   };
 }

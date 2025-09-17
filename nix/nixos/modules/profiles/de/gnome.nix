@@ -10,8 +10,8 @@ in {
   options.my.profiles.de.gnome = lib.mkEnableOption "gnome profile";
   config = lib.mkIf cfg {
     services.xserver.enable = true;
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
+    services.displayManager.gdm.enable = true;
+    services.desktopManager.gnome.enable = true;
 
     environment.gnome.excludePackages = let
       getPackages = p: (builtins.filter (package: p ? package) (with p; [

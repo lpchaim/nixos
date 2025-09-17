@@ -16,7 +16,7 @@ in {
         inherit (nix) settings;
         gc = {
           automatic = osConfig == {};
-          frequency = "daily";
+          dates = "daily";
           options = "--delete-older-than 7d";
         };
         package = lib.mkForce (osConfig.nix.package or pkgs.nix);
@@ -28,6 +28,7 @@ in {
       config =
         nix.pkgs.config
         // {cudaSupport = osConfig.nix.config.cudaSupport or false;};
+      overlays = builtins.attrValues inputs.self.overlays;
     };
   };
 }

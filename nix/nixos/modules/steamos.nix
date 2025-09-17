@@ -27,12 +27,13 @@ in {
         enable = true;
         autoUpdate = true;
         enableGyroDsuService = true;
+        enableVendorDrivers = true;
       };
     };
 
     services = lib.mkIf config.jovian.steam.autoStart {
       displayManager.sddm.enable = lib.mkForce false;
-      xserver.displayManager.gdm.enable = lib.mkForce false;
+      displayManager.gdm.enable = lib.mkForce false;
     };
     time = {
       hardwareClockInLocalTime = lib.mkForce false;
