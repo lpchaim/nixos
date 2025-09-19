@@ -3,28 +3,24 @@
   lib,
   pkgs,
   ...
-} @ args: let
+}: let
   cfg = config.my.modules.cli.nushell;
   nuScripts = pkgs.nu_scripts + /share/nu_scripts;
 in {
   options.my.modules.cli.nushell.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [fzf];
     programs.nushell = {
       enable = true;
-      configFile.text = import ./config.nix;
+      configFile.source = ./config.nu;
       envFile.text = ''
-        ${builtins.readFile ./env.nu}
-
-        ${import ./commands.nix args}
-
+        source ${./env.nu}
+        source ${./commands.nu}
         source "${nuScripts}/modules/formats/from-env.nu"
       '';
       plugins = with pkgs.nushellPlugins; [
-        formats
-        polars
         query
-        units
       ];
       shellAliases =
         config.programs.bash.shellAliases

@@ -17,7 +17,7 @@ in {
         extended = false;
         ignoreDups = true;
       };
-      initExtra = ''
+      initContent = ''
         export COLORTERM=truecolor
       '';
       oh-my-zsh = {

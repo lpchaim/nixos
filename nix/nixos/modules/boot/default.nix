@@ -25,7 +25,7 @@ in {
     };
     initrd.systemd.enable = true;
     plymouth = {
-      enable = true;
+      enable = mkDefault false;
       theme = mkDefault "breeze";
     };
     kernelParams = ["splash" "quiet" "btusb.enable_autosuspend=n"];

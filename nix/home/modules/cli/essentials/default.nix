@@ -14,6 +14,8 @@ in {
     home = {
       packages =
         (with pkgs; [
+          _7zz # Just 7-zip
+          asciinema
           bash
           chafa
           cheat
@@ -24,18 +26,25 @@ in {
           du-dust
           duf
           fd
+          ffmpeg
+          file
           fx
           hexyl
           htop
+          imagemagick
           inotify-tools
+          inshellisense
+          jq
           neofetch
           ncdu
           nh
           nix-output-monitor
           nurl
+          poppler
           procs
           progress
           python312Packages.howdoi
+          resvg
           rsync
           termshot
           tgpt
@@ -45,6 +54,8 @@ in {
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {
+        CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
+        MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
         NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
       shellAliases = {
@@ -53,6 +64,9 @@ in {
         gds = "git diff --staged";
         gl = "git log";
         glg = "git log --graph";
+        gp = "git pull";
+        gs = "git switch";
+        gsc = "git switch --create";
         gst = "git status";
       };
     };

@@ -32,6 +32,6 @@ in {
     }
     // lib.optionalAttrs fsck (mkPreMountFsck {
       inherit device mountPoint;
-      command = "${inputs.self.pkgs.${system}.ntfs3g}/bin/ntfsfix ${device} --clear-dirty";
+      command = "${inputs.self.legacyPackages.${system}.pkgs.ntfs3g}/bin/ntfsfix ${device} --clear-dirty";
     });
 }

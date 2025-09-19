@@ -1,5 +1,9 @@
 args: let
-  inherit ((import ../lib args).loaders) importNonDefault;
+  inherit ((import ../lib args).loaders) callPackageNonDefault;
 in {
-  imports = importNonDefault ./. args;
+  perSystem = {self', ...}: let
+    inherit (self'.legacyPackages) pkgs;
+  in {
+    packages = callPackageNonDefault ./. pkgs;
+  };
 }

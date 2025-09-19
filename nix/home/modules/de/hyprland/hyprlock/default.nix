@@ -1,11 +1,8 @@
 {
   config,
-  inputs,
   lib,
-  osConfig ? {},
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   inherit (lib) mkIf;
   cfg = config.my.modules.de.hyprland;
 in
@@ -17,10 +14,7 @@ in
         inherit (config.lib.stylix) colors;
       in {
         background = {
-          path =
-            if (osConfig != {} && (isNvidia config))
-            then "${config.stylix.image}"
-            else "screenshot";
+          path = "screenshot";
           blur_size = 3;
           blur_passes = 2;
         };

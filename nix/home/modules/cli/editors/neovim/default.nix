@@ -5,9 +5,14 @@
 }: let
   cfg = config.my.modules.cli.editors.neovim;
 in {
+  imports = [
+    ./treesitter.nix
+  ];
+
   options.my.modules.cli.editors.neovim.enable =
     lib.mkEnableOption "neovim"
     // {default = config.my.modules.cli.editors.enable;};
+
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;

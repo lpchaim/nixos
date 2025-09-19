@@ -1,5 +1,6 @@
-args: let
-  inherit ((import ../lib args).loaders) importNonDefault;
-in {
-  imports = importNonDefault ./. args;
+{...}: {
+  imports = [
+    ./assets.nix
+    ./ci.nix
+  ];
 }

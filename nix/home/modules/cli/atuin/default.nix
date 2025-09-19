@@ -14,9 +14,10 @@ in {
     programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {
       enable = true;
+      daemon.enable = osConfig != {};
+      daemon.logLevel = "warn";
       settings = {
         auto_sync = true;
-        daemon.enabled = true;
         dialect = "uk";
         inline_height = 25;
         keymap_mode = "vim-insert";
@@ -32,51 +33,30 @@ in {
         workspaces = true;
       };
     };
-    systemd.user.services =
-      {
-        atuin-daemon = {
-          Install.WantedBy = ["default.target"];
-          Service = {
-            ExecStart = "${pkgs.atuin}/bin/atuin daemon";
-            Restart = "on-failure";
-            RestartSec = "15";
-          };
-          Unit = {
-            Description = "atuin daemon";
-            After = ["default.target"];
-            X-Restart-Triggers = [
-              config.programs.atuin.package
-              config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
-            ];
-          };
-        };
-      }
-      // (lib.optionalAttrs (osConfig != {})) {
-        atuin-login = {
-          Install.WantedBy = ["network-online.target"];
-          Service = {
-            Type = "oneshot";
-            ExecStart = let
-              inherit (osConfig.sops) secrets;
-            in
-              pkgs.writeShellScriptBin "atuin-login" ''
-                if atuin status | grep -q "not logged in"; then
-                  atuin login \
-                    --username "$(cat ${secrets."atuin/username".path})" \
-                    --password "$(cat ${secrets."atuin/password".path})" \
-                    --key "$(cat ${secrets."atuin/key".path})"
-                fi
-              '';
-          };
-          Unit = {
-            Description = "atuin login";
-            After = ["network-online.target"];
-            X-Restart-Triggers = [
-              config.programs.atuin.package
-              config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
-            ];
-          };
-        };
+    systemd.user.services.atuin-login = lib.mkIf (osConfig != {}) {
+      Install.WantedBy = ["network-online.target"];
+      Service = {
+        Type = "oneshot";
+        ExecStart = let
+          inherit (osConfig.sops) secrets;
+        in
+          pkgs.writeShellScriptBin "atuin-login" ''
+            if atuin status | grep -q "not logged in"; then
+              atuin login \
+                --username "$(cat ${secrets."atuin/username".path})" \
+                --password "$(cat ${secrets."atuin/password".path})" \
+                --key "$(cat ${secrets."atuin/key".path})"
+            fi
+          '';
       };
+      Unit = {
+        Description = "atuin login";
+        After = ["network-online.target"];
+        X-Restart-Triggers = [
+          config.programs.atuin.package
+          config.home.file."${config.home.homeDirectory}/.config/atuin/config.toml".source
+        ];
+      };
+    };
   };
 }

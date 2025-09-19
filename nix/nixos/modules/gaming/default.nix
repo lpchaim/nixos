@@ -15,15 +15,30 @@ in {
       lib.mkEnableOption "steam tweaks"
       // {default = config.my.gaming.enable;};
   };
+
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        # osu-stable # @TODO Reenable when I figure out why nix-gaming's cachix doesn't ever seem to work
-        parsec-bin
         lutris
+        osu-lazer-bin
+        parsec-bin
         # wine-discord-ipc-bridge
-        (pkgs.wrapOBS {
-          plugins = (
+        protonup-qt
+      ];
+
+      programs = {
+        gamemode = {
+          enable = true;
+          enableRenice = true;
+        };
+        gamescope = {
+          enable = true;
+          capSysNice = true;
+        };
+        obs-studio = {
+          enable = true;
+          enableVirtualCamera = true;
+          plugins =
             (with pkgs.obs-studio-plugins; [
               input-overlay
               obs-pipewire-audio-capture
@@ -33,24 +48,15 @@ in {
               wlrobs
             ])
             ++ (lib.optionals (isNvidia config) [
-              pkgs.obs-studio-plugins.obs-nvfbc
-            ])
-          );
-        })
-      ];
+              # pkgs.obs-studio-plugins.obs-nvfbc
+            ]);
+        };
+      };
 
-      services.pipewire.lowLatency.enable = true;
+      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
       security.rtkit.enable = true; # make pipewire realtime-capable
 
-      programs.gamemode = {
-        enable = true;
-        enableRenice = true;
-      };
-      programs.gamescope = {
-        enable = true;
-        capSysNice = true;
-      };
-      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
+      services.pipewire.lowLatency.enable = true;
 
       users.extraUsers.${name.user}.extraGroups = ["gamemode"];
     })
@@ -69,7 +75,6 @@ in {
             OBS_VKCAPTURE = true;
           };
         };
-        extraCompatPackages = builtins.attrValues pkgs.proton-ge-bin-versions;
         gamescopeSession.enable = true;
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;

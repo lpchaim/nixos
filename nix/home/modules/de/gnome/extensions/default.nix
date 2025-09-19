@@ -1,14 +1,16 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.loaders) listNonDefault;
   cfg = config.my.modules.de.gnome.extensions;
   pre43 = lib.versionOlder pkgs.gnome-shell.version "43";
 in {
+  imports = [
+    ./dash-to-panel.nix
+  ];
+
   options.my.modules.de.gnome.extensions.enable = lib.mkEnableOption "GNOME Shell extensions";
 
   config = lib.mkIf cfg.enable {
@@ -73,6 +75,4 @@ in {
       };
     };
   };
-
-  imports = listNonDefault ./.;
 }

@@ -26,8 +26,8 @@ in {
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      package = flakeNixpkgs.mesa.drivers;
-      package32 = flakeNixpkgs.pkgsi686Linux.mesa.drivers;
+      package = flakeNixpkgs.mesa;
+      package32 = flakeNixpkgs.pkgsi686Linux.mesa;
     };
     security = {
       pam.services.hyprlock = {};

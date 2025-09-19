@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   inherit (inputs.self.lib.config) nix;
   cfg = config.my.modules.nix;
 in {
@@ -20,8 +19,9 @@ in {
         !nhCfg.enable || !nhCfg.clean.enable;
       dates = "weekly";
     };
-    nixpkgs.config =
-      nix.pkgs.config
-      // {enableCuda = isNvidia config;};
+    nixpkgs = {
+      inherit (nix.pkgs) config;
+      overlays = builtins.attrValues inputs.self.overlays;
+    };
   };
 }

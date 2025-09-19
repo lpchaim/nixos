@@ -4,26 +4,38 @@
   ...
 }: let
   inherit (inputs) self;
-  inherit (inputs.self.lib.loaders) listDefault;
   inherit (lib) mkDefault;
 in {
   imports =
-    ["${self}/nix/shared"]
-    ++ (listDefault ./.)
-    ++ (with inputs; [
-      ags.homeManagerModules.default
+    (with inputs; [
+      caelestia.homeManagerModules.default
       chaotic.homeManagerModules.default
-      nix-index-database.hmModules.nix-index
-      nixvim.homeManagerModules.nixvim
+      nix-index-database.homeModules.nix-index
+      nix-flatpak.homeManagerModules.nix-flatpak
+      nixvim.homeModules.nixvim
       sops-nix.homeManagerModules.sops
       spicetify-nix.homeManagerModules.default
-      stylix.homeManagerModules.stylix
+      stylix.homeModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
-    ]);
+    ])
+    ++ [
+      "${self}/nix/shared"
+      ./cli
+      ./de
+      ./gui
+      ./misc
+      ./nix
+      ./profiles
+      ./scripts
+      ./security
+      ./syncthing
+      ./theming
+    ];
 
   my.modules = {
     cli.enable = mkDefault true;
     nix.enable = mkDefault true;
+    scripts.enable = mkDefault true;
   };
 
   programs.home-manager.enable = lib.mkDefault true;

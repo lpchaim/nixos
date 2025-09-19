@@ -8,10 +8,7 @@
 in {
   options.my.profiles.pipewire = lib.mkEnableOption "pipewire profile";
   config = lib.mkIf cfg {
-    hardware = {
-      pulseaudio.enable = false;
-      enableAllFirmware = true;
-    };
+    hardware.enableAllFirmware = true;
     security.rtkit.enable = true;
     services.pipewire = {
       enable = true;
@@ -22,5 +19,6 @@ in {
       jack.enable = true;
       wireplumber.enable = true;
     };
+    services.pulseaudio.enable = false;
   };
 }

@@ -8,15 +8,23 @@
   inherit (inputs.self.lib.config) kb;
   cfg = config.my.modules.de.hyprland;
 in {
+  imports = [
+    ./bars
+    ./binds
+    ./hypridle
+    ./hyprlock
+    ./launchers
+    ./osd
+    ./plugins
+  ];
+
   options.my.modules.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       my.modules.de.hyprland = {
-        bars.ags.enable = lib.mkDefault cfg.enable;
-        bars.ags.dotfiles.aylur.enable = lib.mkDefault cfg.bars.ags.enable;
-        binds.enableFnKeys = lib.mkDefault cfg.bars.ags.enable;
-        bars.waybar.enable = lib.mkDefault false;
+        bars.caelestia.enable = lib.mkDefault cfg.enable;
+        binds.enableFnKeys = lib.mkDefault cfg.bars.caelestia.enable;
         binds.enable = lib.mkDefault cfg.enable;
         launchers.rofi.enable = lib.mkDefault cfg.enable;
         osd.swayosd.enable = lib.mkDefault false;
@@ -206,7 +214,7 @@ in {
           hyprpaper
           hyprpicker
           wlinhibit
-          xwaylandvideobridge
+          kdePackages.xwaylandvideobridge
         ];
       };
 

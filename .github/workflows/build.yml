@@ -54,6 +54,8 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
+      - uses: ./.github/actions/qemu-setup
+        if: ${{ matrix.system != 'x86_64-linux' }}
       - run: |
           nix build ${{ matrix.derivation }}
 
@@ -72,6 +74,8 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
+      - uses: ./.github/actions/qemu-setup
+        if: ${{ matrix.system != 'x86_64-linux' }}
       - run: |
           nix build ${{ matrix.derivation }}
 
@@ -90,12 +94,14 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
+      - uses: ./.github/actions/qemu-setup
+        if: ${{ matrix.system != 'x86_64-linux' }}
       - run: |
           nix build ${{ matrix.derivation }}
 
   build-raspberrypi:
     name: Build raspberrypi
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/nix-setup

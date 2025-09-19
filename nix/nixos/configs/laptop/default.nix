@@ -13,7 +13,7 @@ in {
   };
   my.gaming.steam.enable = true;
   my.networking.tailscale.trusted = true;
-  my.security.secureboot.enable = true;
+  my.security.secureboot.enable = false;
 
   system.stateVersion = "23.11";
   home-manager.users.${name.user}.home.stateVersion = "23.05";

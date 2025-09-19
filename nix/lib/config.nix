@@ -10,7 +10,7 @@
     ];
 in {
   name.user = "lpchaim";
-  name.full = "Lucas Chaim";
+  name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
   flake.path = "~/.config/nixos";
   repo.main = "https://github.lpcha.im";
@@ -20,7 +20,7 @@ in {
   nix = {
     pkgs.config = {
       allowUnfree = true;
-      permittedInsecurePackages = ["electron-27.3.11"];
+      permittedInsecurePackages = ["electron-27.3.11" "qtwebengine-5.15.19"];
     };
     settings = {
       accept-flake-config = true;
