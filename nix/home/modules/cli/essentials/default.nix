@@ -19,6 +19,7 @@ in {
           bash
           chafa
           cheat
+          comby
           curl
           delta
           devenv
@@ -46,6 +47,8 @@ in {
           python312Packages.howdoi
           resvg
           rsync
+          sad
+          serpl
           termshot
           tgpt
           tig
