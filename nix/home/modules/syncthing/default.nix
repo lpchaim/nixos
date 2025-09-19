@@ -4,7 +4,6 @@
   osConfig ? {},
   ...
 }: let
-  # inherit (inputs.home-manager.lib) hm;
   inherit (pkgs) syncthingtray;
   syncthing = osConfig.services.syncthing.package;
 in

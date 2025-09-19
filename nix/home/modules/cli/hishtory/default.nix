@@ -43,7 +43,7 @@ in {
 
         ${commonPost}
       '';
-      zsh.initExtra = ''
+      zsh.initContent = ''
         ${commonPre}
 
         if [[ $(hishtory config-get enable-control-r) != "true" ]]; then

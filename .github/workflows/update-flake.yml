@@ -15,7 +15,7 @@ jobs:
       - uses: ./.github/actions/build-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          forceInstallQemu: true
+      - uses: ./.github/actions/qemu-setup
       - name: Update flake inputs
         run: |
           nix flake update \

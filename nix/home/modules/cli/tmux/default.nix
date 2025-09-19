@@ -9,6 +9,11 @@
   termBasic = "screen-256color";
   termFull = "xterm-256color";
 in {
+  imports = [
+    ./tmux-powerline
+    ./catppuccin
+  ];
+
   options.my.modules.cli.tmux = {
     enable = lib.mkEnableOption "tmux";
     theme = lib.mkOption {

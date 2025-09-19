@@ -14,6 +14,9 @@ in {
     programs = {
       zellij = {
         enable = true;
+        enableBashIntegration = false;
+        enableFishIntegration = false;
+        enableZshIntegration = false;
         settings = {
           session_serialization = true;
           pane_viewport_serialization = true;
@@ -34,7 +37,7 @@ in {
     # support something like programs.zellij.extraConfig, it'll have to do
     home.file."${config.xdg.configHome}/zellij/config.kdl" = mkForce {
       text = ''
-        ${builtins.readFile ./config.kdl}
+        ${import ./config.nix}
 
         // Home Manager settings
         ${toKDL {} config.programs.zellij.settings}

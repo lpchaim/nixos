@@ -1,5 +1,10 @@
-{inputs, ...}: let
-  inherit (inputs.self.lib.loaders) listNonDefault;
-in {
-  imports = listNonDefault ./.;
+{
+  imports = [
+    ./apps
+    ./de
+    ./graphical.nix
+    ./llm
+    ./standalone.nix
+    ./wayland.nix
+  ];
 }
