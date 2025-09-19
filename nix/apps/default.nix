@@ -1,6 +1,6 @@
-{...}: {
+args: {
   imports = [
     ./assets.nix
-    ./ci.nix
+    (import ./ci.nix args)
   ];
 }
