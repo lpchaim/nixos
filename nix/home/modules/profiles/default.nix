@@ -6,6 +6,5 @@
     ./llm
     ./standalone.nix
     ./wayland.nix
-    ./work.nix
   ];
 }
