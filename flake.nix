@@ -76,10 +76,6 @@
 
     # Misc
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    devenv = {
-      url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
