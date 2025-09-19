@@ -77,17 +77,11 @@ in {
         packages = [pkgs.yubikey-personalization];
       };
     };
-    environment.systemPackages =
-      (with pkgs; [
-        gnupg
-        pam_u2f
-        pamtester
-        yubikey-personalization
-      ])
-      ++ lib.optionals config.my.profiles.graphical [
-        pkgs.yubioath-flutter
-        pkgs.yubikey-manager
-      ];
+    environment.systemPackages = with pkgs; [
+      gnupg
+      pam_u2f
+      pamtester
+    ];
     sops.secrets.u2f-mappings = {
       group = "wheel";
       mode = "0440";

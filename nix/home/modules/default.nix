@@ -27,6 +27,7 @@ in {
       ./nix
       ./profiles
       ./scripts
+      ./security
       ./syncthing
       ./theming
     ];
