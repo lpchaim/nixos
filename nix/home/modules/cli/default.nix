@@ -33,7 +33,6 @@ in {
       lazygit.enable = mkDefault true;
     };
     hishtory.enable = mkDefault false;
-    just.enable = true;
     nushell.enable = mkDefault true;
     starship.enable = mkDefault true;
     tealdeer.enable = mkDefault true;
