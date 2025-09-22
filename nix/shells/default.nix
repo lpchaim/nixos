@@ -20,12 +20,17 @@
         pkgs,
         ...
       }: {
+        env = {
+          EDITOR = "hx";
+          NH_FLAKE = inputs.self.lib.config.flake.path;
+        };
         packages =
           (with pkgs; [
             bat
             fish
             git
             helix
+            just
           ])
           ++ config.pre-commit.settings.enabledPackages
           ++ (lib.optionals (config.pre-commit.settings.package != null) [
