@@ -12,10 +12,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: ./.github/actions/build-setup
+      - uses: ./.github/actions/qemu-setup
+      - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - uses: ./.github/actions/qemu-setup
       - name: Update flake inputs
         run: |
           nix flake update \
