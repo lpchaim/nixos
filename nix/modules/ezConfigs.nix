@@ -25,7 +25,7 @@ in {
     home = {
       configurationsDirectory = "${root}/home/configs";
       modulesDirectory = "${root}/home/modules";
-      users."cheina@pc079".standalone = {
+      users."cheina@pc082".standalone = {
         inherit (self.legacyPackages.x86_64-linux) pkgs;
         enable = true;
       };
