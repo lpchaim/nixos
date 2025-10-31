@@ -19,7 +19,6 @@ in {
           bash
           chafa
           cheat
-          comby
           curl
           delta
           devenv

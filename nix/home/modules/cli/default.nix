@@ -13,7 +13,6 @@ in {
     ./fish
     ./git
     ./hishtory
-    ./just
     ./nushell
     ./starship
     ./tealdeer
