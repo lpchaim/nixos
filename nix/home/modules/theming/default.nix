@@ -20,6 +20,10 @@ in
       stylix.targets.mangohud.enable = false;
       stylix.targets.firefox.profileNames = ["default"];
       stylix.targets.vscode.profileNames = ["default"];
+      fonts.fontconfig = {
+        enable = true;
+        defaultFonts.monospace = [config.stylix.fonts.monospace.name];
+      };
     }
     (lib.mkIf (matchTheme "catppuccin" != null) {
       programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";
