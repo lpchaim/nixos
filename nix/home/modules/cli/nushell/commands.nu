@@ -7,17 +7,22 @@ def "from git branches" []: list<string> -> list<string> {
     }
 }
 
-# Wrapper for fzf
-def "into fzf" []: list<string> -> string {
-    to text
-    | ^fzf
+# More nu-friendly fzf wrapper
+def --wrapped fzf [
+  path: cell-path,
+  ...rest: string@__fzf_completions,
+]: list -> list {
+  let picked = $in
+    | get $path
+    | to text
+    | ^fzf ...$rest
+    | lines
+  $in
+    | where { |$it| ($it | get $path) in $picked }
 }
 
-# Wrapper for fzf with multiple selections
-def "into fzf multi" []: list<string> -> list<string> {
-    to text
-    | ^fzf --multi
-    | lines
+def __fzf_completions [] {
+  ^carapace fzf nushell fzf '--' | from json
 }
 
 # Cast to list, for e.g. ranges
