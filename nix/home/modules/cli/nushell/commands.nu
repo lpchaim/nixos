@@ -1,10 +1,17 @@
 # Wrapper for git branch
-def "from git branches" []: list<string> -> list<string> {
-    lines
-    | each {
-        str trim
-        | str replace --regex '^\* ' ""
-    }
+def --wrapped "git branch" [
+  ...rest: string@__git_branch_completions,
+] {
+  ^git branch ...$rest
+  | lines
+  | each {
+      str trim
+      | str replace --regex '^\* ' ""
+  }
+}
+
+def __git_branch_completions [] {
+  __get_completions git branch
 }
 
 # More nu-friendly fzf wrapper
@@ -22,10 +29,19 @@ def --wrapped fzf [
 }
 
 def __fzf_completions [] {
-  ^carapace fzf nushell fzf '--' | from json
+  __get_completions fzf
 }
 
 # Cast to list, for e.g. ranges
 def "into list" []: any -> list<any> {
     each {}
+}
+
+# Helper to generate completion functions
+def __get_completions [
+  command: string,
+  ...context: string,
+] {
+  ^carapace $command nushell $command ...$context '-'
+  | from json
 }
