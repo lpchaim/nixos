@@ -116,12 +116,9 @@ in {
             }
           ];
           binds.workspace_center_on = 1; # Last active
-          gestures = {
-            workspace_swipe = true;
-            workspace_swipe_touch = true;
-            workspace_swipe_create_new = false;
-            workspace_swipe_forever = true;
-          };
+          gesture = [
+            "3, horizontal, workspace"
+          ];
           env = [
             "XCURSOR_SIZE,32"
             "HYPRCURSOR_SIZE,32"
@@ -214,7 +211,6 @@ in {
           hyprpaper
           hyprpicker
           wlinhibit
-          kdePackages.xwaylandvideobridge
         ];
       };
 

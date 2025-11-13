@@ -23,7 +23,7 @@ in {
           delta
           devenv
           difftastic
-          du-dust
+          dust
           duf
           fd
           ffmpeg

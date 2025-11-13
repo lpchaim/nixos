@@ -14,17 +14,20 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs = {
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
+      };
       git = {
         enable = true;
-        delta.enable = true;
-        extraConfig = {
+        settings = {
           init.defaultBranch = "main";
           pull.rebase = true;
           push.autoSetupRemote = true;
           rebase.autoStash = true;
+          user.email = email.main;
+          user.name = name.full;
         };
-        userEmail = email.main;
-        userName = name.full;
       };
       lazygit.enable = cfg.lazygit.enable;
     };
