@@ -15,7 +15,7 @@ in
       home.packages = with pkgs; [
         noto-fonts
         noto-fonts-cjk-sans
-        noto-fonts-emoji
+        noto-fonts-color-emoji
       ];
       stylix.targets.mangohud.enable = false;
       stylix.targets.firefox.profileNames = ["default"];
