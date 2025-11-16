@@ -35,15 +35,6 @@ in {
       host = "127.0.0.1";
       port = 11434;
     };
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-      openFirewall = true;
-      settings = {
-        PasswordAuthentication = mkDefault false;
-        PermitRootLogin = mkDefault "no";
-      };
-    };
     power-profiles-daemon.enable = true;
     printing.enable = true;
     udisks2.enable = true;
