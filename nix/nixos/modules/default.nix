@@ -36,6 +36,7 @@ in {
       ./secureboot
       ./security
       ./services
+      ./ssh
       ./syncthing
       ./tailscale
       ./theming
