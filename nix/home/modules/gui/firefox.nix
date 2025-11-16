@@ -13,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox.override {
+      package = pkgs.firefox-bin.override {
         cfg = {
           enableGnomeExtensions = config.my.modules.de.gnome.enable or false;
           enablePlasmaBrowserIntegration = config.my.modules.de.plasma.enable or false;
