@@ -65,6 +65,7 @@ in {
       };
     };
     services = {
+      pcscd.enable = true;
       udev = {
         extraRules = lib.mkIf cfg.u2f.screenOffOnUnplug ''
           ACTION=="remove", \
