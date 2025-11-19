@@ -12,13 +12,13 @@ in {
         enable = mkDefault false;
         device = "nodev";
         efiSupport = true;
-        configurationLimit = 5;
+        configurationLimit = mkDefault 5;
       };
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = mkDefault true;
         editor = false;
-        configurationLimit = 5;
+        configurationLimit = mkDefault 5;
         memtest86.enable = pkgs.stdenv.isx86_64;
         netbootxyz.enable = true;
       };
