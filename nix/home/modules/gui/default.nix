@@ -21,6 +21,8 @@ in {
       home.packages = with pkgs; [
         libreoffice-qt6-fresh
         obsidian
+        pavucontrol
+        qbittorrent
         signal-desktop
         vesktop
         zapzap
