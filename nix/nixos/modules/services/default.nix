@@ -16,10 +16,7 @@ in {
       lib.mkIf (btrfsFileSystems != {}) {
         enable = true;
         interval = "monthly";
-        fileSystems =
-          if btrfsFileSystems ? "/"
-          then ["/"]
-          else lib.attrNames btrfsFileSystems;
+        fileSystems = lib.attrNames btrfsFileSystems;
       };
     devmon.enable = true;
     fstrim = {
