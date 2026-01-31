@@ -44,6 +44,7 @@
     stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
+    nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
 
     # Home Manager
     home-manager = {
