@@ -1382,6 +1382,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-hare": {
+      "locked": {
+        "lastModified": 1769806382,
+        "narHash": "sha256-kk27xrW0HNtX5N1h5sbXE0k6A/OHETbau2WmL75gA94=",
+        "owner": "lpchaim",
+        "repo": "nixpkgs",
+        "rev": "e6c0f56a16c7deb4023f1d2a407ad1b68557c724",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lpchaim",
+        "ref": "update-hare",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1761765539,
@@ -1762,6 +1778,7 @@
         "nixpkgs": [
           "unstable"
         ],
+        "nixpkgs-hare": "nixpkgs-hare",
         "nixpkgs-schemas": "nixpkgs-schemas",
         "nixvim": "nixvim",
         "nur": "nur",
