@@ -8,11 +8,11 @@
       builtins.head
       (x: assets + /${x})
     ];
-in {
+in rec {
   name.user = "lpchaim";
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
-  flake.path = "~/.config/nixos";
+  flake.path = "/home/${name.user}/.config/nixos";
   repo.main = "https://github.lpcha.im";
   shell = "fish";
   wallpaper = assetWithPrefix "wallpaper";
