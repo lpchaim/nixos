@@ -9,7 +9,6 @@
   cfg = config.my.modules.de.hyprland;
 in {
   imports = [
-    ./bars
     ./binds
     ./hypridle
     ./hyprlock
@@ -23,9 +22,10 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       my.modules.de.hyprland = {
-        bars.caelestia.enable = lib.mkDefault cfg.enable;
-        binds.enableFnKeys = lib.mkDefault cfg.bars.caelestia.enable;
+        binds.enableFnKeys = lib.mkDefault cfg.enable;
         binds.enable = lib.mkDefault cfg.enable;
+        hypridle.enable = lib.mkDefault cfg.enable;
+        hyprlock.enable = lib.mkDefault cfg.enable;
         launchers.rofi.enable = lib.mkDefault cfg.enable;
         osd.swayosd.enable = lib.mkDefault false;
         plugins.enable = lib.mkDefault false;

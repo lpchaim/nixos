@@ -10,6 +10,7 @@ in {
     (with inputs; [
       caelestia.homeManagerModules.default
       chaotic.homeManagerModules.default
+      dms.homeModules.dank-material-shell
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak
       nixvim.homeModules.nixvim
@@ -20,6 +21,7 @@ in {
     ])
     ++ [
       "${self}/nix/shared"
+      ./bars
       ./cli
       ./de
       ./gui
@@ -33,6 +35,8 @@ in {
     ];
 
   my.modules = {
+    bars.caelestia.enable = mkDefault false;
+    bars.dank-material-shell.enable = mkDefault true;
     cli.enable = mkDefault true;
     nix.enable = mkDefault true;
     scripts.enable = mkDefault true;

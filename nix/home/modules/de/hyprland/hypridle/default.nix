@@ -4,14 +4,26 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland;
-in
-  lib.mkIf cfg.enable {
+  cfg = config.my.modules.de.hyprland.hypridle;
+in {
+  options.my.modules.de.hyprland.hypridle = {
+    enable = lib.mkEnableOption "Hypridle";
+    lockCmd = lib.mkOption {
+      description = "Command to lock the screen";
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
     services.hypridle = {
-      enable = true;
+      enable =
+        if (cfg.lockCmd == null)
+        then (throw "config.services.hypridle.settings.general.lock_cmd must be set")
+        else true;
       settings = {
         general = {
-          lock_cmd = "pidof hyprlock || hyprlock";
+          lock_cmd = cfg.lockCmd;
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
         };
@@ -33,4 +45,5 @@ in
         ];
       };
     };
-  }
+  };
+}

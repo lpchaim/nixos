@@ -3,13 +3,14 @@
   lib,
   ...
 }: let
-  inherit (lib) mkIf;
-  cfg = config.my.modules.de.hyprland;
-in
-  mkIf cfg.enable {
+  cfg = config.my.modules.de.hyprland.hyprlock;
+in {
+  options.my.modules.de.hyprland.hyprlock.enable = lib.mkEnableOption "Hyprlock";
+
+  config = lib.mkIf cfg.enable {
     stylix.targets.hyprlock.enable = false;
     programs.hyprlock = {
-      enable = true;
+      enable = lib.mkDefault true;
       settings = let
         inherit (config.lib.stylix) colors;
       in {
@@ -54,4 +55,7 @@ in
         ];
       };
     };
-  }
+
+    my.modules.de.hyprland.hypridle.lockCmd = "pidof hyprlock || hyprlock";
+  };
+}
