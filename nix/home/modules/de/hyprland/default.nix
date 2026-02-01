@@ -136,6 +136,14 @@ in {
                 move = "(monitor_w-window_w-(monitor_w*0.03)) (monitor_h-window_h-(monitor_h*0.03))";
                 size = "(monitor_w*0.25) (monitor_h*0.25)";
               };
+            mkMediaAppRule = args:
+              args
+              // {
+                idle_inhibit = "focus";
+                immediate = "on";
+                no_vrr = "on";
+                opaque = "on";
+              };
           in [
             (mkAutoFloatRule {
               name = "floating-discord";
@@ -150,6 +158,14 @@ in {
               name = "floating-firefox";
               "match:class" = "^(Picture-in-Picture)$";
               "match:initial_title" = "^(Picture in picture)$";
+            })
+            (mkMediaAppRule {
+              name = "media-mpv";
+              "match:class" = "^(mpv)$";
+            })
+            (mkMediaAppRule {
+              name = "media-vlc";
+              "match:class" = "^(vlc)$";
             })
             {
               name = "steam-games";
