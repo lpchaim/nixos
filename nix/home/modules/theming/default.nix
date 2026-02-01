@@ -15,11 +15,15 @@ in
       home.packages = with pkgs; [
         noto-fonts
         noto-fonts-cjk-sans
-        noto-fonts-emoji
+        noto-fonts-color-emoji
       ];
       stylix.targets.mangohud.enable = false;
       stylix.targets.firefox.profileNames = ["default"];
       stylix.targets.vscode.profileNames = ["default"];
+      fonts.fontconfig = {
+        enable = true;
+        defaultFonts.monospace = [config.stylix.fonts.monospace.name];
+      };
     }
     (lib.mkIf (matchTheme "catppuccin" != null) {
       programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";

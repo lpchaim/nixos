@@ -1,12 +1,23 @@
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = with pkgs; [
+    android-tools
+  ];
   programs = {
-    adb.enable = true;
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
     fish.enable = true;
     nix-ld.enable = true;
     nh = {
-      enable = true;
+      enable = lib.mkDefault true;
       clean = {
-        enable = true;
+        enable = config.programs.nh.enable;
         dates = "weekly";
         extraArgs = "--keep 5";
       };

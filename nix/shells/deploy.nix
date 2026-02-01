@@ -1,9 +1,11 @@
-args: let
-  inherit ((import ../lib args).config) flake repo;
-in {
-  perSystem = {pkgs, ...}: {
+{inputs, ...}: {
+  perSystem = {self', ...}: let
+    inherit (inputs.self.lib.config) flake repo;
+    inherit (self'.legacyPackages) pkgs;
+  in {
     make-shells.deploy = {
       additionalArguments.meta.description = "Extra deployment utilities built-in";
+      inputsFrom = [self'.devShells.nix];
       packages = with pkgs; [
         disko
         home-manager
@@ -20,10 +22,6 @@ in {
           fi
         '')
       ];
-      shellHook = ''
-        export EDITOR=hx
-        export NH_FLAKE="${flake.path}"
-      '';
     };
   };
 }

@@ -1,23 +1,24 @@
 {
+  config,
   lib,
   pkgs,
   osConfig ? {},
   ...
 }: let
-  inherit (pkgs) syncthingtray;
   syncthing = osConfig.services.syncthing.package;
+  syncthingtray = config.services.syncthing.tray.package;
 in
   lib.mkIf (osConfig.services.syncthing.enable or false) {
-    home.packages = [pkgs.syncthingtray];
+    home.packages = [syncthingtray];
     services.syncthing.tray.enable = true;
     systemd.user.services.syncthingtray = {
       Service.ExecStart = lib.mkForce (pkgs.writeShellScript "syncthingtray-wait" ''
-        ${pkgs.syncthingtray}/bin/syncthingtray --wait
+        ${syncthingtray}/bin/syncthingtray --wait
       '');
       Service.ExecStartPre = pkgs.writeShellScript "setup-syncthingtray" ''
           cat <<EOF >> ~/.config/syncthingtray.ini
           [General]
-          v=${pkgs.syncthingtray.version}
+          v=${syncthingtray.version}
 
           [startup]
           considerForReconnect=false

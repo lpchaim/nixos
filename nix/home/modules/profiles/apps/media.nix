@@ -5,6 +5,7 @@
   pkgs,
   ...
 }: let
+  inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.profiles.apps.media;
 in {
   options.my.profiles.apps.media = lib.mkEnableOption "media profile";
@@ -12,7 +13,7 @@ in {
     programs = {
       mpv.enable = true;
       spicetify = let
-        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+        spicePkgs = inputs.spicetify-nix.legacyPackages.${system};
       in {
         enable = true;
         enabledExtensions = with spicePkgs.extensions; [
@@ -23,7 +24,7 @@ in {
       };
     };
     home.packages = with pkgs; [
-      jellyfin-media-player
+      mpv
       vlc
     ];
   };

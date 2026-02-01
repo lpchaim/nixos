@@ -10,27 +10,42 @@
 │   ├── config.nix
 │   ├── default.nix
 │   ├── loaders.nix
-│   ├── shell.nix
 │   ├── storage
 │   └── strings.nix
 ├── modules
 │   ├── default.nix
 │   ├── ezConfigs.nix
-│   └── gitHooks.nix
+│   ├── gitHooks.nix
+│   └── just.nix
 ├── nixos
 │   ├── configs
 │   └── modules
 ├── overlays
-│   └── default.nix
+│   ├── default.nix
+│   ├── nixpkgsVersions.nix
+│   ├── nuInterpreterStdin.nix
+│   └── python.nix
 ├── packages
-│   └── default.nix
+│   ├── default.nix
+│   └── lichen
 ├── schemas
 │   ├── default.nix
 │   ├── lib.nix
 │   └── pkgs.nix
+├── scripts
+│   ├── default.nix
+│   ├── lastdl.nix
+│   ├── leastspaces.nix
+│   ├── nu-generate-carapace-spec.nix
+│   ├── nu-generate-manpage.nix
+│   ├── nu-inspect.nix
+│   └── nu-parse-help.nix
 ├── shared
 │   ├── default.nix
 │   └── theming.nix
 └── shells
     ├── default.nix
-    └── lib.nix
+    ├── deploy.nix
+    ├── minimal.nix
+    ├── nix.nix
+    └── rust.nix

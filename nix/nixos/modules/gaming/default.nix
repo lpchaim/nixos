@@ -5,10 +5,13 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   inherit (inputs.self.lib.config) name;
   cfg = config.my.gaming;
 in {
+  imports = [
+    ./obs.nix
+  ];
+
   options.my.gaming = {
     enable = lib.mkEnableOption "gaming tweaks";
     steam.enable =
@@ -34,22 +37,6 @@ in {
         gamescope = {
           enable = true;
           capSysNice = true;
-        };
-        obs-studio = {
-          enable = true;
-          enableVirtualCamera = true;
-          plugins =
-            (with pkgs.obs-studio-plugins; [
-              input-overlay
-              obs-pipewire-audio-capture
-              obs-scale-to-sound
-              obs-vaapi
-              obs-vkcapture
-              wlrobs
-            ])
-            ++ (lib.optionals (isNvidia config) [
-              # pkgs.obs-studio-plugins.obs-nvfbc
-            ]);
         };
       };
 

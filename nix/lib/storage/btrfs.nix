@@ -59,4 +59,25 @@
       };
     };
   };
+
+  mkSecondaryStorage = {
+    device,
+    mountPoint,
+  }: {
+    fileSystems.${mountPoint} = {
+      inherit device;
+      fsType = "btrfs";
+      options = [
+        "defaults"
+        "auto"
+        "exec"
+        "nofail"
+        "nosuid"
+        "nodev"
+        "noatime"
+        "compress=zstd"
+        "x-gvfs-show"
+      ];
+    };
+  };
 }

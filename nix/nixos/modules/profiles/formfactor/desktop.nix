@@ -9,6 +9,8 @@
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
   config = lib.mkIf cfg {
+    my.gaming.obs.enableVirtualWebcam = true;
+
     environment.systemPackages = with pkgs; [
       piper
       qmk

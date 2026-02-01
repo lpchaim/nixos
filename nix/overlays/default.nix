@@ -7,7 +7,6 @@ in {
     // {
       external = lib.composeManyExtensions [
         inputs.chaotic.overlays.default
-        inputs.nh.overlays.default
         inputs.nix-gaming.overlays.default
         inputs.nixneovimplugins.overlays.default
       ];

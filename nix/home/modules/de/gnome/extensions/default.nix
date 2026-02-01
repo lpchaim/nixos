@@ -5,7 +5,6 @@
   ...
 }: let
   cfg = config.my.modules.de.gnome.extensions;
-  pre43 = lib.versionOlder pkgs.gnome-shell.version "43";
 in {
   imports = [
     ./dash-to-panel.nix
@@ -16,43 +15,35 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages =
       [pkgs.gnome-tweaks]
-      ++ (with pkgs.gnomeExtensions;
-        [
-          appindicator
-          blur-my-shell
-          caffeine
-          clipboard-indicator
-          dash-to-dock
-          gsconnect
-          show-desktop-button
-          tailscale-qs
-          tray-icons-reloaded
-          user-themes
-          vitals
-        ]
-        ++ lib.optionals pre43 [
-          sound-output-device-chooser
-        ]);
+      ++ (with pkgs.gnomeExtensions; [
+        appindicator
+        blur-my-shell
+        caffeine
+        clipboard-indicator
+        dash-to-dock
+        gsconnect
+        show-desktop-button
+        tailscale-qs
+        tray-icons-reloaded
+        user-themes
+        vitals
+      ]);
 
     dconf.settings = {
       "org/gnome/shell" = {
         disable-user-extensions = false;
-        enabled-extensions =
-          [
-            "appindicatorsupport@rgcjonas.gmail.com"
-            "blur-my-shell@aunetx"
-            "caffeine@patapon.info"
-            "clipboard-indicator@tudmotu.com"
-            "dash-to-dock@micxgx.gmail.com"
-            "gsconnect@andyholmes.github.io"
-            "show-desktop-button@amivaleo"
-            "tailscale@joaophi.github.com"
-            "user-theme@gnome-shell-extensions.gcampax.github.com"
-            "Vitals@CoreCoding.com"
-          ]
-          ++ lib.optionals pre43 [
-            "sound-output-device-chooser@kgshank.net"
-          ];
+        enabled-extensions = [
+          "appindicatorsupport@rgcjonas.gmail.com"
+          "blur-my-shell@aunetx"
+          "caffeine@patapon.info"
+          "clipboard-indicator@tudmotu.com"
+          "dash-to-dock@micxgx.gmail.com"
+          "gsconnect@andyholmes.github.io"
+          "show-desktop-button@amivaleo"
+          "tailscale@joaophi.github.com"
+          "user-theme@gnome-shell-extensions.gcampax.github.com"
+          "Vitals@CoreCoding.com"
+        ];
       };
       "org/gnome/shell/extensions/dash-to-dock" = {
         dock-fixed = false;

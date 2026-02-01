@@ -19,9 +19,10 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       home.packages = with pkgs; [
-        bottles
         libreoffice-qt6-fresh
         obsidian
+        pavucontrol
+        qbittorrent
         signal-desktop
         vesktop
         zapzap

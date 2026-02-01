@@ -1,9 +1,22 @@
-args: let
-  inherit ((import ../lib args).loaders) callPackageNonDefault;
+{...}: let
+  inherit (import ../lib) mkPkgs;
 in {
-  perSystem = {self', ...}: let
+  perSystem = {
+    inputs',
+    self',
+    lib,
+    system,
+    ...
+  }: let
     inherit (self'.legacyPackages) pkgs;
   in {
-    packages = callPackageNonDefault ./. pkgs;
+    packages = let
+      callPackage = lib.callPackageWith pkgs;
+    in {
+      lichen =
+        callPackage
+        ./lichen/package.nix
+        {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
+    };
   };
 }

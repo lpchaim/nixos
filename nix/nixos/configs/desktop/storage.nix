@@ -3,8 +3,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.storage.btrfs) mkStorage;
-  inherit (inputs.self.lib.storage.ntfs) mkSecondaryStorage;
+  inherit (inputs.self.lib.storage.btrfs) mkSecondaryStorage mkStorage;
   inherit (inputs.self.lib.config) name;
 in
   lib.mkMerge [
