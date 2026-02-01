@@ -16,4 +16,4 @@ jobs:
       - uses: googleapis/release-please-action@v4
         with:
           release-type: simple
-          package-name: release-please-action
+          release-as: 1.1.0
