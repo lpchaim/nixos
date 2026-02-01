@@ -14,22 +14,36 @@
 in {
   options.my.profiles.users = lib.mkEnableOption "users profile";
   config = lib.mkIf cfg {
-    users = {
-      mutableUsers = false;
-      groups.${userName} = {
-        gid = 1000;
+    users = let
+      defaults = {
+        isNormalUser = true;
+        extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
       };
+    in {
+      mutableUsers = false;
+      groups.${userName}.gid = 1000;
+      groups.emily.gid = 1001;
       extraUsers = {
-        ${userName} = {
-          uid = 1000;
-          home = "/home/${userName}";
-          description = name.full;
-          isNormalUser = true;
-          group = userName;
-          extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
-          shell = pkgs.${shell};
-          hashedPasswordFile = "${config.sops.secrets."password".path}";
-        };
+        ${userName} =
+          defaults
+          // {
+            uid = 1000;
+            home = "/home/${userName}";
+            description = name.full;
+            group = userName;
+            shell = pkgs.${shell};
+            hashedPasswordFile = "${config.sops.secrets."user/lpchaim/password".path}";
+          };
+        emily =
+          defaults
+          // {
+            uid = 1001;
+            home = "/home/emily";
+            description = "emily";
+            group = "emily";
+            shell = pkgs.fish;
+            hashedPasswordFile = "${config.sops.secrets."user/emily/password".path}";
+          };
         root.hashedPassword = null;
       };
     };

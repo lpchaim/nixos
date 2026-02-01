@@ -17,6 +17,7 @@ in {
         extended = false;
         ignoreDups = true;
       };
+      dotDir = "${config.xdg.configHome}/zsh";
       initContent = ''
         export COLORTERM=truecolor
       '';

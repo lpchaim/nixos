@@ -36,6 +36,7 @@ in {
       ./secureboot
       ./security
       ./services
+      ./ssh
       ./syncthing
       ./tailscale
       ./theming
@@ -58,7 +59,6 @@ in {
   my.security.enable = mkDefault true;
 
   environment.systemPackages = with pkgs; [
-    android-udev-rules
     helix
     sbctl
     vim

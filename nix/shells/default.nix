@@ -20,12 +20,16 @@
         pkgs,
         ...
       }: {
+        env = {
+          EDITOR = "hx";
+        };
         packages =
           (with pkgs; [
             bat
             fish
             git
             helix
+            just
           ])
           ++ config.pre-commit.settings.enabledPackages
           ++ (lib.optionals (config.pre-commit.settings.package != null) [

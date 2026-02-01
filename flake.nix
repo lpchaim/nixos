@@ -44,6 +44,7 @@
     stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
+    nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
 
     # Home Manager
     home-manager = {
@@ -98,10 +99,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
-    nh = {
-      url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {

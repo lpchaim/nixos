@@ -1,0 +1,22 @@
+diff --git a/scripts/run_tests.lua b/scripts/run_tests.lua
+index 2b56cbe..9f17f45 100755
+--- a/scripts/run_tests.lua
++++ b/scripts/run_tests.lua
+@@ -100,7 +100,7 @@ local tests = {
+     -- issue fixing --
+     { src = "fail_outlive_1", code = 1, nocomp = true },
+     { src = "fail_outlive_2", code = 1, nocomp = true },
+-    { src = "fail_synax_1", code = 1, nocomp = true },
++    { src = "fail_syntax_1", code = 1, nocomp = true },
+     { src = "issue_mut_loop", code = 0 },
+     { src = "issue_for_slice", code = 0 },
+     { src = "issue_lit_arr", code = 0 },
+@@ -272,7 +272,7 @@ local function run_test(t, failed, ex)
+             ok = exec(bin .. (t.argv or "") .. " > " .. log .. " 2>&1")
+         end
+ 
+-        local result   = io.open(log):read("a"):gsub("\n", "\\n")
++        local result   = io.open(log):read("*all"):gsub("\n", "\\n")
+         local expected = (t.output or ""):gsub("\n", "\\n")
+ 
+         if (t.code == 0 and not ok) or (t.code ~= 0 and ok) then
