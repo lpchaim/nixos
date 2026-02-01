@@ -99,10 +99,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
-    nh = {
-      url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {

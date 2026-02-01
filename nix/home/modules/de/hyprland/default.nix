@@ -125,40 +125,57 @@ in {
           ];
           monitor = [",highrr,auto,1"];
           opengl.nvidia_anti_flicker = true;
-          windowrulev2 = let
-            mkRules = matcher: rules:
-              map (rule: "${rule},${matcher}") rules;
-            mkAutoFloatRules = matcher:
-              mkRules matcher [
-                "opacity 0.7 override"
-                "noinitialfocus"
-                "float"
-                "pin"
-                "move onscreen 100%-w-3% 100%-w-3%"
-                "size 25% 25%"
-              ];
-          in
-            (mkAutoFloatRules "class:^(firefox)$,initialTitle:^(Picture-in-Picture)$")
-            ++ (mkAutoFloatRules "initialTitle:^(Picture in picture)$")
-            ++ (mkAutoFloatRules "class:^(discord|vesktop)$,initialTitle:^(Discord Popout)$")
-            ++ (mkRules "class:^steam_app\d+$" [
-              "fullscreen"
-              "idleinhibit focus"
-              "monitor 1"
-              "opacity 1.0 override"
-              "workspace 10"
-            ])
-            ++ (mkRules "class:^(xwaylandvideobridge)$" [
-              "maxsize 1 1"
-              "noanim"
-              "noblur"
-              "nofocus"
-              "noinitialfocus"
-              "opacity 0.0 override"
-            ])
-            ++ [
-              "stayfocused, class:^(rofi)$"
-            ];
+          windowrule = let
+            mkAutoFloatRule = args:
+              args
+              // {
+                opacity = "0.7 override";
+                no_initial_focus = "on";
+                float = "on";
+                pin = "on";
+                move = "(monitor_w-window_w-(monitor_w*0.03)) (monitor_h-window_h-(monitor_h*0.03))";
+                size = "(monitor_w*0.25) (monitor_h*0.25)";
+              };
+          in [
+            (mkAutoFloatRule {
+              name = "floating-discord";
+              "match:class" = "^(discord|vesktop)$";
+              "match:initial_title" = "^(Discord Popout)$";
+            })
+            (mkAutoFloatRule {
+              name = "floating-chromium";
+              "match:initial_title" = "^(Picture in picture)$";
+            })
+            (mkAutoFloatRule {
+              name = "floating-firefox";
+              "match:class" = "^(Picture-in-Picture)$";
+              "match:initial_title" = "^(Picture in picture)$";
+            })
+            {
+              name = "steam-games";
+              fullscreen = "on";
+              idle_inhibit = "focus";
+              monitor = 1;
+              opacity = "1.0 override";
+              workspace = 10;
+              "match:class" = "^steam_appd+$";
+            }
+            {
+              name = "hide-xwaylandvideobridge";
+              max_size = "1 1";
+              no_anim = "on";
+              no_blur = "on";
+              no_focus = "on";
+              no_initial_focus = "on";
+              opacity = "0.0 override";
+              "match:class" = "^(xwaylandvideobridge)$";
+            }
+            {
+              name = "rofi-focus";
+              stay_focused = "on";
+              "match:class" = "^(rofi)$";
+            }
+          ];
           debug.disable_logs = false;
         };
       };

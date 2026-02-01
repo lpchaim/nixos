@@ -22,7 +22,6 @@
       }: {
         env = {
           EDITOR = "hx";
-          NH_FLAKE = inputs.self.lib.config.flake.path;
         };
         packages =
           (with pkgs; [
