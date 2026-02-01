@@ -1,5 +1,72 @@
 # Changelog
 
+## [1.0.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.0.0) (2026-02-01)
+
+
+### Features
+
+* Add asciinema ([030b761](https://github.com/lpchaim/nixos/commit/030b761be9d57942445acf54c1c5653c508978e5))
+* Add Check CI action, small fixes ([20b4aaa](https://github.com/lpchaim/nixos/commit/20b4aaa1279e9cffde3f3e6c40a101cd029c153e))
+* Add cli refactoring/search and replace tools ([3e52b1f](https://github.com/lpchaim/nixos/commit/3e52b1fa55e155bf77e1a7d7a1666ce7096f391d))
+* Add emily user ([1f1ed36](https://github.com/lpchaim/nixos/commit/1f1ed36b2bf3b3b0798bcb30ae42fc6b09cd9eaf))
+* Add lichen package ([efad67d](https://github.com/lpchaim/nixos/commit/efad67ddb6322de0842e0c09b62a524726c8d7f8))
+* Add miscelaneous utilities ([9302881](https://github.com/lpchaim/nixos/commit/93028811c2d2a476af552e18980faeadb0cd2100))
+* Add nix-flatpak ([471490f](https://github.com/lpchaim/nixos/commit/471490f70649201b84e7b3bfbc209cb6f101d524))
+* Add official osu-lazer-bin ([55e13ff](https://github.com/lpchaim/nixos/commit/55e13ff8d16ad8b6ac31761361a424003af09451))
+* Add pavucontrol, qbittorrent ([8faeb8a](https://github.com/lpchaim/nixos/commit/8faeb8a5bb68e5347783805e9145f1bac669f94e))
+* Add wayland module, initial cliphist support ([611bd7d](https://github.com/lpchaim/nixos/commit/611bd7d94710a10b1ae073d749b38964f9100650))
+* Additionala git aliases ([2068dc7](https://github.com/lpchaim/nixos/commit/2068dc7767de0425f4205d73540f9ea755804200))
+* Auto generate carapace specs for nushell scripts ([5ef4cb3](https://github.com/lpchaim/nixos/commit/5ef4cb3a59d3d38309becaa2e84ec394a568db20))
+* Better devShell definitions ([8158b75](https://github.com/lpchaim/nixos/commit/8158b75cd7763efdb5860a74c22ab43697761296))
+* Better nushell completion generation ([54a2cd4](https://github.com/lpchaim/nixos/commit/54a2cd42a91492184e293d614b5c0f2d60c3ec02))
+* Better overlays ([f8cc685](https://github.com/lpchaim/nixos/commit/f8cc685081a2a689081002bce2670ee7631a2d8d))
+* Better pull workflow settings ([3dcc039](https://github.com/lpchaim/nixos/commit/3dcc039adf24fa01019b50a8604b9bd827a99f2d))
+* Break up base modules ([1b2c7c2](https://github.com/lpchaim/nixos/commit/1b2c7c26642fe1d74a274fe1fb3c2eec0fb63372))
+* **ci:** Add nothing-but-nix to nix-setup action ([82c4d48](https://github.com/lpchaim/nixos/commit/82c4d485659c3461d8cd3e66e66d02bb23041a42))
+* Dedicated OBS module ([55e1367](https://github.com/lpchaim/nixos/commit/55e136751beee7491a012b10e849ecfaf277e836))
+* Dedicated steamos module ([ef20e40](https://github.com/lpchaim/nixos/commit/ef20e40ec94ffc43093a203864abf4b262ece560))
+* **desktop:** Migrate NTFS drive to btrfs ([6954ae7](https://github.com/lpchaim/nixos/commit/6954ae7436cc8cc68c5a90857171eefac0cd444a))
+* Enable fontconfig ([d0e645b](https://github.com/lpchaim/nixos/commit/d0e645be006d9e20dd1bb6865d5331265d03756b))
+* **git:** Enable auto pull rebase + stash ([1720464](https://github.com/lpchaim/nixos/commit/172046416aa9f0cf25c6ddce284f689db603c30e))
+* **just:** Just in devShells, commands split in modules ([909fe2e](https://github.com/lpchaim/nixos/commit/909fe2e745705724a80ae9661b9e8141d4dcab26))
+* Make scripts actual packages ([e4d828b](https://github.com/lpchaim/nixos/commit/e4d828b716edfec7e19aa5debed7a46e520dd74a))
+* Media apps hyprland rule ([ec86a32](https://github.com/lpchaim/nixos/commit/ec86a32d588992aaaedef013ef2e5dc8029284d3))
+* Misc fixes ([10a3bb8](https://github.com/lpchaim/nixos/commit/10a3bb8c26e797eb5aa02f761809a30b1672fbb1))
+* **nushell:** Better fzf wrapper ([d68f39f](https://github.com/lpchaim/nixos/commit/d68f39f3eb6934aa3e01bc25c080e9a6e03c9900))
+* **nushell:** Better git branch wrapper ([7b896d1](https://github.com/lpchaim/nixos/commit/7b896d172528d9df5c6a53717349ec983ae5bb8c))
+* Remove deprecated ags bar in favor of caelestia ([5d6ce59](https://github.com/lpchaim/nixos/commit/5d6ce591a37f1f21493cd431d5aabfcffc9b461c))
+* Remove lix ([62ded98](https://github.com/lpchaim/nixos/commit/62ded98b9d3957ed920d5e3894927b261813647d))
+* Remove obsolete end-4 hyprland dotfiles ([194e26d](https://github.com/lpchaim/nixos/commit/194e26d12eeebf0d540f9900c8b3f9f7a897f62f))
+* Rework lib/shared as lib/config ([ecf06d8](https://github.com/lpchaim/nixos/commit/ecf06d8d88117442d2daf55778c8706bbdaf06e6))
+* **syncthing:** Add Obsidian, better versioning ([67612eb](https://github.com/lpchaim/nixos/commit/67612eb30a140705f9133d6403cccdfe94fd5c13))
+* Tweak README.md ([7259e80](https://github.com/lpchaim/nixos/commit/7259e80ef3781b82dd8306fad1fe5a9c69d74bf0))
+* Update name :3 ([a219740](https://github.com/lpchaim/nixos/commit/a219740197a614541fb0925993ba818e0f3808d5))
+* Use protonup-qt instead of hardcoded custom versions ([d15d6fe](https://github.com/lpchaim/nixos/commit/d15d6fe386ff1e2ae159d41e43d7afa9094da1f8))
+
+
+### Bug Fixes
+
+* CI fixes and improvements, use arm64 runner for raspberrypi ([ca7e83c](https://github.com/lpchaim/nixos/commit/ca7e83c428b48a40f2482924d138177e104b8f47))
+* **ci:** Update packages before installing qemu ([6f168b2](https://github.com/lpchaim/nixos/commit/6f168b25860e1b2b665ba2401a55ffa5d0af5b73))
+* Disable xdg mime on standalone home configurations ([b0f8a49](https://github.com/lpchaim/nixos/commit/b0f8a4983817bb413f898137af5f62ea60ea5382))
+* Enable chaotic binary cache for jovian ([cf42d44](https://github.com/lpchaim/nixos/commit/cf42d442406ab707dc9bb28279f1e8201952a15b))
+* Fix nu-parse-help script to account for extra empty lines ([9ce3a30](https://github.com/lpchaim/nixos/commit/9ce3a30ff9f872220a90f4a55617ffa3e99c9482))
+* Force disable atuin daemon on work PC ([e76fbd7](https://github.com/lpchaim/nixos/commit/e76fbd714101308474029148672431cd1c4e68af))
+* Misc flake update changes ([2f5f40a](https://github.com/lpchaim/nixos/commit/2f5f40a469187950557bd1f5415fe43454ca82b5))
+* Remove comby, fix missing module path ([dd1d754](https://github.com/lpchaim/nixos/commit/dd1d75436c23fe9b5f39b31aaa2391b0734faeb3))
+* Remove unnecessary justfile IFD ([289bc61](https://github.com/lpchaim/nixos/commit/289bc61331069895cf56ae390786338798062252))
+* Remove unnecessary nushell IFD ([0620302](https://github.com/lpchaim/nixos/commit/06203024e1526bb65f44c7bba0871fe24c680a2b))
+* Remove unnecessary starship IFD ([9ae6fa6](https://github.com/lpchaim/nixos/commit/9ae6fa6a8241a0fae0060d51124d153964e699a1))
+* Remove unnecessary zellij IFD ([4610973](https://github.com/lpchaim/nixos/commit/4610973d954acba15b86e447b4b9461578683be5))
+* system arg in CI action ([33eaa75](https://github.com/lpchaim/nixos/commit/33eaa75ee4050c682ba2276a380c14aee6db91b1))
+* Tweak GUI module defaults ([77fb195](https://github.com/lpchaim/nixos/commit/77fb195474b291d8a676b2bd029c443900435db6))
+* Update README.md, add missing links ([7cd3780](https://github.com/lpchaim/nixos/commit/7cd3780a6d3fc31658da7e4e83ac598a36a470f6))
+
+
+### Miscellaneous Chores
+
+* Release 1.0.0 ([4c5c575](https://github.com/lpchaim/nixos/commit/4c5c5755146b6f74b7efba5fd2650fb15be67d03))
+
 ## [1.0.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.0.0) (2025-01-05)
 
 
