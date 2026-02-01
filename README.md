@@ -1,5 +1,4 @@
-[ags]: https://github.com/Aylur/ags
-[dotfiles]: https://github.com/Aylur/dotfiles
+[caelestia]: https://github.com/caelestia-dots/shell
 [ez-configs]: https://github.com/ehllie/ez-configs/
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
@@ -60,7 +59,9 @@ in {
   };
   my.gaming.enable = true;
   my.networking.tailscale.trusted = true;
-  my.security.secureboot.enable = true;
+  my.security.secureboot.enable = false;
+
+  networking.interfaces.enp6s0.wakeOnLan.enable = true;
 
   system.stateVersion = "23.11";
   home-manager.users.${name.user}.home.stateVersion = "24.11";
@@ -69,7 +70,7 @@ in {
 
 ## Look and feel
 
-I daily drive Hyprland with a slightly tweaked version of aylur's [ags] [dotfiles] and [rofi] as an app launcher.
+I daily drive Hyprland with [caelestia] and [rofi].
 
 My systems wouldn't look even halfway as good without [stylix] doing all the heavy-lifting in my stead.
 The color scheme used in my screenshots is `stella`.
@@ -97,30 +98,45 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 │   ├── config.nix
 │   ├── default.nix
 │   ├── loaders.nix
-│   ├── shell.nix
 │   ├── storage
 │   └── strings.nix
 ├── modules
 │   ├── default.nix
 │   ├── ezConfigs.nix
-│   └── gitHooks.nix
+│   ├── gitHooks.nix
+│   └── just.nix
 ├── nixos
 │   ├── configs
 │   └── modules
 ├── overlays
-│   └── default.nix
+│   ├── default.nix
+│   ├── nixpkgsVersions.nix
+│   ├── nuInterpreterStdin.nix
+│   └── python.nix
 ├── packages
-│   └── default.nix
+│   ├── default.nix
+│   └── lichen
 ├── schemas
 │   ├── default.nix
 │   ├── lib.nix
 │   └── pkgs.nix
+├── scripts
+│   ├── default.nix
+│   ├── lastdl.nix
+│   ├── leastspaces.nix
+│   ├── nu-generate-carapace-spec.nix
+│   ├── nu-generate-manpage.nix
+│   ├── nu-inspect.nix
+│   └── nu-parse-help.nix
 ├── shared
 │   ├── default.nix
 │   └── theming.nix
 └── shells
     ├── default.nix
-    └── lib.nix
+    ├── deploy.nix
+    ├── minimal.nix
+    ├── nix.nix
+    └── rust.nix
 ```
 </details>
 
@@ -136,62 +152,55 @@ Courtesy of [flake-schemas]' patches with my own lib/pkgs schemas on top.
 git+file:///home/lpchaim/.config/nixos
 ├───apps
 │   ├───aarch64-linux
-│   │   ├───generate-assets: app
-│   │   ├───generate-ci-matrix: app
-│   │   └───render-readme: app
+│   │   ├───generate-assets: app: Creates README.md assets
+│   │   ├───generate-ci-matrix: app: Generates a GitHub Actions build matrix
+│   │   └───render-readme: app: Renders README.md
 │   └───x86_64-linux
-│       ├───generate-assets: app
-│       ├───generate-ci-matrix: app
-│       └───render-readme: app
+│       ├───generate-assets: app: Creates README.md assets
+│       ├───generate-ci-matrix: app: Generates a GitHub Actions build matrix
+│       └───render-readme: app: Renders README.md
 ├───checks
 │   ├───aarch64-linux
-│   │   └───pre-commit: CI test [pre-commit-run]
+│   │   ├───deploy-shell: derivation 'nix-shell'
+│   │   ├───minimal-shell: derivation 'nix-shell'
+│   │   ├───nix-shell: derivation 'nix-shell'
+│   │   ├───pre-commit: derivation 'pre-commit-run'
+│   │   └───rust-shell: derivation 'nix-shell'
 │   └───x86_64-linux
-│       └───pre-commit: CI test [pre-commit-run]
-├───darwinConfigurations
-├───darwinModules
+│       ├───deploy-shell: derivation 'nix-shell'
+│       ├───minimal-shell: derivation 'nix-shell'
+│       ├───nix-shell: derivation 'nix-shell'
+│       ├───pre-commit: derivation 'pre-commit-run'
+│       └───rust-shell: derivation 'nix-shell'
+├───darwinConfigurations: unknown
+├───darwinModules: unknown
 ├───devShells
 │   ├───aarch64-linux
-│   │   ├───default: development environment [nix-shell]
-│   │   ├───deploy: development environment [nix-shell]
-│   │   └───rust: development environment [nix-shell]
+│   │   ├───default: development environment 'nix-shell'
+│   │   ├───deploy: development environment 'deploy-shell'
+│   │   ├───minimal: development environment 'minimal-shell'
+│   │   ├───nix: development environment 'nix-shell'
+│   │   └───rust: development environment 'rust-shell'
 │   └───x86_64-linux
-│       ├───default: development environment [nix-shell]
-│       ├───deploy: development environment [nix-shell]
-│       └───rust: development environment [nix-shell]
+│       ├───default: development environment 'nix-shell'
+│       ├───deploy: development environment 'deploy-shell'
+│       ├───minimal: development environment 'minimal-shell'
+│       ├───nix: development environment 'nix-shell'
+│       └───rust: development environment 'rust-shell'
 ├───formatter
-│   ├───aarch64-linux: package [alejandra-3.1.0]
-│   └───x86_64-linux: package [alejandra-3.1.0]
-├───homeConfigurations
-│   ├───"cheina@pc079": Home Manager configuration [home-manager-generation]
-│   ├───"lpchaim@desktop": Home Manager configuration [home-manager-generation]
-│   ├───"lpchaim@laptop": Home Manager configuration [home-manager-generation]
-│   ├───"lpchaim@raspberrypi": Home Manager configuration [home-manager-generation]
-│   └───"lpchaim@steamdeck": Home Manager configuration [home-manager-generation]
-├───homeModules
-│   ├───cli: Home Manager module
-│   ├───default: Home Manager module
-│   ├───gaming: Home Manager module
-│   ├───gui: Home Manager module
-│   ├───nix: Home Manager module
-│   ├───profiles: Home Manager module
-│   ├───syncthing: Home Manager module
-│   └───theming: Home Manager module
+│   ├───aarch64-linux: package 'alejandra-4.0.0'
+│   └───x86_64-linux: package 'alejandra-4.0.0'
+├───homeConfigurations: unknown
+├───homeModules: unknown
 ├───legacyPackages
-│   └───(skipped; use '--legacy' to show)
-├───lib
-│   ├───config: library namespace
-│   ├───isNvidia: library function
-│   ├───loaders: library namespace
-│   ├───mkPkgs: library function
-│   ├───shell: library namespace
-│   ├───storage: library namespace
-│   └───strings: library namespace
+│   ├───aarch64-linux omitted (use '--legacy' to show)
+│   └───x86_64-linux omitted (use '--legacy' to show)
+├───lib: unknown
 ├───nixosConfigurations
-│   ├───desktop: NixOS configuration [nixos-system-desktop-25.05.20241229.88195a9]
-│   ├───laptop: NixOS configuration [nixos-system-laptop-25.05.20241229.88195a9]
-│   ├───raspberrypi: NixOS configuration [nixos-system-raspberrypi-25.05.20241229.88195a9]
-│   └───steamdeck: NixOS configuration [nixos-system-steamdeck-25.05.20241229.88195a9]
+│   ├───desktop: NixOS configuration
+│   ├───laptop: NixOS configuration
+│   ├───raspberrypi: NixOS configuration
+│   └───steamdeck: NixOS configuration
 ├───nixosModules
 │   ├───boot: NixOS module
 │   ├───default: NixOS module
@@ -208,37 +217,22 @@ git+file:///home/lpchaim/.config/nixos
 │   ├───secureboot: NixOS module
 │   ├───security: NixOS module
 │   ├───services: NixOS module
+│   ├───ssh: NixOS module
 │   ├───steamos: NixOS module
 │   ├───syncthing: NixOS module
 │   ├───tailscale: NixOS module
 │   ├───theming: NixOS module
 │   └───zram: NixOS module
 ├───overlays
+│   ├───external: Nixpkgs overlay
+│   ├───nixpkgsVersions: Nixpkgs overlay
+│   ├───nuInterpreterStdin: Nixpkgs overlay
+│   └───python: Nixpkgs overlay
 ├───packages
 │   ├───aarch64-linux
+│   │   └───lichen: package 'lichen-0.22.0-unstable'
 │   └───x86_64-linux
-├───pkgs
-│   ├───aarch64-linux: nixpkgs instance
-│   └───x86_64-linux: nixpkgs instance
-└───schemas
-    ├───apps: flake schema
-    ├───checks: flake schema
-    ├───darwinConfigurations: flake schema
-    ├───darwinModules: flake schema
-    ├───devShells: flake schema
-    ├───dockerImages: flake schema
-    ├───formatter: flake schema
-    ├───homeConfigurations: flake schema
-    ├───homeModules: flake schema
-    ├───hydraJobs: flake schema
-    ├───legacyPackages: flake schema
-    ├───lib: flake schema
-    ├───nixosConfigurations: flake schema
-    ├───nixosModules: flake schema
-    ├───overlays: flake schema
-    ├───packages: flake schema
-    ├───pkgs: flake schema
-    ├───schemas: flake schema
-    └───templates: flake schema
+│       └───lichen: package 'lichen-0.22.0-unstable'
+└───schemas: unknown
 ```
 </details>
