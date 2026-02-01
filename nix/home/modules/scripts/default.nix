@@ -6,12 +6,13 @@
   ...
 }: let
   inherit (lib) getExe;
+  inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.modules.scripts;
 in {
   options.my.modules.scripts = {
     enable = lib.mkEnableOption "scripts";
     byName = lib.mkOption {
-      default = inputs.self.legacyPackages.${pkgs.system}.scripts;
+      default = inputs.self.legacyPackages.${system}.scripts;
     };
   };
   config = lib.mkIf cfg.enable {

@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) shell;
+  inherit (inputs.self.lib.config) flake shell;
   cfg = config.my.modules.cli.essentials;
 in {
   options.my.modules.cli.essentials.enable = lib.mkEnableOption "essentials";
@@ -37,7 +37,6 @@ in {
           jq
           neofetch
           ncdu
-          nh
           nix-output-monitor
           nurl
           poppler
@@ -58,7 +57,6 @@ in {
       sessionVariables = {
         CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
         MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
-        NH_FLAKE = "${config.xdg.configHome}/nixos";
       };
       shellAliases = {
         gco = "git checkout";
@@ -99,6 +97,10 @@ in {
         enable = lib.mkDefault true;
         fuzzySearchFactor = 2;
         keyScheme = "vim";
+      };
+      nh = {
+        enable = lib.mkDefault true;
+        flake = flake.path;
       };
       nix-index.enable = true;
       nix-index-database.comma.enable = true;
