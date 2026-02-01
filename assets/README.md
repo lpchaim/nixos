@@ -1,5 +1,4 @@
-[ags]: https://github.com/Aylur/ags
-[dotfiles]: https://github.com/Aylur/dotfiles
+[caelestia]: https://github.com/caelestia-dots/shell
 [ez-configs]: https://github.com/ehllie/ez-configs/
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
@@ -48,7 +47,7 @@ $sampleconfig
 
 ## Look and feel
 
-I daily drive Hyprland with a slightly tweaked version of aylur's [ags] [dotfiles] and [rofi] as an app launcher.
+I daily drive Hyprland with [caelestia] and [rofi].
 
 My systems wouldn't look even halfway as good without [stylix] doing all the heavy-lifting in my stead.
 The color scheme used in my screenshots is `stella`.
