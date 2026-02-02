@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   ...
@@ -10,7 +9,6 @@ in {
   imports =
     (with inputs; [
       caelestia.homeManagerModules.default
-      chaotic.homeManagerModules.default
       dms.homeModules.dank-material-shell
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak

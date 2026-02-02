@@ -10,7 +10,6 @@
 in {
   imports =
     (with inputs; [
-      chaotic.nixosModules.default
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
