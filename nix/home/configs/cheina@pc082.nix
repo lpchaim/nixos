@@ -10,13 +10,15 @@
     stateVersion = "23.05";
   };
 
-  my.modules = {
+  my = {
     cli.enable = true;
     cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
+    profiles = {
+      standalone = true;
+    };
   };
-  my.profiles.standalone = true;
 
   home.packages = [
     (pkgs.writeShellScriptBin "dev2beta" ''

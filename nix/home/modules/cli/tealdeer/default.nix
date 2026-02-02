@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.tealdeer;
+  cfg = config.my.cli.tealdeer;
 in {
-  options.my.modules.cli.tealdeer.enable = lib.mkEnableOption "nushell";
+  options.my.cli.tealdeer.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
     home.packages = [pkgs.tealdeer];

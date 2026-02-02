@@ -5,9 +5,9 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.cli.tmux.catppuccin;
+  cfg = config.my.cli.tmux.catppuccin;
 in {
-  options.my.modules.cli.tmux.catppuccin = {
+  options.my.cli.tmux.catppuccin = {
     enable = lib.mkOption {
       description = "Whether to enable catppuccin.";
       type = lib.types.bool;

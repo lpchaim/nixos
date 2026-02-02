@@ -6,7 +6,7 @@
   osConfig ? {},
   ...
 }: let
-  cfg = config.my.modules.gui;
+  cfg = config.my.gui;
 in {
   imports = [
     ./chromium.nix
@@ -14,7 +14,7 @@ in {
     ./mangohud.nix
   ];
 
-  options.my.modules.gui.enable = lib.mkEnableOption "gui apps";
+  options.my.gui.enable = lib.mkEnableOption "gui apps";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {

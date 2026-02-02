@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland.hyprlock;
+  cfg = config.my.de.hyprland.hyprlock;
 in {
-  options.my.modules.de.hyprland.hyprlock.enable = lib.mkEnableOption "Hyprlock";
+  options.my.de.hyprland.hyprlock.enable = lib.mkEnableOption "Hyprlock";
 
   config = lib.mkIf cfg.enable {
     stylix.targets.hyprlock.enable = false;
@@ -56,6 +56,6 @@ in {
       };
     };
 
-    my.modules.de.hyprland.hypridle.lockCmd = "pidof hyprlock || hyprlock";
+    my.de.hyprland.hypridle.lockCmd = "pidof hyprlock || hyprlock";
   };
 }

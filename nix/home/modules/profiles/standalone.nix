@@ -1,11 +1,15 @@
 {
   config,
   lib,
+  osConfig ? {},
   ...
 }: let
   cfg = config.my.profiles.standalone;
 in {
-  options.my.profiles.standalone = lib.mkEnableOption "standalone/non-NixOS profile";
+  options.my.profiles.standalone =
+    lib.mkEnableOption "standalone/non-NixOS profile"
+    // {default = osConfig == {};};
+
   config = lib.mkIf cfg {
     targets.genericLinux.enable = true;
 

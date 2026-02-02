@@ -5,9 +5,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) email name;
-  cfg = config.my.modules.cli.git;
+  cfg = config.my.cli.git;
 in {
-  options.my.modules.cli.git = {
+  options.my.cli.git = {
     enable = lib.mkEnableOption "git";
     lazygit.enable = lib.mkEnableOption "lazygit" // {default = cfg.enable;};
   };

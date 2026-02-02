@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   ...
@@ -34,9 +35,7 @@ in {
       ./theming
     ];
 
-  my.modules = {
-    bars.caelestia.enable = mkDefault false;
-    bars.dank-material-shell.enable = mkDefault true;
+  my = {
     cli.enable = mkDefault true;
     nix.enable = mkDefault true;
     scripts.enable = mkDefault true;

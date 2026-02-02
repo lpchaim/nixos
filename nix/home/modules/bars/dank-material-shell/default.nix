@@ -7,9 +7,9 @@
 }: let
   inherit (inputs.self.lib) isNvidia;
   inherit (inputs.self.lib.config) wallpaper;
-  cfg = config.my.modules.bars.dank-material-shell;
+  cfg = config.my.bars.dank-material-shell;
 in {
-  options.my.modules.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
+  options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
 
   config = lib.mkIf (cfg.enable) {
     programs.dank-material-shell = {
@@ -43,7 +43,7 @@ in {
       };
     };
 
-    my.modules.de.hyprland = {
+    my.de.hyprland = {
       hyprlock.enable = false;
       hypridle.lockCmd = "[[ $(dms ipc call lock isLocked) != 'false' ]] || dms ipc call lock lock";
     };

@@ -7,6 +7,6 @@
 in {
   options.my.profiles.apps.gui = lib.mkEnableOption "GUI apps profile";
   config = lib.mkIf cfg {
-    my.modules.gui.enable = true;
+    my.gui.enable = true;
   };
 }

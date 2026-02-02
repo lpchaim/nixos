@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland.hypridle;
+  cfg = config.my.de.hyprland.hypridle;
 in {
-  options.my.modules.de.hyprland.hypridle = {
+  options.my.de.hyprland.hypridle = {
     enable = lib.mkEnableOption "Hypridle";
     lockCmd = lib.mkOption {
       description = "Command to lock the screen";

@@ -3,11 +3,11 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.cli.editors.helix;
+  cfg = config.my.cli.editors.helix;
 in {
-  options.my.modules.cli.editors.helix.enable =
+  options.my.cli.editors.helix.enable =
     lib.mkEnableOption "helix"
-    // {default = config.my.modules.cli.editors.enable;};
+    // {default = config.my.cli.editors.enable;};
   config = lib.mkIf cfg.enable {
     programs.helix = {
       enable = true;

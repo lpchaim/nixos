@@ -10,7 +10,6 @@ in {
     lib.mkEnableOption "GNOME DE profile"
     // {default = osConfig.my.profiles.de.gnome or false;};
   config = lib.mkIf cfg {
-    my.profiles.apps.gui = true;
-    my.profiles.apps.media = true;
+    my.de.gnome.enable = true;
   };
 }

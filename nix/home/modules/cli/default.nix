@@ -4,7 +4,7 @@
   ...
 }: let
   inherit (lib) mkDefault mkEnableOption mkIf;
-  cfg = config.my.modules.cli;
+  cfg = config.my.cli;
 in {
   imports = [
     ./atuin
@@ -21,9 +21,9 @@ in {
     ./zsh
   ];
 
-  options.my.modules.cli.enable = mkEnableOption "cli modules";
+  options.my.cli.enable = mkEnableOption "cli modules";
 
-  config.my.modules.cli = mkIf cfg.enable {
+  config.my.cli = mkIf cfg.enable {
     editors.enable = mkDefault true;
     essentials.enable = mkDefault true;
     fish.enable = mkDefault true;

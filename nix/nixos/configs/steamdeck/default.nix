@@ -11,14 +11,16 @@ in {
     ./storage.nix
   ];
 
-  my.profiles = {
-    de.gnome = true;
-    kernel = false;
+  my = {
+    steamos.enable = true;
+    gaming.enable = false;
+    gaming.steam.enable = true;
+    security.u2f.relaxed = true;
+    profiles = {
+      kernel = false;
+      de.gnome = true;
+    };
   };
-  my.gaming.enable = false;
-  my.gaming.steam.enable = true;
-  my.modules.steamos.enable = true;
-  my.security.u2f.relaxed = true;
 
   boot.loader = {
     grub.configurationLimit = 2;
