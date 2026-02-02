@@ -15,7 +15,7 @@
     range
     ;
 
-  cfg = config.my.modules.de.hyprland.binds;
+  cfg = config.my.de.hyprland.binds;
 
   makeDirectional = {
     cmd,
@@ -46,7 +46,7 @@
     in "${trigger}, ${getKey i}, ${cmd}, ${getWorkspace i}")
     (range 1 10);
 in {
-  options.my.modules.de.hyprland.binds = {
+  options.my.de.hyprland.binds = {
     enable = mkEnableOption "bindings";
     enableFnKeys = lib.mkEnableOption "function key bindings";
   };
@@ -62,7 +62,7 @@ in {
               "$mod ALT, T, exec, wezterm"
               "$mod, B, exec, firefox"
               "$mod, E, exec, nautilus"
-              "CTRL ALT, L, exec, pidof hyprlock || hyprlock"
+              "CTRL ALT, L, exec, ${config.services.hypridle.settings.general.lock_cmd}"
               "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
               "$mod ALT, F11, exec, pidof grimblast || grimblast copy active --notify"
               "$mod SHIFT, F11, exec, pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''

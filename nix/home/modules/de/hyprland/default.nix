@@ -6,10 +6,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) kb;
-  cfg = config.my.modules.de.hyprland;
+  cfg = config.my.de.hyprland;
 in {
   imports = [
-    ./bars
     ./binds
     ./hypridle
     ./hyprlock
@@ -18,14 +17,15 @@ in {
     ./plugins
   ];
 
-  options.my.modules.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
+  options.my.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      my.modules.de.hyprland = {
-        bars.caelestia.enable = lib.mkDefault cfg.enable;
-        binds.enableFnKeys = lib.mkDefault cfg.bars.caelestia.enable;
+      my.de.hyprland = {
+        binds.enableFnKeys = lib.mkDefault cfg.enable;
         binds.enable = lib.mkDefault cfg.enable;
+        hypridle.enable = lib.mkDefault cfg.enable;
+        hyprlock.enable = lib.mkDefault cfg.enable;
         launchers.rofi.enable = lib.mkDefault cfg.enable;
         osd.swayosd.enable = lib.mkDefault false;
         plugins.enable = lib.mkDefault false;

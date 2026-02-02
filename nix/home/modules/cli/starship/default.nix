@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.starship;
+  cfg = config.my.cli.starship;
 in {
-  options.my.modules.cli.starship.enable = lib.mkEnableOption "starship";
+  options.my.cli.starship.enable = lib.mkEnableOption "starship";
 
   config = lib.mkIf cfg.enable {
     programs.starship = {

@@ -7,9 +7,9 @@
 }: let
   inherit (lib) getExe;
   inherit (pkgs.stdenv.hostPlatform) system;
-  cfg = config.my.modules.scripts;
+  cfg = config.my.scripts;
 in {
-  options.my.modules.scripts = {
+  options.my.scripts = {
     enable = lib.mkEnableOption "scripts";
     byName = lib.mkOption {
       default = inputs.self.legacyPackages.${system}.scripts;

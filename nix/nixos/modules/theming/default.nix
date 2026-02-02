@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.theming;
+  cfg = config.my.theming;
 in {
-  options.my.modules.theming.enable = lib.mkEnableOption "theming";
+  options.my.theming.enable = lib.mkEnableOption "theming";
   config = lib.mkIf (cfg.enable) {
     stylix = {
       homeManagerIntegration = {

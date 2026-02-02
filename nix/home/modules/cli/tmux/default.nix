@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.cli.tmux;
+  cfg = config.my.cli.tmux;
   defaultClipboard = "clipboard"; # clipboard, primary, secondary
   termBasic = "screen-256color";
   termFull = "xterm-256color";
@@ -14,7 +14,7 @@ in {
     ./catppuccin
   ];
 
-  options.my.modules.cli.tmux = {
+  options.my.cli.tmux = {
     enable = lib.mkEnableOption "tmux";
     theme = lib.mkOption {
       description = "Which theme to use.";
@@ -25,7 +25,7 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      my.modules.cli.tmux = {
+      my.cli.tmux = {
         catppuccin.enable = cfg.theme == "catppuccin";
         tmux-powerline.enable = cfg.theme == "tmux-powerline";
       };

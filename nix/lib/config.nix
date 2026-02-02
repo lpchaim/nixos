@@ -8,11 +8,11 @@
       builtins.head
       (x: assets + /${x})
     ];
-in {
+in rec {
   name.user = "lpchaim";
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
-  flake.path = "~/.config/nixos";
+  flake.path = "/home/${name.user}/.config/nixos";
   repo.main = "https://github.lpcha.im";
   shell = "fish";
   wallpaper = assetWithPrefix "wallpaper";
@@ -28,7 +28,7 @@ in {
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command";
       extra-substituters = [
-        # Nixos, nix-community and chaotic are set by default
+        # The NixOS and nix-community ones are set by default
         "https://lpchaim.cachix.org"
         "https://hyprland.cachix.org"
         "https://nix-gaming.cachix.org"

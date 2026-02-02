@@ -6,9 +6,9 @@
 }: let
   inherit (lib) mkEnableOption mkForce;
   inherit (inputs.home-manager.lib.hm.generators) toKDL;
-  cfg = config.my.modules.cli.zellij;
+  cfg = config.my.cli.zellij;
 in {
-  options.my.modules.cli.zellij.enable = mkEnableOption "zellij";
+  options.my.cli.zellij.enable = mkEnableOption "zellij";
 
   config = lib.mkIf cfg.enable {
     programs = {

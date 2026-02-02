@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.gnome.extensions;
+  cfg = config.my.de.gnome.extensions;
 in {
   imports = [
     ./dash-to-panel.nix
   ];
 
-  options.my.modules.de.gnome.extensions.enable = lib.mkEnableOption "GNOME Shell extensions";
+  options.my.de.gnome.extensions.enable = lib.mkEnableOption "GNOME Shell extensions";
 
   config = lib.mkIf cfg.enable {
     home.packages =

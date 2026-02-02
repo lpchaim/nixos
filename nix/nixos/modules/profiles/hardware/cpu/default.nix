@@ -1,5 +1,5 @@
 {
   imports = [
-    ./caelestia
+    ./intel.nix
   ];
 }

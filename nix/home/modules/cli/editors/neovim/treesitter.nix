@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.editors.neovim.treesitter;
+  cfg = config.my.cli.editors.neovim.treesitter;
 in {
-  options.my.modules.cli.editors.neovim.treesitter.enable = lib.mkEnableOption "treesitter";
+  options.my.cli.editors.neovim.treesitter.enable = lib.mkEnableOption "treesitter";
 
   config = lib.mkIf cfg.enable {
     programs.nixvim = {

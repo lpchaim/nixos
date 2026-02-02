@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.zsh;
+  cfg = config.my.cli.zsh;
 in {
-  options.my.modules.cli.zsh.enable = lib.mkEnableOption "zsh";
+  options.my.cli.zsh.enable = lib.mkEnableOption "zsh";
 
   config = lib.mkIf cfg.enable {
     programs.zsh = {

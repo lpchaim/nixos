@@ -6,16 +6,17 @@ in {
     ./storage.nix
   ];
 
-  my.profiles = {
-    formfactor.desktop = true;
-    de.gnome = true;
-    de.hyprland = true;
-    hardware.gpu.nvidia = true;
-    hardware.rgb = true;
+  my = {
+    gaming.enable = true;
+    networking.tailscale.trusted = true;
+    profiles = {
+      formfactor.desktop = true;
+      hardware.gpu.nvidia = true;
+      hardware.rgb = true;
+      de.gnome = true;
+      de.hyprland = true;
+    };
   };
-  my.gaming.enable = true;
-  my.networking.tailscale.trusted = true;
-  my.security.secureboot.enable = false;
 
   networking.interfaces.enp6s0.wakeOnLan.enable = true;
 

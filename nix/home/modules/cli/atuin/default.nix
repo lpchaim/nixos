@@ -5,11 +5,11 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.atuin;
+  cfg = config.my.cli.atuin;
 in {
-  options.my.modules.cli.atuin.enable =
+  options.my.cli.atuin.enable =
     lib.mkEnableOption "atuin"
-    // {default = config.my.modules.cli.enable;};
+    // {default = config.my.cli.enable;};
   config = lib.mkIf cfg.enable {
     programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {

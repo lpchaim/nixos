@@ -3,18 +3,18 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.de.gnome;
+  cfg = config.my.de.gnome;
 in {
   imports = [
     ./extensions
     ./theming
   ];
 
-  options.my.modules.de.gnome.enable = lib.mkEnableOption "GTK/GNOME Shell customizations";
+  options.my.de.gnome.enable = lib.mkEnableOption "GTK/GNOME Shell customizations";
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      my.modules.de.gnome = {
+      my.de.gnome = {
         extensions = {
           enable = lib.mkDefault true;
           dash-to-panel.enable = lib.mkDefault true;

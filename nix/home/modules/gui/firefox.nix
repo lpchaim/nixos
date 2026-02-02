@@ -4,19 +4,19 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.gui.firefox;
+  cfg = config.my.gui.firefox;
 in {
-  options.my.modules.gui.firefox.enable =
+  options.my.gui.firefox.enable =
     lib.mkEnableOption "custom firefox"
-    // {default = config.my.modules.gui.enable;};
+    // {default = config.my.gui.enable;};
 
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
       package = pkgs.firefox-bin.override {
         cfg = {
-          enableGnomeExtensions = config.my.modules.de.gnome.enable or false;
-          enablePlasmaBrowserIntegration = config.my.modules.de.plasma.enable or false;
+          enableGnomeExtensions = config.my.de.gnome.enable or false;
+          enablePlasmaBrowserIntegration = config.my.de.plasma.enable or false;
         };
         nativeMessagingHosts = [pkgs.gnomeExtensions.gsconnect];
       };
@@ -48,7 +48,7 @@ in {
           "mousewheel.default.delta_multiplier_x" = 20;
           "mousewheel.default.delta_multiplier_y" = 20;
           "widget.use-xdg-desktop-portal.file-picker" =
-            if (config.my.modules.plasma.enable or false)
+            if (config.my.de.plasma.enable or false)
             then 1
             else 0;
         };
