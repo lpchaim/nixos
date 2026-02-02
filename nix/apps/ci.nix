@@ -53,10 +53,10 @@
           (system: name: ''.#devShells.${system}."${name}"'')
           self.devShells;
       };
-      ciInfoFile = lib.pipe ciInfo [
-        builtins.toJSON
-        (pkgs.writeText "ci-info")
-      ];
+      ciInfoFile =
+        ciInfo
+        |> builtins.toJSON
+        |> (pkgs.writeText "ci-info");
       program =
         pkgs.writers.writeNuBin
         "cimatrix"

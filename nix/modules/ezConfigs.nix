@@ -14,13 +14,13 @@ in {
     nixos = rec {
       configurationsDirectory = "${root}/nixos/configs";
       modulesDirectory = "${root}/nixos/modules";
-      hosts = lib.pipe configurationsDirectory [
-        builtins.readDir
-        (lib.filterAttrs (_: type: type == "directory"))
-        (lib.concatMapAttrs (name: _: {
+      hosts =
+        configurationsDirectory
+        |> builtins.readDir
+        |> (lib.filterAttrs (_: type: type == "directory"))
+        |> (lib.concatMapAttrs (name: _: {
           ${name}.userHomeModules = ["lpchaim"];
-        }))
-      ];
+        }));
     };
     home = {
       configurationsDirectory = "${root}/home/configs";
