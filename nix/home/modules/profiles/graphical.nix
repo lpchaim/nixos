@@ -10,6 +10,12 @@ in {
     lib.mkEnableOption "graphical profile"
     // {default = osConfig.my.profiles.graphical or false;};
   config = lib.mkIf cfg {
-    my.modules.de.gnome.enable = true;
+    my = {
+      bars.dank-material-shell.enable = true;
+      profiles = {
+        apps.gui = true;
+        apps.media = true;
+      };
+    };
   };
 }

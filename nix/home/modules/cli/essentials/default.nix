@@ -6,9 +6,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) flake shell;
-  cfg = config.my.modules.cli.essentials;
+  cfg = config.my.cli.essentials;
 in {
-  options.my.modules.cli.essentials.enable = lib.mkEnableOption "essentials";
+  options.my.cli.essentials.enable = lib.mkEnableOption "essentials";
 
   config = lib.mkIf cfg.enable {
     home = {

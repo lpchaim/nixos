@@ -50,16 +50,18 @@ in {
     ./storage.nix
   ];
 
-  my.profiles = {
-    formfactor.desktop = true;
-    de.gnome = true;
-    de.hyprland = true;
-    hardware.gpu.nvidia = true;
-    hardware.rgb = true;
+  my = {
+    gaming.enable = true;
+    networking.tailscale.trusted = true;
+    security.secureboot.enable = false;
+    profiles = {
+      formfactor.desktop = true;
+      de.gnome = true;
+      de.hyprland = true;
+      hardware.gpu.nvidia = true;
+      hardware.rgb = true;
+    };
   };
-  my.gaming.enable = true;
-  my.networking.tailscale.trusted = true;
-  my.security.secureboot.enable = false;
 
   networking.interfaces.enp6s0.wakeOnLan.enable = true;
 
@@ -82,7 +84,7 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 - `schemas` for my custom [flake-schemas] definitions
 - `shared` for configuration and modules useful to both and NixOS and Home Manager
 
-<details open>
+<details>
 <summary>Tree view of the directory structure</summary>
 
 ```sh

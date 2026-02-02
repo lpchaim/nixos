@@ -7,9 +7,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) nix;
-  cfg = config.my.modules.nix;
+  cfg = config.my.nix;
 in {
-  options.my.modules.nix.enable = lib.mkEnableOption "nix";
+  options.my.nix.enable = lib.mkEnableOption "nix";
   config = lib.mkIf (cfg.enable) {
     nix =
       {

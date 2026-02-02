@@ -15,7 +15,7 @@
     range
     ;
 
-  cfg = config.my.modules.de.hyprland.binds;
+  cfg = config.my.de.hyprland.binds;
 
   makeDirectional = {
     cmd,
@@ -46,7 +46,7 @@
     in "${trigger}, ${getKey i}, ${cmd}, ${getWorkspace i}")
     (range 1 10);
 in {
-  options.my.modules.de.hyprland.binds = {
+  options.my.de.hyprland.binds = {
     enable = mkEnableOption "bindings";
     enableFnKeys = lib.mkEnableOption "function key bindings";
   };

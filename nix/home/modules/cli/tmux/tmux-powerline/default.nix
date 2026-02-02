@@ -4,9 +4,9 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.cli.tmux.tmux-powerline;
+  cfg = config.my.cli.tmux.tmux-powerline;
 in {
-  options.my.modules.cli.tmux.tmux-powerline.enable = lib.mkEnableOption "tmux-powerline.";
+  options.my.cli.tmux.tmux-powerline.enable = lib.mkEnableOption "tmux-powerline.";
 
   config = lib.mkIf cfg.enable {
     programs.tmux.plugins = with pkgs.tmuxPlugins; [

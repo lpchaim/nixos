@@ -43,20 +43,20 @@ in {
       ./zram
     ];
 
-  my.profiles = {
-    graphical = mkDefault true;
-    wayland = mkDefault config.my.profiles.graphical;
-    pipewire = mkDefault true;
-    kernel = mkDefault true;
-    users = mkDefault true;
-  };
-  my.modules = {
+  my = {
+    networking.tailscale.enable = mkDefault true;
     nix.enable = mkDefault true;
+    security.enable = mkDefault true;
     theming.enable = mkDefault true;
     zram.enable = mkDefault true;
+    profiles = {
+      graphical = mkDefault true;
+      wayland = mkDefault config.my.profiles.graphical;
+      pipewire = mkDefault true;
+      kernel = mkDefault true;
+      users = mkDefault true;
+    };
   };
-  my.networking.tailscale.enable = mkDefault true;
-  my.security.enable = mkDefault true;
 
   environment.systemPackages = with pkgs; [
     helix

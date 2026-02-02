@@ -5,9 +5,9 @@
   ...
 }: let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.my.modules.cli.hishtory;
+  cfg = config.my.cli.hishtory;
 in {
-  options.my.modules.cli.hishtory.enable = mkEnableOption "hishtory";
+  options.my.cli.hishtory.enable = mkEnableOption "hishtory";
 
   config = mkIf cfg.enable {
     home = {

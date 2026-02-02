@@ -4,12 +4,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland.osd.swayosd;
+  cfg = config.my.de.hyprland.osd.swayosd;
 in {
-  options.my.modules.de.hyprland.osd.swayosd.enable = lib.mkEnableOption "sway-osd";
+  options.my.de.hyprland.osd.swayosd.enable = lib.mkEnableOption "sway-osd";
 
   config = lib.mkIf cfg.enable {
-    my.modules.de.hyprland.binds.enableFnKeys = lib.mkForce false;
+    my.de.hyprland.binds.enableFnKeys = lib.mkForce false;
     home.packages = [pkgs.swayosd];
     wayland.windowManager.hyprland.settings = {
       exec-once = lib.mkBefore ["${pkgs.swayosd}/bin/swayosd-server"];
