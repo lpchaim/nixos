@@ -36,5 +36,4 @@ in {
     printing.enable = true;
     udisks2.enable = true;
   };
-  services.xserver.enable = lib.mkDefault true;
 }

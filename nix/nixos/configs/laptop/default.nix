@@ -11,6 +11,7 @@ in {
     networking.tailscale.trusted = true;
     profiles = {
       formfactor.laptop = true;
+      hardware.cpu.intel = true;
       de.gnome = true;
       de.hyprland = true;
     };
