@@ -6,6 +6,7 @@
   inherit (inputs.self.lib.config) name;
 in {
   imports = [
+    inputs.jovian.nixosModules.default
     ezModules.steamos
     ./hardware-configuration.nix
     ./storage.nix
