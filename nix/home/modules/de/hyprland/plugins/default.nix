@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland.plugins;
+  cfg = config.my.de.hyprland.plugins;
 in {
-  options.my.modules.de.hyprland.plugins.enable = lib.mkEnableOption "Hyprland plugins";
+  options.my.de.hyprland.plugins.enable = lib.mkEnableOption "Hyprland plugins";
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = {

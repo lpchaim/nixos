@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.de.hyprland.launchers.rofi;
+  cfg = config.my.de.hyprland.launchers.rofi;
 in {
-  options.my.modules.de.hyprland.launchers.rofi.enable = lib.mkEnableOption "rofi";
+  options.my.de.hyprland.launchers.rofi.enable = lib.mkEnableOption "rofi";
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings.bindr = [

@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.my.modules.zram;
+  cfg = config.my.zram;
 in {
-  options.my.modules.zram.enable = lib.mkEnableOption "zram";
+  options.my.zram.enable = lib.mkEnableOption "zram";
   config = lib.mkIf (cfg.enable) {
     zramSwap = {
       enable = true;

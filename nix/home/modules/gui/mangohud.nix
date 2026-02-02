@@ -4,13 +4,13 @@
   osConfig ? {},
   ...
 }: let
-  cfg = config.my.modules.gui.mangohud;
+  cfg = config.my.gui.mangohud;
 in {
-  options.my.modules.gui.mangohud.enable =
+  options.my.gui.mangohud.enable =
     lib.mkEnableOption "gui apps"
     // {
       default =
-        config.my.modules.gui.enable
+        config.my.gui.enable
         && (
           (osConfig == {})
           || !(osConfig ? jovian)

@@ -59,7 +59,7 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 - `schemas` for my custom [flake-schemas] definitions
 - `shared` for configuration and modules useful to both and NixOS and Home Manager
 
-<details open>
+<details>
 <summary>Tree view of the directory structure</summary>
 
 ```sh

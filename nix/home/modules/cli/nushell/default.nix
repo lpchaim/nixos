@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.nushell;
+  cfg = config.my.cli.nushell;
   nuScripts = pkgs.nu_scripts + /share/nu_scripts;
 in {
-  options.my.modules.cli.nushell.enable = lib.mkEnableOption "nushell";
+  options.my.cli.nushell.enable = lib.mkEnableOption "nushell";
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [fzf];

@@ -5,13 +5,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name;
-  cfg = config.my.modules.steamos;
+  cfg = config.my.steamos;
 in {
-  imports = [
-    inputs.jovian.nixosModules.default
-  ];
-
-  options.my.modules.steamos.enable = lib.mkEnableOption "SteamOS";
+  options.my.steamos.enable = lib.mkEnableOption "SteamOS";
 
   config = lib.mkIf (cfg.enable) {
     jovian = {

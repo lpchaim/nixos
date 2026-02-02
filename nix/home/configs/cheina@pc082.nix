@@ -10,16 +10,17 @@
     stateVersion = "23.05";
   };
 
-  my.modules = {
+  my = {
     cli.enable = true;
     cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
+    profiles = {
+      standalone = true;
+    };
   };
-  my.profiles.standalone = true;
 
-  home.packages = with pkgs; [
-    nodePackages.clipboard-cli
+  home.packages = [
     (pkgs.writeShellScriptBin "dev2beta" ''
       git checkout dev && git pull && git checkout beta && git pull
       git branch -D bugfix#dev2beta >/dev/null 2>&1

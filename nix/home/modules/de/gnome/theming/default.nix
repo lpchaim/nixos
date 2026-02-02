@@ -6,9 +6,9 @@
   ...
 }: let
   inherit (inputs.self.lib.config) profilePicture wallpaper;
-  cfg = config.my.modules.de.gnome.theming;
+  cfg = config.my.de.gnome.theming;
 in {
-  options.my.modules.de.gnome.theming = {
+  options.my.de.gnome.theming = {
     enable = lib.mkEnableOption "theming tweaks";
     enableGtkTheme = lib.mkEnableOption "custom GTK theme";
     enableGnomeShellTheme = lib.mkEnableOption "custom GNOME Shell theme";

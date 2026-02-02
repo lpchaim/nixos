@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.cli.fish;
+  cfg = config.my.cli.fish;
 in {
-  options.my.modules.cli.fish.enable = lib.mkEnableOption "fish shell";
+  options.my.cli.fish.enable = lib.mkEnableOption "fish shell";
   config = lib.mkIf cfg.enable {
     programs.fish = {
       inherit (config.home) shellAliases;

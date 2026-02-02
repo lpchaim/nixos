@@ -10,6 +10,6 @@ in {
     lib.mkEnableOption "Hyprland DE profile"
     // {default = osConfig.my.profiles.de.hyprland or false;};
   config = lib.mkIf cfg {
-    my.modules.de.hyprland.enable = true;
+    my.de.hyprland.enable = true;
   };
 }

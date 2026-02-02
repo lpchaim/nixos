@@ -6,9 +6,9 @@
   ...
 }: let
   inherit (inputs.self.lib) isNvidia;
-  cfg = config.my.modules.de.hyprland.bars.caelestia;
+  cfg = config.my.bars.caelestia;
 in {
-  options.my.modules.de.hyprland.bars.caelestia.enable = lib.mkEnableOption "Caelestia";
+  options.my.bars.caelestia.enable = lib.mkEnableOption "Caelestia";
 
   config = lib.mkIf cfg.enable {
     programs.caelestia = {
