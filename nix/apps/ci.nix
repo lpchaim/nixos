@@ -20,7 +20,7 @@
         (name: subject: {
           inherit name;
           derivation = lib.escapeShellArg (mkDerivationPath name);
-          system = subject.system or subject.pkgs.system;
+          system = subject.system or subject.pkgs.stdenv.hostPlatform.system;
         })
         output;
       getNestedOutputInfo = mkDerivationPath: output:
