@@ -28,7 +28,7 @@ in rec {
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command";
       extra-substituters = [
-        # Nixos, nix-community and chaotic are set by default
+        # The NixOS and nix-community ones are set by default
         "https://lpchaim.cachix.org"
         "https://hyprland.cachix.org"
         "https://nix-gaming.cachix.org"
