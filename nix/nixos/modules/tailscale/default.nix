@@ -37,10 +37,10 @@ in {
       tags =
         cfg.advertise.tags
         ++ lib.optionals cfg.trusted ["trusted"];
-      formattedTags = lib.pipe tags [
-        (map (it: "tag:${it}"))
-        (builtins.concatStringsSep ",")
-      ];
+      formattedTags =
+        tags
+        |> (map (it: "tag:${it}"))
+        |> (builtins.concatStringsSep ",");
     in {
       inherit (cfg) authKeyParameters;
       enable = true;
