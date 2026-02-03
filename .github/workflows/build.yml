@@ -99,6 +99,7 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: ${{ matrix.system }}
+          makeSpace: true
       - run: |
           nix build ${{ matrix.derivation }}
 
@@ -111,5 +112,6 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           system: aarch64-linux
+          makeSpace: true
       - run: |
           nix build .#nixosConfigurations.raspberrypi.config.system.build.toplevel

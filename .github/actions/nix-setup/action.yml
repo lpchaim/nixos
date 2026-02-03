@@ -9,7 +9,7 @@ inputs:
     description: 'The token to use to authenticate with cachix'
   makeSpace:
     description: 'Whether or not to try to reclaim some space'
-    default: true
+    default: false
 runs:
   using: "composite"
   steps:
