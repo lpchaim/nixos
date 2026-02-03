@@ -5,6 +5,7 @@
   pkgs,
   ...
 }: let
+  inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.de.hyprland.plugins;
 in {
   options.my.de.hyprland.plugins.enable = lib.mkEnableOption "Hyprland plugins";
@@ -15,7 +16,7 @@ in {
         "SUPER, apostrophe, hyprexpo:expo, toggle"
       ];
     };
-    wayland.windowManager.hyprland.plugins = with inputs.hyprland-plugins.packages.${pkgs.system}; [
+    wayland.windowManager.hyprland.plugins = with inputs.hyprland-plugins.packages.${system}; [
       hyprexpo
     ];
   };
