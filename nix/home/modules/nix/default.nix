@@ -19,7 +19,7 @@ in {
           dates = "daily";
           options = "--delete-older-than 7d";
         };
-        package = lib.mkForce (osConfig.nix.package or pkgs.nix);
+        package = lib.mkForce (osConfig.nix.package or pkgs.lixPackageSets.stable.lix);
       }
       // (lib.optionalAttrs (osConfig != {}) {
         inherit (osConfig.nix) extraOptions;
