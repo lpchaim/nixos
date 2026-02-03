@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - uses: samueldr/more-space-action@v2025-01-24.pre
-      if: ${{ inputs.makeSpace }}
+      if: ${{ inputs.makeSpace == 'true' }}
       with:
         enable-lvm-span: true
         lvm-span-mountpoint: /nix
@@ -24,7 +24,7 @@ runs:
           extra-experimental-features = flakes nix-command pipe-operator
           system = ${{ inputs.system }}
     - name: Override nix-daemon build directory
-      if: ${{ inputs.makeSpace }}
+      if: ${{ inputs.makeSpace == 'true' }}
       shell: bash
       run: |
         (
