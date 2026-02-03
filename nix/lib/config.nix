@@ -2,12 +2,11 @@
   assets = ../../assets;
   filter = prefix: (name: type: type == "regular" && lib.strings.hasPrefix prefix name);
   assetWithPrefix = prefix:
-    lib.pipe (builtins.readDir assets) [
-      (lib.filterAttrs (filter prefix))
-      builtins.attrNames
-      builtins.head
-      (x: assets + /${x})
-    ];
+    (builtins.readDir assets)
+    |> (lib.filterAttrs (filter prefix))
+    |> builtins.attrNames
+    |> builtins.head
+    |> (x: assets + /${x});
 in rec {
   name.user = "lpchaim";
   name.full = "Luna Perroni";
@@ -26,7 +25,7 @@ in rec {
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
-      extra-experimental-features = "flakes nix-command";
+      extra-experimental-features = "flakes nix-command pipe-operator";
       extra-substituters = [
         # The NixOS and nix-community ones are set by default
         "https://lpchaim.cachix.org"
