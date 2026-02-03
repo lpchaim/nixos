@@ -25,7 +25,7 @@ in rec {
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
-      extra-experimental-features = "flakes nix-command pipe-operators";
+      extra-experimental-features = "flakes nix-command pipe-operator";
       extra-substituters = [
         # The NixOS and nix-community ones are set by default
         "https://lpchaim.cachix.org"
