@@ -1,5 +1,5 @@
 name: Setup build environment
-description: Installs nix and optionally qemu, sets up caches
+description: Installs nix, sets up caches
 
 inputs:
   system:
@@ -7,19 +7,40 @@ inputs:
     default: 'x86_64-linux'
   cachixAuthToken:
     description: 'The token to use to authenticate with cachix'
+  makeSpace:
+    description: 'Whether or not to try to reclaim some space'
+    default: true
 runs:
   using: "composite"
   steps:
-    - uses: wimpysworld/nothing-but-nix@main
+    - uses: samueldr/more-space-action@v2025-01-24.pre
+      if: ${{ inputs.makeSpace }}
+      with:
+        enable-lvm-span: true
+        lvm-span-mountpoint: /nix
     - uses: samueldr/lix-gha-installer-action@v2025-10-27
       with:
         extra_nix_config: |
           extra-experimental-features = flakes nix-command pipe-operator
           system = ${{ inputs.system }}
-    - uses: DeterminateSystems/magic-nix-cache-action@v8
-      with:
-        upstream-cache: https://lpchaim.cachix.org
-    - uses: cachix/cachix-action@v15
+    - name: Override nix-daemon build directory
+      if: ${{ inputs.makeSpace }}
+      shell: bash
+      run: |
+        (
+        PS4=" $ "
+        set -eux -o pipefail
+        sudo mkdir -p /nix/tmp
+        sudo chmod ug=rwx,o=rwxt /nix/tmp
+        sudo mkdir -p /etc/systemd/system/nix-daemon.service.d
+        sudo tee /etc/systemd/system/nix-daemon.service.d/override.conf >/dev/null <<EOF
+        [Service]
+        Environment=TMPDIR=/nix/tmp
+        EOF
+        sudo systemctl daemon-reload
+        sudo systemctl restart nix-daemon
+        )
+    - uses: cachix/cachix-action@v16
       with:
         name: lpchaim
         authToken: ${{ inputs.cachixAuthToken }}
