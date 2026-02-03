@@ -20,7 +20,7 @@
         (name: subject: {
           inherit name;
           derivation = lib.escapeShellArg (mkDerivationPath name);
-          system = subject.system or subject.pkgs.system;
+          system = subject.system or subject.pkgs.stdenv.hostPlatform.system;
         })
         output;
       getNestedOutputInfo = mkDerivationPath: output:
@@ -53,10 +53,10 @@
           (system: name: ''.#devShells.${system}."${name}"'')
           self.devShells;
       };
-      ciInfoFile = lib.pipe ciInfo [
-        builtins.toJSON
-        (pkgs.writeText "ci-info")
-      ];
+      ciInfoFile =
+        ciInfo
+        |> builtins.toJSON
+        |> (pkgs.writeText "ci-info");
       program =
         pkgs.writers.writeNuBin
         "cimatrix"
