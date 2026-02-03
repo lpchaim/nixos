@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }: let
   inherit (inputs.self.lib.config) nix;
@@ -19,6 +20,7 @@ in {
         !nhCfg.enable || !nhCfg.clean.enable;
       dates = "weekly";
     };
+    nix.package = pkgs.lixPackageSets.stable.lix;
     nixpkgs = {
       inherit (nix.pkgs) config;
       overlays = builtins.attrValues inputs.self.overlays;
