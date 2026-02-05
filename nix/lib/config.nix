@@ -12,7 +12,7 @@ in {
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
   flake.path = "~/.config/nixos";
-  repo.main = "https://github.lpcha.im";
+  repo.main = "https://github.com/lpchaim/nixos";
   shell = "fish";
   wallpaper = assetWithPrefix "wallpaper";
   profilePicture = assetWithPrefix "profile-picture";
