@@ -18,6 +18,8 @@ in {
         enable = true;
         enabledExtensions = with spicePkgs.extensions; [
           adblock
+          aiBandBlocker
+          groupSession
           popupLyrics
           shuffle # shuffle+ (special characters are sanitized out of extension names)
         ];
