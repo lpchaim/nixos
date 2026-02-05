@@ -24,7 +24,7 @@ in {
       gnome-tour # GNOME Shell detects the .desktop file on first log-in.
     ];
     environment.systemPackages = with pkgs; [
-      gnome-photos
+      loupe
       nautilus
     ];
   };
