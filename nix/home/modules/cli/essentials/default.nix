@@ -100,7 +100,7 @@ in {
       };
       nh = {
         enable = lib.mkDefault true;
-        flake = flake.path;
+        flake = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;
       };
       nix-index.enable = true;
       nix-index-database.comma.enable = true;
