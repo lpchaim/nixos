@@ -7,13 +7,9 @@ on:
       - main
       - develop
     paths:
-      - '.github/actions/**'
-      - '.github/workflows/**'
-      - 'assets/**'
       - 'flake.nix'
       - 'flake.lock'
       - 'nix/**'
-      - 'secrets/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
