@@ -17,8 +17,11 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Update flake inputs
+        id: update
+        continue-on-error: true
         run: |
           nix flake update \
+            | tee /dev/tty \
             > update.stdout \
             2> update.stderr
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
@@ -35,6 +38,8 @@ jobs:
           \`\`\`
           EOF
       - name: Run flake checks
+        id: check
+        continue-on-error: true
         run: |
           nix flake check --all-systems \
             | tee /dev/tty \
@@ -56,6 +61,7 @@ jobs:
           EOF
       - name: Build PR body
         id: vars
+        if: ${{ steps.update.outcome == 'success' &&  steps.check.outcome == 'success'}}
         run: |
           {
           echo 'PR_BODY<<EOF'
@@ -88,6 +94,7 @@ jobs:
           rm ./check.{stdout,stderr}
       - name: Create PR
         uses: technote-space/create-pr-action@v2
+        if: ${{ steps.update.outcome == 'success' &&  steps.check.outcome == 'success'}}
         with:
           COMMIT_MESSAGE: 'chore: Update flake inputs'
           PR_TITLE: 'chore: Update flake inputs'
