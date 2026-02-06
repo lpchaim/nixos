@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - develop
+      - update-flake-inputs
     paths:
       - 'flake.nix'
       - 'flake.lock'
