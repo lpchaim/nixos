@@ -23,7 +23,13 @@ in {
       enableVPN = false;
 
       # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SettingsSpec.js
-      settings = import ./settings.nix;
+      settings =
+        (import ./settings.nix)
+        // {
+          currentThemeName = lib.mkDefault "purple";
+          currentThemeCategory = lib.mkDefault "generic";
+          customThemeFile = lib.mkDefault "";
+        };
 
       # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SessionSpec.js
       session =
