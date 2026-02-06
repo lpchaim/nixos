@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.0.0](https://github.com/lpchaim/nixos/compare/v1.1.0...v2.0.0) (2026-02-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Enable experimental pipe operators
+
+### Features
+
+* Add `my.profiles.hardware.cpu` with initial intel implementation ([1392c51](https://github.com/lpchaim/nixos/commit/1392c512929683d55740d33cc8ebc98996947ea4))
+* Add dank-material-shell ([3e9dd59](https://github.com/lpchaim/nixos/commit/3e9dd596f2e0499b5319f6eb44f6c56c309514ce))
+* Add gnome-system-monitor ([bcd64b6](https://github.com/lpchaim/nixos/commit/bcd64b6198459d529cbb276796afcc05acaef2a9))
+* Enable experimental pipe operators ([596cbb7](https://github.com/lpchaim/nixos/commit/596cbb73b10f0a71b199af1b42da03448d23ca3a))
+* Move some system level wayland configs to user level ([3715650](https://github.com/lpchaim/nixos/commit/3715650ca145c6df280b3c5387848c63c955da1b))
+* **spicetify:** Add  aiBandBlocker, groupSession extensions ([6f9012c](https://github.com/lpchaim/nixos/commit/6f9012c83c5bac4b977e9f1e1d9f9c73f1b21cde))
+* Switch to Lix ([1c46003](https://github.com/lpchaim/nixos/commit/1c4600354f1b39020ac52dd7705a8cac5bd201be))
+* Tweak dms settings ([06a1f99](https://github.com/lpchaim/nixos/commit/06a1f995690acddc51726039df94806f68567cbc))
+
+
+### Bug Fixes
+
+* Also use Lix in standalone home configurations ([4ad1a4e](https://github.com/lpchaim/nixos/commit/4ad1a4ef6e12b5f7691d6ff70cc9d744da1ed169))
+* **ci:** Fix makeSpace contition ([bea4a9b](https://github.com/lpchaim/nixos/commit/bea4a9ba0f8cf2381e5331cd74a5b604acc6fb2a))
+* **ci:** Only use makeSpace on larger builds ([607fc7f](https://github.com/lpchaim/nixos/commit/607fc7f905de736a92128e00271127efaa0b193e))
+* **ci:** Run actions on changes to .github ([0384899](https://github.com/lpchaim/nixos/commit/038489994fcae14d57e726fdd885e5f25c4a5b7d))
+* Improve library schema ([b4c9b10](https://github.com/lpchaim/nixos/commit/b4c9b10189d39fe232eb2d7092c7b9feeca9b05a))
+* Main repo config constant ([259a2ff](https://github.com/lpchaim/nixos/commit/259a2ff345efaebe340c84165ef6aeac0c77ba4c))
+* **nh:** Use absolute flake path ([e17d16a](https://github.com/lpchaim/nixos/commit/e17d16a1298f0ffc4631e0c20fda5852523a0963))
+* Obsolete pkgs.system on ci app ([8dff2eb](https://github.com/lpchaim/nixos/commit/8dff2eb613d0bfc3df63669408e93f3e4b806d71))
+* Refactor remanining pkgs.system instances ([412cdd5](https://github.com/lpchaim/nixos/commit/412cdd59ece40cbb8f75e47031254c6990d4b476))
+* Steam Deck configuration ([011c3fb](https://github.com/lpchaim/nixos/commit/011c3fb53f4b588155e6df9e0d7361fe88dc5436))
+* Swap gnome-photos for loupe ([01681df](https://github.com/lpchaim/nixos/commit/01681df51d8d81219982e9b5f87c21df28fb9c70))
+* Use Lix on CI runners ([f25b3c1](https://github.com/lpchaim/nixos/commit/f25b3c17ce412bbe3a726eaffa7d8da47c0b2a38))
+
 ## [1.1.0](https://github.com/lpchaim/nixos/compare/v1.0.0...v1.1.0) (2026-02-01)
 
 
