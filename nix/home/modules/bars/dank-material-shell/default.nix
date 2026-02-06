@@ -29,6 +29,7 @@ in {
       session =
         (import ./session.nix)
         // {
+          currentThemeName = lib.mkDefault "purple";
           doNotDisturb = false;
           isLightMode = false;
           nightModeEnabled = false;
