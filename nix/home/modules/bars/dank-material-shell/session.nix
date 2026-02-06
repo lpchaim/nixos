@@ -50,8 +50,6 @@ builtins.fromJSON ''
     "brightnessUserSetValues": {},
     "brightnessExponentValues": {},
     "selectedGpuIndex": 0,
-    "nvidiaGpuTempEnabled": true,
-    "nonNvidiaGpuTempEnabled": false,
     "enabledGpuPciIds": [],
     "wifiDeviceOverride": "",
     "weatherHourlyDetailed": false,

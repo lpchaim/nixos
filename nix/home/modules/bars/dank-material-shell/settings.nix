@@ -51,12 +51,12 @@ builtins.fromJSON ''
     "controlCenterShowNetworkIcon": true,
     "controlCenterShowBluetoothIcon": true,
     "controlCenterShowAudioIcon": true,
-    "controlCenterShowAudioPercent": false,
+    "controlCenterShowAudioPercent": true,
     "controlCenterShowVpnIcon": true,
     "controlCenterShowBrightnessIcon": false,
-    "controlCenterShowBrightnessPercent": false,
+    "controlCenterShowBrightnessPercent": true,
     "controlCenterShowMicIcon": false,
-    "controlCenterShowMicPercent": false,
+    "controlCenterShowMicPercent": true,
     "controlCenterShowBatteryIcon": false,
     "controlCenterShowPrinterIcon": false,
     "controlCenterShowScreenSharingIcon": true,
@@ -66,53 +66,53 @@ builtins.fromJSON ''
     "privacyShowScreenShareIcon": false,
     "controlCenterWidgets": [
       {
+        "enabled": true,
         "id": "volumeSlider",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "brightnessSlider",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "wifi",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "bluetooth",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "audioOutput",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "audioInput",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "nightMode",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "darkMode",
-        "enabled": true,
         "width": 50
       },
       {
+        "enabled": true,
         "id": "idleInhibitor",
-        "enabled": true,
         "width": 50
       },
       {
-        "id": "doNotDisturb",
         "enabled": true,
+        "id": "doNotDisturb",
         "width": 50
       }
     ],
@@ -175,10 +175,10 @@ builtins.fromJSON ''
     "clockDateFormat": "dd/MM",
     "lockDateFormat": "dd/MM",
     "mediaSize": 1,
-    "appLauncherViewMode": "list",
+    "appLauncherViewMode": "grid",
     "spotlightModalViewMode": "list",
     "sortAppsAlphabetically": false,
-    "appLauncherGridColumns": 4,
+    "appLauncherGridColumns": 6,
     "spotlightCloseNiriOverview": true,
     "niriOverviewOverlayEnabled": true,
     "useAutoLocation": true,
@@ -187,28 +187,28 @@ builtins.fromJSON ''
     "vpnLastConnected": "",
     "iconTheme": "System Default",
     "cursorSettings": {
-      "theme": "System Default",
-      "size": 24,
-      "niri": {
-        "hideWhenTyping": false,
-        "hideAfterInactiveMs": 0
+      "dwl": {
+        "cursorHideTimeout": 0
       },
       "hyprland": {
         "hideOnKeyPress": false,
         "hideOnTouch": false,
         "inactiveTimeout": 0
       },
-      "dwl": {
-        "cursorHideTimeout": 0
-      }
+      "niri": {
+        "hideAfterInactiveMs": 0,
+        "hideWhenTyping": false
+      },
+      "size": 24,
+      "theme": "System Default"
     },
-    "launcherLogoMode": "apps",
+    "launcherLogoMode": "os",
     "launcherLogoCustomPath": "",
-    "launcherLogoColorOverride": "",
+    "launcherLogoColorOverride": "primary",
     "launcherLogoColorInvertOnMode": false,
     "launcherLogoBrightness": 0.5,
     "launcherLogoContrast": 1,
-    "launcherLogoSizeOffset": 0,
+    "launcherLogoSizeOffset": -4,
     "fontFamily": "Inter Variable",
     "monoFontFamily": "JetBrainsMono Nerd Font",
     "fontWeight": 700,
@@ -235,7 +235,7 @@ builtins.fromJSON ''
     "batterySuspendBehavior": 0,
     "batteryProfileName": "",
     "batteryChargeLimit": 100,
-    "lockBeforeSuspend": false,
+    "lockBeforeSuspend": true,
     "loginctlLockIntegration": true,
     "fadeToLockEnabled": true,
     "fadeToLockGracePeriod": 5,
@@ -312,7 +312,7 @@ builtins.fromJSON ''
     "notificationHistorySaveLow": true,
     "notificationHistorySaveNormal": true,
     "notificationHistorySaveCritical": true,
-    "osdAlwaysShowValue": false,
+    "osdAlwaysShowValue": true,
     "osdPosition": 7,
     "osdVolumeEnabled": true,
     "osdMediaVolumeEnabled": true,
@@ -352,14 +352,26 @@ builtins.fromJSON ''
     "hyprlandOutputSettings": {},
     "barConfigs": [
       {
-        "id": "default",
-        "name": "Main Bar",
-        "enabled": true,
-        "position": 0,
-        "screenPreferences": [
-          "all"
+        "autoHide": false,
+        "autoHideDelay": 250,
+        "borderColor": "surfaceText",
+        "borderEnabled": false,
+        "borderOpacity": 1,
+        "borderThickness": 1,
+        "bottomGap": 0,
+        "centerWidgets": [
+          {
+            "enabled": true,
+            "id": "workspaceSwitcher"
+          }
         ],
-        "showOnLastDisplay": true,
+        "enabled": true,
+        "fontScale": 1,
+        "gothCornerRadiusOverride": false,
+        "gothCornerRadiusValue": 12,
+        "gothCornersEnabled": false,
+        "id": "default",
+        "innerPadding": 5,
         "leftWidgets": [
           {
             "id": "clock",
@@ -375,71 +387,55 @@ builtins.fromJSON ''
             "enabled": true
           }
         ],
-        "centerWidgets": [
-          {
-            "id": "workspaceSwitcher",
-            "enabled": true
-          }
-        ],
+        "maximizeDetection": true,
+        "name": "Main Bar",
+        "noBackground": false,
+        "openOnOverview": false,
+        "popupGapsAuto": true,
+        "popupGapsManual": 4,
+        "position": 0,
         "rightWidgets": [
           {
-            "id": "systemTray",
-            "enabled": true
-          },
-          {
-            "id": "clipboard",
-            "enabled": true
-          },
-          {
-            "id": "cpuUsage",
             "enabled": true,
+            "id": "systemTray"
+          },
+          {
+            "enabled": true,
+            "id": "clipboard"
+          },
+          {
+            "enabled": true,
+            "id": "cpuUsage",
             "minimumWidth": false
           },
           {
-            "id": "notificationButton",
-            "enabled": true
-          },
-          {
-            "id": "battery",
-            "enabled": true
-          },
-          {
-            "id": "idleInhibitor",
-            "enabled": true
-          },
-          {
-            "id": "controlCenterButton",
             "enabled": true,
+            "id": "notificationButton"
+          },
+          {
+            "enabled": true,
+            "id": "battery"
+          },
+          {
+            "enabled": true,
+            "id": "controlCenterButton",
             "showAudioPercent": false,
             "showBrightnessIcon": false,
             "showBrightnessPercent": false
           }
         ],
-        "spacing": 4,
-        "innerPadding": 4,
-        "bottomGap": 0,
-        "transparency": 1,
-        "widgetTransparency": 1,
-        "squareCorners": false,
-        "noBackground": false,
-        "gothCornersEnabled": false,
-        "gothCornerRadiusOverride": false,
-        "gothCornerRadiusValue": 12,
-        "borderEnabled": false,
-        "borderColor": "surfaceText",
-        "borderOpacity": 1,
-        "borderThickness": 1,
-        "fontScale": 1,
-        "autoHide": false,
-        "autoHideDelay": 250,
-        "openOnOverview": false,
-        "visible": true,
-        "popupGapsAuto": true,
-        "popupGapsManual": 4,
+        "screenPreferences": [
+          "all"
+        ],
         "shadowIntensity": 0,
-        "widgetOutlineEnabled": false,
+        "showOnLastDisplay": true,
+        "spacing": 4,
+        "squareCorners": false,
+        "transparency": 1,
+        "visible": true,
         "widgetOutlineColor": "primary",
-        "maximizeDetection": true
+        "widgetOutlineEnabled": false,
+        "widgetTransparency": 1
       }
     ],
     "desktopClockEnabled": false,

@@ -7,12 +7,12 @@
     |> builtins.attrNames
     |> builtins.head
     |> (x: assets + /${x});
-in rec {
+in {
   name.user = "lpchaim";
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
-  flake.path = "/home/${name.user}/.config/nixos";
-  repo.main = "https://github.lpcha.im";
+  flake.path = "~/.config/nixos";
+  repo.main = "https://github.com/lpchaim/nixos";
   shell = "fish";
   wallpaper = assetWithPrefix "wallpaper";
   profilePicture = assetWithPrefix "profile-picture";

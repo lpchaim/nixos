@@ -51,7 +51,7 @@ in {
           indicator = true;
         };
         nextcloud-client = {
-          enable = true;
+          enable = false;
           startInBackground = true;
         };
         trayscale = {

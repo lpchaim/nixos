@@ -16,14 +16,17 @@ in {
       generate-assets = {
         meta.description = "Creates README.md assets";
         program = pkgs.writeShellScriptBin "generate-assets" ''
+          set -e
+
           ${lib.getExe pkgs.eza} --tree --level 2 ./nix \
-            2>/dev/null \
-              | tee /dev/tty > '${assetsRoot}/filestructure.txt'
+            | tee /dev/tty \
+            > '${assetsRoot}/filestructure.txt'
 
           ${lib.getExe nix} flake show --all-systems . \
-            2>/dev/null \
-              | ${lib.getExe pkgs.ansifilter} \
-              | tee /dev/tty > '${assetsRoot}/outputs.txt'
+            --experimental-features 'flakes nix-command pipe-operators' \
+            | ${lib.getExe pkgs.ansifilter} \
+            | tee /dev/tty \
+            > '${assetsRoot}/outputs.txt'
         '';
       };
       render-readme = {
