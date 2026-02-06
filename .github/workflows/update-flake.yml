@@ -37,6 +37,7 @@ jobs:
       - name: Run flake checks
         run: |
           nix flake check --all-systems \
+            | tee /dev/tty \
             > check.stdout \
             2> check.stderr
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
