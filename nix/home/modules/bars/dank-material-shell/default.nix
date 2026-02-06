@@ -8,6 +8,7 @@
   inherit (inputs.self.lib) isNvidia;
   inherit (inputs.self.lib.config) wallpaper;
   cfg = config.my.bars.dank-material-shell;
+  isNvidia' = isNvidia osConfig;
 in {
   options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
 
@@ -28,9 +29,12 @@ in {
       session =
         (import ./session.nix)
         // {
+          doNotDisturb = false;
+          isLightMode = false;
+          nightModeEnabled = false;
           wallpaperPath = wallpaper;
-          nvidiaGpuTempEnabled = isNvidia osConfig;
-          nonNvidiaGpuTempEnabled = !(isNvidia osConfig);
+          nvidiaGpuTempEnabled = isNvidia';
+          nonNvidiaGpuTempEnabled = !isNvidia';
         };
 
       clipboardSettings = {

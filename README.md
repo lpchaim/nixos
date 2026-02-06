@@ -53,13 +53,12 @@ in {
   my = {
     gaming.enable = true;
     networking.tailscale.trusted = true;
-    security.secureboot.enable = false;
     profiles = {
       formfactor.desktop = true;
-      de.gnome = true;
-      de.hyprland = true;
       hardware.gpu.nvidia = true;
       hardware.rgb = true;
+      de.gnome = true;
+      de.hyprland = true;
     };
   };
 
@@ -112,6 +111,7 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 │   └── modules
 ├── overlays
 │   ├── default.nix
+│   ├── lix.nix
 │   ├── nixpkgsVersions.nix
 │   ├── nuInterpreterStdin.nix
 │   └── python.nix
@@ -154,55 +154,137 @@ Courtesy of [flake-schemas]' patches with my own lib/pkgs schemas on top.
 git+file:///home/lpchaim/.config/nixos
 ├───apps
 │   ├───aarch64-linux
-│   │   ├───generate-assets: app: Creates README.md assets
-│   │   ├───generate-ci-matrix: app: Generates a GitHub Actions build matrix
-│   │   └───render-readme: app: Renders README.md
+│   │   ├───generate-assets: app
+│   │   ├───generate-ci-matrix: app
+│   │   └───render-readme: app
 │   └───x86_64-linux
-│       ├───generate-assets: app: Creates README.md assets
-│       ├───generate-ci-matrix: app: Generates a GitHub Actions build matrix
-│       └───render-readme: app: Renders README.md
+│       ├───generate-assets: app
+│       ├───generate-ci-matrix: app
+│       └───render-readme: app
 ├───checks
 │   ├───aarch64-linux
-│   │   ├───deploy-shell: derivation 'nix-shell'
-│   │   ├───minimal-shell: derivation 'nix-shell'
-│   │   ├───nix-shell: derivation 'nix-shell'
-│   │   ├───pre-commit: derivation 'pre-commit-run'
-│   │   └───rust-shell: derivation 'nix-shell'
+│   │   ├───deploy-shell: CI test [nix-shell]
+│   │   ├───minimal-shell: CI test [nix-shell]
+│   │   ├───nix-shell: CI test [nix-shell]
+│   │   ├───pre-commit: CI test [pre-commit-run]
+│   │   └───rust-shell: CI test [nix-shell]
 │   └───x86_64-linux
-│       ├───deploy-shell: derivation 'nix-shell'
-│       ├───minimal-shell: derivation 'nix-shell'
-│       ├───nix-shell: derivation 'nix-shell'
-│       ├───pre-commit: derivation 'pre-commit-run'
-│       └───rust-shell: derivation 'nix-shell'
-├───darwinConfigurations: unknown
-├───darwinModules: unknown
+│       ├───deploy-shell: CI test [nix-shell]
+│       ├───minimal-shell: CI test [nix-shell]
+│       ├───nix-shell: CI test [nix-shell]
+│       ├───pre-commit: CI test [pre-commit-run]
+│       └───rust-shell: CI test [nix-shell]
+├───darwinConfigurations
+├───darwinModules
 ├───devShells
 │   ├───aarch64-linux
-│   │   ├───default: development environment 'nix-shell'
-│   │   ├───deploy: development environment 'deploy-shell'
-│   │   ├───minimal: development environment 'minimal-shell'
-│   │   ├───nix: development environment 'nix-shell'
-│   │   └───rust: development environment 'rust-shell'
+│   │   ├───default: development environment [nix-shell]
+│   │   ├───deploy: development environment [deploy-shell]
+│   │   ├───minimal: development environment [minimal-shell]
+│   │   ├───nix: development environment [nix-shell]
+│   │   └───rust: development environment [rust-shell]
 │   └───x86_64-linux
-│       ├───default: development environment 'nix-shell'
-│       ├───deploy: development environment 'deploy-shell'
-│       ├───minimal: development environment 'minimal-shell'
-│       ├───nix: development environment 'nix-shell'
-│       └───rust: development environment 'rust-shell'
+│       ├───default: development environment [nix-shell]
+│       ├───deploy: development environment [deploy-shell]
+│       ├───minimal: development environment [minimal-shell]
+│       ├───nix: development environment [nix-shell]
+│       └───rust: development environment [rust-shell]
 ├───formatter
-│   ├───aarch64-linux: package 'alejandra-4.0.0'
-│   └───x86_64-linux: package 'alejandra-4.0.0'
-├───homeConfigurations: unknown
-├───homeModules: unknown
+│   ├───aarch64-linux: formatter [alejandra-4.0.0]
+│   └───x86_64-linux: formatter [alejandra-4.0.0]
+├───homeConfigurations
+│   ├───"cheina@pc082": Home Manager configuration [home-manager-generation]
+│   ├───"lpchaim@desktop": Home Manager configuration [home-manager-generation]
+│   ├───"lpchaim@laptop": Home Manager configuration [home-manager-generation]
+│   ├───"lpchaim@raspberrypi": Home Manager configuration [home-manager-generation]
+│   └───"lpchaim@steamdeck": Home Manager configuration [home-manager-generation]
+├───homeModules
+│   ├───bars: Home Manager module
+│   ├───cli: Home Manager module
+│   ├───de: Home Manager module
+│   ├───default: Home Manager module
+│   ├───gui: Home Manager module
+│   ├───misc: Home Manager module
+│   ├───nix: Home Manager module
+│   ├───profiles: Home Manager module
+│   ├───scripts: Home Manager module
+│   ├───security: Home Manager module
+│   ├───syncthing: Home Manager module
+│   └───theming: Home Manager module
 ├───legacyPackages
-│   ├───aarch64-linux omitted (use '--legacy' to show)
-│   └───x86_64-linux omitted (use '--legacy' to show)
-├───lib: unknown
+│   └───(skipped; use '--legacy' to show)
+├───lib
+│   ├───config
+│   │   ├───email
+│   │   │   └───main: configuration constant
+│   │   ├───flake
+│   │   │   └───path: configuration constant
+│   │   ├───kb
+│   │   │   ├───br
+│   │   │   │   ├───layout: configuration constant
+│   │   │   │   ├───options: configuration constant
+│   │   │   │   └───variant: configuration constant
+│   │   │   ├───default
+│   │   │   │   ├───layout: configuration constant
+│   │   │   │   ├───options: configuration constant
+│   │   │   │   └───variant: configuration constant
+│   │   │   └───us
+│   │   │       ├───layout: configuration constant
+│   │   │       ├───options: configuration constant
+│   │   │       └───variant: configuration constant
+│   │   ├───name
+│   │   │   ├───full: configuration constant
+│   │   │   └───user: configuration constant
+│   │   ├───nix
+│   │   │   ├───pkgs
+│   │   │   │   └───config
+│   │   │   │       ├───allowUnfree: configuration constant
+│   │   │   │       └───permittedInsecurePackages: configuration constant
+│   │   │   └───settings
+│   │   │       ├───accept-flake-config: configuration constant
+│   │   │       ├───auto-optimise-store: configuration constant
+│   │   │       ├───builders-use-substitutes: configuration constant
+│   │   │       ├───extra-experimental-features: configuration constant
+│   │   │       ├───extra-substituters: configuration constant
+│   │   │       ├───extra-trusted-public-keys: configuration constant
+│   │   │       ├───keep-derivations: configuration constant
+│   │   │       ├───keep-outputs: configuration constant
+│   │   │       └───max-jobs: configuration constant
+│   │   ├───profilePicture: configuration constant
+│   │   ├───repo
+│   │   │   └───main: configuration constant
+│   │   ├───shell: configuration constant
+│   │   └───wallpaper: configuration constant
+│   ├───isNvidia: library function
+│   ├───loaders
+│   │   ├───callPackageDefault: library function
+│   │   ├───callPackageNonDefault: library function
+│   │   ├───importDefault: library function
+│   │   ├───importNonDefault: library function
+│   │   ├───list: library function
+│   │   ├───listDefault: library function
+│   │   ├───listDefaultRecursive: library function
+│   │   ├───listNonDefault: library function
+│   │   ├───listNonDefaultRecursive: library function
+│   │   ├───load: library function
+│   │   ├───loadDefault: library function
+│   │   ├───loadNonDefault: library function
+│   │   └───read: library function
+│   ├───mkPkgs: library function
+│   ├───storage
+│   │   ├───btrfs
+│   │   │   ├───mkSecondaryStorage: library function
+│   │   │   └───mkStorage: library function
+│   │   ├───mkSafePath: library function
+│   │   └───ntfs
+│   │       └───mkSecondaryStorage: library function
+│   └───strings
+│       └───replaceUsing: library function
 ├───nixosConfigurations
-│   ├───desktop: NixOS configuration
-│   ├───laptop: NixOS configuration
-│   ├───raspberrypi: NixOS configuration
-│   └───steamdeck: NixOS configuration
+│   ├───desktop: NixOS configuration [nixos-system-desktop-26.05.20260126.bfc1b8a]
+│   ├───laptop: NixOS configuration [nixos-system-laptop-26.05.20260126.bfc1b8a]
+│   ├───raspberrypi: NixOS configuration [nixos-system-raspberrypi-26.05.20260126.bfc1b8a]
+│   └───steamdeck: NixOS configuration [nixos-system-steamdeck-26.05.20260126.bfc1b8a]
 ├───nixosModules
 │   ├───boot: NixOS module
 │   ├───default: NixOS module
@@ -227,14 +309,35 @@ git+file:///home/lpchaim/.config/nixos
 │   └───zram: NixOS module
 ├───overlays
 │   ├───external: Nixpkgs overlay
+│   ├───lix: Nixpkgs overlay
 │   ├───nixpkgsVersions: Nixpkgs overlay
 │   ├───nuInterpreterStdin: Nixpkgs overlay
 │   └───python: Nixpkgs overlay
 ├───packages
 │   ├───aarch64-linux
-│   │   └───lichen: package 'lichen-0.22.0-unstable'
+│   │   └───lichen: package [lichen-0.22.0-unstable]
 │   └───x86_64-linux
-│       └───lichen: package 'lichen-0.22.0-unstable'
-└───schemas: unknown
+│       └───lichen: package [lichen-0.22.0-unstable]
+└───schemas
+    ├───apps: flake schema
+    ├───bundlers: flake schema
+    ├───checks: flake schema
+    ├───darwinConfigurations: flake schema
+    ├───darwinModules: flake schema
+    ├───devShells: flake schema
+    ├───dockerImages: flake schema
+    ├───formatter: flake schema
+    ├───homeConfigurations: flake schema
+    ├───homeModules: flake schema
+    ├───hydraJobs: flake schema
+    ├───legacyPackages: flake schema
+    ├───lib: flake schema
+    ├───nixosConfigurations: flake schema
+    ├───nixosModules: flake schema
+    ├───overlays: flake schema
+    ├───packages: flake schema
+    ├───pkgs: flake schema
+    ├───schemas: flake schema
+    └───templates: flake schema
 ```
 </details>
