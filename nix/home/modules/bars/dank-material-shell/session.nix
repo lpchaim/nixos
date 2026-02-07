@@ -42,8 +42,8 @@ builtins.fromJSON ''
       "chrome_status_icon_1",
       "KDE Connect Indicator",
       "openrgb",
-      "spotify-client"
-      "steam",
+      "spotify-client",
+      "steam"
     ],
     "recentColors": [],
     "showThirdPartyPlugins": false,
