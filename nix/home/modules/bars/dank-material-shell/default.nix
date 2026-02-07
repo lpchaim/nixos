@@ -13,6 +13,8 @@ in {
   options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
 
   config = lib.mkIf (cfg.enable) {
+    stylix.targets.dank-material-shell.enable = false;
+
     programs.dank-material-shell = {
       enable = true;
       enableAudioWavelength = true;
