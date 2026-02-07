@@ -99,6 +99,24 @@ jobs:
       - run: |
           nix build ${{ matrix.derivation }}
 
+  build-nixos:
+    name: Build NixOS configurations
+    needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.nixosConfigurations)) != '[]' }}
+    strategy:
+      matrix:
+        include: ${{ fromJSON(needs.inventory.outputs.nixosConfigurations) }}
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/nix-setup
+        with:
+          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          makeSpace: true
+      - run: |
+          nix build ${{ matrix.derivation }}
+
   build-raspberrypi:
     name: Build raspberrypi
     runs-on: ubuntu-24.04-arm
