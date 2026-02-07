@@ -102,10 +102,12 @@ jobs:
   build-nixos:
     name: Build NixOS configurations
     needs: inventory
-    if: ${{ toJSON(fromJSON(needs.inventory.outputs.nixosConfigurations)) != '[]' }}
+    if: ${{ github.ref_name == 'main' && toJSON(fromJSON(needs.inventory.outputs.nixosConfigurations)) != '[]' }}
     strategy:
       matrix:
         include: ${{ fromJSON(needs.inventory.outputs.nixosConfigurations) }}
+        exclude:
+          - name: steamdeck
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -119,6 +121,7 @@ jobs:
 
   build-raspberrypi:
     name: Build raspberrypi
+    if: ${{ github.ref_name == 'main' }}
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
