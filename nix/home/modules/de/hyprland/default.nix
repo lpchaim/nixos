@@ -123,7 +123,10 @@ in {
             "XCURSOR_SIZE,32"
             "HYPRCURSOR_SIZE,32"
           ];
-          monitor = [",highrr,auto,1"];
+          monitor = [
+            ",highrr,auto,1,vrr,2"
+            "eDP-1,highrr,auto,1,vrr,2"
+          ];
           opengl.nvidia_anti_flicker = true;
           windowrule = let
             mkAutoFloatRule = args:
