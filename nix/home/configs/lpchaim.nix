@@ -9,5 +9,6 @@ in {
     username = "${name.user}";
     homeDirectory = "/home/${username}";
     stateVersion = lib.mkDefault (lib.versions.majorMinor lib.version);
+    uid = 1000;
   };
 }
