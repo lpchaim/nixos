@@ -83,7 +83,8 @@ in {
               "fade, 1, 2, easeinout"
               "border, 1, 2, easeinout"
               "borderangle, 1, 2, easeinout"
-              "workspaces, 1, 4, easeinout"
+              "workspaces, 1, 3, easeinout, slide"
+              "specialWorkspace, 1, 3, easeinout, slidevert -50%"
             ];
           };
           dwindle = {
