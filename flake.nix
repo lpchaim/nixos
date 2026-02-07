@@ -15,6 +15,7 @@
         (importApply' ./nix/modules)
         (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
+        (importApply' ./nix/legacyPackages)
         (importApply' ./nix/scripts)
         (importApply' ./nix/shells)
       ];
