@@ -434,7 +434,7 @@ builtins.fromJSON ''
         ],
         "shadowIntensity": 0,
         "showOnLastDisplay": true,
-        "spacing": 4,
+        "spacing": 5,
         "squareCorners": false,
         "transparency": 1,
         "visible": true,
