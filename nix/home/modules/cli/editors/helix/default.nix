@@ -1,15 +1,46 @@
 {
   config,
+  inputs,
   lib,
+  osConfig ? {},
+  pkgs,
   ...
 }: let
   cfg = config.my.cli.editors.helix;
+  isNixos = osConfig != {};
 in {
   options.my.cli.editors.helix.enable =
     lib.mkEnableOption "helix"
     // {default = config.my.cli.editors.enable;};
   config = lib.mkIf cfg.enable {
     programs.helix = {
+      languages = {
+        language-server.nixd = {
+          command = "${lib.getExe pkgs.nixd-lix}";
+          args = ["--semantic-tokens=true"];
+          config.nixd = let
+            inherit (inputs.self.lib.config) flake name;
+            inherit (osConfig.networking) hostName;
+            inherit (pkgs.stdenv.hostPlatform) system;
+            absoluteFlakePath = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;
+            getFlake = ''builtins.getFlake "${absoluteFlakePath}"'';
+            hostConfig = ''(${getFlake}).nixosConfigurations.${hostName}'';
+            homeConfig = ''(${getFlake}).homeConfigurations."${name.user}@desktop"'';
+          in {
+            nixpkgs.expr = "(${getFlake}).legacyPackages.${system}.pkgs";
+            formatting.command = ["alejandra --quiet"];
+            options =
+              if isNixos
+              then {
+                nixos.expr = "${hostConfig}.options";
+                home-manager.expr = "${hostConfig}.options.home-manager.users.type.getSubOptions []";
+              }
+              else {
+                home-manager.expr = "${homeConfig}.options";
+              };
+          };
+        };
+      };
       enable = true;
       defaultEditor = true;
       settings = {
@@ -60,5 +91,7 @@ in {
         };
       };
     };
+
+    home.packages = with pkgs; [alejandra nixd-lix];
   };
 }
