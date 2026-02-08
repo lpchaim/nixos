@@ -23,6 +23,7 @@ in {
       ./bars
       ./cli
       ./de
+      ./development
       ./gui
       ./misc
       ./nix
@@ -35,6 +36,7 @@ in {
 
   my = {
     cli.enable = mkDefault true;
+    development.enable = mkDefault true;
     nix.enable = mkDefault true;
     scripts.enable = mkDefault true;
   };
