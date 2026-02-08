@@ -19,25 +19,20 @@ in {
           command = "${lib.getExe pkgs.nixd-lix}";
           args = ["--semantic-tokens=true"];
           config.nixd = let
-            inherit (inputs.self.lib.config) flake name;
-            inherit (osConfig.networking) hostName;
+            inherit (inputs.self.lib.config) flake;
             inherit (pkgs.stdenv.hostPlatform) system;
+            inherit (config.home) username;
             absoluteFlakePath = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;
             getFlake = ''builtins.getFlake "${absoluteFlakePath}"'';
+            hostName = osConfig.networking.hostName or "desktop";
             hostConfig = ''(${getFlake}).nixosConfigurations.${hostName}'';
-            homeConfig = ''(${getFlake}).homeConfigurations."${name.user}@desktop"'';
+            homeConfig = ''(${getFlake}).homeConfigurations."${username}@${hostName}"'';
           in {
             nixpkgs.expr = "(${getFlake}).legacyPackages.${system}.pkgs";
             formatting.command = ["alejandra --quiet"];
             options =
-              if isNixos
-              then {
-                nixos.expr = "${hostConfig}.options";
-                home-manager.expr = "${hostConfig}.options.home-manager.users.type.getSubOptions []";
-              }
-              else {
-                home-manager.expr = "${homeConfig}.options";
-              };
+              {home-manager.expr = "${homeConfig}.options";}
+              // lib.optionalAttrs isNixos {nixos.expr = "${hostConfig}.options";};
           };
         };
       };
