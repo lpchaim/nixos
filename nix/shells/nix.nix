@@ -5,7 +5,7 @@
       packages = with pkgs; [
         age
         alejandra
-        nil
+        nixd
         nixpkgs-fmt
         sops
         ssh-to-age
