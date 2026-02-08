@@ -37,8 +37,6 @@ in {
         systemd.variables = ["--all"];
         settings = {
           exec-once = [
-            "hypridle"
-            "hyprpaper"
             "[workspace 10 silent] steam -silent"
             "[workspace 10 silent] openrgb --startminimized"
           ];
@@ -245,7 +243,6 @@ in {
         packages = with pkgs; [
           brightnessctl
           hyprcursor
-          hyprpaper
           hyprpicker
           wlinhibit
         ];
