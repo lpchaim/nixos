@@ -2,10 +2,8 @@
   inherit (inputs) self;
 in {
   perSystem = {
-    config,
     inputs',
     lib,
-    system,
     pkgs,
     ...
   }: {

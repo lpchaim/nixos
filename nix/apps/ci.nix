@@ -1,11 +1,5 @@
 {...}: {
-  perSystem = {
-    self',
-    config,
-    lib,
-    system,
-    ...
-  }: let
+  perSystem = {self', ...}: let
     inherit (self'.legacyPackages) pkgs;
   in {
     apps.generate-ci-matrix = {
