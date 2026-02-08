@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   assets = ../../assets;
   filter = prefix: (name: type: type == "regular" && lib.strings.hasPrefix prefix name);
   assetWithPrefix = prefix:
@@ -19,7 +23,6 @@ in {
   nix = {
     pkgs.config = {
       allowUnfree = true;
-      permittedInsecurePackages = ["electron-27.3.11" "qtwebengine-5.15.19"];
     };
     settings = {
       accept-flake-config = true;
