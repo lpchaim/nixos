@@ -15,6 +15,7 @@
     cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
+    development.nixd.enableLsp = false;
     profiles = {
       standalone = true;
     };

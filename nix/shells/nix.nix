@@ -6,6 +6,7 @@
         age
         alejandra
         nil
+        nixd
         nixpkgs-fmt
         sops
         ssh-to-age

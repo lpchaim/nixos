@@ -1,5 +1,5 @@
 args: let
-  inherit ((import ../lib args).loaders) loadNonDefault;
+  inherit ((import ../../lib args).loaders) loadNonDefault;
 in {
   perSystem = {
     self',

@@ -13,6 +13,8 @@ in {
 
     powerManagement.enable = true;
 
+    programs.iio-hyprland.enable = config.programs.hyprland.enable;
+
     services = {
       auto-cpufreq = {
         enable = !config.services.power-profiles-daemon.enable;

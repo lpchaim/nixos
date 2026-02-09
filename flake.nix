@@ -6,6 +6,7 @@
     {inherit inputs;}
     ({flake-parts-lib, ...}: let
       inherit (flake-parts-lib) importApply;
+      import' = path: import path {inherit inputs systems;};
       importApply' = path: importApply path {inherit inputs systems;};
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
@@ -15,7 +16,7 @@
         (importApply' ./nix/modules)
         (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
-        (importApply' ./nix/scripts)
+        (importApply' ./nix/legacyPackages)
         (importApply' ./nix/shells)
       ];
       perSystem = {
@@ -31,10 +32,10 @@
         };
       };
       flake = {
-        lib = import ./nix/lib {inherit inputs;};
+        lib = import' ./nix/lib;
         schemas =
           inputs.flake-schemas.schemas
-          // (import ./nix/schemas {inherit inputs systems;});
+          // (import' ./nix/schemas);
       };
     });
 
