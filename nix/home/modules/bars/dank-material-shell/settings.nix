@@ -323,7 +323,7 @@ builtins.fromJSON ''
     "osdPowerProfileEnabled": false,
     "osdAudioOutputEnabled": true,
     "powerActionConfirm": true,
-    "powerActionHoldDuration": 1,
+    "powerActionHoldDuration": 0.25,
     "powerMenuActions": [
       "reboot",
       "logout",
@@ -374,17 +374,17 @@ builtins.fromJSON ''
         "innerPadding": 5,
         "leftWidgets": [
           {
-            "id": "clock",
+            "clockCompactMode": false,
             "enabled": true,
-            "clockCompactMode": false
+            "id": "clock"
           },
           {
-            "id": "weather",
-            "enabled": true
+            "enabled": true,
+            "id": "weather"
           },
           {
-            "id": "focusedWindow",
-            "enabled": true
+            "enabled": true,
+            "id": "focusedWindow"
           }
         ],
         "maximizeDetection": true,
@@ -396,29 +396,34 @@ builtins.fromJSON ''
         "position": 0,
         "rightWidgets": [
           {
+            "id": "music",
             "enabled": true,
-            "id": "systemTray"
+            "mediaSize": 1
           },
           {
-            "enabled": true,
-            "id": "clipboard"
+            "id": "systemTray",
+            "enabled": true
           },
           {
-            "enabled": true,
             "id": "cpuUsage",
-            "minimumWidth": false
+            "enabled": true,
+            "minimumWidth": true
           },
           {
-            "enabled": true,
-            "id": "notificationButton"
+            "id": "clipboard",
+            "enabled": true
           },
           {
-            "enabled": true,
-            "id": "battery"
+            "id": "notificationButton",
+            "enabled": true
           },
           {
-            "enabled": true,
+            "id": "battery",
+            "enabled": true
+          },
+          {
             "id": "controlCenterButton",
+            "enabled": true,
             "showAudioPercent": false,
             "showBrightnessIcon": false,
             "showBrightnessPercent": false
@@ -429,7 +434,7 @@ builtins.fromJSON ''
         ],
         "shadowIntensity": 0,
         "showOnLastDisplay": true,
-        "spacing": 4,
+        "spacing": 5,
         "squareCorners": false,
         "transparency": 1,
         "visible": true,

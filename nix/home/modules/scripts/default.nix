@@ -22,19 +22,26 @@ in {
       (
         cfg.byName
         |> (lib.filterAttrs (_: script: lib.strings.hasInfix "/bin/nu" script.interpreter))
-        |> (lib.concatMapAttrs
+        |> (
+          lib.concatMapAttrs
           (name: script: {
             ".config/carapace/specs/${name}.yaml".source =
               pkgs.runCommand
               "nushell-carapace-spec-${name}"
-              {buildInputs = [cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];}
+              {
+                buildInputs = with cfg.byName; [
+                  nu-generate-carapace-spec
+                  nu-inspect
+                ];
+              }
               ''
                 cat '${getExe script}' \
                 | nu-inspect --name $name \
                 | nu-generate-carapace-spec \
                 > $out
               '';
-          }))
+          })
+        )
       );
   };
 }

@@ -7,7 +7,9 @@
   cfg = config.my.de.hyprland.hypridle;
 in {
   options.my.de.hyprland.hypridle = {
-    enable = lib.mkEnableOption "Hypridle";
+    enable =
+      lib.mkEnableOption "Hypridle"
+      // {default = config.my.de.hyprland.enable;};
     lockCmd = lib.mkOption {
       description = "Command to lock the screen";
       type = lib.types.nullOr lib.types.str;

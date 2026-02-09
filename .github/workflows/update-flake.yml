@@ -3,7 +3,7 @@ name: Update
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * SAT"
+    - cron: "0 7 * * SAT"
 
 permissions:
   contents: write
@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref || 'develop' }}
       - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -23,13 +25,13 @@ jobs:
         id: update
         run: |
           set -o pipefail
-          nix flake update 2>/dev/null \
+          nix flake update 2>&1 \
           | tee -a "$GITHUB_STEP_SUMMARY" ./update.out
       - name: Run flake checks
         id: check
         run: |
           set -o pipefail
-          nix flake check --all-systems 3>&1 1>/dev/null 2>&3 \
+          nix flake check --all-systems --keep-going 2>&1 \
           | tee -a "$GITHUB_STEP_SUMMARY" ./check.out
       - name: Build PR body
         id: vars
@@ -37,9 +39,14 @@ jobs:
           {
           echo 'PR_BODY<<EOF'
           cat <<GHO
-          ### Updated inputs
+          ### Update output
           \`\`\`sh
           $(cat update.out)
+          \`\`\`
+
+          ### Check output
+          \`\`\`sh
+          $(cat check.out)
           \`\`\`
           GHO
           echo EOF
