@@ -20,4 +20,22 @@ in {
     drivers = config.services.xserver.videoDrivers or [];
   in
     builtins.elem "nvidia" drivers;
+  carapaceSpecFromNuScript = script: let
+    inherit (script) name system;
+    inherit (inputs.self.legacyPackages.${system}) scripts pkgs;
+  in
+    pkgs.runCommand
+    "nushell-carapace-spec-${name}"
+    {
+      buildInputs = with scripts; [
+        nu-generate-carapace-spec
+        nu-inspect
+      ];
+    }
+    ''
+      cat '${lib.getExe script}' \
+      | nu-inspect --name '${name}' \
+      | nu-generate-carapace-spec \
+      > $out
+    '';
 }
