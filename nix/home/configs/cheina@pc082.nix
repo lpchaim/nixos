@@ -18,8 +18,11 @@
     development.nixd.enableLsp = false;
     profiles = {
       standalone = true;
+      wayland = true;
     };
   };
+
+  home.sessionVariables.XDEBUG_MODE = "off";
 
   home.packages = [
     (pkgs.writeShellScriptBin "dev2beta" ''
