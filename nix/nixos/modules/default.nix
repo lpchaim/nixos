@@ -22,6 +22,7 @@ in {
     ++ [
       "${self}/nix/shared"
       ./boot
+      ./ci
       ./desktop
       ./gaming
       ./hardware

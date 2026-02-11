@@ -21,6 +21,7 @@ in {
     ++ [
       "${self}/nix/shared"
       ./bars
+      ./ci
       ./cli
       ./de
       ./development

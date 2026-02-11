@@ -9,7 +9,6 @@
 
   perSystem = {
     config,
-    pkgs,
     self',
     ...
   }: {

@@ -6,50 +6,43 @@
   inherit (inputs) self;
 in {
   perSystem = {
-    config,
-    inputs',
     lib,
-    system,
     pkgs,
     ...
   }: let
     getOutputInfo = mkDerivationPath: output:
       lib.mapAttrsToList
-      (name: subject: {
+      (name: drv: {
         inherit name;
         derivation = lib.escapeShellArg (mkDerivationPath name);
-        system = subject.system or subject.pkgs.stdenv.hostPlatform.system;
+        system = drv.system or drv.pkgs.stdenv.hostPlatform.system;
       })
       output;
-    getNestedOutputInfo = mkDerivationPath: output:
+    getPerSystemOutputInfo = mkDerivationPath: output:
       lib.concatMap (system: getOutputInfo (mkDerivationPath system) output.${system})
       systems;
-    ciInfo = let
-      standaloneHomeConfigurations =
-        lib.filterAttrs
-        (name: _: let
-          parts = lib.splitString "@" name;
-          host = lib.last parts;
-        in
-          !(self.nixosConfigurations ? ${host}))
-        self.homeConfigurations;
-    in {
+    filterToBuild = lib.filterAttrs (_: drv: drv.config.my.ci.build or false);
+    filterPerSystemToBuild = lib.filterAttrsRecursive (_: drv:
+      !(lib.isDerivation drv)
+      || (drv.passthru.my.ci.${drv.system}.build or drv.passthru.my.ci.build or false) == true);
+    ciInfo = {
       homeConfigurations =
-        getOutputInfo
-        (name: ''.#homeConfigurations."${name}".activationPackage'')
-        standaloneHomeConfigurations;
+        self.homeConfigurations
+        |> (lib.filterAttrs (_: home: home._module.specialArgs.osConfig == {})) # Standalone only
+        |> filterToBuild
+        |> (getOutputInfo (name: ''.#homeConfigurations."${name}".activationPackage''));
       nixosConfigurations =
-        getOutputInfo
-        (name: ''.#nixosConfigurations."${name}".config.system.build.toplevel'')
-        self.nixosConfigurations;
+        self.nixosConfigurations
+        |> filterToBuild
+        |> (getOutputInfo (name: ''.#nixosConfigurations."${name}".config.system.build.toplevel''));
       packages =
-        getNestedOutputInfo
-        (_: name: ''.#"${name}"'')
-        self.packages;
+        self.packages
+        |> filterPerSystemToBuild
+        |> (getPerSystemOutputInfo (system: name: ''.#packages.${system}."${name}"''));
       devShells =
-        getNestedOutputInfo
-        (system: name: ''.#devShells.${system}."${name}"'')
-        self.devShells;
+        self.devShells
+        |> filterPerSystemToBuild
+        |> (getPerSystemOutputInfo (system: name: ''.#devShells.${system}."${name}"''));
     };
   in {
     legacyPackages.ciMatrix =
