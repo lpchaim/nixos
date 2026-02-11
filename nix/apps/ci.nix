@@ -12,6 +12,7 @@
           def main [
             --system: string = all  # Filter by system
             --output: string = all  # Only include the specified output
+            --flatten  # Output a single list
           ]: nothing -> string {
             open "${self'.legacyPackages.ciMatrix}"
             | from json
@@ -23,6 +24,13 @@
             } else $in
             | if $output != all {
               get --optional $output | default []
+            } else $in
+            | if $flatten {
+              items { |output, $cols|
+                $cols
+                | insert output $output
+              }
+              | flatten
             } else $in
             | to json --raw
           }

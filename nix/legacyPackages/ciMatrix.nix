@@ -22,9 +22,14 @@ in {
       lib.concatMap (system: getOutputInfo (mkDerivationPath system) output.${system})
       systems;
     filterToBuild = lib.filterAttrs (_: drv: drv.config.my.ci.build or false);
-    filterPerSystemToBuild = lib.filterAttrsRecursive (_: drv:
-      !(lib.isDerivation drv)
-      || (drv.passthru.my.ci.${drv.system}.build or drv.passthru.my.ci.build or false) == true);
+    filterPerSystemToBuild = lib.filterAttrsRecursive (
+      name: drv:
+        !(lib.isDerivation drv)
+        || (
+          (name != "default")
+          && (drv.passthru.my.ci.${drv.system}.build or drv.passthru.my.ci.build or false) == true
+        )
+    );
     ciInfo = {
       homeConfigurations =
         self.homeConfigurations

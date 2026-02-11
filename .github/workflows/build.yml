@@ -20,94 +20,29 @@ jobs:
     name: Build inventory
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.matrix.outputs.packages }}
-      devShells: ${{ steps.matrix.outputs.devShells }}
-      homeConfigurations: ${{ steps.matrix.outputs.homeConfigurations }}
-      nixosConfigurations: ${{ steps.matrix.outputs.nixosConfigurations }}
+      x86_64-linux: ${{ steps.matrix.outputs.x86_64-linux }}
+      aarch64-linux: ${{ steps.matrix.outputs.devShells }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/nix-setup
+      - name: Setup Nix
+        uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - id: matrix
+      - name: Generate build matrix
+        id: matrix
         run: |
           {
-          echo "packages=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output packages)"
-          echo "devShells=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output devShells)"
-          echo "homeConfigurations=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output homeConfigurations)"
-          echo "nixosConfigurations=$(nix run .#generate-ci-matrix -- --system x86_64-linux --output nixosConfigurations)"
+          echo "x86_64-linux=$(nix run .#generate-ci-matrix -- --system x86_64-linux --flatten)"
+          echo "aarch64-linux=$(nix run .#generate-ci-matrix -- --system aarch64-linux --flatten)"
           } >> "$GITHUB_OUTPUT"
 
-  build-packages:
-    name: Build packages
+  build-x86_64-linux:
+    name: Build x86_64-linux derivations
     needs: inventory
-    if: ${{ toJSON(fromJSON(needs.inventory.outputs.packages)) != '[]' }}
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.x86_64-linux)) != '[]' }}
     strategy:
       matrix:
-        include: ${{ fromJSON(needs.inventory.outputs.packages) }}
-      fail-fast: false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/qemu-setup
-        if: ${{ matrix.system != 'x86_64-linux' }}
-      - uses: ./.github/actions/nix-setup
-        with:
-          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: ${{ matrix.system }}
-      - run: |
-          nix build ${{ matrix.derivation }}
-
-  build-devshells:
-    name: Build development shells
-    needs: inventory
-    if: ${{ toJSON(fromJSON(needs.inventory.outputs.devShells)) != '[]' }}
-    strategy:
-      matrix:
-        include: ${{ fromJSON(needs.inventory.outputs.devShells) }}
-      fail-fast: false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/qemu-setup
-        if: ${{ matrix.system != 'x86_64-linux' }}
-      - uses: ./.github/actions/nix-setup
-        with:
-          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: ${{ matrix.system }}
-      - run: |
-          nix build ${{ matrix.derivation }}
-
-  build-homes:
-    name: Build standalone home configurations
-    needs: inventory
-    if: ${{ toJSON(fromJSON(needs.inventory.outputs.homeConfigurations)) != '[]' }}
-    strategy:
-      matrix:
-        include: ${{ fromJSON(needs.inventory.outputs.homeConfigurations) }}
-      fail-fast: false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/qemu-setup
-        if: ${{ matrix.system != 'x86_64-linux' }}
-      - uses: ./.github/actions/nix-setup
-        with:
-          cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: ${{ matrix.system }}
-          makeSpace: true
-      - run: |
-          nix build ${{ matrix.derivation }}
-
-  build-nixos:
-    name: Build NixOS configurations
-    needs: inventory
-    if: ${{ github.ref_name == 'main' && toJSON(fromJSON(needs.inventory.outputs.nixosConfigurations)) != '[]' }}
-    strategy:
-      matrix:
-        include: ${{ fromJSON(needs.inventory.outputs.nixosConfigurations) }}
-        exclude:
-          - name: steamdeck
+        include: ${{ fromJSON(needs.inventory.outputs.x86_64-linux) }}
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -115,20 +50,26 @@ jobs:
       - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          makeSpace: true
-      - run: |
+          makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
+      - name: Build ${{ matrix.output }}.${{ matrix.name }}
+        run: |
           nix build ${{ matrix.derivation }}
 
-  build-raspberrypi:
-    name: Build raspberrypi
-    if: ${{ github.ref_name == 'main' }}
+  build-aarch64-linux:
+    name: Build aarch64-linux derivations
+    needs: inventory
+    if: ${{ toJSON(fromJSON(needs.inventory.outputs.aarch64-linux)) != '[]' }}
+    strategy:
+      matrix:
+        include: ${{ fromJSON(needs.inventory.outputs.aarch64-linux) }}
+      fail-fast: false
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          system: aarch64-linux
-          makeSpace: true
-      - run: |
-          nix build .#nixosConfigurations.raspberrypi.config.system.build.toplevel
+          makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
+      - name: Build ${{ matrix.output }}.${{ matrix.name }}
+        run: |
+          nix build ${{ matrix.derivation }}
