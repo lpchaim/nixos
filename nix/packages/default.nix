@@ -5,7 +5,6 @@ in {
     inputs',
     self',
     lib,
-    system,
     ...
   }: let
     inherit (self'.legacyPackages) pkgs;

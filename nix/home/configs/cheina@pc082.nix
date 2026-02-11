@@ -11,6 +11,7 @@
   };
 
   my = {
+    ci.build = true;
     cli.enable = true;
     cli.git.enable = true;
     cli.hishtory.enable = false;

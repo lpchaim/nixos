@@ -7,6 +7,7 @@ in {
   ];
 
   my = {
+    ci.build = true;
     gaming.steam.enable = true;
     networking.tailscale.trusted = true;
     profiles = {
