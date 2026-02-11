@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 7 * * SAT"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write

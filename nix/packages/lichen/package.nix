@@ -84,5 +84,5 @@ stdenv.mkDerivation (finalAttrs: rec {
     mainProgram = "lcc";
   };
 
-  passthru.my.ci.x86_64-linux.build = true;
+  passthru.my.ci.buildFor = ["x86_64-linux"];
 })

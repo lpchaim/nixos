@@ -12,27 +12,34 @@
           def main [
             --system: string = all  # Filter by system
             --output: string = all  # Only include the specified output
+            --branch: string  # Only include the specified branch
             --flatten  # Output a single list
           ]: nothing -> string {
             open "${self'.legacyPackages.ciMatrix}"
             | from json
             | if $system != all {
-              transpose
-              | where { get column1 | columns | 'system' in $in }
-              | update column1 { where system == $system }
-              | transpose --header-row --as-record
-            } else $in
+                filter-records { where system == $system }
+              } else $in
+            | if $branch != null {
+                filter-records { where branch == $branch }
+              } else $in
             | if $output != all {
-              get --optional $output | default []
-            } else $in
+                get --optional $output | default []
+              } else $in
             | if $flatten {
-              items { |output, $cols|
-                $cols
-                | insert output $output
-              }
-              | flatten
-            } else $in
+                items { |output, $cols|
+                  $cols
+                  | insert output $output
+                }
+                | flatten
+              } else $in
             | to json --raw
+          }
+
+          def filter-records [where]: record -> record {
+              transpose
+              | update column1 $where
+              | transpose --header-row --as-record
           }
         '';
       meta.description = "Generates a GitHub Actions build matrix";
