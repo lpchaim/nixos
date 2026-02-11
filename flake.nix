@@ -42,7 +42,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
     nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
