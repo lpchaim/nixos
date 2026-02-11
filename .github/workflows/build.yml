@@ -12,7 +12,7 @@ on:
       - 'nix/**'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       x86_64-linux: ${{ steps.matrix.outputs.x86_64-linux }}
-      aarch64-linux: ${{ steps.matrix.outputs.devShells }}
+      aarch64-linux: ${{ steps.matrix.outputs.aarch64-linux }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Nix
@@ -32,12 +32,12 @@ jobs:
         id: matrix
         run: |
           {
-          echo "x86_64-linux=$(nix run .#generate-ci-matrix -- --system x86_64-linux --flatten)"
-          echo "aarch64-linux=$(nix run .#generate-ci-matrix -- --system aarch64-linux --flatten)"
+          echo "x86_64-linux=$(nix run .#generate-ci-matrix -- --system x86_64-linux --branch "$GITHUB_REF_NAME" --flatten)"
+          echo "aarch64-linux=$(nix run .#generate-ci-matrix -- --system aarch64-linux --branch "$GITHUB_REF_NAME" --flatten)"
           } >> "$GITHUB_OUTPUT"
 
   build-x86_64-linux:
-    name: Build x86_64-linux derivations
+    name: Build ${{ matrix.output }}.${{ matrix.name }}
     needs: inventory
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.x86_64-linux)) != '[]' }}
     strategy:
@@ -51,12 +51,11 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
-      - name: Build ${{ matrix.output }}.${{ matrix.name }}
-        run: |
+      - run: |
           nix build ${{ matrix.derivation }}
 
   build-aarch64-linux:
-    name: Build aarch64-linux derivations
+    name: Build ${{ matrix.output }}.${{ matrix.name }}
     needs: inventory
     if: ${{ toJSON(fromJSON(needs.inventory.outputs.aarch64-linux)) != '[]' }}
     strategy:
@@ -70,6 +69,5 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
-      - name: Build ${{ matrix.output }}.${{ matrix.name }}
-        run: |
+      - run: |
           nix build ${{ matrix.derivation }}

@@ -2,7 +2,7 @@
   perSystem = {pkgs, ...}: {
     make-shells.nix = {
       additionalArguments.meta.description = "Nix development environment";
-      additionalArguments.passthru.my.ci.x86_64-linux.build = true;
+      additionalArguments.passthru.my.ci.buildFor = ["x86_64-linux"];
       packages = with pkgs; [
         age
         alejandra
