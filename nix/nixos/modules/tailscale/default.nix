@@ -60,5 +60,6 @@ in {
       openFirewall = true;
       useRoutingFeatures = "both";
     };
+    systemd.services.tailscaled.restartIfChanged = false;
   };
 }
