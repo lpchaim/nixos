@@ -4,7 +4,6 @@
   ...
 }: let
   inherit (inputs) self;
-  inherit (lib) mkDefault;
 in {
   imports =
     (with inputs; [
@@ -31,15 +30,17 @@ in {
       ./profiles
       ./scripts
       ./security
+      ./ssh
       ./syncthing
       ./theming
     ];
 
   my = {
-    cli.enable = mkDefault true;
-    development.enable = mkDefault true;
-    nix.enable = mkDefault true;
-    scripts.enable = mkDefault true;
+    cli.enable = lib.mkDefault true;
+    development.enable = lib.mkDefault true;
+    nix.enable = lib.mkDefault true;
+    scripts.enable = lib.mkDefault true;
+    ssh.enable = lib.mkDefault true;
   };
 
   programs.home-manager.enable = lib.mkDefault true;
