@@ -58,17 +58,6 @@ in {
         CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
         MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
       };
-      shellAliases = {
-        gco = "git checkout";
-        gd = "git diff";
-        gds = "git diff --staged";
-        gl = "git log";
-        glg = "git log --graph";
-        gp = "git pull";
-        gs = "git switch";
-        gsc = "git switch --create";
-        gst = "git status";
-      };
     };
 
     programs.${shell}.enable = config.programs ? "${shell}";
