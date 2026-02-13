@@ -30,7 +30,6 @@ in {
       ./locale
       ./networking
       ./nix
-      ./profiles
       ./programs
       ./secrets
       ./secureboot
@@ -41,6 +40,7 @@ in {
       ./tailscale
       ./theming
       ./zram
+      ../profiles
     ];
 
   my = {

@@ -27,12 +27,12 @@ in {
       ./gui
       ./misc
       ./nix
-      ./profiles
       ./scripts
       ./security
       ./ssh
       ./syncthing
       ./theming
+      ../profiles
     ];
 
   my = {
