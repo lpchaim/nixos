@@ -18,11 +18,15 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.services.hypridle.settings.general.lock_cmd != null;
+        message = "config.services.hypridle.settings.general.lock_cmd must be set for hypridle to work properly";
+      }
+    ];
+
     services.hypridle = {
-      enable =
-        if (cfg.lockCmd == null)
-        then (throw "config.services.hypridle.settings.general.lock_cmd must be set")
-        else true;
+      enable = true;
       settings = {
         general = {
           lock_cmd = cfg.lockCmd;

@@ -32,6 +32,7 @@ in {
       ./ssh
       ./syncthing
       ./theming
+      ./wayland
       ../profiles
     ];
 

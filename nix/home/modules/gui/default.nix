@@ -19,6 +19,13 @@ in {
   options.my.gui.enable = lib.mkEnableOption "gui apps";
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = osConfig == {} || osConfig.hardware.graphics.enable;
+        message = "config.my.gui.enable is useless without graphics";
+      }
+    ];
+
     home.packages = with pkgs; [
       libreoffice-qt6-fresh
       obsidian

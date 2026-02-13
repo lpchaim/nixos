@@ -5,12 +5,12 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.profiles.wayland;
+  cfg = config.my.wayland;
 in {
-  options.my.profiles.wayland =
-    lib.mkEnableOption "wayland profile"
-    // {default = osConfig.my.profiles.wayland or false;};
-  config = lib.mkIf cfg {
+  options.my.wayland.enable =
+    lib.mkEnableOption "wayland tweaks"
+    // {default = osConfig.my.wayland.enable or false;};
+  config = lib.mkIf cfg.enable {
     home.packages = [pkgs.wl-clipboard];
     home.sessionVariables.NIXOS_OZONE_WL = "1";
 

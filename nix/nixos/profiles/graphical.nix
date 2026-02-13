@@ -7,6 +7,10 @@
 in {
   options.my.profiles.graphical = lib.mkEnableOption "graphical profile";
   config = lib.mkIf cfg {
+    my = {
+      wayland.enable = true;
+    };
+
     boot.plymouth.enable = true;
     hardware = {
       graphics.enable = true;
