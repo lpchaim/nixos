@@ -12,10 +12,7 @@ in {
   config = lib.mkIf cfg {
     my = {
       bars.dank-material-shell.enable = true;
-      profiles = {
-        apps.gui = true;
-        apps.media = true;
-      };
+      gui.enable = true;
     };
   };
 }

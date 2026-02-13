@@ -16,6 +16,7 @@ in {
       hardware.rgb = true;
       de.gnome = true;
       de.hyprland = true;
+      graphical = true;
     };
   };
 

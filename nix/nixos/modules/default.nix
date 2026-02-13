@@ -50,7 +50,6 @@ in {
     theming.enable = mkDefault true;
     zram.enable = mkDefault true;
     profiles = {
-      graphical = mkDefault true;
       wayland = mkDefault config.my.profiles.graphical;
       pipewire = mkDefault true;
       kernel = mkDefault true;

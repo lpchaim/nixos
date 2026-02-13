@@ -15,6 +15,7 @@ in {
       hardware.cpu.intel = true;
       de.gnome = true;
       de.hyprland = true;
+      graphical = true;
     };
   };
 

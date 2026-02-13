@@ -9,7 +9,9 @@
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
   config = lib.mkIf cfg {
-    my.gaming.obs.enableVirtualWebcam = true;
+    my = {
+      gaming.obs.enableVirtualCamera = true;
+    };
 
     environment.systemPackages = with pkgs; [
       piper
@@ -23,7 +25,6 @@ in {
 
     boot.kernelPackages = pkgs.linuxPackages_zen;
 
-    hardware.graphics.enable = true;
     hardware.keyboard.qmk.enable = true;
 
     networking.firewall.allowedTCPPorts = [5900]; # Default VNC port

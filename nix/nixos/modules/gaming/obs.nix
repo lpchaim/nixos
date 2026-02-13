@@ -10,14 +10,13 @@ in {
     enable =
       lib.mkEnableOption "OBS"
       // {default = config.my.gaming.enable;};
-    enableVirtualWebcam = lib.mkEnableOption "OBS virtual webcam";
+    enableVirtualCamera = lib.mkEnableOption "OBS virtual webcam";
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       programs.obs-studio = {
         enable = true;
-        enableVirtualCamera = true;
         plugins = with pkgs.obs-studio-plugins; [
           input-overlay
           obs-pipewire-audio-capture
@@ -28,7 +27,9 @@ in {
         ];
       };
     })
-    (lib.mkIf (cfg.enable && cfg.enableVirtualWebcam) {
+    (lib.mkIf (cfg.enable && cfg.enableVirtualCamera) {
+      programs.obs-studio.enableVirtualCamera = true;
+
       boot.extraModulePackages = with config.boot.kernelPackages; [
         v4l2loopback
       ];

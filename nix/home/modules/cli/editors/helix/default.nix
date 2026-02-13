@@ -5,9 +5,8 @@
 }: let
   cfg = config.my.cli.editors.helix;
 in {
-  options.my.cli.editors.helix.enable =
-    lib.mkEnableOption "helix"
-    // {default = config.my.cli.editors.enable;};
+  options.my.cli.editors.helix.enable = lib.mkEnableOption "helix";
+
   config = lib.mkIf cfg.enable {
     programs.helix = {
       enable = true;

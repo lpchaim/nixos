@@ -13,10 +13,8 @@ in {
   my = {
     ci.build = true;
     security.u2f.relaxed = true;
-    profiles.graphical = false;
   };
 
-  hardware.graphics.enable = false;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   nixpkgs.hostPlatform = "aarch64-linux";
 

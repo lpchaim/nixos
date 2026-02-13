@@ -9,7 +9,6 @@
   inherit (inputs.nix-std.lib) serde;
   inherit (lib) mkIf mkEnableOption mkOption;
   cfg = config.my.misc.llm;
-  defaultEnable = {default = cfg.enable;};
 in {
   options.my.misc.llm = {
     enable = mkEnableOption "LLM tools";
@@ -19,7 +18,7 @@ in {
       default = "tinyllama";
     };
     ollama = {
-      enable = mkEnableOption "ollama configuration" // defaultEnable;
+      enable = mkEnableOption "ollama configuration" // {default = cfg.enable;};
       url = mkOption {
         description = "The URL of the ollama server";
         type = lib.types.str;
@@ -32,7 +31,7 @@ in {
       };
     };
     smartcat = {
-      enable = mkEnableOption "smartcat" // defaultEnable;
+      enable = mkEnableOption "smartcat" // {default = cfg.enable;};
       model = mkOption {
         description = "Which model to use";
         type = lib.types.str;

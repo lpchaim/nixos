@@ -3,13 +3,7 @@
     inputs.git-hooks-nix.flakeModule
   ];
 
-  perSystem = {
-    config,
-    system,
-    pkgs,
-    self',
-    ...
-  }: let
+  perSystem = {self', ...}: let
     inherit (self'.legacyPackages) pkgs;
   in {
     pre-commit = {

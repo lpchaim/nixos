@@ -1,11 +1,4 @@
 {
-  config,
-  lib,
-  ...
-}: let
-  inherit (lib) mkDefault mkEnableOption mkIf;
-  cfg = config.my.cli;
-in {
   imports = [
     ./atuin
     ./editors
@@ -20,23 +13,4 @@ in {
     ./zellij
     ./zsh
   ];
-
-  options.my.cli.enable = mkEnableOption "cli modules";
-
-  config.my.cli = mkIf cfg.enable {
-    editors.enable = mkDefault true;
-    essentials.enable = mkDefault true;
-    fish.enable = mkDefault true;
-    git = {
-      enable = mkDefault true;
-      lazygit.enable = mkDefault true;
-    };
-    hishtory.enable = mkDefault false;
-    nushell.enable = mkDefault true;
-    starship.enable = mkDefault true;
-    tealdeer.enable = mkDefault true;
-    tmux.enable = mkDefault false;
-    zellij.enable = mkDefault true;
-    zsh.enable = mkDefault true;
-  };
 }
