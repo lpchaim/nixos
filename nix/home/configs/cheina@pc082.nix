@@ -12,11 +12,10 @@
 
   my = {
     ci.build = true;
-    cli.enable = true;
     cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
-    development.nixd.enableLsp = false;
+    development.nixd.lsp.enable = false;
     profiles = {
       standalone = true;
       wayland = true;

@@ -9,9 +9,7 @@ in {
     ./treesitter.nix
   ];
 
-  options.my.cli.editors.neovim.enable =
-    lib.mkEnableOption "neovim"
-    // {default = config.my.cli.editors.enable;};
+  options.my.cli.editors.neovim.enable = lib.mkEnableOption "neovim";
 
   config = lib.mkIf cfg.enable {
     programs.nixvim = {

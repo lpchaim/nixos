@@ -10,19 +10,15 @@
   isNixos = osConfig != {};
 in {
   options.my.development.nixd = {
-    enable =
-      lib.mkEnableOption "nixd"
-      // {default = config.my.development.enable;};
-    enableLsp =
-      lib.mkEnableOption "nixd LSP"
-      // {default = cfg.enable;};
+    enable = lib.mkEnableOption "nixd";
+    lsp.enable = lib.mkEnableOption "nixd LSP" // {default = cfg.enable;};
   };
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enableLsp {
+    (lib.mkIf cfg.enable {
       home.packages = [pkgs.nixd-lix];
     })
-    (lib.mkIf cfg.enableLsp {
+    (lib.mkIf (cfg.lsp.enable && config.programs.helix.enable) {
       programs.helix = {
         languages = {
           language = [

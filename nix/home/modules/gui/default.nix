@@ -13,6 +13,7 @@ in {
     ./firefox.nix
     ./kitty.nix
     ./mangohud.nix
+    ./media.nix
   ];
 
   options.my.gui.enable = lib.mkEnableOption "gui apps";
@@ -31,7 +32,7 @@ in {
       inherit (inputs.self.lib.config) profilePicture wallpaper;
     in {
       "${config.home.homeDirectory}/.face".source = profilePicture;
-      "${config.xdg.userDirs.pictures}/Wallpapers/${builtins.baseNameOf wallpaper}".source = wallpaper;
+      "${config.xdg.userDirs.pictures}/Wallpapers/${baseNameOf wallpaper}".source = wallpaper;
     };
 
     programs = {

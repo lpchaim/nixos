@@ -7,9 +7,7 @@
 }: let
   cfg = config.my.cli.atuin;
 in {
-  options.my.cli.atuin.enable =
-    lib.mkEnableOption "atuin"
-    // {default = config.my.cli.enable;};
+  options.my.cli.atuin.enable = lib.mkEnableOption "atuin";
   config = lib.mkIf cfg.enable {
     programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {

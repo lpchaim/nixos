@@ -6,9 +6,9 @@
   ...
 }: let
   inherit (pkgs.stdenv.hostPlatform) system;
-  cfg = config.my.profiles.apps.media;
+  cfg = config.my.gui.media;
 in {
-  options.my.profiles.apps.media = lib.mkEnableOption "media profile";
+  options.my.gui.media = lib.mkEnableOption "gui media apps" // {default = config.my.gui.enable;};
   config = lib.mkIf cfg {
     programs = {
       mpv.enable = true;

@@ -36,13 +36,35 @@ in {
     ];
 
   my = {
-    cli.enable = lib.mkDefault true;
-    development.enable = lib.mkDefault true;
+    cli = {
+      atuin.enable = true;
+      editors = {
+        helix.enable = lib.mkDefault true;
+        kakoune.enable = lib.mkDefault true;
+        vim.enable = lib.mkDefault true;
+      };
+      essentials.enable = lib.mkDefault true;
+      fish.enable = lib.mkDefault true;
+      git.enable = lib.mkDefault true;
+      nushell.enable = lib.mkDefault true;
+      starship.enable = lib.mkDefault true;
+      tealdeer.enable = lib.mkDefault true;
+      zellij.enable = lib.mkDefault true;
+      zsh.enable = lib.mkDefault true;
+    };
+    development = {
+      nixd.enable = lib.mkDefault true;
+    };
     nix.enable = lib.mkDefault true;
+    security.enable = lib.mkDefault true;
     scripts.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
   };
 
-  programs.home-manager.enable = lib.mkDefault true;
+  programs = {
+    helix.defaultEditor = lib.mkDefault true;
+    home-manager.enable = lib.mkDefault true;
+  };
+
   systemd.user.startServices = "sd-switch";
 }

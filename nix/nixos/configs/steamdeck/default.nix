@@ -18,8 +18,9 @@ in {
     gaming.steam.enable = true;
     security.u2f.relaxed = true;
     profiles = {
-      kernel = false;
       de.gnome = true;
+      graphical = true;
+      kernel = false;
     };
   };
 
