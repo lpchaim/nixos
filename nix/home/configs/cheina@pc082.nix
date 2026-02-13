@@ -16,9 +16,9 @@
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
     development.nixd.lsp.enable = false;
+    wayland.enable = true;
     profiles = {
       standalone = true;
-      wayland = true;
     };
   };
 

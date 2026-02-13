@@ -10,10 +10,10 @@
 }: let
   inherit (inputs.self.lib.config) name shell;
   userName = name.user;
-  cfg = config.my.profiles.users;
+  cfg = config.my.users;
 in {
-  options.my.profiles.users = lib.mkEnableOption "users profile";
-  config = lib.mkIf cfg {
+  options.my.users.enable = lib.mkEnableOption "user tweaks";
+  config = lib.mkIf cfg.enable {
     users = let
       defaults = {
         isNormalUser = true;

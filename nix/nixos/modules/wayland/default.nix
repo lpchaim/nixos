@@ -6,12 +6,17 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.profiles.wayland;
+  cfg = config.my.wayland;
 in {
-  options.my.profiles.wayland =
-    lib.mkEnableOption "wayland profile"
-    // {default = config.my.profiles.graphical;};
-  config = lib.mkIf cfg {
+  options.my.wayland.enable = lib.mkEnableOption "wayland tweaks";
+  config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = config.hardware.graphics.enable;
+        message = "config.my.wayland.enable is useless without graphics";
+      }
+    ];
+
     services.displayManager.gdm.wayland = true;
     programs.xwayland.enable = true;
 

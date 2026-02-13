@@ -27,9 +27,11 @@ in {
       ./gaming
       ./hardware
       ./kdeconnect
+      ./kernel
       ./locale
       ./networking
       ./nix
+      ./pipewire
       ./programs
       ./secrets
       ./secureboot
@@ -39,22 +41,22 @@ in {
       ./syncthing
       ./tailscale
       ./theming
+      ./users
+      ./virtualization
+      ./wayland
       ./zram
       ../profiles
     ];
 
   my = {
+    kernel.enable = mkDefault true;
     networking.tailscale.enable = mkDefault true;
     nix.enable = mkDefault true;
+    pipewire.enable = mkDefault true;
     security.enable = mkDefault true;
     theming.enable = mkDefault true;
+    users.enable = mkDefault true;
     zram.enable = mkDefault true;
-    profiles = {
-      wayland = mkDefault config.my.profiles.graphical;
-      pipewire = mkDefault true;
-      kernel = mkDefault true;
-      users = mkDefault true;
-    };
   };
 
   environment.systemPackages = with pkgs; [
