@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.profiles.virtualisation;
+  cfg = config.my.virtualisation;
 in {
-  options.my.profiles.virtualisation = lib.mkEnableOption "virtualisation profile";
-  config = lib.mkIf cfg {
+  options.my.virtualisation = lib.mkEnableOption "virtualisation tweaks";
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       distrobox
     ];

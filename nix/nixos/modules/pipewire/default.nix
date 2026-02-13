@@ -4,10 +4,10 @@
   lib,
   ...
 }: let
-  cfg = config.my.profiles.pipewire;
+  cfg = config.my.pipewire;
 in {
-  options.my.profiles.pipewire = lib.mkEnableOption "pipewire profile";
-  config = lib.mkIf cfg {
+  options.my.pipewire.enable = lib.mkEnableOption "pipewire tweaks";
+  config = lib.mkIf cfg.enable {
     hardware.enableAllFirmware = true;
     security.rtkit.enable = true;
     services.pipewire = {

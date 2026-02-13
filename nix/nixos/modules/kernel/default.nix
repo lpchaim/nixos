@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.profiles.kernel;
+  cfg = config.my.kernel;
 in {
-  options.my.profiles.kernel = lib.mkEnableOption "kernel profile";
-  config = lib.mkIf cfg {
+  options.my.kernel.enable = lib.mkEnableOption "kernel tweaks";
+  config = lib.mkIf cfg.enable {
     boot = lib.mkIf (!(config ? jovian)) {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       kernelModules = [

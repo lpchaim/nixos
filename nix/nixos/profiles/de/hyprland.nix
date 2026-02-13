@@ -9,11 +9,6 @@
 in {
   options.my.profiles.de.hyprland = lib.mkEnableOption "hyprland profile";
   config = lib.mkIf cfg {
-    my.profiles = {
-      pipewire = true;
-      wayland = true;
-    };
-
     programs.hyprland = {
       enable = true;
       xwayland.enable = true;
