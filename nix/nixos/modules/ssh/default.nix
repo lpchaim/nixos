@@ -13,7 +13,6 @@ in {
       allowSFTP = true;
       openFirewall = true;
       settings = {
-        AddKeysToAgent = lib.mkDefault true;
         AllowAgentForwarding = lib.mkDefault false;
         PasswordAuthentication = lib.mkDefault false;
         PermitRootLogin = lib.mkDefault "no";
