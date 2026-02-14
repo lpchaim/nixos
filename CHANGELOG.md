@@ -1,5 +1,42 @@
 # Changelog
 
+## [2.1.0](https://github.com/lpchaim/nixos/compare/v2.0.0...v2.1.0) (2026-02-14)
+
+
+### Features
+
+* Add legacyPackages flake module, improve ci matrix generation ([e3f9919](https://github.com/lpchaim/nixos/commit/e3f991991e947d2239cabbc3f44faa6b6fca3a3c))
+* **ci:** Also build NixOS configurations ([71b6ca8](https://github.com/lpchaim/nixos/commit/71b6ca84cb8b09c21d472bc85e9b239428279a31))
+* **ci:** Check action now tries to keep going ([200f0b1](https://github.com/lpchaim/nixos/commit/200f0b1a7f85ff86844b0b7e9841154bca3a0197))
+* **ci:** Specify CI build options per derivation ([b09bae5](https://github.com/lpchaim/nixos/commit/b09bae5db88b7e7df55652a12fb3901ded799603))
+* Disable xdebug, enable wayland on work home config ([83ff508](https://github.com/lpchaim/nixos/commit/83ff5081aac37928cbc8254f05fe7785e49c0c9b))
+* DMS tweaks ([a097906](https://github.com/lpchaim/nixos/commit/a0979062acf8213faa91e89216b37599a991329d))
+* Enable custom completions support for nixd ([d93a8e3](https://github.com/lpchaim/nixos/commit/d93a8e37a376c743dd79cefadf9311bc579c7176))
+* Get home user uid from osConfig if applicable, default to null ([edb3edf](https://github.com/lpchaim/nixos/commit/edb3edf8b57b4fe76b6e841740e3fcaf4d4b68d3))
+* **helix:** Add subword movement, show hidden files on picker ([c1dfca3](https://github.com/lpchaim/nixos/commit/c1dfca349c3a86541a5d69be40f5f5636743c8f2))
+* **hyprland:** Enable vrr, name monitor for rotation support ([a1164d2](https://github.com/lpchaim/nixos/commit/a1164d2fca968d73cac0a1088c5620b7389d9caa))
+* **hyprland:** Special workspaces now slide down, faster animations ([75d1832](https://github.com/lpchaim/nixos/commit/75d183255f2cdf83cc4eb65d46d62150e3fdacb2))
+* Initial home SSH module ([e8e69b0](https://github.com/lpchaim/nixos/commit/e8e69b02da0939b067ad89cd08bc679194873da4))
+* Move nushell carapace spec generation to lib ([8e00b62](https://github.com/lpchaim/nixos/commit/8e00b625d3ac732fb21a3ae0eb4b4bcda8519a94))
+* Per branch CI build configuration ([b9fd7c7](https://github.com/lpchaim/nixos/commit/b9fd7c7b9b9144f1ff51665d04098114aa5642e7))
+* Reenable auto package loading ([74868fe](https://github.com/lpchaim/nixos/commit/74868fef8b8df578b940e520a938e7bf16071cdb))
+* Saner CI build workflow ([a23f12d](https://github.com/lpchaim/nixos/commit/a23f12da459103cf0c4a29a01aa40ac4f981f2c8))
+* Separate nixd LSP into its own module ([57fe470](https://github.com/lpchaim/nixos/commit/57fe470ebef051c359b750b76343a7b59c68977c))
+
+
+### Bug Fixes
+
+* Allow update flake CI action to continue on error ([7a5e9e1](https://github.com/lpchaim/nixos/commit/7a5e9e1b2ff51fe6c062c0ca497085a3c9725c0f))
+* **ci:** Only build NixOS configs on main, exclude steamdeck ([5fe7b17](https://github.com/lpchaim/nixos/commit/5fe7b1722e04d4eb838b11a4451994fc77086d1a))
+* **ci:** Update action runs on develop unless dispatched manually ([7d9d3c1](https://github.com/lpchaim/nixos/commit/7d9d3c11ea03027c0efc41d20bed2a30bbb5f9f4))
+* **dms:** Fix DMS session typo ([b56a2fe](https://github.com/lpchaim/nixos/commit/b56a2fe8e1af25b7ae4dab4aad40746da6671281))
+* **dms:** Match DMS border spacing to hyprland's ([d993c38](https://github.com/lpchaim/nixos/commit/d993c389863cc4bf65e9edc4f4e117703fec61c2))
+* **dms:** Use mkDefault on theme related settings so stylix doesn't break ([6eda926](https://github.com/lpchaim/nixos/commit/6eda9268c359a0b2f6551d4f175cfe3e78af653b))
+* **dms:** Use mkDefault on theme settings for stylix compatibility ([43c5bbb](https://github.com/lpchaim/nixos/commit/43c5bbb58934ec8ab7303e0db2b6a0b128e4e40e))
+* Missing default enabled modules ([a3e12cb](https://github.com/lpchaim/nixos/commit/a3e12cbefbadcc6f6b9ae45b8bb8adeae29c6e29))
+* **nixd:** Add self packages overlay, fix home options ([029e10d](https://github.com/lpchaim/nixos/commit/029e10d3f7cae4faba987094b0b64a3b9fa62081))
+* **tailscale:** Prevent tailscale from autorestarting on switches ([3419d51](https://github.com/lpchaim/nixos/commit/3419d51b9df12a8963377c86a187e57bc9d701c6))
+
 ## [2.0.0](https://github.com/lpchaim/nixos/compare/v1.1.0...v2.0.0) (2026-02-06)
 
 
