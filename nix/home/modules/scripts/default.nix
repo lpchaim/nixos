@@ -26,13 +26,11 @@ in {
       lib.mkIf config.programs.carapace.enable
       (
         cfg.byName
-        |> (lib.filterAttrs (_: script: lib.strings.hasInfix "/bin/nu" script.interpreter))
-        |> (
-          lib.concatMapAttrs
-          (name: script: {
-            "${specPath}/${name}.yaml".source = carapaceSpecFromNuScript script;
-          })
-        )
+        |> lib.filterAttrs (_: script: lib.strings.hasInfix "/bin/nu" script.interpreter)
+        |> lib.concatMapAttrs
+        (name: script: {
+          "${specPath}/${name}.yaml".source = carapaceSpecFromNuScript script;
+        })
       );
   };
 }

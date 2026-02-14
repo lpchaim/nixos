@@ -1,13 +1,9 @@
-{
-  inputs,
-  lib,
-  ...
-}: let
+{lib, ...}: let
   assets = ../../assets;
   filter = prefix: (name: type: type == "regular" && lib.strings.hasPrefix prefix name);
   assetWithPrefix = prefix:
     (builtins.readDir assets)
-    |> (lib.filterAttrs (filter prefix))
+    |> lib.filterAttrs (filter prefix)
     |> builtins.attrNames
     |> builtins.head
     |> (x: assets + /${x});

@@ -21,14 +21,14 @@
         (
           path
           |> builtins.readDir
-          |> (builtins.mapAttrs (name: type:
+          |> builtins.mapAttrs (name: type:
             if (type == "directory" && builtins.pathExists (path + /${name}/default.nix))
             then (path + /${name}/default.nix)
-            else (path + /${name})))
-          |> (lib.concatMapAttrs (name: path: {${lib.removeSuffix ".nix" name} = path;}))
+            else (path + /${name}))
+          |> lib.concatMapAttrs (name: path: {${lib.removeSuffix ".nix" name} = path;})
         ))
     |> (attr: removeAttrs attr ["default" "default.nix"])
-    |> (lib.filterAttrsRecursive (_: path: filterFn path));
+    |> lib.filterAttrsRecursive (_: path: filterFn path);
 
   # Lists files as paths
   list = {
@@ -37,18 +37,18 @@
     recursive ? false,
   }:
     read {inherit path recursive;}
-    |> (lib.collect builtins.isPath)
-    |> (builtins.filter (path:
+    |> lib.collect builtins.isPath
+    |> builtins.filter (path:
       path
       |> toString
-      |> filterFn))
-    |> (map (
+      |> filterFn)
+    |> map (
       path:
         path
         |> toString
-        |> (lib.removeSuffix "/default.nix")
+        |> lib.removeSuffix "/default.nix"
         |> (x: /. + x)
-    ));
+    );
 
   # Lists files ending in default.nix
   listDefault = path:
@@ -84,13 +84,13 @@
   importDefault = path: args:
     path
     |> listDefault
-    |> (map (path: import path args));
+    |> map (path: import path args);
 
   # Imports modules not ending in default.nix
   importNonDefault = path: args:
     path
     |> listNonDefault
-    |> (map (path: import path args));
+    |> map (path: import path args);
 
   # Loads modules while preserving directory structure
   load = {
@@ -102,14 +102,14 @@
       inherit path filterFn;
       recursive = true;
     }
-    |> (lib.mapAttrsRecursiveCond
-      builtins.isAttrs
-      (_: x: let
-        mod = import x;
-      in
-        if builtins.isAttrs mod
-        then mod
-        else mod args))
+    |> lib.mapAttrsRecursiveCond
+    builtins.isAttrs
+    (_: x: let
+      mod = import x;
+    in
+      if builtins.isAttrs mod
+      then mod
+      else mod args)
     |> (attr: removeAttrs attr ["default"]);
 
   # Loads files ending in default.nix while preserving directory structure
@@ -134,8 +134,8 @@
         inherit path;
         filterFn = lib.hasSuffix "default.nix";
       })
-    |> (builtins.mapAttrs (_: path:
-        lib.callPackageWith (removeAttrs pkgs ["root"]) path {}));
+    |> builtins.mapAttrs (_: path:
+      lib.callPackageWith (removeAttrs pkgs ["root"]) path {});
 
   # Runs callPackage on files not ending in default.nix, always recursive
   callPackageNonDefault = path: pkgs:
@@ -145,6 +145,6 @@
         inherit path;
         filterFn = path: ! (lib.hasSuffix "default.nix" path);
       })
-    |> (builtins.mapAttrs (_: path:
-        lib.callPackageWith (removeAttrs pkgs ["root"]) path {}));
+    |> builtins.mapAttrs (_: path:
+      lib.callPackageWith (removeAttrs pkgs ["root"]) path {});
 }

@@ -16,7 +16,12 @@ in {
         php.symbol = " ";
       };
     };
-    home.file.${config.programs.starship.configPath}.source =
+    home.file.${config.programs.starship.configPath}.source = let
+      settingsFile =
+        config.programs.starship.settings
+        |> builtins.toJSON
+        |> pkgs.writeText "starship-settings";
+    in
       lib.mkForce
       (pkgs.runCommand
         "starship-settings"
@@ -26,7 +31,7 @@ in {
             starship preset nerd-font-symbols
             | from toml
             | merge deep (
-              open '${config.programs.starship.settings |> builtins.toJSON |> (pkgs.writeText "starship-settings")}'
+              open '${settingsFile}'
               | from json
             )
             | to toml
