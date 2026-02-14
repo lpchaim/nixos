@@ -1,6 +1,9 @@
 args: let
   inherit ((import ../../lib args).loaders) loadNonDefault;
 in {
+  # For reasons beyond my understanding, removing an argument from the attribute
+  # set here stops it from propagating to the loaded files even if the whole
+  # systemArgs is used as an argument
   perSystem = {
     self',
     pkgs,

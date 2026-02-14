@@ -27,7 +27,7 @@
             else (path + /${name})))
           |> (lib.concatMapAttrs (name: path: {${lib.removeSuffix ".nix" name} = path;}))
         ))
-    |> (attr: builtins.removeAttrs attr ["default" "default.nix"])
+    |> (attr: removeAttrs attr ["default" "default.nix"])
     |> (lib.filterAttrsRecursive (_: path: filterFn path));
 
   # Lists files as paths
@@ -40,12 +40,12 @@
     |> (lib.collect builtins.isPath)
     |> (builtins.filter (path:
       path
-      |> builtins.toString
+      |> toString
       |> filterFn))
-    |> (builtins.map (
+    |> (map (
       path:
         path
-        |> builtins.toString
+        |> toString
         |> (lib.removeSuffix "/default.nix")
         |> (x: /. + x)
     ));
@@ -84,41 +84,45 @@
   importDefault = path: args:
     path
     |> listDefault
-    |> (builtins.map (path: import path args));
+    |> (map (path: import path args));
 
   # Imports modules not ending in default.nix
   importNonDefault = path: args:
     path
     |> listNonDefault
-    |> (builtins.map (path: import path args));
+    |> (map (path: import path args));
 
   # Loads modules while preserving directory structure
   load = {
     path,
     args,
     filterFn ? (x: true),
-    loader ? inputs.haumea.lib.loaders.default,
   }:
-    path
-    |> (path:
-      inputs.haumea.lib.load {
-        inherit loader;
-        src = path;
-        inputs = args;
-      })
-    |> (attr: builtins.removeAttrs attr ["default"]);
+    read {
+      inherit path filterFn;
+      recursive = true;
+    }
+    |> (lib.mapAttrsRecursiveCond
+      builtins.isAttrs
+      (_: x: let
+        mod = import x;
+      in
+        if builtins.isAttrs mod
+        then mod
+        else mod args))
+    |> (attr: removeAttrs attr ["default"]);
 
   # Loads files ending in default.nix while preserving directory structure
   loadDefault = path: args:
     load {
-      inherit args path;
+      inherit path args;
       filterFn = lib.hasSuffix "default.nix";
     };
 
   # Loads files not ending in default.nix while preserving directory structure
   loadNonDefault = path: args:
     load {
-      inherit args path;
+      inherit path args;
       filterFn = path: ! (lib.hasSuffix "default.nix" path);
     };
 
@@ -131,7 +135,7 @@
         filterFn = lib.hasSuffix "default.nix";
       })
     |> (builtins.mapAttrs (_: path:
-        lib.callPackageWith (builtins.removeAttrs pkgs ["root"]) path {}));
+        lib.callPackageWith (removeAttrs pkgs ["root"]) path {}));
 
   # Runs callPackage on files not ending in default.nix, always recursive
   callPackageNonDefault = path: pkgs:
@@ -142,5 +146,5 @@
         filterFn = path: ! (lib.hasSuffix "default.nix" path);
       })
     |> (builtins.mapAttrs (_: path:
-        lib.callPackageWith (builtins.removeAttrs pkgs ["root"]) path {}));
+        lib.callPackageWith (removeAttrs pkgs ["root"]) path {}));
 }
