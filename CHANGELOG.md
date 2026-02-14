@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/lpchaim/nixos/compare/v2.1.0...v2.1.1) (2026-02-14)
+
+
+### Bug Fixes
+
+* Remove AddKeysToAgent from sshd config ([5105aa4](https://github.com/lpchaim/nixos/commit/5105aa45e91d45202b8c627fb87bb0019eab60f3))
+
 ## [2.1.0](https://github.com/lpchaim/nixos/compare/v2.0.0...v2.1.0) (2026-02-14)
 
 
