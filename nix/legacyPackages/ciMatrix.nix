@@ -69,8 +69,8 @@ in {
     };
   in {
     legacyPackages.ciMatrix =
-      pkgs.writeText
-      "ci-matrix"
-      (builtins.toJSON ciInfo);
+      ciInfo
+      |> builtins.toJSON
+      |> (pkgs.writeText "ci-matrix");
   };
 }
