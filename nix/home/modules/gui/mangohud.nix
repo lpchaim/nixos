@@ -11,11 +11,7 @@ in {
     // {
       default =
         config.my.gui.enable
-        && (
-          (osConfig == {})
-          || !(osConfig ? jovian)
-          || !osConfig.jovian.steam.enable
-        );
+        && !(osConfig.jovian.steam.enable or false);
     };
 
   config = lib.mkIf cfg.enable {

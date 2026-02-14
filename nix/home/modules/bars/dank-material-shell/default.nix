@@ -13,6 +13,8 @@ in {
   options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
 
   config = lib.mkIf (cfg.enable) {
+    stylix.targets.dank-material-shell.enable = false;
+
     programs.dank-material-shell = {
       enable = true;
       enableAudioWavelength = true;
@@ -23,7 +25,13 @@ in {
       enableVPN = false;
 
       # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SettingsSpec.js
-      settings = import ./settings.nix;
+      settings =
+        (import ./settings.nix)
+        // {
+          currentThemeName = lib.mkDefault "purple";
+          currentThemeCategory = lib.mkDefault "generic";
+          customThemeFile = lib.mkDefault "";
+        };
 
       # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SessionSpec.js
       session =

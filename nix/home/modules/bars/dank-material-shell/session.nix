@@ -39,8 +39,11 @@ builtins.fromJSON ''
     "nightModeLocationProvider": "",
     "pinnedApps": [],
     "hiddenTrayIds": [
-      "steam",
-      "KDE Connect Indicator"
+      "chrome_status_icon_1",
+      "KDE Connect Indicator",
+      "openrgb",
+      "spotify-client",
+      "steam"
     ],
     "recentColors": [],
     "showThirdPartyPlugins": false,

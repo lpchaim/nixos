@@ -37,8 +37,6 @@ in {
         systemd.variables = ["--all"];
         settings = {
           exec-once = [
-            "hypridle"
-            "hyprpaper"
             "[workspace 10 silent] steam -silent"
             "[workspace 10 silent] openrgb --startminimized"
           ];
@@ -83,7 +81,8 @@ in {
               "fade, 1, 2, easeinout"
               "border, 1, 2, easeinout"
               "borderangle, 1, 2, easeinout"
-              "workspaces, 1, 4, easeinout"
+              "workspaces, 1, 3, easeinout, slide"
+              "specialWorkspace, 1, 3, easeinout, slidevert -50%"
             ];
           };
           dwindle = {
@@ -123,7 +122,10 @@ in {
             "XCURSOR_SIZE,32"
             "HYPRCURSOR_SIZE,32"
           ];
-          monitor = [",highrr,auto,1"];
+          monitor = [
+            ",highrr,auto,1,vrr,2"
+            "eDP-1,highrr,auto,1,vrr,2"
+          ];
           opengl.nvidia_anti_flicker = true;
           windowrule = let
             mkAutoFloatRule = args:
@@ -241,7 +243,6 @@ in {
         packages = with pkgs; [
           brightnessctl
           hyprcursor
-          hyprpaper
           hyprpicker
           wlinhibit
         ];

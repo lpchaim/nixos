@@ -1,95 +1,69 @@
-name: Update flake inputs
+name: Update
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * SAT"
+    - cron: "0 7 * * SAT"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   update:
-    name: Update flake
+    name: Update flake inputs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - uses: ./.github/actions/qemu-setup
+        with:
+          ref: develop
       - uses: ./.github/actions/nix-setup
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Update flake inputs
+        id: update
         run: |
-          nix flake update \
-            > update.stdout \
-            2> update.stderr
-          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
-          ## Update
-
-          ### Output
-          \`\`\`sh
-          $(cat update.stdout)
-          \`\`\`
-
-          ### Warnings
-          \`\`\`sh
-          $(cat update.stderr)
-          \`\`\`
-          EOF
+          set -o pipefail
+          nix flake update 2>&1 \
+          | tee -a "$GITHUB_STEP_SUMMARY" ./update.out
       - name: Run flake checks
+        id: check
         run: |
-          nix flake check --all-systems \
-            > check.stdout \
-            2> check.stderr
-          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
-          ---
-          ## Check
-
-          ### Output
-          \`\`\`sh
-          $(cat check.stdout)
-          \`\`\`
-
-          ### Warnings
-          \`\`\`sh
-          $(cat check.stderr)
-          \`\`\`
-          EOF
+          set -o pipefail
+          nix flake check --all-systems --keep-going 2>&1 \
+          | tee -a "$GITHUB_STEP_SUMMARY" ./check.out
       - name: Build PR body
         id: vars
         run: |
           {
           echo 'PR_BODY<<EOF'
           cat <<GHO
-          ### Updated inputs
-          <details open>
+          ### Update output
           \`\`\`sh
-          $(cat update.stdout)
+          $(cat update.out)
           \`\`\`
-          </details>
 
-          ### Check results
-
-          <details open>
+          ### Check output
           \`\`\`sh
-          $(cat check.stdout)
+          $(cat check.out)
           \`\`\`
-          </details>
-
-          <details>
-          <summary>Warnings</summary>
-          \`\`\`sh
-          $(cat check.stderr)
-          \`\`\`
-          </details>
           GHO
           echo EOF
           } >> "$GITHUB_OUTPUT"
-          rm ./update.{stdout,stderr}
-          rm ./check.{stdout,stderr}
+          rm ./update.out
+          rm ./check.out
       - name: Create PR
-        uses: technote-space/create-pr-action@v2
+        uses: peter-evans/create-pull-request@v8
         with:
-          COMMIT_MESSAGE: 'chore: Update flake inputs'
-          PR_TITLE: 'chore: Update flake inputs'
-          PR_BRANCH_NAME: update-flake-inputs
-          PR_BODY: ${{ steps.vars.outputs.PR_BODY }}
-          GITHUB_TOKEN: ${{ secrets.GHA_TOKEN }}
+          branch: update-flake-inputs
+          add-paths: |
+            ./flake.lock
+          commit-message: 'chore: Update flake inputs'
+          title: 'chore: Update flake inputs'
+          body: ${{ steps.vars.outputs.PR_BODY }}
+          delete-branch: true

@@ -4,6 +4,6 @@
 
   mkSafePath = path:
     path
-    |> (lib.strings.removePrefix "/")
-    |> (builtins.replaceStrings ["/"] ["-"]);
+    |> lib.strings.removePrefix "/"
+    |> builtins.replaceStrings ["/"] ["-"];
 }

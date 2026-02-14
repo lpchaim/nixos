@@ -7,6 +7,7 @@ in {
   ];
 
   my = {
+    ci.build = true;
     gaming.steam.enable = true;
     networking.tailscale.trusted = true;
     profiles = {
@@ -14,6 +15,7 @@ in {
       hardware.cpu.intel = true;
       de.gnome = true;
       de.hyprland = true;
+      graphical = true;
     };
   };
 

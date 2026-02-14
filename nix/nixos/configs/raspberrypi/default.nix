@@ -10,10 +10,11 @@ in {
     ./storage.nix
   ];
 
-  my.profiles.graphical = false;
-  my.security.u2f.relaxed = true;
+  my = {
+    ci.build = true;
+    security.u2f.relaxed = true;
+  };
 
-  hardware.graphics.enable = false;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   nixpkgs.hostPlatform = "aarch64-linux";
 
