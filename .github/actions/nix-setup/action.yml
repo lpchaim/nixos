@@ -23,6 +23,10 @@ runs:
         extra_nix_config: |
           extra-experimental-features = flakes nix-command pipe-operator
           system = ${{ inputs.system }}
+    - uses: cachix/cachix-action@v16
+      with:
+        name: lpchaim
+        authToken: ${{ inputs.cachixAuthToken }}
     - name: Override nix-daemon build directory
       if: ${{ inputs.makeSpace == 'true' }}
       shell: bash
@@ -40,7 +44,3 @@ runs:
         sudo systemctl daemon-reload
         sudo systemctl restart nix-daemon
         )
-    - uses: cachix/cachix-action@v16
-      with:
-        name: lpchaim
-        authToken: ${{ inputs.cachixAuthToken }}
