@@ -13,6 +13,10 @@ in {
   my = {
     ci.build = true;
     security.u2f.relaxed = true;
+    profiles = {
+      headless = true;
+      server = true;
+    };
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;

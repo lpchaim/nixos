@@ -29,7 +29,6 @@ in {
       atuinLogin
     ];
 
-    programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {
       enable = true;
       daemon.enable = osConfig != {};

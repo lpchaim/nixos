@@ -29,7 +29,6 @@ in {
         hishtory enable
       '';
     in {
-      mcfly.enable = false;
       fish.interactiveShellInit = ''
         ${commonPre}
 
