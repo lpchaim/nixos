@@ -17,10 +17,15 @@ in {
       matchBlocks = {
         "*" = {
           addKeysToAgent = "yes";
-          identitiesOnly = false;
-          identityFile = [
-            "~/.ssh/id_rsa"
-          ];
+          identitiesOnly = true;
+          identityFile =
+            lib.optionals
+            config.my.security.enable
+            config.my.security.residentKeys.all;
+          # ++ [
+          #   "~/.ssh/id_ed25519"
+          #   "~/.ssh/id_rsa"
+          # ];
         };
       };
     };
