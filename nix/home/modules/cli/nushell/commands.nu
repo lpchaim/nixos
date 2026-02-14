@@ -1,6 +1,7 @@
 # Wrapper for git branch
+@complete external
 def --wrapped "git branch" [
-  ...rest: string@__git_branch_completions,
+  ...rest: string,
 ] {
   ^git branch ...$rest
   | lines
@@ -10,16 +11,13 @@ def --wrapped "git branch" [
   }
 }
 
-def __git_branch_completions [] {
-  __get_completions git branch
-}
-
 # Nushell-friendly fzf wrapper
 # 
 # Supports plain lists and tables with optional cell path
+@complete external
 def --wrapped fzf [
   --path: cell-path, # The cell path to use for the description
-  ...rest: string@__fzf_completions,
+  ...rest: string,
 ]: list -> list {
   let input = $in;
   let hasPath = $path != null
@@ -42,20 +40,7 @@ def --wrapped fzf [
     | each { |index| $input | get $index }
 }
 
-def __fzf_completions [] {
-  __get_completions fzf
-}
-
 # Cast to list, for e.g. ranges
 def "into list" []: any -> list<any> {
     each {}
-}
-
-# Helper to generate completion functions
-def __get_completions [
-  command: string,
-  ...context: string,
-] {
-  ^carapace $command nushell $command ...$context '-'
-  | from json
 }
