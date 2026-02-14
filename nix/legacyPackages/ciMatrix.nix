@@ -1,9 +1,6 @@
-{
-  inputs,
-  systems,
-  ...
-}: let
+{inputs, ...}: let
   inherit (inputs) self;
+  inherit (self) systems;
 in {
   perSystem = {
     lib,
