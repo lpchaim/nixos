@@ -1,62 +1,8 @@
-{
-  inputs,
-  systems,
-  ...
-}: {
-  perSystem = {
-    self',
-    config,
-    lib,
-    system,
-    ...
-  }: let
-    inherit systems;
-    inherit (inputs) self;
+{...}: {
+  perSystem = {self', ...}: let
     inherit (self'.legacyPackages) pkgs;
   in {
-    apps.generate-ci-matrix = let
-      getOutputInfo = mkDerivationPath: output:
-        lib.mapAttrsToList
-        (name: subject: {
-          inherit name;
-          derivation = lib.escapeShellArg (mkDerivationPath name);
-          system = subject.system or subject.pkgs.stdenv.hostPlatform.system;
-        })
-        output;
-      getNestedOutputInfo = mkDerivationPath: output:
-        lib.concatMap (system: getOutputInfo (mkDerivationPath system) output.${system})
-        systems;
-      ciInfo = let
-        standaloneHomeConfigurations =
-          lib.filterAttrs
-          (name: _: let
-            parts = lib.splitString "@" name;
-            host = lib.last parts;
-          in
-            !(self.nixosConfigurations ? ${host}))
-          self.homeConfigurations;
-      in {
-        homeConfigurations =
-          getOutputInfo
-          (name: ''.#homeConfigurations."${name}".activationPackage'')
-          standaloneHomeConfigurations;
-        nixosConfigurations =
-          getOutputInfo
-          (name: ''.#nixosConfigurations."${name}".config.system.build.toplevel'')
-          self.nixosConfigurations;
-        packages =
-          getNestedOutputInfo
-          (_: name: ''.#"${name}"'')
-          self.packages;
-        devShells =
-          getNestedOutputInfo
-          (system: name: ''.#devShells.${system}."${name}"'')
-          self.devShells;
-      };
-      ciInfoFile =
-        ciInfo
-        |> builtins.toJSON
-        |> (pkgs.writeText "ci-info");
+    apps.generate-ci-matrix = {
       program =
         pkgs.writers.writeNuBin
         "cimatrix"
@@ -66,23 +12,36 @@
           def main [
             --system: string = all  # Filter by system
             --output: string = all  # Only include the specified output
+            --branch: string  # Only include the specified branch
+            --flatten  # Output a single list
           ]: nothing -> string {
-            open "${ciInfoFile}"
+            open "${self'.legacyPackages.ciMatrix}"
             | from json
             | if $system != all {
-              transpose
-              | where { get column1 | columns | 'system' in $in }
-              | update column1 { where system == $system }
-              | transpose --header-row --as-record
-            } else $in
+                filter-records { where system == $system }
+              } else $in
+            | if $branch != null {
+                filter-records { where branch == $branch }
+              } else $in
             | if $output != all {
-              get --optional $output | default []
-            } else $in
+                get --optional $output | default []
+              } else $in
+            | if $flatten {
+                items { |output, $cols|
+                  $cols
+                  | insert output $output
+                }
+                | flatten
+              } else $in
             | to json --raw
           }
+
+          def filter-records [where]: record -> record {
+              transpose
+              | update column1 $where
+              | transpose --header-row --as-record
+          }
         '';
-    in {
-      inherit program;
       meta.description = "Generates a GitHub Actions build matrix";
     };
   };

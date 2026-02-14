@@ -11,14 +11,18 @@
   };
 
   my = {
-    cli.enable = true;
+    ci.build = true;
     cli.git.enable = true;
     cli.hishtory.enable = false;
     de.gnome.theming.enableGnomeShellTheme = false;
+    development.nixd.lsp.enable = false;
+    wayland.enable = true;
     profiles = {
       standalone = true;
     };
   };
+
+  home.sessionVariables.XDEBUG_MODE = "off";
 
   home.packages = [
     (pkgs.writeShellScriptBin "dev2beta" ''

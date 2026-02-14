@@ -17,9 +17,10 @@ in {
     gaming.enable = false;
     gaming.steam.enable = true;
     security.u2f.relaxed = true;
+    kernel.enable = false;
     profiles = {
-      kernel = false;
       de.gnome = true;
+      graphical = true;
     };
   };
 

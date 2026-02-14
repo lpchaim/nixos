@@ -16,22 +16,26 @@ in {
         php.symbol = " ";
       };
     };
-    home.file.${config.programs.starship.configPath}.source =
+    home.file.${config.programs.starship.configPath}.source = let
+      settingsFile =
+        config.programs.starship.settings
+        |> builtins.toJSON
+        |> pkgs.writeText "starship-settings";
+    in
       lib.mkForce
       (pkgs.runCommand
         "starship-settings"
-        {buildInputs = [pkgs.nushell pkgs.starship];}
+        {buildInputs = with pkgs; [nushell starship];}
         ''
           nu --commands "
             starship preset nerd-font-symbols
             | from toml
             | merge deep (
-              open ${pkgs.writeText "starship-settings" (builtins.toJSON config.programs.starship.settings)}
+              open '${settingsFile}'
               | from json
             )
             | to toml
-          " \
-          > $out
+          " > $out
         '');
   };
 }

@@ -6,16 +6,17 @@
     {inherit inputs;}
     ({flake-parts-lib, ...}: let
       inherit (flake-parts-lib) importApply;
-      importApply' = path: importApply path {inherit inputs systems;};
+      import' = path: import path {inherit inputs;};
+      importApply' = path: importApply path {inherit inputs;};
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
       inherit systems;
       imports = [
+        (importApply' ./nix/flakeModules)
         (importApply' ./nix/apps)
-        (importApply' ./nix/modules)
         (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
-        (importApply' ./nix/scripts)
+        (importApply' ./nix/legacyPackages)
         (importApply' ./nix/shells)
       ];
       perSystem = {
@@ -31,17 +32,18 @@
         };
       };
       flake = {
-        lib = import ./nix/lib {inherit inputs;};
+        inherit systems;
+        lib = import' ./nix/lib;
         schemas =
           inputs.flake-schemas.schemas
-          // (import ./nix/schemas {inherit inputs systems;});
+          // (import' ./nix/schemas);
       };
     });
 
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
     nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";

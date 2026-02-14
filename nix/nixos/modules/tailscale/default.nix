@@ -39,8 +39,8 @@ in {
         ++ lib.optionals cfg.trusted ["trusted"];
       formattedTags =
         tags
-        |> (map (it: "tag:${it}"))
-        |> (builtins.concatStringsSep ",");
+        |> map (it: "tag:${it}")
+        |> builtins.concatStringsSep ",";
     in {
       inherit (cfg) authKeyParameters;
       enable = true;
@@ -60,5 +60,6 @@ in {
       openFirewall = true;
       useRoutingFeatures = "both";
     };
+    systemd.services.tailscaled.restartIfChanged = false;
   };
 }

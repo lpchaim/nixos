@@ -4,14 +4,14 @@
       additionalArguments.meta.description = "For building Rust projects";
       packages = with pkgs; [
         cargo
+        libx11
         openssl
         pkg-config
+        rust-analyzer
         rustc
         rustfmt
         rustPackages.clippy
-        rust-analyzer
         vscode-extensions.vadimcn.vscode-lldb
-        xorg.libX11
       ];
       env.RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
     };

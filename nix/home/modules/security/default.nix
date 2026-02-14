@@ -10,7 +10,7 @@ in {
   options.my.security = {
     enable =
       lib.mkEnableOption "security settings"
-      // {default = osConfig.my.security.enable or true;};
+      // {default = osConfig.my.security.enable or false;};
   };
   config = lib.mkIf cfg.enable {
     home.packages =

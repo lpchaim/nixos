@@ -58,9 +58,6 @@ in {
           "$mod" = "SUPER";
           bind =
             [
-              "$mod, T, exec, kitty"
-              "$mod ALT, T, exec, wezterm"
-              "$mod, B, exec, firefox"
               "$mod, E, exec, nautilus"
               "CTRL ALT, L, exec, ${config.services.hypridle.settings.general.lock_cmd}"
               "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
@@ -108,7 +105,11 @@ in {
             ++ (makeDirectionalBinds "movefocus" [])
             ++ (makeDirectionalBinds "movewindoworgroup" ["SHIFT"])
             ++ (makeWorkspaceBinds "workspace" [])
-            ++ (makeWorkspaceBinds "movetoworkspace" ["SHIFT"]);
+            ++ (makeWorkspaceBinds "movetoworkspace" ["SHIFT"])
+            ++ (lib.optional config.programs.firefox.enable "$mod, B, exec, firefox")
+            ++ (lib.optional config.programs.kitty.enable "$mod, T, exec, kitty")
+            ++ (lib.optional config.programs.wezterm.enable "$mod ALT, T, exec, wezterm");
+
           binde = [
             "$mod CTRL, H, resizeactive, -10 0"
             "$mod CTRL, L, resizeactive, 10 0"
@@ -124,12 +125,6 @@ in {
             swallow_regex = "^(kitty|wezterm)";
           };
         };
-      };
-
-      programs = {
-        firefox.enable = true;
-        kitty.enable = true;
-        wezterm.enable = true;
       };
 
       home.packages = with pkgs; [

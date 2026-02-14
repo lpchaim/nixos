@@ -5,7 +5,6 @@
   pkgs,
   ...
 }: let
-  inherit (lib) getExe;
   inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.scripts;
 in {
@@ -14,27 +13,24 @@ in {
     byName = lib.mkOption {
       default = inputs.self.legacyPackages.${system}.scripts;
     };
+    packages = lib.mkOption {
+      default = builtins.attrValues cfg.byName;
+    };
   };
   config = lib.mkIf cfg.enable {
-    home.packages = builtins.attrValues cfg.byName;
-    home.file =
+    home.packages = cfg.packages;
+    home.file = let
+      inherit (inputs.self.lib) carapaceSpecFromNuScript;
+      specPath = ".config/carapace/specs";
+    in
       lib.mkIf config.programs.carapace.enable
       (
         cfg.byName
-        |> (lib.filterAttrs (_: script: lib.strings.hasInfix "/bin/nu" script.interpreter))
-        |> (lib.concatMapAttrs
-          (name: script: {
-            ".config/carapace/specs/${name}.yaml".source =
-              pkgs.runCommand
-              "nushell-carapace-spec-${name}"
-              {buildInputs = [cfg.byName.nu-generate-carapace-spec cfg.byName.nu-inspect];}
-              ''
-                cat '${getExe script}' \
-                | nu-inspect --name $name \
-                | nu-generate-carapace-spec \
-                > $out
-              '';
-          }))
+        |> lib.filterAttrs (_: script: lib.strings.hasInfix "/bin/nu" script.interpreter)
+        |> lib.concatMapAttrs
+        (name: script: {
+          "${specPath}/${name}.yaml".source = carapaceSpecFromNuScript script;
+        })
       );
   };
 }
