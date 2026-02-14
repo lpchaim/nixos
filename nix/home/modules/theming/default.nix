@@ -6,8 +6,8 @@
 }: let
   matchTheme = theme:
     config.stylix.base16Scheme
-    |> builtins.toString
-    |> (builtins.match "^.*/themes/.*${theme}.*$");
+    |> toString
+    |> builtins.match "^.*/themes/.*${theme}.*$";
 in
   lib.mkIf config.stylix.enable (lib.mkMerge [
     {

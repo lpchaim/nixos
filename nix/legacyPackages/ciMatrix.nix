@@ -47,30 +47,30 @@ in {
     ciInfo = {
       homeConfigurations =
         self.homeConfigurations
-        |> (lib.filterAttrs (_: home: home._module.specialArgs.osConfig == {})) # Standalone only
+        |> lib.filterAttrs (_: home: home._module.specialArgs.osConfig == {}) # Standalone only
         |> filterToBuild
-        |> (getOutputInfo (name: ".#homeConfigurations.${name}.activationPackage"))
-        |> (spreadBranchOrDefault []);
+        |> getOutputInfo (name: ".#homeConfigurations.${name}.activationPackage")
+        |> spreadBranchOrDefault [];
       nixosConfigurations =
         self.nixosConfigurations
         |> filterToBuild
-        |> (getOutputInfo (name: ".#nixosConfigurations.${name}.config.system.build.toplevel"))
-        |> (spreadBranchOrDefault []);
+        |> getOutputInfo (name: ".#nixosConfigurations.${name}.config.system.build.toplevel")
+        |> spreadBranchOrDefault [];
       packages =
         self.packages
         |> filterPerSystemToBuild
-        |> (getPerSystemOutputInfo (system: name: ".#packages.${system}.${name}"))
-        |> (spreadBranchOrDefault ["main" "develop"]);
+        |> getPerSystemOutputInfo (system: name: ".#packages.${system}.${name}")
+        |> spreadBranchOrDefault ["main" "develop"];
       devShells =
         self.devShells
         |> filterPerSystemToBuild
-        |> (getPerSystemOutputInfo (system: name: ".#devShells.${system}.${name}"))
-        |> (spreadBranchOrDefault ["main" "develop"]);
+        |> getPerSystemOutputInfo (system: name: ".#devShells.${system}.${name}")
+        |> spreadBranchOrDefault ["main" "develop"];
     };
   in {
     legacyPackages.ciMatrix =
       ciInfo
       |> builtins.toJSON
-      |> (pkgs.writeText "ci-matrix");
+      |> pkgs.writeText "ci-matrix";
   };
 }

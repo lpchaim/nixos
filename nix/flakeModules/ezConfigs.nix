@@ -17,10 +17,10 @@ in {
       hosts =
         configurationsDirectory
         |> builtins.readDir
-        |> (lib.filterAttrs (_: type: type == "directory"))
-        |> (lib.concatMapAttrs (name: _: {
+        |> lib.filterAttrs (_: type: type == "directory")
+        |> lib.concatMapAttrs (name: _: {
           ${name}.userHomeModules = ["lpchaim"];
-        }));
+        });
     };
     home = {
       configurationsDirectory = "${root}/home/configs";
