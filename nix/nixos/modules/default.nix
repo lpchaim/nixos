@@ -54,6 +54,7 @@ in {
     nix.enable = mkDefault true;
     pipewire.enable = mkDefault true;
     security.enable = mkDefault true;
+    ssh.enable = mkDefault true;
     theming.enable = mkDefault true;
     users.enable = mkDefault true;
     zram.enable = mkDefault true;
