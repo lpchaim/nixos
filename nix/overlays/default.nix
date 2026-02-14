@@ -6,6 +6,7 @@ in {
     (loadNonDefault ./. args)
     // {
       external = lib.composeManyExtensions [
+        inputs.agenix-rekey.overlays.default
         inputs.nix-gaming.overlays.default
         inputs.nixneovimplugins.overlays.default
       ];

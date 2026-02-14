@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
@@ -10,6 +9,8 @@
 in {
   imports =
     (with inputs; [
+      agenix.nixosModules.default
+      agenix-rekey.nixosModules.default
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
