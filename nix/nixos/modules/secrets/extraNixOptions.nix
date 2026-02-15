@@ -1,15 +1,5 @@
-{
-  config,
-  inputs,
-  ...
-}: let
-  inherit (inputs.self.lib.config) name;
-in {
-  sops.secrets."nix/extraAccessTokens" = {
-    mode = "0400";
-    owner = name.user;
-  };
+{config, ...}: {
   nix.extraOptions = ''
-    !include ${config.sops.secrets."nix/extraAccessTokens".path}
+    !include ${config.age.secrets."nix-extra-access-tokens".path}
   '';
 }

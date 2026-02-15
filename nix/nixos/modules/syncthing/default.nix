@@ -6,20 +6,8 @@
 }: let
   inherit (inputs.self.lib.config) name;
   home = "/home/${name.user}";
-  sopsFile = "${inputs.self}/secrets/hosts/${config.networking.hostName}.yaml";
 in
-  lib.mkIf (lib.pathExists sopsFile) {
-    sops.secrets =
-      lib.genAttrs
-      [
-        "syncthing/cert"
-        "syncthing/key"
-      ]
-      (_: {
-        inherit sopsFile;
-        mode = "0440";
-      });
-
+  lib.mkIf (config.age.secrets ? "host.syncthing-cert") {
     systemd.services.syncthing.preStart = let
       paths = builtins.attrNames config.services.syncthing.settings.folders;
       commands = map (p: "mkdir -p '${p}'") paths;
@@ -33,8 +21,8 @@ in
       openDefaultPorts = true;
       user = name.user;
       group = name.user;
-      cert = config.sops.secrets."syncthing/cert".path;
-      key = config.sops.secrets."syncthing/key".path;
+      cert = config.age.secrets."host.syncthing-cert".path;
+      key = config.age.secrets."host.syncthing-key".path;
       dataDir = "${home}/Syncthing";
       configDir = "${home}/.config/syncthing";
       settings = {

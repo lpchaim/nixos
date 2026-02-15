@@ -14,7 +14,6 @@ in {
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak
       nixvim.homeModules.nixvim
-      sops-nix.homeManagerModules.sops
       spicetify-nix.homeManagerModules.default
       stylix.homeModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
@@ -31,6 +30,7 @@ in {
       ./nix
       ./scripts
       ./security
+      ./secrets
       ./ssh
       ./syncthing
       ./theming

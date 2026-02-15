@@ -44,7 +44,7 @@ in {
     in {
       inherit (cfg) authKeyParameters;
       enable = true;
-      authKeyFile = config.sops.secrets."tailscale/oauth/secret".path;
+      authKeyFile = config.age.secrets."tailscale-oauth-secret".path;
       extraUpFlags =
         [
           "--accept-dns"

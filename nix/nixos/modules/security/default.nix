@@ -50,7 +50,7 @@ in {
       u2f = {
         inherit (cfg.u2f) control;
         enable = true;
-        settings.authfile = "${config.sops.secrets."u2f-mappings".path}";
+        settings.authfile = "${config.age.secrets."u2f-mappings".path}";
         settings = {
           cue = true;
           appid = "pam://auth";
@@ -77,9 +77,5 @@ in {
       pam_u2f
       pamtester
     ];
-    sops.secrets.u2f-mappings = {
-      group = "wheel";
-      mode = "0440";
-    };
   };
 }

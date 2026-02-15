@@ -32,7 +32,7 @@ in {
             description = name.full;
             group = userName;
             shell = pkgs.${shell};
-            hashedPasswordFile = "${config.sops.secrets."user/lpchaim/password".path}";
+            hashedPasswordFile = "${config.age.secrets."user.lpchaim.password".path}";
           };
         emily =
           defaults
@@ -42,7 +42,7 @@ in {
             description = "emily";
             group = "emily";
             shell = pkgs.fish;
-            hashedPasswordFile = "${config.sops.secrets."user/emily/password".path}";
+            hashedPasswordFile = "${config.age.secrets."user.emily.password".path}";
           };
         root.hashedPassword = null;
       };

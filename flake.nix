@@ -117,10 +117,6 @@
     };
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";

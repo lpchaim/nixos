@@ -36,14 +36,14 @@ in {
       Service = {
         Type = "oneshot";
         ExecStart = let
-          inherit (osConfig.sops) secrets;
+          inherit (osConfig.age) secrets;
         in
           pkgs.writeShellScriptBin "atuin-login" ''
             if atuin status | grep -q "not logged in"; then
               atuin login \
-                --username "$(cat ${secrets."atuin/username".path})" \
-                --password "$(cat ${secrets."atuin/password".path})" \
-                --key "$(cat ${secrets."atuin/key".path})"
+                --username '${config.home.username}' \
+                --password "$(cat ${secrets."atuin-password".path})" \
+                --key "$(cat ${secrets."atuin-key".path})"
             fi
           '';
       };
