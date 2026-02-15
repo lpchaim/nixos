@@ -5,6 +5,7 @@
 in {
   config = import ./config.nix args;
   loaders = import ./loaders.nix args;
+  secrets = import ./secrets.nix;
   storage = import ./storage args;
   strings = import ./strings.nix args;
 

@@ -1,52 +1,53 @@
 {
+  inputs,
   config,
   lib,
   ...
-}: {
+}: let
+  inherit (inputs.self.lib.secrets) root identities mkSecret mkHostSecret mkUserSecret;
+  cfg = config.my.secrets;
+  mkHostSecret' = mkHostSecret config.networking.hostName;
+in {
   imports = [
     ./atuin.nix
     ./extraNixOptions.nix
   ];
 
-  age = let
-    secrets = ../../../../secrets;
-    identities = secrets + /identities;
-    perHost = secrets + /perHost/${config.networking.hostName};
-    perUser = user: secrets + /perUser/${user};
-  in {
-    rekey = {
-      masterIdentities = [
-        (identities + /age-yubikey-identity-25388788.pub)
-        (identities + /age-yubikey-identity-26583315.pub)
-      ];
-      localStorageDir = secrets + /rekeyed/${config.networking.hostName};
-      storageMode = "local";
-      forceRekeyOnSystem = "x86_64-linux";
-    };
-    secrets = {
-      "atuin-password".rekeyFile = secrets + /atuin-password.age;
-      "atuin-key".rekeyFile = secrets + /atuin-key.age;
-      "nix-extra-access-tokens" = {
-        rekeyFile = secrets + /nix-extra-access-tokens.age;
-        mode = "0400";
-        # owner = name.user;
+  options.my.secrets = {
+    enable = lib.mkEnableOption "secrets";
+  };
+  config = lib.mkIf cfg.enable {
+    age = {
+      rekey = {
+        masterIdentities = [
+          (identities + /age-yubikey-identity-25388788.pub)
+          (identities + /age-yubikey-identity-26583315.pub)
+        ];
+        localStorageDir = root + /rekeyed/${config.networking.hostName};
+        storageMode = "local";
+        forceRekeyOnSystem = "x86_64-linux";
       };
-      "tailscale-oauth-secret".rekeyFile = secrets + /tailscale-oauth-secret.age;
-      "u2f-mappings" = {
-        rekeyFile = secrets + /u2f-mappings.age;
-        group = "wheel";
-        mode = "0440";
+      secrets = {
+        "atuin-password" = mkSecret "atuin-password" {};
+        "atuin-key" = mkSecret "atuin-key" {};
+        "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {
+          mode = "0400";
+          # owner = name.user;
+        };
+        "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
+        "u2f-mappings" = mkSecret "u2f-mappings" {
+          group = "wheel";
+          mode = "0440";
+        };
+        "host.syncthing-cert" = mkHostSecret' "syncthing-cert" {
+          mode = "0440";
+        };
+        "host.syncthing-key" = mkHostSecret' "syncthing-key" {
+          mode = "0440";
+        };
+        "user.emily.password" = mkUserSecret "emily" "password" {};
+        "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
       };
-      "host.syncthing-cert" = lib.mkIf (builtins.pathExists (perHost + /syncthing-cert.age)) {
-        rekeyFile = perHost + /syncthing-cert.age;
-        mode = "0440";
-      };
-      "host.syncthing-key" = lib.mkIf (builtins.pathExists (perHost + /syncthing-key.age)) {
-        rekeyFile = perHost + /syncthing-key.age;
-        mode = "0440";
-      };
-      "user.emily.password".rekeyFile = perUser "emily" + /password.age;
-      "user.lpchaim.password".rekeyFile = perUser "lpchaim" + /password.age;
     };
   };
 }
