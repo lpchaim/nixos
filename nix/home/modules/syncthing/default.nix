@@ -5,12 +5,20 @@
   osConfig ? {},
   ...
 }: let
-  syncthing = osConfig.services.syncthing.package;
+  syncthing = osConfig.services.syncthing.package or config.services.syncthing.package;
   syncthingtray = config.services.syncthing.tray.package;
-in
-  lib.mkIf (osConfig.services.syncthing.enable or false) {
+  cfg = config.my.syncthing;
+in {
+  options.my.syncthing.enable =
+    lib.mkEnableOption "syncthing"
+    // {default = osConfig.my.syncthing.enable or false;};
+
+  config = lib.mkIf cfg.enable {
     home.packages = [syncthingtray];
-    services.syncthing.tray.enable = true;
+    services.syncthing = {
+      enable = osConfig.my.syncthing.enable or true;
+      tray.enable = true;
+    };
     systemd.user.services.syncthingtray = {
       Service.ExecStart = lib.mkForce (pkgs.writeShellScript "syncthingtray-wait" ''
         ${syncthingtray}/bin/syncthingtray --wait
@@ -113,4 +121,5 @@ in
       ];
       Unit.X-SwitchMethod = "restart";
     };
-  }
+  };
+}

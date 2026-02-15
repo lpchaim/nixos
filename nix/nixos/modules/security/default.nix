@@ -1,10 +1,12 @@
 {
   config,
+  inputs,
   lib,
   options,
   pkgs,
   ...
 }: let
+  inherit (inputs.self.lib.secrets) mkSecret;
   cfg = config.my.security;
 in {
   options.my.security = {
@@ -27,6 +29,12 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
+    age.secrets = {
+      "u2f-mappings" = mkSecret "u2f-mappings" {
+        group = "wheel";
+        mode = "0440";
+      };
+    };
     environment.etc = let
       patch = svc:
         lib.replaceStrings

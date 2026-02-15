@@ -6,6 +6,7 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name;
+  inherit (inputs.self.lib.secrets) mkSecret;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {
@@ -33,6 +34,10 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
+    age.secrets = {
+      "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
+    };
+
     services.tailscale = let
       tags =
         cfg.advertise.tags

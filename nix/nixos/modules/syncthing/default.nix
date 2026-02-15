@@ -5,9 +5,22 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name;
-  home = "/home/${name.user}";
-in
-  lib.mkIf (config.age.secrets ? "host.syncthing-cert") {
+  inherit (inputs.self.lib.secrets) mkHostSecret;
+  cfg = config.my.syncthing;
+  home = config.home-manager.users.lpchaim.home.homeDirectory;
+in {
+  options.my.syncthing.enable = lib.mkEnableOption "syncthing";
+
+  config = lib.mkIf cfg.enable {
+    age.secrets = {
+      "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {
+        mode = "0440";
+      };
+      "host.syncthing-key" = mkHostSecret config "syncthing-key" {
+        mode = "0440";
+      };
+    };
+
     systemd.services.syncthing.preStart = let
       paths = builtins.attrNames config.services.syncthing.settings.folders;
       commands = map (p: "mkdir -p '${p}'") paths;
@@ -85,4 +98,5 @@ in
         };
       };
     };
-  }
+  };
+}

@@ -1,9 +1,12 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
-}: {
+}: let
+  inherit (inputs.self.lib.secrets) root;
+in {
   home = {
     username = "cheina";
     homeDirectory = "/home/cheina";
@@ -20,6 +23,11 @@
     profiles = {
       standalone = true;
     };
+  };
+
+  age.rekey = {
+    # hostPubkey = ""; # @TODO Fill this out
+    localStorageDir = root + "/rekeyed/pc082-cheina";
   };
 
   home.sessionVariables.XDEBUG_MODE = "off";

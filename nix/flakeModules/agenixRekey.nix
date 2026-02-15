@@ -5,10 +5,8 @@
 
   perSystem = {pkgs, ...}: {
     agenix-rekey = {
-      inherit (inputs.self) nixosConfigurations;
+      inherit (inputs.self) homeConfigurations nixosConfigurations;
       agePackage = pkgs.rage;
-      collectHomeManagerConfigurations = false;
-      homeConfigurations = {};
     };
   };
 }

@@ -56,6 +56,7 @@ in {
     secrets.enable = mkDefault true;
     security.enable = mkDefault true;
     ssh.enable = mkDefault true;
+    syncthing.enable = mkDefault true;
     theming.enable = mkDefault true;
     users.enable = mkDefault true;
     zram.enable = mkDefault true;

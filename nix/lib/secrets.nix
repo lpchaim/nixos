@@ -8,14 +8,20 @@ rec {
     // {
       rekeyFile = root + /${name}.age;
     };
-  mkHostSecret = host: name: args:
+  mkHostSecret = configOrHost: name: args:
     args
     // {
-      rekeyFile = perHost + /${host}/${name}.age;
+      rekeyFile = let
+        host = configOrHost.networking.hostName or configOrHost;
+      in
+        perHost + /${host}/${name}.age;
     };
-  mkUserSecret = user: name: args:
+  mkUserSecret = configOrUser: name: args:
     args
     // {
-      rekeyFile = perUser + /${user}/${name}.age;
+      rekeyFile = let
+        user = configOrUser.home.username or configOrUser;
+      in
+        perUser + /${user}/${name}.age;
     };
 }

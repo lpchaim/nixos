@@ -5,7 +5,7 @@
   osConfig ? {},
   ...
 }: let
-  inherit (inputs.self.lib.secrets) root forUser;
+  inherit (inputs.self.lib.secrets) root;
   cfg = config.my.secrets;
 in {
   options.my.secrets = {
@@ -21,12 +21,9 @@ in {
       }
     ];
 
-    age.rekey = lib.mkMerge [
-      (lib.mkIf (osConfig != {}) {
-        inherit (osConfig.age.rekey) hostPubkey masterIdentities storageMode;
-        localStorageDir = root + "/rekeyed/${config.home.username}@${osConfig.networking.hostName}";
-      })
-      # @TODO Implement standalone home secrets
-    ];
+    age.rekey = lib.mkIf (osConfig != {}) {
+      inherit (osConfig.age.rekey) hostPubkey;
+      localStorageDir = root + "/rekeyed/${osConfig.networking.hostName}-${config.home.username}";
+    };
   };
 }

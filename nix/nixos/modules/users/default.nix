@@ -9,11 +9,17 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name shell;
+  inherit (inputs.self.lib.secrets) mkUserSecret;
   userName = name.user;
   cfg = config.my.users;
 in {
   options.my.users.enable = lib.mkEnableOption "user tweaks";
   config = lib.mkIf cfg.enable {
+    age.secrets = {
+      "user.emily.password" = mkUserSecret "emily" "password" {};
+      "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
+    };
+
     users = let
       defaults = {
         isNormalUser = true;
