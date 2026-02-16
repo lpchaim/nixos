@@ -26,7 +26,7 @@ in {
   };
 
   age.rekey = {
-    # hostPubkey = ""; # @TODO Fill this out
+    hostPubkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsmGjx90M2NbHLmhVYvvYtvRy0h1mr1JLZA7fTP/lo8hMmecIToyMpaNeZDXIVdMCwp5LdUltXDmhqs/AicWQZml+oBgkPzdy8DduLxQRKGwrckglVzhESzijfblbgeP8jEa1n8cxz/TAdOF5mc9QI08QdwrkeNTK0UkYQPFmkMRDPeDyFkscmSWqsxmCKDNX6Q/z9n9KAr8OHxfJomVjsR+BxG6pLXYTg4S85BbzWCE5s6idtLZmt9M5mdrQurUc/xiLwW4JIYH+4XpGvrpWyuUwkgrjYVqqJyMy+Nryl97oD1sfdl5yzrgIHmtQ1baj188cOcsDHQdHZUh115teudAKWIpqaM+veaXrvbYSX8QYXamy0V7KuXfUzw8JiSPSiFs4s7vVGTgIEFmA776zeL0SpXtJxSX8ox3WEW8bqxBt4Ab5xxiOWL+GqWwnbpYbqt6RMFFYmm/lQVVqP0O3NLn4R2IRVUAZmfKX+J4AGvRGJSLyKMM0xvL+wKzlY5TU=";
     localStorageDir = root + "/rekeyed/pc082-cheina";
   };
 
