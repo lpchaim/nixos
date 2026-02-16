@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
   home = "/home/${name.user}";
   sopsFile = "${inputs.self}/secrets/hosts/${config.networking.hostName}.yaml";
 in

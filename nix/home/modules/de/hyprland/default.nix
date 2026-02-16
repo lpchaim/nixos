@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) kb;
+  inherit (config.my.config) kb;
   cfg = config.my.de.hyprland;
 in {
   imports = [

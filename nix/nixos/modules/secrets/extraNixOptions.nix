@@ -3,7 +3,7 @@
   inputs,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
 in {
   sops.secrets."nix/extraAccessTokens" = {
     mode = "0400";

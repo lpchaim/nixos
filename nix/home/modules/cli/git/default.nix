@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.config) email name;
+  inherit (config.my.config) email name;
   cfg = config.my.cli.git;
 in {
   options.my.cli.git = {

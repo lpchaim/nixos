@@ -1,9 +1,9 @@
 {
-  inputs,
+  config,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
 in {
   imports = [
     ./hardware-configuration.nix

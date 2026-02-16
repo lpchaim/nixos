@@ -36,7 +36,7 @@ in {
     ];
 
     home.file = let
-      inherit (inputs.self.lib.config) profilePicture wallpaper;
+      inherit (config.my.config) profilePicture wallpaper;
     in {
       "${config.home.homeDirectory}/.face".source = profilePicture;
       "${config.xdg.userDirs.pictures}/Wallpapers/${baseNameOf wallpaper}".source = wallpaper;
