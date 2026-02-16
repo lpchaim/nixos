@@ -1,11 +1,8 @@
 {
   config,
-  inputs,
   lib,
-  osConfig ? {},
   ...
 }: let
-  inherit (inputs.self.lib) isNvidia;
   cfg = config.my.bars.caelestia;
 in {
   options.my.bars.caelestia.enable = lib.mkEnableOption "Caelestia";
@@ -67,7 +64,7 @@ in {
         services = {
           audioIncrement = 0.05;
           gpuType =
-            if (isNvidia osConfig)
+            if (config.my.profiles.hardware.gpu.nvidia)
             then "nvidia"
             else "";
           useFahrenheit = false;
