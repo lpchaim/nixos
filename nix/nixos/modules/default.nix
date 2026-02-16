@@ -53,7 +53,6 @@ in {
     networking.tailscale.enable = mkDefault true;
     nix.enable = mkDefault true;
     pipewire.enable = mkDefault true;
-    secrets.enable = mkDefault true;
     security.enable = mkDefault true;
     ssh.enable = mkDefault true;
     syncthing.enable = mkDefault true;

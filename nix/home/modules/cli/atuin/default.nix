@@ -6,21 +6,21 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets) mkSecret;
+  inherit (inputs.self.lib.secrets.helpers) mkSecret;
   cfg = config.my.cli.atuin;
   atuinLogin = pkgs.writeShellScriptBin "atuin-login" ''
     if atuin status | grep -q "not logged in"; then
       atuin login \
         --username '${config.home.username}' \
-        --password "$(cat ${config.age.secrets."atuin-password".path})" \
-        --key "$(cat ${config.age.secrets."atuin-key".path})"
+        --password "$(cat ${config.my.secrets."atuin-password".path})" \
+        --key "$(cat ${config.my.secrets."atuin-key".path})"
     fi
   '';
 in {
   options.my.cli.atuin.enable = lib.mkEnableOption "atuin";
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
+    my.secrets = {
       "atuin-password" = mkSecret "atuin-password" {};
       "atuin-key" = mkSecret "atuin-key" {};
     };

@@ -6,7 +6,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets) mkSecret;
+  inherit (inputs.self.lib.secrets.helpers) mkSecret;
   cfg = config.my.security;
 in {
   options.my.security = {
@@ -29,7 +29,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    age.secrets = {
+    my.secrets = {
       "u2f-mappings" = mkSecret "u2f-mappings" {
         group = "wheel";
         mode = "0440";
@@ -58,7 +58,7 @@ in {
       u2f = {
         inherit (cfg.u2f) control;
         enable = true;
-        settings.authfile = "${config.age.secrets."u2f-mappings".path}";
+        settings.authfile = "${config.my.secrets."u2f-mappings".path}";
         settings = {
           cue = true;
           appid = "pam://auth";

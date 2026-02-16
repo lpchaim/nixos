@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets) root;
+  inherit (inputs.self.lib.secrets.paths) root;
 in {
   home = {
     username = "cheina";

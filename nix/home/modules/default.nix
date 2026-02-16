@@ -60,7 +60,6 @@ in {
     };
     nix.enable = lib.mkDefault true;
     scripts.enable = lib.mkDefault true;
-    secrets.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
   };

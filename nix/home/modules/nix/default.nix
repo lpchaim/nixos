@@ -6,21 +6,21 @@
   pkgs,
   ...
 }: let
+  inherit (inputs.self.lib.secrets.helpers) mkSecret;
   inherit (inputs.self.lib.config) nix;
-  inherit (inputs.self.lib.secrets) mkSecret;
   cfg = config.my.nix;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";
 
   config = lib.mkIf (cfg.enable) {
-    age.secrets = {
+    my.secrets = {
       "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {};
     };
 
     nix = {
       inherit (nix) settings;
       extraOptions = ''
-        !include ${config.age.secrets."nix-extra-access-tokens".path}
+        !include ${config.my.secrets."nix-extra-access-tokens".path}
       '';
       gc = {
         automatic = osConfig == {};

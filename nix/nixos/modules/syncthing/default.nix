@@ -5,14 +5,14 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name;
-  inherit (inputs.self.lib.secrets) mkHostSecret;
+  inherit (inputs.self.lib.secrets.helpers) mkHostSecret;
   cfg = config.my.syncthing;
   home = config.home-manager.users.lpchaim.home.homeDirectory;
 in {
   options.my.syncthing.enable = lib.mkEnableOption "syncthing";
 
   config = lib.mkIf cfg.enable {
-    age.secrets = {
+    my.secrets = {
       "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {
         mode = "0440";
       };
@@ -34,8 +34,8 @@ in {
       openDefaultPorts = true;
       user = name.user;
       group = name.user;
-      cert = config.age.secrets."host.syncthing-cert".path;
-      key = config.age.secrets."host.syncthing-key".path;
+      cert = config.my.secrets."host.syncthing-cert".path;
+      key = config.my.secrets."host.syncthing-key".path;
       dataDir = "${home}/Syncthing";
       configDir = "${home}/.config/syncthing";
       settings = {

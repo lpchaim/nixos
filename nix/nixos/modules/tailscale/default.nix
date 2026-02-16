@@ -6,7 +6,7 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name;
-  inherit (inputs.self.lib.secrets) mkSecret;
+  inherit (inputs.self.lib.secrets.helpers) mkSecret;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {
@@ -34,7 +34,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    age.secrets = {
+    my.secrets = {
       "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
     };
 
@@ -49,7 +49,7 @@ in {
     in {
       inherit (cfg) authKeyParameters;
       enable = true;
-      authKeyFile = config.age.secrets."tailscale-oauth-secret".path;
+      authKeyFile = config.my.secrets."tailscale-oauth-secret".path;
       extraUpFlags =
         [
           "--accept-dns"

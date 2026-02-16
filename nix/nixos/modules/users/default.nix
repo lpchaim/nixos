@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 {
   config,
   inputs,
@@ -9,13 +6,13 @@
   ...
 }: let
   inherit (inputs.self.lib.config) name shell;
-  inherit (inputs.self.lib.secrets) mkUserSecret;
+  inherit (inputs.self.lib.secrets.helpers) mkUserSecret;
   userName = name.user;
   cfg = config.my.users;
 in {
   options.my.users.enable = lib.mkEnableOption "user tweaks";
   config = lib.mkIf cfg.enable {
-    age.secrets = {
+    my.secrets = {
       "user.emily.password" = mkUserSecret "emily" "password" {};
       "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
     };
@@ -38,7 +35,7 @@ in {
             description = name.full;
             group = userName;
             shell = pkgs.${shell};
-            hashedPasswordFile = "${config.age.secrets."user.lpchaim.password".path}";
+            hashedPasswordFile = "${config.my.secrets."user.lpchaim.password".path}";
           };
         emily =
           defaults
@@ -48,7 +45,7 @@ in {
             description = "emily";
             group = "emily";
             shell = pkgs.fish;
-            hashedPasswordFile = "${config.age.secrets."user.emily.password".path}";
+            hashedPasswordFile = "${config.my.secrets."user.emily.password".path}";
           };
         root.hashedPassword = null;
       };
