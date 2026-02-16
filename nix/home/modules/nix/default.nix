@@ -6,7 +6,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) nix;
+  inherit (config.my.config) nix;
   cfg = config.my.nix;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";

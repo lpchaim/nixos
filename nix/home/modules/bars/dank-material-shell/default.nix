@@ -5,8 +5,8 @@
   osConfig ? {},
   ...
 }: let
+  inherit (config.my.config) wallpaper;
   inherit (inputs.self.lib) isNvidia;
-  inherit (inputs.self.lib.config) wallpaper;
   cfg = config.my.bars.dank-material-shell;
   isNvidia' = isNvidia osConfig;
 in {

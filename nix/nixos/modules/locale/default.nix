@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{config, ...}: {
   time = {
     timeZone = "America/Sao_Paulo";
     hardwareClockInLocalTime = true;
@@ -12,6 +12,6 @@
   };
   console.useXkbConfig = true; # use xkb.options in tty.
   services.xserver.xkb = {
-    inherit (inputs.self.lib.config.kb.default) layout options variant;
+    inherit (config.my.config.kb.default) layout options variant;
   };
 }

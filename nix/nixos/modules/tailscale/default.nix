@@ -5,7 +5,7 @@
   options,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {

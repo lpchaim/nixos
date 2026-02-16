@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
   cfg = config.my.steamos;
 in {
   options.my.steamos.enable = lib.mkEnableOption "SteamOS";

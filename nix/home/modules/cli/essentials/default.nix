@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) flake shell;
+  inherit (config.my.config) flake shell;
   cfg = config.my.cli.essentials;
 in {
   options.my.cli.essentials.enable = lib.mkEnableOption "essentials";

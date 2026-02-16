@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   inherit (inputs) self;
   inherit (self.lib.config.nix) settings;
 in {
@@ -6,5 +10,11 @@ in {
     ./theming.nix
   ];
 
-  nix = {inherit settings;};
+  options = {
+    my.config = lib.mkOption {default = self.lib.config;};
+  };
+
+  config = {
+    nix = {inherit settings;};
+  };
 }
