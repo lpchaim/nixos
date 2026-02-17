@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -14,7 +13,6 @@ in {
     ./hyprlock
     ./launchers
     ./osd
-    ./plugins
   ];
 
   options.my.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
@@ -28,7 +26,6 @@ in {
         hyprlock.enable = lib.mkDefault cfg.enable;
         launchers.rofi.enable = lib.mkDefault cfg.enable;
         osd.swayosd.enable = lib.mkDefault false;
-        plugins.enable = lib.mkDefault false;
       };
     }
     {
