@@ -29,6 +29,7 @@ in {
           ffmpeg
           file
           fx
+          gnutar
           hexyl
           htop
           imagemagick
@@ -52,6 +53,7 @@ in {
           tig
           yazi
           wget
+          zip
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {
