@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   assets = ../../assets;
   filter = prefix: (name: type: type == "regular" && lib.strings.hasPrefix prefix name);
   assetWithPrefix = prefix:
@@ -17,8 +21,11 @@ in {
   wallpaper = assetWithPrefix "wallpaper";
   profilePicture = assetWithPrefix "profile-picture";
   nix = {
-    pkgs.config = {
-      allowUnfree = true;
+    pkgs = {
+      config = {
+        allowUnfree = true;
+      };
+      overlays = builtins.attrValues inputs.self.overlays;
     };
     settings = {
       accept-flake-config = true;
@@ -39,6 +46,7 @@ in {
       keep-derivations = true;
       keep-outputs = true;
       max-jobs = "auto";
+      trusted-users = ["root" "@wheel"];
     };
   };
   kb = rec {

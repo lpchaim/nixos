@@ -25,6 +25,5 @@ in {
       mutableUsers = false;
       extraUsers.root.hashedPassword = null;
     };
-    nix.settings.trusted-users = ["root" "@wheel"];
   };
 }
