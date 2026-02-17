@@ -27,6 +27,7 @@ in {
 
     home.packages = with pkgs; [
       element-desktop
+      file-roller
       gnome-system-monitor
       libreoffice-qt6-fresh
       loupe
