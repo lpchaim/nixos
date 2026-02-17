@@ -15,7 +15,9 @@ in {
     ./media.nix
   ];
 
-  options.my.gui.enable = lib.mkEnableOption "gui apps";
+  options.my.gui.enable =
+    lib.mkEnableOption "gui apps"
+    // {default = osConfig.my.gui.enable or false;};
 
   config = lib.mkIf cfg.enable {
     assertions = [
@@ -78,13 +80,8 @@ in {
     ];
 
     services.flatpak = {
-      overrides.global.Environment.XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
-      packages = [
-        "com.fightcade.Fightcade"
-        "com.github.tchx84.Flatseal"
-      ];
-      uninstallUnmanaged = false;
-      update.auto.enable = true;
+      enable = osConfig == {};
+      packages = ["com.github.tchx84.Flatseal"];
     };
   };
 }

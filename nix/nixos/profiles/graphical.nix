@@ -8,6 +8,7 @@ in {
   options.my.profiles.graphical = lib.mkEnableOption "graphical profile";
   config = lib.mkIf cfg {
     my = {
+      gui.enable = true;
       wayland.enable = true;
     };
 
@@ -16,10 +17,7 @@ in {
       graphics.enable = true;
       graphics.enable32Bit = true;
     };
-    services = {
-      flatpak.enable = true;
-      xserver.enable = lib.mkDefault true;
-    };
+    services.xserver.enable = lib.mkDefault true;
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
