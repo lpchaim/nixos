@@ -3,7 +3,6 @@
   inputs,
   lib,
   osConfig ? {},
-  pkgs,
   ...
 }: let
   inherit (config.my.config) nix;
@@ -18,21 +17,12 @@ in {
     };
 
     nix = {
-      inherit (nix) settings;
       extraOptions = ''
         !include ${config.my.secrets."nix-extra-access-tokens".path}
       '';
-      gc = {
-        automatic = osConfig == {};
-        dates = "daily";
-        options = "--delete-older-than 7d";
-      };
-      package = lib.mkForce (osConfig.nix.package or pkgs.lixPackageSets.stable.lix);
+      gc.automatic = osConfig == {};
     };
 
-    nixpkgs = lib.mkIf (osConfig == {}) {
-      inherit (nix.pkgs) config;
-      overlays = builtins.attrValues inputs.self.overlays;
-    };
+    nixpkgs = lib.mkIf (osConfig == {}) nix.pkgs;
   };
 }
