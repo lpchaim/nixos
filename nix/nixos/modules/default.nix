@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
@@ -10,13 +9,14 @@
 in {
   imports =
     (with inputs; [
+      agenix.nixosModules.default
+      agenix-rekey.nixosModules.default
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nur.modules.nixos.default
-      sops-nix.nixosModules.sops
       stylix.nixosModules.stylix
     ])
     ++ [
@@ -55,6 +55,7 @@ in {
     pipewire.enable = mkDefault true;
     security.enable = mkDefault true;
     ssh.enable = mkDefault true;
+    syncthing.enable = mkDefault true;
     theming.enable = mkDefault true;
     users.enable = mkDefault true;
     zram.enable = mkDefault true;

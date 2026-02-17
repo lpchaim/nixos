@@ -27,6 +27,7 @@ in {
     ];
 
     home.packages = with pkgs; [
+      element-desktop
       libreoffice-qt6-fresh
       obsidian
       pavucontrol

@@ -9,8 +9,6 @@
         nil
         nixd
         nixpkgs-fmt
-        sops
-        ssh-to-age
       ];
     };
   };
