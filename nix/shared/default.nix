@@ -6,6 +6,7 @@
   inherit (inputs) self;
 in {
   imports = [
+    ./flatpak.nix
     ./nix.nix
     ./secrets.nix
     ./theming.nix

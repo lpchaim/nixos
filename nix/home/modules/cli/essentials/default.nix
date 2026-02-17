@@ -34,6 +34,7 @@ in {
           imagemagick
           inotify-tools
           inshellisense
+          jocalsend
           jq
           neofetch
           ncdu

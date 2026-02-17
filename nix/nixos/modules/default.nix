@@ -14,6 +14,7 @@ in {
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
       lanzaboote.nixosModules.lanzaboote
+      nix-flatpak.nixosModules.nix-flatpak
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nur.modules.nixos.default
@@ -25,6 +26,7 @@ in {
       ./ci
       ./desktop
       ./gaming
+      ./gui
       ./hardware
       ./kdeconnect
       ./kernel
