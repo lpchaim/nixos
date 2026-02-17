@@ -10,6 +10,7 @@ in {
     ci.build = true;
     gaming.enable = true;
     networking.tailscale.trusted = true;
+    users.emily.enable = true;
     profiles = {
       formfactor.desktop = true;
       hardware.gpu.nvidia = true;
