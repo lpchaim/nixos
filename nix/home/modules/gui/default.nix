@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   osConfig ? {},
@@ -28,7 +27,10 @@ in {
 
     home.packages = with pkgs; [
       element-desktop
+      gnome-system-monitor
       libreoffice-qt6-fresh
+      loupe
+      nautilus
       obsidian
       pavucontrol
       qbittorrent
