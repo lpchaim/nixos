@@ -16,7 +16,7 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = [syncthingtray];
     services.syncthing = {
-      enable = osConfig.my.syncthing.enable or true;
+      enable = osConfig == {};
       tray.enable = true;
     };
     systemd.user.services.syncthingtray = {

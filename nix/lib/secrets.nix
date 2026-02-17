@@ -5,6 +5,16 @@ rec {
     perHost = root + /perHost;
     perUser = root + /perUser;
   };
+  identities = {
+    primaryYubikey = {
+      identity = paths.identities + /age-yubikey-identity-25388788.pub;
+      pubkey = "age1yubikey1qd4evthtmz779wrj5j92j46jgxu87are20rxagx609vs3z3g5535j2jtsrt";
+    };
+    secondaryYubikey = {
+      identity = paths.identities + /age-yubikey-identity-26583315.pub;
+      pubkey = "age1yubikey1qvsexaz0mrwzd6eadgmnupexs0csw6esdzmfzs3eehmn4w4hdlch5j7xrxs";
+    };
+  };
   helpers = {
     mkSecret = name: args:
       args

@@ -1,19 +1,25 @@
 {
   inputs,
   lib,
-  options,
   ...
 }: let
-  inherit (inputs.self.lib.secrets.paths) identities;
+  inherit (inputs.self.lib.secrets) identities;
 in {
-  options.my.secrets = lib.mkOption {
-    inherit (options.age.secrets) default description type;
+  options.my = {
+    secretDefinitions = lib.mkOption {
+      description = "Secret definitions";
+      default = [];
+    };
+    secrets = lib.mkOption {
+      description = "Rendered secrets";
+      default = [];
+    };
   };
 
   config.age.rekey = {
     masterIdentities = [
-      (identities + /age-yubikey-identity-25388788.pub)
-      (identities + /age-yubikey-identity-26583315.pub)
+      identities.primaryYubikey
+      identities.secondaryYubikey
     ];
     storageMode = "local";
   };

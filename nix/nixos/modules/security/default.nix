@@ -29,7 +29,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    my.secrets = {
+    my.secretDefinitions = {
       "u2f-mappings" = mkSecret "u2f-mappings" {
         group = "wheel";
         mode = "0440";

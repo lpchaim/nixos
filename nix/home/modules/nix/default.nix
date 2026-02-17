@@ -13,7 +13,7 @@ in {
   options.my.nix.enable = lib.mkEnableOption "nix";
 
   config = lib.mkIf (cfg.enable) {
-    my.secrets = {
+    my.secretDefinitions = {
       "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {};
     };
 

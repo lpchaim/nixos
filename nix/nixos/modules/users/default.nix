@@ -12,7 +12,7 @@
 in {
   options.my.users.enable = lib.mkEnableOption "user tweaks";
   config = lib.mkIf cfg.enable {
-    my.secrets = {
+    my.secretDefinitions = {
       "user.emily.password" = mkUserSecret "emily" "password" {};
       "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
     };

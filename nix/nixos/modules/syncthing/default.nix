@@ -12,7 +12,7 @@ in {
   options.my.syncthing.enable = lib.mkEnableOption "syncthing";
 
   config = lib.mkIf cfg.enable {
-    my.secrets = {
+    my.secretDefinitions = {
       "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {
         mode = "0440";
       };
