@@ -14,6 +14,7 @@
       imports = [
         (importApply' ./nix/flakeModules)
         (importApply' ./nix/apps)
+        (importApply' ./nix/checks)
         (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
         (importApply' ./nix/legacyPackages)
