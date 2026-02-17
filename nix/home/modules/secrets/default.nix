@@ -12,7 +12,7 @@ in {
     homeSecrets = config.my.secretDefinitions;
     standaloneHomeSecrets = lib.removeAttrs homeSecrets (builtins.attrNames osSecrets);
   in {
-    my.secrets = osSecrets // standaloneHomeSecrets;
+    my.secrets = osSecrets // config.age.secrets;
     age = {
       secrets = standaloneHomeSecrets;
       rekey = lib.mkIf (osConfig != {}) {
