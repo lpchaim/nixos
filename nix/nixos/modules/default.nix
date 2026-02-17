@@ -58,6 +58,7 @@ in {
     syncthing.enable = mkDefault true;
     theming.enable = mkDefault true;
     users.enable = mkDefault true;
+    users.lpchaim.enable = mkDefault true;
     zram.enable = mkDefault true;
   };
 
