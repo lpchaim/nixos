@@ -1,15 +1,22 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }: let
   inherit (config.my.config) name shell;
+  inherit (inputs.self.lib.secrets.helpers) mkUserSecret;
   userName = name.user;
   cfg = config.my.users;
 in {
   options.my.users.enable = lib.mkEnableOption "user tweaks";
   config = lib.mkIf cfg.enable {
+    my.secretDefinitions = {
+      "user.emily.password" = mkUserSecret "emily" "password" {};
+      "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
+    };
+
     users = let
       defaults = {
         isNormalUser = true;
@@ -28,7 +35,7 @@ in {
             description = name.full;
             group = userName;
             shell = pkgs.${shell};
-            hashedPasswordFile = "${config.sops.secrets."user/lpchaim/password".path}";
+            hashedPasswordFile = "${config.my.secrets."user.lpchaim.password".path}";
           };
         emily =
           defaults
@@ -38,7 +45,7 @@ in {
             description = "emily";
             group = "emily";
             shell = pkgs.fish;
-            hashedPasswordFile = "${config.sops.secrets."user/emily/password".path}";
+            hashedPasswordFile = "${config.my.secrets."user.emily.password".path}";
           };
         root.hashedPassword = null;
       };
