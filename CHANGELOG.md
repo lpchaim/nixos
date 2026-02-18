@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/lpchaim/nixos/compare/v2.2.0...v2.3.0) (2026-02-18)
+
+
+### Features
+
+* **ci:** Only run Build CI action after Check if it succeeds ([d9064ec](https://github.com/lpchaim/nixos/commit/d9064ec8e4e6c39620fde6bd4e900dc46f2aee9c))
+
 ## [2.2.0](https://github.com/lpchaim/nixos/compare/v2.1.0...v2.2.0) (2026-02-18)
 
 
