@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.2.0](https://github.com/lpchaim/nixos/compare/v2.1.0...v2.2.0) (2026-02-18)
+
+
+### Features
+
+* Add standalone homeConfiguration checks ([8ec09fc](https://github.com/lpchaim/nixos/commit/8ec09fccd8cd2f286f8ef261773dc2bb2b1f88f4))
+* **cli:** Add tar, zip ([28d498d](https://github.com/lpchaim/nixos/commit/28d498dfbc32efe8fb1a5782964aa3e08bb29e82))
+* Dedicated maintenance shell ([c60451e](https://github.com/lpchaim/nixos/commit/c60451ee7faa0c27cb438b31bf1e27d5bf38feb9))
+* **gui:** Add file-roller ([b23eb07](https://github.com/lpchaim/nixos/commit/b23eb07c19d90aadb2bc9e5de0b25926dc989084))
+* **gui:** Add localsend, NixOS GUI module ([65afc26](https://github.com/lpchaim/nixos/commit/65afc26b4aaad97250620bf14fdb55447a9d2332))
+* Migrate sops-nix to agenix-rekey ([885fa4b](https://github.com/lpchaim/nixos/commit/885fa4baac2a3ce2cd2683c7b0a77307de7c1000))
+* Migrate to nushell's directive for wrapped command completions ([de8fefc](https://github.com/lpchaim/nixos/commit/de8fefc0bb78512f1475135d9e5d637ad3d0215e))
+* Nushell-friendly fzf wrapper ([bdd4d18](https://github.com/lpchaim/nixos/commit/bdd4d184cf14ceb0ff1d2c69a10213acc8d35caf))
+
+
+### Bug Fixes
+
+* Remove AddKeysToAgent from sshd config ([5105aa4](https://github.com/lpchaim/nixos/commit/5105aa45e91d45202b8c627fb87bb0019eab60f3))
+* Standalone home secrets ([bc642bb](https://github.com/lpchaim/nixos/commit/bc642bb3d5eea43d932224772472cb468129c983))
+
 ## [2.1.0](https://github.com/lpchaim/nixos/compare/v2.0.0...v2.1.0) (2026-02-14)
 
 
