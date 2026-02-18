@@ -1,11 +1,10 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) profilePicture wallpaper;
+  inherit (config.my.config) wallpaper;
   cfg = config.my.de.gnome.theming;
 in {
   options.my.de.gnome.theming = {

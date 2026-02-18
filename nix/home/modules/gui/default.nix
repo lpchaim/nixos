@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   osConfig ? {},
@@ -16,7 +15,9 @@ in {
     ./media.nix
   ];
 
-  options.my.gui.enable = lib.mkEnableOption "gui apps";
+  options.my.gui.enable =
+    lib.mkEnableOption "gui apps"
+    // {default = osConfig.my.gui.enable or false;};
 
   config = lib.mkIf cfg.enable {
     assertions = [
@@ -27,7 +28,12 @@ in {
     ];
 
     home.packages = with pkgs; [
+      element-desktop
+      file-roller
+      gnome-system-monitor
       libreoffice-qt6-fresh
+      loupe
+      nautilus
       obsidian
       pavucontrol
       qbittorrent
@@ -36,7 +42,7 @@ in {
     ];
 
     home.file = let
-      inherit (inputs.self.lib.config) profilePicture wallpaper;
+      inherit (config.my.config) profilePicture wallpaper;
     in {
       "${config.home.homeDirectory}/.face".source = profilePicture;
       "${config.xdg.userDirs.pictures}/Wallpapers/${baseNameOf wallpaper}".source = wallpaper;
@@ -74,13 +80,8 @@ in {
     ];
 
     services.flatpak = {
-      overrides.global.Environment.XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
-      packages = [
-        "com.fightcade.Fightcade"
-        "com.github.tchx84.Flatseal"
-      ];
-      uninstallUnmanaged = false;
-      update.auto.enable = true;
+      enable = osConfig == {};
+      packages = ["com.github.tchx84.Flatseal"];
     };
   };
 }

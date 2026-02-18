@@ -1,10 +1,18 @@
-{inputs, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   inherit (inputs) self;
-  inherit (self.lib.config.nix) settings;
 in {
   imports = [
+    ./flatpak.nix
+    ./nix.nix
+    ./secrets.nix
     ./theming.nix
   ];
 
-  nix = {inherit settings;};
+  options = {
+    my.config = lib.mkOption {default = self.lib.config;};
+  };
 }

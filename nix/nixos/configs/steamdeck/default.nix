@@ -1,9 +1,10 @@
 {
+  config,
   inputs,
   ezModules,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
 in {
   imports = [
     inputs.jovian.nixosModules.default

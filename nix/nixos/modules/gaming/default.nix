@@ -1,11 +1,10 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
+  inherit (config.my.config) name;
   cfg = config.my.gaming;
 in {
   imports = [
@@ -46,6 +45,10 @@ in {
       services.pipewire.lowLatency.enable = true;
 
       users.extraUsers.${name.user}.extraGroups = ["gamemode"];
+
+      services.flatpak.packages = [
+        "com.fightcade.Fightcade"
+      ];
     })
     (lib.mkIf cfg.steam.enable {
       hardware.steam-hardware.enable = true;

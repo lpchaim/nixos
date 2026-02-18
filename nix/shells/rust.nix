@@ -2,6 +2,7 @@
   perSystem = {pkgs, ...}: {
     make-shells.rust = {
       additionalArguments.meta.description = "For building Rust projects";
+
       packages = with pkgs; [
         cargo
         libx11

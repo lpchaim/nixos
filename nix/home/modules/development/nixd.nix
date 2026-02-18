@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   lib,
   osConfig ? {},
@@ -31,7 +30,7 @@ in {
             command = "${lib.getExe pkgs.nixd-lix}";
             args = ["--semantic-tokens=true"];
             config.nixd = let
-              inherit (inputs.self.lib.config) flake;
+              inherit (config.my.config) flake;
               inherit (pkgs.stdenv.hostPlatform) system;
               inherit (config.home) username;
               absoluteFlakePath = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;
