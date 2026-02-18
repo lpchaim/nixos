@@ -14,6 +14,7 @@
       imports = [
         (importApply' ./nix/flakeModules)
         (importApply' ./nix/apps)
+        (importApply' ./nix/checks)
         (importApply' ./nix/overlays)
         (importApply' ./nix/packages)
         (importApply' ./nix/legacyPackages)
@@ -72,16 +73,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hyprland-hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
 
     # Misc
+    agenix.url = "github:ryantm/agenix";
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -104,7 +102,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/latest";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
@@ -112,10 +110,6 @@
     };
     nix-std.url = "github:chessai/nix-std";
     nur.url = "github:nix-community/NUR";
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";

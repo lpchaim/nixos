@@ -1,11 +1,10 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) kb;
+  inherit (config.my.config) kb;
   cfg = config.my.de.hyprland;
 in {
   imports = [
@@ -14,7 +13,6 @@ in {
     ./hyprlock
     ./launchers
     ./osd
-    ./plugins
   ];
 
   options.my.de.hyprland.enable = lib.mkEnableOption "Hyprland customizations";
@@ -28,7 +26,6 @@ in {
         hyprlock.enable = lib.mkDefault cfg.enable;
         launchers.rofi.enable = lib.mkDefault cfg.enable;
         osd.swayosd.enable = lib.mkDefault false;
-        plugins.enable = lib.mkDefault false;
       };
     }
     {

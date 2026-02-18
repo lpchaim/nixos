@@ -1,11 +1,9 @@
 {
   config,
-  inputs,
   lib,
-  pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) nix;
+  inherit (config.my.config) nix;
   cfg = config.my.nix;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";
@@ -13,17 +11,9 @@ in {
     environment.sessionVariables = {
       NIXPKGS_ALLOW_UNFREE = "1";
     };
-    nix.gc = {
-      automatic = let
-        nhCfg = config.programs.nh;
-      in
-        !nhCfg.enable || !nhCfg.clean.enable;
-      dates = "weekly";
-    };
-    nix.package = pkgs.lixPackageSets.stable.lix;
-    nixpkgs = {
-      inherit (nix.pkgs) config;
-      overlays = builtins.attrValues inputs.self.overlays;
-    };
+
+    nix.gc.automatic = !config.programs.nh.enable || !config.programs.nh.clean.enable;
+
+    nixpkgs = nix.pkgs;
   };
 }

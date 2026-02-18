@@ -5,7 +5,11 @@
   in {
     make-shells.deploy = {
       additionalArguments.meta.description = "Extra deployment utilities built-in";
-      inputsFrom = [self'.devShells.nix];
+
+      inputsFrom = with self'.devShells; [
+        maintenance
+        nix
+      ];
       packages = with pkgs; [
         disko
         home-manager

@@ -2,39 +2,23 @@
   imports = [
     inputs.make-shell.flakeModules.default
     ./deploy.nix
+    ./maintenance.nix
+    ./minimal.nix
     ./nix.nix
     ./rust.nix
-    ./minimal.nix
   ];
 
-  perSystem = {
-    config,
-    self',
-    ...
-  }: {
-    devShells.default = self'.devShells.nix;
+  perSystem = {self', ...}: {
+    devShells.default = self'.devShells.maintenance;
     make-shell.imports = [
-      ({
-        lib,
-        pkgs,
-        ...
-      }: {
-        env = {
-          EDITOR = "hx";
-        };
-        packages =
-          (with pkgs; [
-            bat
-            fish
-            git
-            helix
-            just
-          ])
-          ++ config.pre-commit.settings.enabledPackages
-          ++ (lib.optionals (config.pre-commit.settings.package != null) [
-            config.pre-commit.settings.package
-          ]);
-        shellHook = config.pre-commit.installationScript;
+      ({pkgs, ...}: {
+        env.EDITOR = "hx";
+        packages = with pkgs; [
+          bat
+          fish
+          git
+          helix
+        ];
       })
     ];
   };

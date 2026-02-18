@@ -1,11 +1,10 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) flake shell;
+  inherit (config.my.config) flake shell;
   cfg = config.my.cli.essentials;
 in {
   options.my.cli.essentials.enable = lib.mkEnableOption "essentials";
@@ -29,11 +28,13 @@ in {
           ffmpeg
           file
           fx
+          gnutar
           hexyl
           htop
           imagemagick
           inotify-tools
           inshellisense
+          jocalsend
           jq
           neofetch
           ncdu
@@ -52,6 +53,7 @@ in {
           tig
           yazi
           wget
+          zip
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {

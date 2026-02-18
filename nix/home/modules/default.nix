@@ -7,12 +7,13 @@
 in {
   imports =
     (with inputs; [
+      agenix.homeManagerModules.default
+      (agenix-rekey.homeManagerModules.default // {_class = "homeManager";}) # Don't ask
       caelestia.homeManagerModules.default
       dms.homeModules.dank-material-shell
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak
       nixvim.homeModules.nixvim
-      sops-nix.homeManagerModules.sops
       spicetify-nix.homeManagerModules.default
       stylix.homeModules.stylix
       wayland-pipewire-idle-inhibit.homeModules.default
@@ -29,6 +30,7 @@ in {
       ./nix
       ./scripts
       ./security
+      ./secrets
       ./ssh
       ./syncthing
       ./theming

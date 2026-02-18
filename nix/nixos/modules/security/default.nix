@@ -1,10 +1,12 @@
 {
   config,
+  inputs,
   lib,
   options,
   pkgs,
   ...
 }: let
+  inherit (inputs.self.lib.secrets.helpers) mkSecret;
   cfg = config.my.security;
 in {
   options.my.security = {
@@ -27,6 +29,12 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
+    my.secretDefinitions = {
+      "u2f-mappings" = mkSecret "u2f-mappings" {
+        group = "wheel";
+        mode = "0440";
+      };
+    };
     environment.etc = let
       patch = svc:
         lib.replaceStrings
@@ -50,7 +58,7 @@ in {
       u2f = {
         inherit (cfg.u2f) control;
         enable = true;
-        settings.authfile = "${config.sops.secrets."u2f-mappings".path}";
+        settings.authfile = "${config.my.secrets."u2f-mappings".path}";
         settings = {
           cue = true;
           appid = "pam://auth";
@@ -77,9 +85,5 @@ in {
       pam_u2f
       pamtester
     ];
-    sops.secrets.u2f-mappings = {
-      group = "wheel";
-      mode = "0440";
-    };
   };
 }

@@ -4,21 +4,22 @@
   lib,
   ...
 }: let
-  inherit (inputs.self.lib.config) name;
-  home = "/home/${name.user}";
-  sopsFile = "${inputs.self}/secrets/hosts/${config.networking.hostName}.yaml";
-in
-  lib.mkIf (lib.pathExists sopsFile) {
-    sops.secrets =
-      lib.genAttrs
-      [
-        "syncthing/cert"
-        "syncthing/key"
-      ]
-      (_: {
-        inherit sopsFile;
+  inherit (config.my.config) name;
+  inherit (inputs.self.lib.secrets.helpers) mkHostSecret;
+  cfg = config.my.syncthing;
+  home = config.home-manager.users.lpchaim.home.homeDirectory;
+in {
+  options.my.syncthing.enable = lib.mkEnableOption "syncthing";
+
+  config = lib.mkIf cfg.enable {
+    my.secretDefinitions = {
+      "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {
         mode = "0440";
-      });
+      };
+      "host.syncthing-key" = mkHostSecret config "syncthing-key" {
+        mode = "0440";
+      };
+    };
 
     systemd.services.syncthing.preStart = let
       paths = builtins.attrNames config.services.syncthing.settings.folders;
@@ -33,8 +34,8 @@ in
       openDefaultPorts = true;
       user = name.user;
       group = name.user;
-      cert = config.sops.secrets."syncthing/cert".path;
-      key = config.sops.secrets."syncthing/key".path;
+      cert = config.my.secrets."host.syncthing-cert".path;
+      key = config.my.secrets."host.syncthing-key".path;
       dataDir = "${home}/Syncthing";
       configDir = "${home}/.config/syncthing";
       settings = {
@@ -97,4 +98,5 @@ in
         };
       };
     };
-  }
+  };
+}

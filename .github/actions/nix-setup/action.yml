@@ -18,15 +18,11 @@ runs:
       with:
         enable-lvm-span: true
         lvm-span-mountpoint: /nix
-    - uses: samueldr/lix-gha-installer-action@v2025-10-27
+    - uses: samueldr/lix-gha-installer-action@v2026-02-16
       with:
         extra_nix_config: |
           extra-experimental-features = flakes nix-command pipe-operator
           system = ${{ inputs.system }}
-    - uses: cachix/cachix-action@v16
-      with:
-        name: lpchaim
-        authToken: ${{ inputs.cachixAuthToken }}
     - name: Override nix-daemon build directory
       if: ${{ inputs.makeSpace == 'true' }}
       shell: bash
@@ -44,3 +40,7 @@ runs:
         sudo systemctl daemon-reload
         sudo systemctl restart nix-daemon
         )
+    - uses: cachix/cachix-action@v16
+      with:
+        name: lpchaim
+        authToken: ${{ inputs.cachixAuthToken }}

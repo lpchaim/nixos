@@ -2,12 +2,10 @@
   config,
   inputs,
   lib,
-  osConfig ? {},
   pkgs,
   ...
 }: let
   inherit (inputs.home-manager.lib) hm;
-  inherit (inputs.self.lib) isNvidia;
   cfg = config.my.gui.chromium;
 in {
   options.my.gui.chromium.enable =
@@ -21,7 +19,7 @@ in {
         [
           "--password-store=gnome"
         ]
-        ++ (lib.optionals (isNvidia osConfig) [
+        ++ (lib.optionals (config.my.profiles.hardware.gpu.nvidia) [
           "--disable-gpu-compositing" # @TODO Remove after NVIDIA figures this out
         ]);
       package = pkgs.brave;
