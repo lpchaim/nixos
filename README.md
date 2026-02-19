@@ -134,6 +134,7 @@ I'm hoping the file structure under `/nix` is mostly self-explanatory. That said
 │   ├── default.nix
 │   └── lichen
 ├── schemas
+│   ├── agenixRekey.nix
 │   ├── default.nix
 │   ├── lib.nix
 │   └── systems.nix
@@ -164,7 +165,16 @@ Courtesy of [flake-schemas]' patches with my own lib/pkgs schemas on top.
 ```sh
 git+file:///home/lpchaim/.config/nixos
 ├───agenix-rekey
-│   └───(unknown flake output)
+│   ├───aarch64-linux
+│   │   ├───edit-view: agenix-rekey executable
+│   │   ├───generate: agenix-rekey executable
+│   │   ├───rekey: agenix-rekey executable
+│   │   └───update-masterkeys: agenix-rekey executable
+│   └───x86_64-linux
+│       ├───edit-view: agenix-rekey executable
+│       ├───generate: agenix-rekey executable
+│       ├───rekey: agenix-rekey executable
+│       └───update-masterkeys: agenix-rekey executable
 ├───apps
 │   ├───aarch64-linux
 │   │   ├───generate-assets: app
@@ -290,6 +300,7 @@ git+file:///home/lpchaim/.config/nixos
 │   └───x86_64-linux
 │       └───lichen: package [lichen-0.22.0-unstable]
 ├───schemas
+│   ├───agenix-rekey: flake schema
 │   ├───apps: flake schema
 │   ├───bundlers: flake schema
 │   ├───checks: flake schema
