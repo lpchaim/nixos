@@ -3,28 +3,40 @@
 │   ├── assets.nix
 │   ├── ci.nix
 │   └── default.nix
-├── home
-│   ├── configs
-│   └── modules
-├── lib
-│   ├── config.nix
+├── checks
 │   ├── default.nix
-│   ├── loaders.nix
-│   ├── storage
-│   └── strings.nix
-├── modules
+│   └── homeConfigurations.nix
+├── flakeModules
+│   ├── agenixRekey.nix
 │   ├── default.nix
 │   ├── ezConfigs.nix
 │   ├── gitHooks.nix
 │   └── just.nix
+├── home
+│   ├── configs
+│   ├── modules
+│   └── profiles
+├── legacyPackages
+│   ├── ciMatrix.nix
+│   ├── default.nix
+│   └── scripts
+├── lib
+│   ├── config.nix
+│   ├── default.nix
+│   ├── secrets.nix
+│   ├── storage
+│   └── strings.nix
 ├── nixos
 │   ├── configs
-│   └── modules
+│   ├── modules
+│   └── profiles
 ├── overlays
 │   ├── default.nix
+│   ├── external.nix
 │   ├── lix.nix
 │   ├── nixpkgsVersions.nix
 │   ├── nuInterpreterStdin.nix
+│   ├── packages.nix
 │   └── python.nix
 ├── packages
 │   ├── default.nix
@@ -32,21 +44,17 @@
 ├── schemas
 │   ├── default.nix
 │   ├── lib.nix
-│   └── pkgs.nix
-├── scripts
-│   ├── default.nix
-│   ├── lastdl.nix
-│   ├── leastspaces.nix
-│   ├── nu-generate-carapace-spec.nix
-│   ├── nu-generate-manpage.nix
-│   ├── nu-inspect.nix
-│   └── nu-parse-help.nix
+│   └── systems.nix
 ├── shared
 │   ├── default.nix
+│   ├── flatpak.nix
+│   ├── nix.nix
+│   ├── secrets.nix
 │   └── theming.nix
 └── shells
     ├── default.nix
     ├── deploy.nix
+    ├── maintenance.nix
     ├── minimal.nix
     ├── nix.nix
     └── rust.nix

@@ -4,7 +4,6 @@
   overlays = builtins.attrValues inputs.self.overlays;
 in {
   config = import ./config.nix args;
-  loaders = import ./loaders.nix args;
   secrets = import ./secrets.nix;
   storage = import ./storage args;
   strings = import ./strings.nix args;
@@ -39,4 +38,10 @@ in {
       | nu-generate-carapace-spec \
       > $out
     '';
+  nixFilesToAttrs = path:
+    builtins.readDir path
+    |> lib.filterAttrs (name: type: type == "regular" && name != "default.nix")
+    |> lib.concatMapAttrs (relativePath: _: {
+      ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
+    });
 }

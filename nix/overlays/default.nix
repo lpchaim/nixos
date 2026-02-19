@@ -1,14 +1,8 @@
 {inputs, ...} @ args: let
   inherit (inputs.nixpkgs) lib;
-  inherit (inputs.self.lib.loaders) loadNonDefault;
+  inherit (inputs.self.lib) nixFilesToAttrs;
 in {
   flake.overlays =
-    (loadNonDefault ./. args)
-    // {
-      external = lib.composeManyExtensions [
-        inputs.agenix-rekey.overlays.default
-        inputs.nix-gaming.overlays.default
-        inputs.nixneovimplugins.overlays.default
-      ];
-    };
+    nixFilesToAttrs ./.
+    |> lib.mapAttrs (_: path: import path args);
 }

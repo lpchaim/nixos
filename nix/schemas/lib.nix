@@ -9,7 +9,9 @@ in {
     recurse = attrs: {
       children = builtins.mapAttrs (attrName: attr:
         if builtins.isAttrs attr
-        then recurse attr
+        then {
+          what = "library namespace";
+        }
         else if builtins.isFunction attr
         then {
           what = "library function";
@@ -17,6 +19,7 @@ in {
         }
         else {
           what = "configuration constant";
+          evalChecks.camelCase = (lib.strings.toCamelCase attrName) == attrName;
         })
       attrs;
     };

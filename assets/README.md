@@ -1,8 +1,7 @@
-[caelestia]: https://github.com/caelestia-dots/shell
+[dms]: https://github.com/AvengeMedia/DankMaterialShell
 [ez-configs]: https://github.com/ehllie/ez-configs/
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
-[haumea]: https://github.com/nix-community/haumea
 [rofi]: https://github.com/davatorium/rofi
 [stylix]: https://github.com/danth/stylix
 
@@ -21,9 +20,9 @@
 
 ---
 
-Welcome to my NixOS flake! It's mostly powered by [flake-parts], with some [haumea] sprinkled in for painless module loading here and there.
+Welcome to my Nix flake, powered by [flake-parts]!
 
-This is mainly for my NixOS configurations, but it also has a couple standalone Home Manager configs, development shells and NixOS/Home Manager modules.
+This is mainly for my NixOS configurations, but it also has a couple standalone Home Manager configs, packages, development shells and NixOS/Home Manager modules.
 
 ## Design goals
 
@@ -47,7 +46,7 @@ $sampleconfig
 
 ## Look and feel
 
-I daily drive Hyprland with [caelestia] and [rofi].
+I daily drive Hyprland with [dms] and [rofi].
 
 My systems wouldn't look even halfway as good without [stylix] doing all the heavy-lifting in my stead.
 The color scheme used in my screenshots is `stella`.
