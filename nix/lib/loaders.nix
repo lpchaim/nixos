@@ -30,68 +30,6 @@
     |> (attr: removeAttrs attr ["default" "default.nix"])
     |> lib.filterAttrsRecursive (_: path: filterFn path);
 
-  # Lists files as paths
-  list = {
-    path,
-    filterFn ? (x: true),
-    recursive ? false,
-  }:
-    read {inherit path recursive;}
-    |> lib.collect builtins.isPath
-    |> builtins.filter (path:
-      path
-      |> toString
-      |> filterFn)
-    |> map (
-      path:
-        path
-        |> toString
-        |> lib.removeSuffix "/default.nix"
-        |> (x: /. + x)
-    );
-
-  # Lists files ending in default.nix
-  listDefault = path:
-    list {
-      inherit path;
-      filterFn = lib.hasSuffix "default.nix";
-    };
-
-  # Lists files ending in default.nix recursively
-  listDefaultRecursive = path:
-    list {
-      inherit path;
-      filterFn = lib.hasSuffix "default.nix";
-      recursive = true;
-    };
-
-  # Lists files not ending in default.nix
-  listNonDefault = path:
-    list {
-      inherit path;
-      filterFn = path: ! (lib.hasSuffix "default.nix" path);
-    };
-
-  # Lists files not ending in default.nix
-  listNonDefaultRecursive = path:
-    list {
-      inherit path;
-      filterFn = path: ! (lib.hasSuffix "default.nix" path);
-      recursive = true;
-    };
-
-  # Imports modules ending in default.nix
-  importDefault = path: args:
-    path
-    |> listDefault
-    |> map (path: import path args);
-
-  # Imports modules not ending in default.nix
-  importNonDefault = path: args:
-    path
-    |> listNonDefault
-    |> map (path: import path args);
-
   # Loads modules while preserving directory structure
   load = {
     path,
