@@ -1,16 +1,18 @@
-args: let
-  inherit ((import ../../lib args).loaders) loadNonDefault;
+{inputs, ...}: let
+  inherit (inputs.self.lib) nixFilesToAttrs;
 in {
-  # For reasons beyond my understanding, removing an argument from the attribute
-  # set here stops it from propagating to the loaded files even if the whole
-  # systemArgs is used as an argument
   perSystem = {
     self',
+    lib,
     pkgs,
     ...
-  } @ systemArgs: {
+  }: {
     legacyPackages = let
-      scripts = loadNonDefault ./. systemArgs;
+      callPackage = lib.callPackageWith pkgs;
+      extraPkgs = {inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;};
+      scripts =
+        nixFilesToAttrs ./.
+        |> lib.mapAttrs (_: path: callPackage path extraPkgs);
     in
       scripts # Provide them at the top level as well so they're more convenient to run
       // {inherit scripts;};

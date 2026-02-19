@@ -92,10 +92,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    haumea = {
-      url = "github:nix-community/haumea/v0.2.2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
