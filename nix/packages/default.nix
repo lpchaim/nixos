@@ -1,23 +1,23 @@
-args: let
-  inherit ((import ../lib args).loaders) callPackageDefault callPackageNonDefault;
-in {
+{inputs, ...}: {
+  imports = [
+    inputs.pkgs-by-name-for-flake-parts.flakeModule
+  ];
+
   perSystem = {
     inputs',
-    self',
     lib,
+    pkgs,
     ...
   }: let
-    inherit (self'.legacyPackages) pkgs;
     callPackage = lib.callPackageWith pkgs;
   in {
-    packages =
-      (callPackageDefault ./. pkgs)
-      // (callPackageNonDefault ./. pkgs)
-      // {
-        lichen =
-          callPackage
-          ./lichen/package.nix
-          {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
-      };
+    pkgsDirectory = ./.;
+    pkgsNameSeparator = "-";
+    packages = lib.mkForce {
+      lichen =
+        callPackage
+        ./lichen/package.nix
+        {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
+    };
   };
 }

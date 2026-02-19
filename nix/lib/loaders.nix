@@ -125,26 +125,4 @@
       inherit path args;
       filterFn = path: ! (lib.hasSuffix "default.nix" path);
     };
-
-  # Runs callPackage on files ending in default.nix, always recursive
-  callPackageDefault = path: pkgs:
-    path
-    |> (path:
-      read {
-        inherit path;
-        filterFn = lib.hasSuffix "default.nix";
-      })
-    |> builtins.mapAttrs (_: path:
-      lib.callPackageWith (removeAttrs pkgs ["root"]) path {});
-
-  # Runs callPackage on files not ending in default.nix, always recursive
-  callPackageNonDefault = path: pkgs:
-    path
-    |> (path:
-      read {
-        inherit path;
-        filterFn = path: ! (lib.hasSuffix "default.nix" path);
-      })
-    |> builtins.mapAttrs (_: path:
-      lib.callPackageWith (removeAttrs pkgs ["root"]) path {});
 }
