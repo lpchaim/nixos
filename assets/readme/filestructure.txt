@@ -42,6 +42,7 @@
 │   ├── default.nix
 │   └── lichen
 ├── schemas
+│   ├── agenixRekey.nix
 │   ├── default.nix
 │   ├── lib.nix
 │   └── systems.nix
