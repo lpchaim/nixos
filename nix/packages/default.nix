@@ -1,8 +1,4 @@
-{inputs, ...}: {
-  imports = [
-    inputs.pkgs-by-name-for-flake-parts.flakeModule
-  ];
-
+{...}: {
   perSystem = {
     inputs',
     lib,
@@ -11,13 +7,17 @@
   }: let
     callPackage = lib.callPackageWith pkgs;
   in {
-    pkgsDirectory = ./.;
-    pkgsNameSeparator = "-";
-    packages = lib.mkForce {
-      lichen =
-        callPackage
-        ./lichen/package.nix
-        {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
-    };
+    packages =
+      (lib.packagesFromDirectoryRecursive {
+          inherit callPackage;
+          directory = ./.;
+        }
+        |> lib.filterAttrs (name: _: name != "default"))
+      // {
+        lichen =
+          callPackage
+          ./lichen/package.nix
+          {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
+      };
   };
 }

@@ -40,7 +40,7 @@ in {
     '';
   nixFilesToAttrs = path:
     builtins.readDir path
-    |> lib.filterAttrs (name: type: type == "regular" && name != "default.nix")
+    |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")
     |> lib.concatMapAttrs (relativePath: _: {
       ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
     });
