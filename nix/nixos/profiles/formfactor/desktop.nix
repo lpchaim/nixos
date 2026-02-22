@@ -1,10 +1,12 @@
 # Desktop-specific configurations
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }: let
+  inherit (inputs.self.lib) mkOneShotBootService;
   cfg = config.my.profiles.formfactor.desktop;
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
@@ -29,8 +31,8 @@ in {
 
     networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
 
-    powerManagement.powerUpCommands = ''
-      ${pkgs.zsh}/bin/zsh -c "echo disabled > /sys/bus/usb/devices/*/power/wakeup"
-    '';
+    systemd.services.usb-wakeup-disable = mkOneShotBootService {
+      script = "echo disabled | tee /sys/bus/usb/devices/*/power/wakeup";
+    };
   };
 }
