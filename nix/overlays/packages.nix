@@ -1,4 +1,4 @@
-{inputs, ...} @ args: (
-  final: prev:
-    import "${inputs.self}/nix/packages" args
-)
+{inputs, ...}: final: prev: let
+  inherit (prev.stdenv.hostPlatform) system;
+in
+  inputs.self.packages.${system} or {}

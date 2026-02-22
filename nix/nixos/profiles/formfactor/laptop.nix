@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.my.profiles.formfactor.laptop;
@@ -26,7 +27,12 @@ in {
           };
         };
       };
-      fprintd.enable = true;
+      fprintd = {
+        enable = true;
+        package = pkgs.fprintd.override {
+          libfprint = pkgs.libfprint-canvasbio-cb2000;
+        };
+      };
       thermald.enable = true;
     };
   };
