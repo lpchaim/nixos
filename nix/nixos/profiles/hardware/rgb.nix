@@ -1,9 +1,11 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }: let
+  inherit (inputs.self.lib) mkOneShotSleepService;
   inherit (config.services.hardware.openrgb) package;
   cfg = config.my.profiles.hardware.rgb;
 in {
@@ -15,13 +17,14 @@ in {
       package = pkgs.openrgb-with-all-plugins;
     };
     services.udev.packages = [package];
-    powerManagement = {
-      powerDownCommands = ''
-        ${package}/bin/openrgb --color 000000
-      '';
-      powerUpCommands = ''
-        ${package}/bin/openrgb --color 000000
-      '';
+
+    systemd.services.rgb-off = mkOneShotSleepService {
+      serviceConfig = let
+        command = "${package}/bin/openrgb --color 000000";
+      in {
+        ExecStart = command;
+        ExecStop = command;
+      };
     };
   };
 }

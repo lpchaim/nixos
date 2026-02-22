@@ -3,10 +3,7 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit (inputs) self;
-  inherit (lib) mkDefault;
-in {
+}: {
   imports =
     (with inputs; [
       agenix.nixosModules.default
@@ -21,7 +18,8 @@ in {
       stylix.nixosModules.stylix
     ])
     ++ [
-      "${self}/nix/shared"
+      ../../shared
+      ../profiles
       ./boot
       ./ci
       ./desktop
@@ -47,21 +45,20 @@ in {
       ./virtualization
       ./wayland
       ./zram
-      ../profiles
     ];
 
   my = {
-    kernel.enable = mkDefault true;
-    networking.tailscale.enable = mkDefault true;
-    nix.enable = mkDefault true;
-    pipewire.enable = mkDefault true;
-    security.enable = mkDefault true;
-    ssh.enable = mkDefault true;
-    syncthing.enable = mkDefault true;
-    theming.enable = mkDefault true;
-    users.enable = mkDefault true;
-    users.lpchaim.enable = mkDefault true;
-    zram.enable = mkDefault true;
+    kernel.enable = lib.mkDefault true;
+    networking.tailscale.enable = lib.mkDefault true;
+    nix.enable = lib.mkDefault true;
+    pipewire.enable = lib.mkDefault true;
+    security.enable = lib.mkDefault true;
+    ssh.enable = lib.mkDefault true;
+    syncthing.enable = lib.mkDefault true;
+    theming.enable = lib.mkDefault true;
+    users.enable = lib.mkDefault true;
+    users.lpchaim.enable = lib.mkDefault true;
+    zram.enable = lib.mkDefault true;
   };
 
   environment.systemPackages = with pkgs; [
