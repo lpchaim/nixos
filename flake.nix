@@ -25,7 +25,7 @@
         system,
         ...
       }: {
-        _module.args.pkgs = self.legacyPackages.${system}.pkgs;
+        _module.args.pkgs = self.lib.mkPkgs {inherit system;};
         formatter = pkgs.alejandra;
         legacyPackages.pkgs = self.lib.mkPkgs {
           inherit system;
