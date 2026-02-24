@@ -4,5 +4,6 @@
 in {
   flake.overlays =
     nixFilesToAttrs ./.
-    |> lib.mapAttrs (_: path: import path args);
+    |> lib.mapAttrs (_: path: import path args)
+    |> (_: _ // {default = inputs.self.overlays.packages;});
 }

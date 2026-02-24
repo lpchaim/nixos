@@ -1,22 +1,17 @@
-args: {
+{inputs, ...} @ args: let
+  inherit (inputs.self.lib) callPackageWith callPackageRecursiveWith;
+in {
   perSystem = {
-    lib,
     self',
     pkgs,
     ...
   }: let
-    extraArgs = {
-      inherit (args) inputs;
-      inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;
-    };
-    callPackage = lib.callPackageWith (pkgs // extraArgs);
+    callPackage = callPackageWith pkgs;
+    callPackageRecursive = callPackageRecursiveWith pkgs;
   in {
-    legacyPackages =
-      lib.packagesFromDirectoryRecursive {
-        inherit callPackage;
-        directory = ./.;
-      }
-      |> lib.filterAttrsRecursive (name: _: name != "default")
-      |> (legacyPackages: legacyPackages // legacyPackages.scripts);
+    legacyPackages = {
+      ci.matrix = callPackage ./ciMatrix.nix {inherit (args) inputs;};
+      scripts = callPackageRecursive ./scripts {inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;};
+    };
   };
 }

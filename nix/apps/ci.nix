@@ -15,7 +15,7 @@
             --branch: string  # Only include the specified branch
             --flatten  # Output a single list
           ]: nothing -> string {
-            open "${self'.legacyPackages.ciMatrix}"
+            open "${self'.legacyPackages.ci.matrix}"
             | from json
             | if $system != all {
                 filter-records { where system == $system }
