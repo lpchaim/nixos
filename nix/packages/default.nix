@@ -1,20 +1,16 @@
-{...}: {
+{inputs, ...}: let
+  inherit (inputs.self.lib) callPackageWith;
+in {
   perSystem = {
     inputs',
-    lib,
     pkgs,
     ...
   }: let
-    extraArgs = {
-      inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;
-    };
-    callPackage = lib.callPackageWith (pkgs // extraArgs);
+    callPackage = callPackageWith pkgs;
   in {
-    packages =
-      lib.packagesFromDirectoryRecursive {
-        inherit callPackage;
-        directory = ./.;
-      }
-      |> lib.filterAttrsRecursive (name: _: name != "default");
+    packages = {
+      libfprint-canvasbio-cb2000 = callPackage ./libfprint-canvasbio-cb2000 {};
+      lichen = callPackage ./lichen {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
+    };
   };
 }

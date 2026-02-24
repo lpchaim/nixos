@@ -8,6 +8,23 @@ in {
   storage = import ./storage args;
   strings = import ./strings.nix args;
 
+  callPackageWith = pkgs: path: extraArgs:
+    lib.callPackageWith
+    pkgs
+    (
+      if (lib.pathIsDirectory path && builtins.pathExists "${path}/package.nix")
+      then "${path}/package.nix"
+      else if (lib.pathIsDirectory path && builtins.pathExists "${path}/default.nix")
+      then "${path}/default.nix"
+      else path
+    )
+    extraArgs;
+  callPackageRecursiveWith = pkgs: path: extraArgs:
+    lib.packagesFromDirectoryRecursive {
+      callPackage = lib.callPackageWith (pkgs // extraArgs);
+      directory = path;
+    }
+    |> lib.filterAttrsRecursive (name: _: name != "default");
   mkPkgs = {
     system,
     nixpkgs ? inputs.nixpkgs,
