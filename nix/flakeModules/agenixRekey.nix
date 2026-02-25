@@ -2,7 +2,9 @@
   inputs,
   self,
   ...
-}: {
+}: let
+  inherit (self.lib) getStandaloneHomeConfigurations;
+in {
   imports = [
     inputs.agenix-rekey.flakeModule
   ];
@@ -11,7 +13,7 @@
     agenix-rekey = {
       inherit (self) nixosConfigurations;
       agePackage = pkgs.rage;
-      homeConfigurations = self.lib.getStandaloneHomeConfigurations self;
+      homeConfigurations = getStandaloneHomeConfigurations self;
     };
   };
 }
