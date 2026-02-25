@@ -8,9 +8,9 @@
   inherit (inputs.home-manager.lib) hm;
   inherit (inputs.nix-std.lib) serde;
   inherit (lib) mkIf mkEnableOption mkOption;
-  cfg = config.my.misc.llm;
+  cfg = config.my.llm;
 in {
-  options.my.misc.llm = {
+  options.my.llm = {
     enable = mkEnableOption "LLM tools";
     defaultModel = mkOption {
       description = "Which model to use by default";
