@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) mkOneShotSleepService;
+  inherit (inputs.self.lib.services) mkOneShotSleepService;
   inherit (config.services.hardware.openrgb) package;
   cfg = config.my.profiles.hardware.rgb;
 in {

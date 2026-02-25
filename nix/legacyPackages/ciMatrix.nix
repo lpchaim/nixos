@@ -5,6 +5,7 @@
   ...
 }: let
   inherit (self) systems;
+  inherit (self.lib) getStandaloneHomeConfigurations;
   getOutputInfo = mkDerivationPath: output:
     lib.mapAttrsToList (name: drv: {
       inherit name;
@@ -44,7 +45,7 @@
     infos;
   ciInfo = {
     homeConfigurations =
-      (self.lib.getStandaloneHomeConfigurations self)
+      (getStandaloneHomeConfigurations self)
       |> filterToBuild
       |> getOutputInfo (name: ".#homeConfigurations.${name}.activationPackage")
       |> spreadBranchOrDefault [];

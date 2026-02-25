@@ -6,7 +6,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib) mkOneShotBootService;
+  inherit (inputs.self.lib.services) mkOneShotBootService;
   cfg = config.my.profiles.formfactor.desktop;
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
