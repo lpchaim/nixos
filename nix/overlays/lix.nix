@@ -1,15 +1,16 @@
 # As instructed on https://lix.systems/add-to-config/
-{...}: final: prev: let
+{inputs, ...}: final: prev: let
   inherit (prev) lib;
+  inherit (prev.stdenv.hostPlatform) system;
   rev = "stable";
   nix = final.lixPackageSets.${rev}.lix;
 in {
   # Workaround for infrec found here https://github.com/NixOS/nixpkgs/pull/445223#issuecomment-3330902652
   inherit nix;
+  inherit (inputs.colmena.packages.${system}) colmena;
   nix-direnv = prev.nix-direnv.override {inherit nix;};
   inherit
     (final.lixPackageSets.${rev})
-    colmena
     nix-eval-jobs
     nix-fast-build
     nixpkgs-review
