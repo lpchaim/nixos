@@ -6,8 +6,10 @@
     {inherit inputs;}
     ({flake-parts-lib, ...}: let
       inherit (flake-parts-lib) importApply;
-      import' = path: import path {inherit inputs;};
-      importApply' = path: importApply path {inherit inputs;};
+      inherit (inputs.nixpkgs) lib;
+      specialArgs = {inherit inputs lib self;};
+      import' = path: import path specialArgs;
+      importApply' = path: importApply path specialArgs;
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
       inherit systems;
