@@ -2,11 +2,14 @@ name: Build
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - Check
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'nix/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -15,15 +18,12 @@ concurrency:
 jobs:
   inventory:
     name: Build inventory
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-24.04
     outputs:
       x86_64-linux: ${{ steps.matrix.outputs.x86_64-linux }}
       aarch64-linux: ${{ steps.matrix.outputs.aarch64-linux }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Setup Nix
         uses: ./.github/actions/nix-setup
         with:
@@ -32,8 +32,8 @@ jobs:
         id: matrix
         run: |
           {
-          echo "x86_64-linux=$(nix run .#generate-ci-matrix -- --system x86_64-linux --branch "$GITHUB_REF_NAME" --flatten)"
-          echo "aarch64-linux=$(nix run .#generate-ci-matrix -- --system aarch64-linux --branch "$GITHUB_REF_NAME" --flatten)"
+          echo "x86_64-linux=$(nix run --quiet .#generate-ci-matrix -- --system x86_64-linux --branch "$GITHUB_REF_NAME" --flatten)"
+          echo "aarch64-linux=$(nix run --quiet .#generate-ci-matrix -- --system aarch64-linux --branch "$GITHUB_REF_NAME" --flatten)"
           } >> "$GITHUB_OUTPUT"
 
   build-x86_64-linux:

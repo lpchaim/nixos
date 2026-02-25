@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  inventory:
+  check:
     name: Run flake checks
     runs-on: ubuntu-24.04
     steps:
