@@ -23,6 +23,7 @@
       ./boot
       ./ci
       ./desktop
+      ./deploy
       ./gaming
       ./gui
       ./hardware

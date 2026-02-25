@@ -22,7 +22,7 @@ in {
       packages =
         (with pkgs; [
           age-plugin-yubikey
-          agenix-rekey
+          colmena
           just
           rage
         ])
