@@ -1,10 +1,10 @@
 {
-  inputs,
   lib,
+  self,
   writeText,
   ...
 }: let
-  inherit (inputs.self) devShells homeConfigurations nixosConfigurations packages systems;
+  inherit (self) systems;
   getOutputInfo = mkDerivationPath: output:
     lib.mapAttrsToList (name: drv: {
       inherit name;
@@ -44,23 +44,22 @@
     infos;
   ciInfo = {
     homeConfigurations =
-      homeConfigurations
-      |> lib.filterAttrs (_: home: home._module.specialArgs.osConfig == {}) # Standalone only
+      (self.lib.getStandaloneHomeConfigurations self)
       |> filterToBuild
       |> getOutputInfo (name: ".#homeConfigurations.${name}.activationPackage")
       |> spreadBranchOrDefault [];
     nixosConfigurations =
-      nixosConfigurations
+      self.nixosConfigurations
       |> filterToBuild
       |> getOutputInfo (name: ".#nixosConfigurations.${name}.config.system.build.toplevel")
       |> spreadBranchOrDefault [];
     packages =
-      packages
+      self.packages
       |> filterPerSystemToBuild
       |> getPerSystemOutputInfo (system: name: ".#packages.${system}.${name}")
       |> spreadBranchOrDefault ["main" "develop"];
     devShells =
-      devShells
+      self.devShells
       |> filterPerSystemToBuild
       |> getPerSystemOutputInfo (system: name: ".#devShells.${system}.${name}")
       |> spreadBranchOrDefault ["main" "develop"];

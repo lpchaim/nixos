@@ -8,6 +8,14 @@ in {
   storage = import ./storage args;
   strings = import ./strings.nix args;
 
+  mkPkgs = {
+    system,
+    nixpkgs ? inputs.nixpkgs,
+  }:
+    import nixpkgs {
+      inherit system overlays;
+      allowUnfree = true;
+    };
   callPackageWith = pkgs: path: extraArgs:
     lib.callPackageWith
     pkgs
@@ -25,14 +33,13 @@ in {
       directory = path;
     }
     |> lib.filterAttrsRecursive (name: _: name != "default");
-  mkPkgs = {
-    system,
-    nixpkgs ? inputs.nixpkgs,
-  }:
-    import nixpkgs {
-      inherit system overlays;
-      allowUnfree = true;
-    };
+
+  getStandaloneHomeConfigurations = self:
+    self.homeConfigurations
+    |> lib.filterAttrs (name: _: self.lib.isStandaloneHome self.nixosConfigurations name);
+  isStandaloneHome = nixosConfigurations: name:
+    !(nixosConfigurations ? ${name |> lib.splitString "@" |> lib.last});
+
   isNvidia = config: let
     drivers = config.services.xserver.videoDrivers or [];
   in
@@ -55,12 +62,14 @@ in {
       | nu-generate-carapace-spec \
       > $out
     '';
+
   nixFilesToAttrs = path:
     builtins.readDir path
     |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")
     |> lib.concatMapAttrs (relativePath: _: {
       ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
     });
+
   mkOneShotBootService =
     lib.recursiveUpdate
     {
