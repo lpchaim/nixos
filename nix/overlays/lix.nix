@@ -27,7 +27,7 @@ in {
   };
 
   # Adapted from https://github.com/nix-community/nixd/issues/704#issuecomment-3688024705
-  nixd-lix = prev.symlinkJoin {
+  nixd = prev.symlinkJoin {
     name = "nixd-lix";
 
     inherit (prev.nixd) meta;
