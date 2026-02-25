@@ -29,13 +29,13 @@ jobs:
         id: update
         run: |
           set -o pipefail
-          nix flake update 2>&1 \
+          nix flake update --quiet 2>&1 \
           | tee -a "$GITHUB_STEP_SUMMARY" ./update.out
       - name: Run flake checks
         id: check
         run: |
           set -o pipefail
-          nix flake check --all-systems --keep-going 2>&1 \
+          nix flake check --quiet --all-systems --keep-going 2>&1 \
           | tee -a "$GITHUB_STEP_SUMMARY" ./check.out
       - name: Build PR body
         id: vars
