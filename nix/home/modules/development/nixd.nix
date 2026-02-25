@@ -15,7 +15,7 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      home.packages = [pkgs.nixd-lix];
+      home.packages = [pkgs.nixd];
     })
     (lib.mkIf (cfg.lsp.enable && config.programs.helix.enable) {
       programs.helix = {
@@ -27,7 +27,7 @@ in {
             }
           ];
           language-server.nixd = {
-            command = "${lib.getExe pkgs.nixd-lix}";
+            command = "${lib.getExe pkgs.nixd}";
             args = ["--semantic-tokens=true"];
             config.nixd = let
               inherit (config.my.config) flake;
