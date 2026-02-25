@@ -22,6 +22,8 @@ jobs:
       aarch64-linux: ${{ steps.matrix.outputs.aarch64-linux }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Setup Nix
         uses: ./.github/actions/nix-setup
         with:
