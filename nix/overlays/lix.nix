@@ -2,13 +2,14 @@
 {...}: final: prev: let
   inherit (prev) lib;
   rev = "stable";
+  nix = final.lixPackageSets.${rev}.lix;
 in {
   # Workaround for infrec found here https://github.com/NixOS/nixpkgs/pull/445223#issuecomment-3330902652
-  nix = final.lixPackageSets.${rev}.lix;
+  inherit nix;
+  nix-direnv = prev.nix-direnv.override {inherit nix;};
   inherit
     (final.lixPackageSets.${rev})
     colmena
-    nix-direnv
     nix-eval-jobs
     nix-fast-build
     nixpkgs-review
