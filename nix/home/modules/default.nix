@@ -25,6 +25,7 @@
       ./de
       ./development
       ./gui
+      ./llm
       ./misc
       ./nix
       ./scripts
