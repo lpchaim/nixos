@@ -1,0 +1,12 @@
+diff --git a/src-tauri/Cargo.toml b/src-tauri/Cargo.toml
+index 1167193f..ece4f6c4 100644
+--- a/src-tauri/Cargo.toml
++++ b/src-tauri/Cargo.toml
+@@ -21,7 +21,6 @@ tauri = { version = "1.4.0", features = [ "dialog-all", "clipboard-write-text",
+ midir = "0.9.1"
+ tokio = { version = "1.29.0", features = ["full"] }
+ rosc = "0.10.1"
+-tauri-plugin-clipboard-manager = "2"
+ 
+ [features]
+ # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
