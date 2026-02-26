@@ -54,27 +54,6 @@ The color scheme used in my screenshots is `stella`.
 ## File structure
 
 I'm hoping the file structure under `/nix` is mostly self-explanatory. That said, there are a couple that bear explaining:
-- `modules` for flake modules consumed by [flake-parts]
-- `schemas` for my custom [flake-schemas] definitions
-- `shared` for configuration and modules useful to both and NixOS and Home Manager
-
-<details>
-<summary>Tree view of the directory structure</summary>
-
-```sh
-$filestructure
-```
-</details>
-
-## Outputs
-
-If you're curious, this is what the flake actually outputs right now.
-Courtesy of [flake-schemas]' patches with my own lib/pkgs schemas on top.
-
-<details>
-<summary>Output of `nix flake show`</summary>
-
-```sh
-$outputs
-```
-</details>
+- `nix/flakeModules` for flake modules consumed by [flake-parts]
+- `nix/schemas` for my custom [flake-schemas] definitions
+- `nix/shared` for configuration and modules useful to both and NixOS and Home Manager
