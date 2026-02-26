@@ -1,23 +1,16 @@
-args: let
-  inherit ((import ../lib args).loaders) callPackageDefault callPackageNonDefault;
+{inputs, ...}: let
+  inherit (inputs.self.lib) callPackageWith;
 in {
   perSystem = {
     inputs',
-    self',
-    lib,
+    pkgs,
     ...
   }: let
-    inherit (self'.legacyPackages) pkgs;
-    callPackage = lib.callPackageWith pkgs;
+    callPackage = callPackageWith pkgs;
   in {
-    packages =
-      (callPackageDefault ./. pkgs)
-      // (callPackageNonDefault ./. pkgs)
-      // {
-        lichen =
-          callPackage
-          ./lichen/package.nix
-          {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
-      };
+    packages = {
+      libfprint-canvasbio-cb2000 = callPackage ./libfprint-canvasbio-cb2000 {};
+      lichen = callPackage ./lichen {inherit (inputs'.nixpkgs-hare.legacyPackages) hare hareHook;};
+    };
   };
 }

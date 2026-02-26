@@ -6,8 +6,10 @@
     {inherit inputs;}
     ({flake-parts-lib, ...}: let
       inherit (flake-parts-lib) importApply;
-      import' = path: import path {inherit inputs;};
-      importApply' = path: importApply path {inherit inputs;};
+      inherit (inputs.nixpkgs) lib;
+      specialArgs = {inherit inputs lib self;};
+      import' = path: import path specialArgs;
+      importApply' = path: importApply path specialArgs;
       systems = ["aarch64-linux" "x86_64-linux"];
     in {
       inherit systems;
@@ -25,7 +27,7 @@
         system,
         ...
       }: {
-        _module.args.pkgs = self.legacyPackages.${system}.pkgs;
+        _module.args.pkgs = self.lib.mkPkgs {inherit system;};
         formatter = pkgs.alejandra;
         legacyPackages.pkgs = self.lib.mkPkgs {
           inherit system;
@@ -46,22 +48,7 @@
     nixpkgs.follows = "unstable";
     stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-schemas.url = "github:DeterminateSystems/nix-src/flake-schemas";
     nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
-
-    # Home Manager
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixneovimplugins = {
-      url = "github:jooooscha/nixpkgs-vim-extra-plugins";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Hyprland
     dms = {
@@ -72,12 +59,18 @@
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     # Misc
-    agenix.url = "github:ryantm/agenix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agenix-rekey = {
       url = "github:oddlama/agenix-rekey";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    colmena = {
+      url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -92,11 +85,14 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    haumea = {
-      url = "github:nix-community/haumea/v0.2.2";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -109,7 +105,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-std.url = "github:chessai/nix-std";
-    nur.url = "github:nix-community/NUR";
+    nixneovimplugins = {
+      url = "github:jooooscha/nixpkgs-vim-extra-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";

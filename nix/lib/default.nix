@@ -1,26 +1,28 @@
-{inputs, ...} @ topLevelArgs: let
-  inherit (inputs.nixpkgs) lib;
-  args = topLevelArgs // {inherit lib;};
-  overlays = builtins.attrValues inputs.self.overlays;
-in {
+{
+  inputs,
+  lib,
+  self,
+  ...
+} @ args: {
   config = import ./config.nix args;
-  loaders = import ./loaders.nix args;
+  flake = import ./flake.nix args;
+  packages = import ./packages.nix args;
   secrets = import ./secrets.nix;
+  services = import ./services.nix args;
   storage = import ./storage args;
   strings = import ./strings.nix args;
 
-  mkPkgs = {
-    system,
-    nixpkgs ? inputs.nixpkgs,
-  }:
-    import nixpkgs {
-      inherit system overlays;
-      allowUnfree = true;
-    };
-  isNvidia = config: let
-    drivers = config.services.xserver.videoDrivers or [];
-  in
-    builtins.elem "nvidia" drivers;
+  inherit
+    (self.lib.flake)
+    getStandaloneHomeConfigurations
+    ;
+  inherit
+    (self.lib.packages)
+    callPackageRecursiveWith
+    callPackageWith
+    mkPkgs
+    ;
+
   carapaceSpecFromNuScript = script: let
     inherit (script) name system;
     inherit (inputs.self.legacyPackages.${system}) scripts pkgs;
@@ -39,4 +41,10 @@ in {
       | nu-generate-carapace-spec \
       > $out
     '';
+  nixFilesToAttrs = path:
+    builtins.readDir path
+    |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")
+    |> lib.concatMapAttrs (relativePath: _: {
+      ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
+    });
 }

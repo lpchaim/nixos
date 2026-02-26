@@ -1,17 +1,34 @@
 # As instructed on https://lix.systems/add-to-config/
-{...}: final: prev: let
+{inputs, ...}: final: prev: let
   inherit (prev) lib;
+  inherit (prev.stdenv.hostPlatform) system;
+  rev = "stable";
+  nix = final.lixPackageSets.${rev}.lix;
 in {
+  # Workaround for infrec found here https://github.com/NixOS/nixpkgs/pull/445223#issuecomment-3330902652
+  inherit nix;
+  inherit (inputs.colmena.packages.${system}) colmena;
+  nix-direnv = prev.nix-direnv.override {inherit nix;};
   inherit
-    (prev.lixPackageSets.stable)
-    nixpkgs-review
+    (final.lixPackageSets.${rev})
     nix-eval-jobs
     nix-fast-build
-    colmena
+    nixpkgs-review
+    nix-serve-ng
     ;
+  lixPackageSets = prev.lixPackageSets.override {
+    inherit
+      (prev)
+      colmena
+      nix-direnv
+      nix-fast-build
+      nixpkgs-review
+      nix-serve-ng
+      ;
+  };
 
   # Adapted from https://github.com/nix-community/nixd/issues/704#issuecomment-3688024705
-  nixd-lix = prev.symlinkJoin {
+  nixd = prev.symlinkJoin {
     name = "nixd-lix";
 
     inherit (prev.nixd) meta;

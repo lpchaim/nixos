@@ -1,4 +1,5 @@
 args: {
+  agenix-rekey = import ./agenixRekey.nix args;
   lib = import ./lib.nix args;
-  pkgs = import ./pkgs.nix args;
+  systems = import ./systems.nix args;
 }
