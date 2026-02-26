@@ -104,6 +104,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-std.url = "github:chessai/nix-std";
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
