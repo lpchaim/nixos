@@ -34,7 +34,6 @@ in {
       libreoffice-qt6-fresh
       loupe
       nautilus
-      obsidian
       pavucontrol
       qbittorrent
       signal-desktop
@@ -49,6 +48,10 @@ in {
     };
 
     programs = {
+      obsidian = {
+        enable = true;
+        vaults.default.target = "Notes/Obsidian";
+      };
       vscode = {
         enable = true;
         package = pkgs.vscode.fhs;
