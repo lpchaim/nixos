@@ -1,9 +1,10 @@
 {
   lib,
-  pkgs,
+  nushell,
+  writeNuScriptStdinBin,
   ...
 }:
-pkgs.writeNuScriptStdinBin "nu-inspect"
+writeNuScriptStdinBin "nu-inspect"
 # nu
 ''
   # Outputs structured command data based on nushell script contents
@@ -11,7 +12,7 @@ pkgs.writeNuScriptStdinBin "nu-inspect"
     --name: string = "main"
   ]: string -> string {
     $in | save ./tmp.nu
-    ${lib.getExe pkgs.nushell} --commands $"
+    ${lib.getExe nushell} --commands $"
       source './tmp.nu'
 
       help commands

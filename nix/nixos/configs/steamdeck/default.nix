@@ -14,6 +14,7 @@ in {
   ];
 
   my = {
+    deprecated = true;
     steamos.enable = true;
     gaming.enable = false;
     gaming.steam.enable = true;

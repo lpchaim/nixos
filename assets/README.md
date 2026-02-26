@@ -1,8 +1,7 @@
-[caelestia]: https://github.com/caelestia-dots/shell
+[dms]: https://github.com/AvengeMedia/DankMaterialShell
 [ez-configs]: https://github.com/ehllie/ez-configs/
 [flake-parts]: https://github.com/hercules-ci/flake-parts
 [flake-schemas]: https://github.com/DeterminateSystems/flake-schemas
-[haumea]: https://github.com/nix-community/haumea
 [rofi]: https://github.com/davatorium/rofi
 [stylix]: https://github.com/danth/stylix
 
@@ -21,9 +20,9 @@
 
 ---
 
-Welcome to my NixOS flake! It's mostly powered by [flake-parts], with some [haumea] sprinkled in for painless module loading here and there.
+Welcome to my Nix flake, powered by [flake-parts]!
 
-This is mainly for my NixOS configurations, but it also has a couple standalone Home Manager configs, development shells and NixOS/Home Manager modules.
+This is mainly for my NixOS configurations, but it also has a couple standalone Home Manager configs, packages, development shells and NixOS/Home Manager modules.
 
 ## Design goals
 
@@ -47,7 +46,7 @@ $sampleconfig
 
 ## Look and feel
 
-I daily drive Hyprland with [caelestia] and [rofi].
+I daily drive Hyprland with [dms] and [rofi].
 
 My systems wouldn't look even halfway as good without [stylix] doing all the heavy-lifting in my stead.
 The color scheme used in my screenshots is `stella`.
@@ -55,27 +54,6 @@ The color scheme used in my screenshots is `stella`.
 ## File structure
 
 I'm hoping the file structure under `/nix` is mostly self-explanatory. That said, there are a couple that bear explaining:
-- `modules` for flake modules consumed by [flake-parts]
-- `schemas` for my custom [flake-schemas] definitions
-- `shared` for configuration and modules useful to both and NixOS and Home Manager
-
-<details>
-<summary>Tree view of the directory structure</summary>
-
-```sh
-$filestructure
-```
-</details>
-
-## Outputs
-
-If you're curious, this is what the flake actually outputs right now.
-Courtesy of [flake-schemas]' patches with my own lib/pkgs schemas on top.
-
-<details>
-<summary>Output of `nix flake show`</summary>
-
-```sh
-$outputs
-```
-</details>
+- `nix/flakeModules` for flake modules consumed by [flake-parts]
+- `nix/schemas` for my custom [flake-schemas] definitions
+- `nix/shared` for configuration and modules useful to both and NixOS and Home Manager

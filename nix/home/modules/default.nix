@@ -2,13 +2,11 @@
   inputs,
   lib,
   ...
-}: let
-  inherit (inputs) self;
-in {
+}: {
   imports =
     (with inputs; [
       agenix.homeManagerModules.default
-      (agenix-rekey.homeManagerModules.default // {_class = "homeManager";}) # Don't ask
+      agenix-rekey.homeManagerModules.default
       caelestia.homeManagerModules.default
       dms.homeModules.dank-material-shell
       nix-index-database.homeModules.nix-index
@@ -19,13 +17,15 @@ in {
       wayland-pipewire-idle-inhibit.homeModules.default
     ])
     ++ [
-      "${self}/nix/shared"
+      ../../shared
+      ../profiles
       ./bars
       ./ci
       ./cli
       ./de
       ./development
       ./gui
+      ./llm
       ./misc
       ./nix
       ./scripts
@@ -35,7 +35,6 @@ in {
       ./syncthing
       ./theming
       ./wayland
-      ../profiles
     ];
 
   my = {

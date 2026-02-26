@@ -6,7 +6,7 @@
   cfg = config.my.profiles.llm.mid;
 in {
   options.my.profiles.llm.mid = lib.mkEnableOption "Mid LLM preset profile";
-  config.my.misc.llm = lib.mkIf cfg {
+  config.my.llm = lib.mkIf cfg {
     enable = true;
     defaultModel = "phi2";
   };
