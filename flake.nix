@@ -49,10 +49,6 @@
     stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
-    nixpkgs-schemas = {
-      url = "github:DeterminateSystems/nix-src/flake-schemas";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Hyprland
     dms = {
