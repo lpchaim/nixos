@@ -46,7 +46,27 @@ in {
           settings.keymap.recommended = true;
         };
         dashboard.enable = true;
-        indent-blankline.enable = true;
+        indent-blankline = {
+          enable = true;
+          settings = {
+            exclude = {
+              buftypes = [
+                "terminal"
+                "quickfix"
+              ];
+              filetypes = [
+                ""
+                "checkhealth"
+                "dashboard"
+                "help"
+                "lspinfo"
+                "packer"
+                "TelescopePrompt"
+                "TelescopeResults"
+              ];
+            };
+          };
+        };
         mini-icons.enable = true;
         mini-tabline.enable = true;
         mini-statusline.enable = true;
@@ -60,8 +80,13 @@ in {
           indent.enable = true;
           grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
             bash
-            nix
+            gitattributes
+            gitcommit
+            gitignore
+            json
             regex
+            toml
+            yaml
           ];
         };
         treesiter-textobjects = {
