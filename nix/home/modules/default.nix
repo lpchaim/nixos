@@ -43,6 +43,7 @@
       editors = {
         helix.enable = lib.mkDefault true;
         kakoune.enable = lib.mkDefault true;
+        neovim.enable = lib.mkDefault true;
         vim.enable = lib.mkDefault true;
       };
       essentials.enable = lib.mkDefault true;
