@@ -16,9 +16,12 @@ in
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
       ];
-      stylix.targets.mangohud.enable = false;
-      stylix.targets.firefox.profileNames = ["default"];
-      stylix.targets.vscode.profileNames = ["default"];
+      stylix.targets = {
+        firefox.profileNames = ["default"];
+        mangohud.enable = false;
+        obsidian.enable = false;
+        vscode.profileNames = ["default"];
+      };
       fonts.fontconfig = {
         enable = true;
         defaultFonts.monospace = [config.stylix.fonts.monospace.name];
