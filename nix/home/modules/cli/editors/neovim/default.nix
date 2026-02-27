@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.my.cli.editors.neovim;
@@ -32,16 +33,41 @@ in {
         }
       ];
       plugins = {
-        # bufferline.enable = true;
-        # dashboard.enable = true;
-        # indent-blankline.enable = true;
+        coq = {
+          enable = true;
+          settings.auto_start = true;
+          settings.keymap.recommended = true;
+        };
+        dashboard.enable = true;
+        indent-blankline.enable = true;
         mini-icons.enable = true;
         mini-tabline.enable = true;
         mini-statusline.enable = true;
         mini-surround.enable = true;
         noice.enable = true;
-        treesiter-textobjects.enable = true;
-        # persistence.enable = true;
+        nvim-notify.enable = true;
+        treesitter = {
+          enable = true;
+          folding.enable = true;
+          highlight.enable = true;
+          indent.enable = true;
+          grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+            bash
+            nix
+            regex
+          ];
+        };
+        treesiter-textobjects = {
+          enable = true;
+          settings = {
+            enable = true;
+            keymaps = {
+              "if" = "@function.inner";
+              af = "@function.outer";
+            };
+            lookahead = true;
+          };
+        };
         telescope = {
           enable = true;
           keymaps = {
