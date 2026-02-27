@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
   cfg = config.my.cli.editors.neovim;
@@ -15,6 +16,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;
+      imports = [./nixvimPlugins];
       globals = {
         mapleader = "<Space>";
         maplocalleader = "<Space>";
@@ -23,6 +25,7 @@ in {
         ignorecase = true;
         smartcase = true;
       };
+      nixpkgs.overlays = [self.overlays.vimPlugins];
       keymaps = [
         {
           mode = "";
@@ -33,6 +36,10 @@ in {
         }
       ];
       plugins = {
+        animotion = {
+          enable = true;
+          mode = "helix";
+        };
         coq = {
           enable = true;
           settings.auto_start = true;

@@ -12,6 +12,7 @@ in {
     legacyPackages = {
       ci.matrix = callPackage ./ciMatrix.nix {inherit (args.inputs) self;};
       scripts = callPackageRecursive ./scripts {inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;};
+      vimPlugins = callPackageRecursive ./vimPlugins {};
     };
   };
 }
