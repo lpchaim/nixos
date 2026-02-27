@@ -38,6 +38,7 @@ in {
       "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
     };
 
+    boot.kernelModules = ["wireguard"];
     services.tailscale = let
       tags =
         cfg.advertise.tags
@@ -54,13 +55,15 @@ in {
         [
           "--accept-dns"
           "--accept-routes"
-          "--advertise-tags=${formattedTags}"
           "--operator=${name.user}"
           "--reset" # Forces unspecified arguments to default values
           "--ssh"
         ]
         ++ lib.optionals cfg.advertise.exitNode [
           "--advertise-exit-node"
+        ]
+        ++ lib.optionals (tags != []) [
+          "--advertise-tags=${formattedTags}"
         ];
       openFirewall = true;
       useRoutingFeatures = "both";
