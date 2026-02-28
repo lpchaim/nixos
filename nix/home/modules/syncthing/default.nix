@@ -2,11 +2,10 @@
   config,
   lib,
   pkgs,
-  self,
   osConfig ? {},
   ...
 }: let
-  inherit (self.lib.secrets.helpers) mkHostSecret;
+  inherit (config.my.secret.helpers) mkHostSecret;
   syncthingtray = config.services.syncthing.tray.package;
   cfg = config.my.syncthing;
 in {
@@ -28,20 +27,10 @@ in {
       }
     ];
 
-    my.secretDefinitions = let
-      owner =
-        if (osConfig != {})
-        then config.home.username
-        else "0";
-    in
-      lib.mkIf (cfg.host != null) {
-        "host.syncthing-cert" = mkHostSecret cfg.host "syncthing-cert" {
-          inherit owner;
-        };
-        "host.syncthing-key" = mkHostSecret cfg.host "syncthing-key" {
-          inherit owner;
-        };
-      };
+    my.secret.definitions = lib.mkIf (cfg.host != null) {
+      "host.syncthing-cert" = mkHostSecret cfg.host "syncthing-cert" {};
+      "host.syncthing-key" = mkHostSecret cfg.host "syncthing-key" {};
+    };
 
     services.syncthing = {
       enable = true;

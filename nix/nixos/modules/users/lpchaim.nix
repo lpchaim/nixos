@@ -13,7 +13,7 @@ in {
   options.my.users.lpchaim.enable = lib.mkEnableOption "lpchaim user";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
     };
 

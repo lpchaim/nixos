@@ -20,6 +20,11 @@ in {
   shell = "fish";
   wallpaper = assetWithPrefix "wallpaper";
   profilePicture = assetWithPrefix "profile-picture";
+  ssh.publicKeys = {
+    github = ../../keys/id_ed25519_github.pub;
+    nix = ../../keys/id_ed25519_nix.pub;
+    tangled = ../../keys/id_ed25519_tangled.pub;
+  };
   nix = {
     pkgs = {
       config = {

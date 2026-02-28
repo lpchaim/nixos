@@ -6,7 +6,7 @@
   inherit (inputs.self.lib.secrets) identities;
 in {
   options.my = {
-    secretDefinitions = lib.mkOption {
+    secret.definitions = lib.mkOption {
       description = "Secret definitions";
       default = [];
     };

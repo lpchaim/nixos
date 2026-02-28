@@ -20,7 +20,7 @@ in {
   options.my.cli.atuin.enable = lib.mkEnableOption "atuin";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "atuin-password" = mkSecret "atuin-password" {};
       "atuin-key" = mkSecret "atuin-key" {};
     };

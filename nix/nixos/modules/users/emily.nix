@@ -11,7 +11,7 @@ in {
   options.my.users.emily.enable = lib.mkEnableOption "emily user";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "user.emily.password" = mkUserSecret "emily" "password" {};
     };
 
