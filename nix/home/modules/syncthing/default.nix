@@ -9,27 +9,14 @@
   syncthingtray = config.services.syncthing.tray.package;
   cfg = config.my.syncthing;
 in {
-  options.my.syncthing = {
-    enable =
-      lib.mkEnableOption "syncthing"
-      // {default = osConfig.my.syncthing.enable or false;};
-    host = lib.mkOption {
-      type = with lib.types; nullOr str;
-      default = osConfig.networking.hostName or null;
-    };
-  };
+  options.my.syncthing.enable =
+    lib.mkEnableOption "syncthing"
+    // {default = osConfig.my.syncthing.enable or false;};
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.host != null;
-        message = "config.my.syncthing.host must be set";
-      }
-    ];
-
-    my.secret.definitions = lib.mkIf (cfg.host != null) {
-      "host.syncthing-cert" = mkHostSecret cfg.host "syncthing-cert" {};
-      "host.syncthing-key" = mkHostSecret cfg.host "syncthing-key" {};
+    my.secret.definitions = lib.mkIf (config.my.hostName != null) {
+      "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {};
+      "host.syncthing-key" = mkHostSecret config "syncthing-key" {};
     };
 
     services.syncthing = {

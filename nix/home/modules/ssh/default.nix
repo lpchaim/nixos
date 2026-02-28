@@ -4,7 +4,7 @@
   osConfig ? {},
   ...
 }: let
-  inherit (config.my.secret.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkSecret mkHostSecret;
   cfg = config.my.ssh;
 in {
   options.my.ssh.enable =
@@ -13,9 +13,11 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.secret.definitions = {
+      "ssh" = mkHostSecret config "ssh" {generator.script = "ssh-ed25519-keypair";};
       "ssh-github" = mkSecret "ssh-github" {};
-      "ssh-nix" = mkSecret "ssh-nix" {};
       "ssh-tangled" = mkSecret "ssh-tangled" {};
+      "ssh-yubikey-25388788" = mkSecret "ssh-yubikey-25388788" {};
+      "ssh-yubikey-26583315" = mkSecret "ssh-yubikey-26583315" {};
     };
 
     programs.ssh = {

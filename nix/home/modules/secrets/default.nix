@@ -26,14 +26,20 @@ in {
     osSecrets = osConfig.age.secrets or {};
     homeSecrets = config.my.secret.definitions;
     standaloneHomeSecrets = lib.removeAttrs homeSecrets (builtins.attrNames osSecrets);
-  in {
-    my.secrets = osSecrets // config.age.secrets;
-    age = {
-      secrets = standaloneHomeSecrets;
-      rekey = lib.mkIf (osConfig != {}) {
-        inherit (osConfig.age.rekey) hostPubkey;
-        localStorageDir = root + "/rekeyed/${osConfig.networking.hostName}-${config.home.username}";
-      };
-    };
-  };
+  in
+    lib.mkMerge [
+      {
+        my.secrets = osSecrets // config.age.secrets;
+        age.secrets = standaloneHomeSecrets;
+      }
+      (lib.mkIf (osConfig != {}) {
+        age.rekey = {
+          inherit (osConfig.age.rekey) hostPubkey;
+          localStorageDir = root + "/rekeyed/${osConfig.networking.hostName}-${config.home.username}";
+        };
+      })
+      (lib.mkIf (osConfig == {}) {
+        age.rekey.localStorageDir = root + "/rekeyed/${config.my.hostName}-${config.home.username}";
+      })
+    ];
 }

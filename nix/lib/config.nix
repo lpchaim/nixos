@@ -22,8 +22,25 @@ in {
   profilePicture = assetWithPrefix "profile-picture";
   ssh.publicKeys = {
     github = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJMlCP3GL7MCCZHvQcbNyET6HGT2BbLuBkDQPZ2tk8TU github.com";
-    nix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKelkUCKgf7cuEo3jk7rRq5yH6vWkHEQ1eOqilNErz/R nix";
     tangled = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ+uIAmaOxc9or9djd+yUcmrPKcdjzIQhydOPrLipUbW tangled.com";
+    perHost =
+      ../../secrets/perHost
+      |> lib.filesystem.listFilesRecursive
+      |> builtins.filter (lib.hasSuffix "ssh.pub")
+      |> map (value: {
+        value = builtins.readFile value;
+        name =
+          value
+          |> toString
+          |> lib.splitString "/"
+          |> lib.reverseList
+          |> (list: lib.elemAt list 1);
+      })
+      |> builtins.listToAttrs;
+    perYubikey = {
+      "25388788" = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOq7xMJxBehEnVZHYtUvrS51OjJskVQBkgMM/wIrQVKpAAAACnNzaDpnaXRodWI= ssh:github";
+      "26583315" = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIL92uxU/gdt0slWOcy0Lx4LUPlgZmfiMTWR4GYAV2iZgAAAACnNzaDpnaXRodWI= ssh:github";
+    };
   };
   nix = {
     pkgs = {
