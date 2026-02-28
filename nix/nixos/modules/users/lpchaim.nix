@@ -29,7 +29,7 @@ in {
           group = userName;
           shell = pkgs.${shell};
           hashedPasswordFile = "${config.my.secrets."user.lpchaim.password".path}";
-          openssh.authorizedKeys.keys =
+          openssh.authorizedKeys.keyFiles =
             perYubikey
             // {inherit (perHost) laptop desktop;}
             |> builtins.attrValues;

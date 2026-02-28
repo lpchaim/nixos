@@ -24,6 +24,8 @@ in {
       tray.enable = true;
       cert = config.my.secrets."host.syncthing-cert".path;
       key = config.my.secrets."host.syncthing-key".path;
+      overrideDevices = true;
+      overrideFolders = true;
       settings = {
         gui.theme = "dark";
         options = {
@@ -35,7 +37,7 @@ in {
         folders = let
           computers = ["desktop" "laptop" "steamdeck"];
           phones = ["galaxyS23"];
-          servers = ["server"];
+          servers = ["raspberrypi" "server"];
           allDevices = computers ++ phones ++ servers;
           trashVersioning = {
             type = "trashcan";
@@ -63,6 +65,13 @@ in {
             versioning = trashVersioning;
             devices = allDevices;
           };
+          "~/Notes/Work" = {
+            id = "gkcpi-lubwx";
+            label = "Notes/Work";
+            type = "sendreceive";
+            versioning = trashVersioning;
+            devices = allDevices;
+          };
           "~/.steam/steam/userdata/85204334/config/grid" = {
             id = "steam-custom-icons";
             label = "Steam/Custom Icons";
@@ -80,6 +89,8 @@ in {
           pixel7.name = "Pixel 7 Pro";
           galaxyS23.id = "DPARDTW-7LHI6VK-CRKEYI4-VK6BWWP-DMW6KOG-6LWAT4O-QFGDFPR-XVO6RAF";
           galaxyS23.name = "Galaxy S23";
+          raspberrypi.id = "XT3UPMT-4I4FJ5W-YTHHID6-GGM57IS-RE7Z7PU-FMYJMGW-T7MJVZF-3MLJTQK";
+          raspberrypi.name = "Raspberry Pi";
           server.id = "X5LHXQ6-NOCD2NO-RQ7FPLO-WFLLFRE-5BTTVL6-XLH3DAV-4ZIYI47-EEOVYAK";
           server.name = "Server";
           steamdeck.id = "OBZRWRW-B7DYVZC-RL5JV3D-6YNWG4O-MAIN2GY-KTEBY6V-DWQK36S-5E2O7AB";
