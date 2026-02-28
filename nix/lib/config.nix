@@ -21,9 +21,9 @@ in {
   wallpaper = assetWithPrefix "wallpaper";
   profilePicture = assetWithPrefix "profile-picture";
   ssh.publicKeys = {
-    github = ../../keys/id_ed25519_github.pub;
-    nix = ../../keys/id_ed25519_nix.pub;
-    tangled = ../../keys/id_ed25519_tangled.pub;
+    github = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJMlCP3GL7MCCZHvQcbNyET6HGT2BbLuBkDQPZ2tk8TU github.com";
+    nix = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKelkUCKgf7cuEo3jk7rRq5yH6vWkHEQ1eOqilNErz/R nix";
+    tangled = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ+uIAmaOxc9or9djd+yUcmrPKcdjzIQhydOPrLipUbW tangled.com";
   };
   nix = {
     pkgs = {
