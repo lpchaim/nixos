@@ -21,6 +21,9 @@ in {
           identityFile = [
             "~/.ssh/id_rsa"
           ];
+          setEnv = {
+            TERM = "xterm-256color";
+          };
         };
       };
     };
