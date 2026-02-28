@@ -9,6 +9,7 @@
 in {
   # Services
   services = {
+    acpid.enable = true;
     blueman.enable = true;
     btrfs.autoScrub = let
       btrfsFileSystems = getFileSystemsByFsType "btrfs";
@@ -35,5 +36,6 @@ in {
     power-profiles-daemon.enable = true;
     printing.enable = true;
     udisks2.enable = true;
+    upower.enable = true;
   };
 }
