@@ -22,6 +22,7 @@ in {
     kernel.enable = false;
     profiles = {
       de.gnome = true;
+      greeter.gdm = true;
       graphical = true;
     };
   };

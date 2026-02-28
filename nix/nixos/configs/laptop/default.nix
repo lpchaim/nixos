@@ -13,8 +13,8 @@ in {
     profiles = {
       formfactor.laptop = true;
       hardware.cpu.intel = true;
-      de.gnome = true;
       de.hyprland = true;
+      greeter.gdm = true;
       graphical = true;
     };
   };

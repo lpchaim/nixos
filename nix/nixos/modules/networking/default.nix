@@ -16,5 +16,6 @@
       ssid Lpchaim
       metric ${toString (wifiOffset - 10)}
     '';
+    networkmanager.enable = true;
   };
 }
