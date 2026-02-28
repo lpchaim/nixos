@@ -19,6 +19,7 @@ in {
           addKeysToAgent = "yes";
           identitiesOnly = false;
           identityFile = [
+            "~/.ssh/id_ed25519"
             "~/.ssh/id_rsa"
           ];
           setEnv = {
