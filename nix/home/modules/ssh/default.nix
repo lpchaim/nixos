@@ -30,11 +30,11 @@ in {
           forwardAgent = false;
           identitiesOnly = false;
           identityFile = [
-            config.my.secrets.ssh-yubikey-25388788.path
-            config.my.secrets.ssh-yubikey-26583315.path
             config.my.secrets.ssh.path
             "~/.ssh/id_ed25519"
             "~/.ssh/id_rsa"
+            config.my.secrets.ssh-yubikey-25388788.path
+            config.my.secrets.ssh-yubikey-26583315.path
           ];
           setEnv = {
             TERM = "xterm-256color";
