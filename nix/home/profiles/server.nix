@@ -11,6 +11,7 @@ in {
     // {default = osConfig.my.profiles.server or false;};
   config = lib.mkIf cfg {
     my = {
+      cli.editors.neovim.enable = false;
       cli.extras.enable = false;
       development.enable = false;
     };

@@ -21,7 +21,7 @@ in {
 
     services.syncthing = {
       enable = true;
-      tray.enable = true;
+      tray.enable = config.my.profiles.graphical;
       cert = config.my.secrets."host.syncthing-cert".path;
       key = config.my.secrets."host.syncthing-key".path;
       overrideDevices = true;
