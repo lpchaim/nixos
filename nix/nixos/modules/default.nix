@@ -22,7 +22,6 @@
       ../profiles
       ./boot
       ./ci
-      ./desktop
       ./deploy
       ./gaming
       ./gui
@@ -55,6 +54,7 @@
     nix.enable = lib.mkDefault true;
     pipewire.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;
+    services.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
     syncthing.enable = lib.mkDefault true;
     theming.enable = lib.mkDefault true;
