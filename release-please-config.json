@@ -1,6 +1,7 @@
 {
+  "include-component-in-tag": false,
+  "bootstrap-sha": "418621e5f464f82ef16bd0edf60f79050f823781",
   "packages": {
     ".": {}
-  },
-  "include-component-in-tag": false
+  }
 }
