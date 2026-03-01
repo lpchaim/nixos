@@ -55,19 +55,21 @@ in {
       auto-optimise-store = true;
       extra-experimental-features = "flakes nix-command pipe-operator";
       extra-substituters = [
-        # The NixOS and nix-community ones are set by default
+        # cache.nixos.org is set by default
         "https://lpchaim.cachix.org"
-        "https://hyprland.cachix.org"
+        "https://nix-comunity.cachix.org"
         "https://nix-gaming.cachix.org"
       ];
       extra-trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "lpchaim.cachix.org-1:2xOuvojcUDNhJRzCpvgewQ2DdNZz3QzGVV4Z/7C+Lio="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       ];
+      http-connections = 100;
       keep-derivations = true;
       keep-outputs = true;
       max-jobs = "auto";
+      max-substitution-jobs = 100;
       trusted-users = ["root" "@wheel"];
     };
   };
