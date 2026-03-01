@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.0](https://github.com/lpchaim/nixos/compare/v2.2.0...v2.3.0) (2026-03-01)
+
+
+### Features
+
+* Add agenix-rekey flake schema ([5e8416b](https://github.com/lpchaim/nixos/commit/5e8416b4b7903c30daa562d9ceba871923a70f00))
+* Add my.deprecated nixos/home option ([361482e](https://github.com/lpchaim/nixos/commit/361482ec3e304e013e82190cc99abac9da848d37))
+* Better standalone home config detection ([2a3324d](https://github.com/lpchaim/nixos/commit/2a3324dcadce6292050e12c9bdb8627e2ec363af))
+* **ci:** Only run Build CI action after Check if it succeeds ([7326a3b](https://github.com/lpchaim/nixos/commit/7326a3bce45de773f6cfdc6f1ec6f9622284a641))
+* Enable experimental CanvasBio CB2000 libfprint patches ([0a123fe](https://github.com/lpchaim/nixos/commit/0a123fefdece43f0c45c7f98215b2d0a165bc7ef))
+* Initial colmena implementation ([29adf00](https://github.com/lpchaim/nixos/commit/29adf00e7c18e02898e6b00079cf9b3efeed0b27))
+
+
+### Bug Fixes
+
+* **ci:** Remove workflow_run trigger on build, quieter matrix generation ([e68e2dd](https://github.com/lpchaim/nixos/commit/e68e2dd69223f63207ae37f1031148e8922b2951))
+* Lix nix-direnv infrec ([af62025](https://github.com/lpchaim/nixos/commit/af6202545d77b7c413471936db9df53134a18755))
+* Lix overlay infinite recursion ([f00c9da](https://github.com/lpchaim/nixos/commit/f00c9dac56072c8843a3ae6957b12614b690eba1))
+* Remove dangling flakeModule ([7911c86](https://github.com/lpchaim/nixos/commit/7911c86883b60ca012ab5a7fb8158ef1d4fe4e9b))
+* Wrong reference in lib.storage, build CI action ref ([a22071c](https://github.com/lpchaim/nixos/commit/a22071ce26edd86f93a3cdf8069ca4ba7e70e621))
+
 ## [2.2.0](https://github.com/lpchaim/nixos/compare/v2.1.0...v2.2.0) (2026-02-18)
 
 
