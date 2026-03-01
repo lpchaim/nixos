@@ -38,7 +38,6 @@
     ];
 
   my = {
-    bars.dank-material-shell.enable = lib.mkDefault true;
     cli = {
       atuin.enable = true;
       editors = {
@@ -59,7 +58,6 @@
     };
     development = {
       enable = lib.mkDefault true;
-      nixd.enable = lib.mkDefault true;
     };
     nix.enable = lib.mkDefault true;
     scripts.enable = lib.mkDefault true;
