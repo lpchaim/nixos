@@ -1,12 +1,11 @@
 {
   config,
-  inputs,
   lib,
   options,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.security;
 in {
   options.my.security = {
@@ -29,12 +28,13 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "u2f-mappings" = mkSecret "u2f-mappings" {
         group = "wheel";
         mode = "0440";
       };
     };
+
     environment.etc = let
       patch = svc:
         lib.replaceStrings
@@ -50,19 +50,20 @@ in {
     };
     security.pam = {
       services = {
-        login.u2fAuth = false;
-        sshd.u2fAuth = true;
+        login.u2fAuth = true;
         sudo.u2fAuth = true;
       };
       sshAgentAuth.enable = true;
       u2f = {
         inherit (cfg.u2f) control;
         enable = true;
-        settings.authfile = "${config.my.secrets."u2f-mappings".path}";
         settings = {
           cue = true;
           appid = "pam://auth";
           origin = "pam://localhost";
+          authfile = "${config.my.secrets."u2f-mappings".path}";
+          pinverification = 1;
+          userpresence = 0;
         };
       };
     };

@@ -34,7 +34,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
     };
 

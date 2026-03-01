@@ -7,7 +7,7 @@
   config = import ./config.nix args;
   flake = import ./flake.nix args;
   packages = import ./packages.nix args;
-  secrets = import ./secrets.nix;
+  secrets = import ./secrets.nix args;
   services = import ./services.nix args;
   storage = import ./storage args;
   strings = import ./strings.nix args;

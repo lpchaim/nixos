@@ -4,13 +4,15 @@ enroll:
   mkdir -p ~/.config/Yubico
   [ -e ~/.config/Yubico/u2f_keys ] \
       && pamu2fcfg \
-          --origin="pam://localhost" \
           --appid="pam://auth" \
+          --origin="pam://localhost" \
+          --no-user-presence \
           --nouser \
           >> ~/.config/Yubico/u2f_keys \
       || pamu2fcfg \
-          --origin="pam://localhost" \
           --appid="pam://auth" \
+          --origin="pam://localhost" \
+          --no-user-presence \
           > ~/.config/Yubico/u2f_keys
 
 # Clear enrolled security keys, if any

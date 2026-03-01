@@ -13,7 +13,6 @@ in {
   my = {
     ci.build = true;
     security.u2f.relaxed = true;
-    syncthing.enable = false;
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
