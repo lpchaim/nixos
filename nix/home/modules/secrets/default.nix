@@ -35,11 +35,11 @@ in {
       (lib.mkIf (osConfig != {}) {
         age.rekey = {
           inherit (osConfig.age.rekey) hostPubkey;
-          localStorageDir = root + "/rekeyed/${osConfig.networking.hostName}-${config.home.username}";
+          localStorageDir = root + "/.rekeyed/${osConfig.networking.hostName}-${config.home.username}";
         };
       })
       (lib.mkIf (osConfig == {}) {
-        age.rekey.localStorageDir = root + "/rekeyed/${config.my.hostName}-${config.home.username}";
+        age.rekey.localStorageDir = root + "/.rekeyed/${config.my.hostName}-${config.home.username}";
       })
     ];
 }

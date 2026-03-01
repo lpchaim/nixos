@@ -25,7 +25,7 @@ in {
       in
         osSecrets // homeSecrets;
       rekey = {
-        localStorageDir = root + /rekeyed/${config.networking.hostName};
+        localStorageDir = root + /.rekeyed/${config.networking.hostName};
         forceRekeyOnSystem = "x86_64-linux";
       };
     };
