@@ -38,6 +38,7 @@
     ];
 
   my = {
+    bars.dank-material-shell.enable = lib.mkDefault true;
     cli = {
       atuin.enable = true;
       editors = {
@@ -47,6 +48,7 @@
         vim.enable = lib.mkDefault true;
       };
       essentials.enable = lib.mkDefault true;
+      extras.enable = lib.mkDefault true;
       fish.enable = lib.mkDefault true;
       git.enable = lib.mkDefault true;
       nushell.enable = lib.mkDefault true;
@@ -56,6 +58,7 @@
       zsh.enable = lib.mkDefault true;
     };
     development = {
+      enable = lib.mkDefault true;
       nixd.enable = lib.mkDefault true;
     };
     nix.enable = lib.mkDefault true;

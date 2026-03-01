@@ -3,6 +3,7 @@
     ./atuin
     ./editors
     ./essentials
+    ./extras.nix
     ./fish
     ./git
     ./hishtory

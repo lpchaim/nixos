@@ -9,7 +9,9 @@
   isNixos = osConfig != {};
 in {
   options.my.development.nixd = {
-    enable = lib.mkEnableOption "nixd";
+    enable =
+      lib.mkEnableOption "nixd"
+      // {default = config.my.development.enable;};
     lsp.enable = lib.mkEnableOption "nixd LSP" // {default = cfg.enable;};
   };
 
