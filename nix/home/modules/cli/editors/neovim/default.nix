@@ -8,36 +8,27 @@
   cfg = config.my.cli.editors.neovim;
 in {
   imports = [
+    ./keymaps
     ./treesitter.nix
   ];
 
-  options.my.cli.editors.neovim.enable = lib.mkEnableOption "neovim";
+  options.my.cli.editors.neovim = {
+    enable = lib.mkEnableOption "neovim";
+    plugins.animotion.enable = lib.mkEnableOption "animotion plugin";
+  };
 
   config = lib.mkIf cfg.enable {
     programs.nixvim = {
       enable = true;
       imports = [./nixvimPlugins];
-      globals = {
-        mapleader = "<Space>";
-        maplocalleader = "<Space>";
-      };
       opts = {
         ignorecase = true;
         smartcase = true;
       };
       nixpkgs.overlays = [self.overlays.vimPlugins];
-      keymaps = [
-        {
-          mode = "";
-          key = "<Space>";
-          action = "<Nop>";
-          options.silent = true;
-          options.noremap = true;
-        }
-      ];
       plugins = {
         animotion = {
-          enable = true;
+          inherit (cfg.plugins.animotion) enable;
           mode = "helix";
         };
         coq = {
@@ -100,23 +91,14 @@ in {
             lookahead = true;
           };
         };
-        telescope = {
+        telescope.enable = true;
+        web-devicons.enable = true;
+        which-key = {
           enable = true;
-          keymaps = {
-            "<leader>f" = {
-              mode = "n";
-              action = "find_files";
-              options.desc = "Pick file";
-            };
-            "<leader>/" = {
-              mode = "n";
-              action = "live_grep";
-              options.desc = "Search file contents";
-            };
+          settings = {
+            preset = "helix";
           };
         };
-        web-devicons.enable = true;
-        which-key.enable = true;
       };
     };
   };
