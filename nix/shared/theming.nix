@@ -14,7 +14,7 @@ in {
     image = lib.mkDefault wallpaper;
     polarity = lib.mkDefault "dark";
     base16Scheme = lib.mkDefault "${base16}/stella.yaml";
-    cursor = lib.mkIf config.my.profiles.graphical {
+    cursor = {
       name = "catppuccin-latte-light-cursors";
       package = pkgs.catppuccin-cursors.latteLight;
       size = 32;

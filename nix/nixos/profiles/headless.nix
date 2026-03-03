@@ -9,7 +9,6 @@ in {
   config = lib.mkIf cfg {
     my = {
       security.u2f.relaxed = true;
-      profiles.graphical = false;
     };
   };
 }

@@ -10,8 +10,6 @@ in {
     lib.mkEnableOption "headless profile"
     // {default = osConfig.my.profiles.headless or false;};
   config = lib.mkIf cfg {
-    my = {
-      profiles.graphical = false;
-    };
+    stylix.cursor = lib.mkForce null;
   };
 }
