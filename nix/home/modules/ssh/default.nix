@@ -37,7 +37,7 @@ in {
           setEnv.TERM = "xterm-256color";
         };
         "*github.com".identityFile = config.my.secrets.ssh-github.path;
-        "*tangled.com".identityFile = config.my.secrets.ssh-tangled.path;
+        "*tangled.sh".identityFile = config.my.secrets.ssh-tangled.path;
       };
     };
 
