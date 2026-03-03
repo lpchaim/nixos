@@ -28,20 +28,16 @@ in {
           addKeysToAgent = "yes";
           compression = false;
           forwardAgent = false;
-          identitiesOnly = false;
+          identitiesOnly = true;
           identityFile = [
             config.my.secrets.ssh.path
-            "~/.ssh/id_ed25519"
-            "~/.ssh/id_rsa"
             config.my.secrets.ssh-yubikey-25388788.path
             config.my.secrets.ssh-yubikey-26583315.path
           ];
-          setEnv = {
-            TERM = "xterm-256color";
-          };
+          setEnv.TERM = "xterm-256color";
         };
-        "*.github.com".identityFile = config.my.secrets.ssh-github.path;
-        "*.tangled.com".identityFile = config.my.secrets.ssh-tangled.path;
+        "*github.com".identityFile = config.my.secrets.ssh-github.path;
+        "*tangled.com".identityFile = config.my.secrets.ssh-tangled.path;
       };
     };
 
