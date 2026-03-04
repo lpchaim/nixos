@@ -12,18 +12,9 @@ in {
 
   config = lib.mkIf cfg.oci.enable {
     environment = {
-      shellAliases._docker = "${lib.getExe pkgs.docker-client}";
+      shellAliases._docker = lib.getExe pkgs.docker-client;
       systemPackages = [pkgs.podman-compose];
       variables.PODMAN_COMPOSE_WARNING_LOGS = "false";
-    };
-
-    users = {
-      groups.podman.gid = 2000;
-      users.podman = {
-        uid = 2000;
-        group = "podman";
-        linger = true;
-      };
     };
 
     virtualisation.podman = {
@@ -32,6 +23,16 @@ in {
       defaultNetwork.settings.dns_enabled = true;
       dockerCompat = true;
       dockerSocket.enable = true;
+    };
+
+    users = {
+      groups.podman.gid = 2000;
+      users.podman = {
+        uid = 2000;
+        group = "podman";
+        linger = true;
+        isSystemUser = true;
+      };
     };
   };
 }
