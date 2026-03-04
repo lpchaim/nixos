@@ -16,8 +16,8 @@ in {
     };
 
     users = {
-      extraGroups.emily.gid = 1001;
-      extraUsers.emily =
+      groups.emily.gid = 1001;
+      users.emily =
         config.my.users.defaultUserAttrs
         // {
           uid = 1001;

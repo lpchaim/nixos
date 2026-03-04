@@ -35,6 +35,7 @@ in {
             |> builtins.attrValues;
         };
     };
-    systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
+
+    systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.users.${userName}.home];
   };
 }

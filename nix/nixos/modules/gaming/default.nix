@@ -44,8 +44,6 @@ in {
 
       services.pipewire.lowLatency.enable = true;
 
-      users.extraUsers.${name.user}.extraGroups = ["gamemode"];
-
       services.flatpak.packages = [
         "com.fightcade.Fightcade"
       ];
