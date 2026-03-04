@@ -1,0 +1,39 @@
+{
+  "/": {
+    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "subvol=@",
+      "compress=zstd",
+      "noatime"
+    ]
+  },
+  "/boot": {
+    "device": "/dev/disk/by-uuid/12CE-A600",
+    "fsType": "vfat",
+    "options": [
+      "fmask=0022",
+      "dmask=0022"
+    ]
+  },
+  "/home": {
+    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "fsType": "btrfs",
+    "options": [
+      "subvol=@home",
+      "compress=zstd",
+      "noatime"
+    ]
+  },
+  "/nix": {
+    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "subvol=@nix",
+      "compress=zstd",
+      "noatime"
+    ]
+  }
+}

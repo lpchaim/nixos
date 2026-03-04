@@ -1,0 +1,10 @@
+{
+  "home": [
+    "headless",
+    "server"
+  ],
+  "nixos": [
+    "headless",
+    "server"
+  ]
+}

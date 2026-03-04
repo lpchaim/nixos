@@ -1051,6 +1051,23 @@
         "type": "github"
       }
     },
+    "nixtest": {
+      "locked": {
+        "dir": "lib",
+        "lastModified": 1769441055,
+        "narHash": "sha256-SrHLnM3UMzpj5/o52yf3lFOVpsIGEU5nAFUkdeJO1bM=",
+        "owner": "TECHNOFAB",
+        "repo": "nixtest",
+        "rev": "9f9fcb85349003edb554574d0e3f623811866f50",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "lib",
+        "owner": "TECHNOFAB",
+        "repo": "nixtest",
+        "type": "gitlab"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts_4",
@@ -1259,6 +1276,7 @@
           "unstable"
         ],
         "nixpkgs-hare": "nixpkgs-hare",
+        "nixtest": "nixtest",
         "nixvim": "nixvim",
         "nur": "nur",
         "spicetify-nix": "spicetify-nix",

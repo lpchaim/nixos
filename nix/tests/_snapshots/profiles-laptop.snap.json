@@ -1,0 +1,14 @@
+{
+  "home": [
+    "de.hyprland",
+    "graphical",
+    "hardware.cpu.intel"
+  ],
+  "nixos": [
+    "de.hyprland",
+    "formfactor.laptop",
+    "graphical",
+    "greeter.gdm",
+    "hardware.cpu.intel"
+  ]
+}

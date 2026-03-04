@@ -21,6 +21,7 @@
         (importApply' ./nix/packages)
         (importApply' ./nix/legacyPackages)
         (importApply' ./nix/shells)
+        (importApply' ./nix/tests)
       ];
       perSystem = {
         pkgs,
@@ -105,6 +106,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-std.url = "github:chessai/nix-std";
+    nixtest.url = "gitlab:TECHNOFAB/nixtest?dir=lib";
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
       inputs.nixpkgs.follows = "nixpkgs";

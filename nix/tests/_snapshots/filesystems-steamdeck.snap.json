@@ -1,0 +1,55 @@
+{
+  "/": {
+    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "compress=zstd",
+      "subvol=@"
+    ]
+  },
+  "/.swapvol": {
+    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "subvol=@swap"
+    ]
+  },
+  "/boot": {
+    "device": "/dev/disk/by-partlabel/disk-vdb-ESP",
+    "fsType": "vfat",
+    "options": [
+      "defaults"
+    ]
+  },
+  "/home": {
+    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "fsType": "btrfs",
+    "options": [
+      "compress=zstd",
+      "subvol=@home"
+    ]
+  },
+  "/nix": {
+    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "compress=zstd",
+      "noatime",
+      "subvol=@nix"
+    ]
+  },
+  "/run/media/lpchaim/sdcard": {
+    "device": "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1",
+    "fsType": "auto",
+    "options": [
+      "defaults",
+      "subvol=@",
+      "compress=zstd",
+      "noatime",
+      "nofail"
+    ]
+  }
+}
