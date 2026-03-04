@@ -18,7 +18,15 @@ in {
       jocalsend
       nix-output-monitor
       python312Packages.howdoi
-      termshot
+      (symlinkJoin {
+        name = "termshot";
+        paths = [termshot];
+        nativeBuildInputs = [makeWrapper];
+        postBuild = ''
+          wrapProgram $out/bin/termshot \
+            --add-flags "--font ${nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFontMono-Regular.ttf"
+        '';
+      })
     ];
 
     programs = {
