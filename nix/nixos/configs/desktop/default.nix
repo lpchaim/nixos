@@ -11,6 +11,7 @@ in {
     gaming.enable = true;
     networking.tailscale.trusted = true;
     users.emily.enable = true;
+    virtualization.oci.enable = true;
     profiles = {
       formfactor.desktop = true;
       hardware.gpu.nvidia = true;

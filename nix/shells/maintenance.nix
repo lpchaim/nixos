@@ -25,6 +25,7 @@ in {
           colmena
           just
           rage
+          yaml-language-server
         ])
         ++ config.pre-commit.settings.enabledPackages
         ++ lib.optionals (config.agenix-rekey.package != null) [
