@@ -1,7 +1,9 @@
+set working-directory := '../'
+
 # Runs tests
 run *args:
   nix run .#nixtests:run -- \
-  --snapshot-dir {{justfile_directory()}}/nix/tests/_snapshots \
+  --snapshot-dir ./nix/tests/_snapshots \
   {{args}}
 
 # Updates test snapshots

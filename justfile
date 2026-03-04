@@ -1,5 +1,5 @@
 _default:
-  just --list --list-submodules --unsorted
+  @just --list --list-submodules --unsorted
 
 mod home './just/home.just'
 mod secrets './just/secrets.just'

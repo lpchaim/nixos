@@ -1,5 +1,17 @@
-# Grabs a host's SSH key and generates the corresponding age key
-@get-host-key host:
-  nix shell nixpkgs#ssh-to-age nixpkgs#openssh \
-  --command ssh-keyscan localhost 2>/dev/null \
-  | ssh-to-age 2>/dev/null
+# Edit a secret
+edit *args:
+  agenix edit {{args}}
+
+# View a secret
+view *args:
+  agenix view {{args}}
+
+# Rekey secrets
+rekey *args:
+  agenix rekey {{args}}
+
+# Get host keys
+getkeys hostname='localhost':
+  ssh-keyscan {{hostname}} 2>/dev/null \
+  | grep --regexp "^[^#][^ ]* ssh-" \
+  | sort
