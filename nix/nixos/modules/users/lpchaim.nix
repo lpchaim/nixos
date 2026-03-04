@@ -19,8 +19,8 @@ in {
     };
 
     users = {
-      extraGroups.${userName}.gid = 1000;
-      extraUsers.${userName} =
+      groups.${userName}.gid = 1000;
+      users.${userName} =
         config.my.users.defaultUserAttrs
         // {
           uid = 1000;

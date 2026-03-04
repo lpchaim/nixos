@@ -10,4 +10,4 @@ mod tests './just/tests.just'
 mod u2f './just/u2f.just'
 
 # Run tests
-test: tests::run
+test *args: (tests::run args)
