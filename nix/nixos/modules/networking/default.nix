@@ -16,6 +16,18 @@
       ssid Lpchaim
       metric ${toString (wifiOffset - 10)}
     '';
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      settings = {
+        connection-ethernet = {
+          "match-device" = "type:ethernet";
+          "connection.autoconnect-priority" = 150;
+        };
+        connection-wifi = {
+          "match-device" = "type:wifi";
+          "connection.autoconnect-priority" = 50;
+        };
+      };
+    };
   };
 }
