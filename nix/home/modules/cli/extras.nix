@@ -12,6 +12,7 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       asciinema
+      charm-freeze
       ffmpeg
       imagemagick
       inotify-tools
@@ -36,6 +37,16 @@ in {
       };
       nix-index.enable = true;
       nix-index-database.comma.enable = true;
+    };
+
+    home.file."${config.xdg.configHome}/freeze/user.json".text = builtins.toJSON {
+      font.family = "JetBrainsMono Nerd Font";
+      font.file = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFontMono-Regular.ttf";
+      font.ligatures = true;
+      font.size = config.stylix.fonts.sizes.terminal;
+      shadow = false;
+      window = false;
+      show-line-numbers = true;
     };
   };
 }
