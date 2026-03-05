@@ -24,15 +24,5 @@ in {
       dockerCompat = true;
       dockerSocket.enable = true;
     };
-
-    users = {
-      groups.podman.gid = 2000;
-      users.podman = {
-        uid = 2000;
-        group = "podman";
-        linger = true;
-        isSystemUser = true;
-      };
-    };
   };
 }
