@@ -12,6 +12,6 @@ in {
       networking.tailscale.trusted = true;
     };
 
-    documentation.man.generateCaches = false;
+    documentation.man.cache.enable = false;
   };
 }
