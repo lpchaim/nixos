@@ -3,6 +3,7 @@ args: {
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
   flake.path = "~/.config/nixos";
+  networks = import ./networks.nix;
   repo = rec {
     main = github;
     github = "https://github.com/lpchaim/nixos";

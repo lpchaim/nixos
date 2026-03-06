@@ -27,6 +27,11 @@ in {
       default = false;
       type = lib.types.bool;
     };
+    advertise.routes = lib.mkOption {
+      description = "routes to advertise";
+      default = [];
+      type = with lib.types; listOf str;
+    };
     advertise.tags = lib.mkOption {
       description = "ACL tags to advertise";
       default = ["nixos"];
@@ -51,6 +56,7 @@ in {
       inherit (cfg) authKeyParameters;
       enable = true;
       authKeyFile = config.my.secrets."tailscale-oauth-secret".path;
+      disableUpstreamLogging = true;
       extraUpFlags =
         [
           "--accept-dns"
@@ -61,6 +67,9 @@ in {
         ]
         ++ lib.optionals cfg.advertise.exitNode [
           "--advertise-exit-node"
+        ]
+        ++ lib.optionals (cfg.advertise.routes != []) [
+          "--advertise-routes=${lib.concatStringsSep "," cfg.advertise.routes}"
         ]
         ++ lib.optionals (tags != []) [
           "--advertise-tags=${formattedTags}"
