@@ -1,4 +1,4 @@
-{self, ...}: final: prev: let
+{inputs, ...}: final: prev: let
   inherit (prev.stdenv.hostPlatform) system;
 in
-  self.packages.${system} or {}
+  inputs.self.packages.${system} or {}

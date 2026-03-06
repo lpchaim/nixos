@@ -1,13 +1,13 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) name shell;
-  inherit (config.my.config.ssh.publicKeys) perHost perYubikey;
-  inherit (inputs.self.lib.secrets.helpers) mkUserSecret;
+  inherit (self.lib.secrets.helpers) mkUserSecret;
+  inherit (self.vars) name shell;
+  inherit (self.vars.ssh.publicKeys) perHost perYubikey;
   userName = name.user;
   cfg = config.my.users.lpchaim;
 in {

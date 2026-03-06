@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config.nix) settings;
+  inherit (inputs.self.vars.nix) settings;
 in {
   nix = {
     inherit settings;

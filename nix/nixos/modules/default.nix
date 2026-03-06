@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -74,6 +75,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
   };
+  nixpkgs.hostPlatform = config.my.hostVars.system or "x86_64-linux";
   systemd = {
     targets.network-online.wantedBy = pkgs.lib.mkForce [];
     services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];

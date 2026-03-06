@@ -25,6 +25,7 @@ in {
       in
         osSecrets // homeSecrets;
       rekey = {
+        hostPubkey = lib.mkIf (config.my.hostVars ? pubKey) config.my.hostVars.pubKey;
         localStorageDir = root + /.rekeyed/${config.networking.hostName};
         forceRekeyOnSystem = "x86_64-linux";
       };

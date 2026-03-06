@@ -2,9 +2,10 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) flake;
+  inherit (self.vars) flake;
   cfg = config.my.cli.extras;
 in {
   options.my.cli.extras.enable = lib.mkEnableOption "CLI extras";

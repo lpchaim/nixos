@@ -4,7 +4,6 @@
   self,
   ...
 } @ args: {
-  config = import ./config.nix args;
   flake = import ./flake.nix args;
   packages = import ./packages.nix args;
   secrets = import ./secrets.nix args;

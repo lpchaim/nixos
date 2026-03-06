@@ -1,12 +1,12 @@
 {
   config,
-  inputs,
   lib,
   options,
+  self,
   ...
 }: let
-  inherit (config.my.config) name;
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (self.lib.secrets.helpers) mkSecret;
+  inherit (self.vars) name;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {

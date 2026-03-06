@@ -3,6 +3,7 @@
   lib,
   osConfig ? {},
   pkgs,
+  self,
   ...
 }: let
   cfg = config.my.development.nixd;
@@ -32,7 +33,7 @@ in {
             command = "${lib.getExe pkgs.nixd}";
             args = ["--semantic-tokens=true"];
             config.nixd = let
-              inherit (config.my.config) flake;
+              inherit (self.vars) flake;
               inherit (pkgs.stdenv.hostPlatform) system;
               inherit (config.home) username;
               absoluteFlakePath = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;

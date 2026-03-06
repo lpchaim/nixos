@@ -1,11 +1,10 @@
 {
-  config,
-  inputs,
   lib,
+  self,
   ...
 }: let
-  inherit (inputs.self.lib.storage.btrfs) mkStorage;
-  inherit (config.my.config) name;
+  inherit (self.lib.storage.btrfs) mkStorage;
+  inherit (self.vars) name;
 in
   lib.mkMerge [
     (mkStorage {

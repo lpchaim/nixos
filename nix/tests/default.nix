@@ -1,71 +1,7 @@
-{
-  inputs,
-  lib,
-  self,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.nixtest.flakeModule
+    ./nixos.nix
+    ./nixosSnapshots.nix
   ];
-
-  perSystem = {
-    nixtest = {
-      skip = "";
-      suites = {
-        "Age pubkeys snapshot" = {
-          pos = __curPos;
-          tests =
-            self.nixosConfigurations
-            |> lib.mapAttrsToList (name: os: {
-              name = "pubkey-${name}";
-              type = "snapshot";
-              actual = os.config.age.rekey.hostPubkey;
-            });
-        };
-        "Filesystems snapshot" = {
-          pos = __curPos;
-          tests =
-            self.nixosConfigurations
-            |> lib.mapAttrsToList (name: os: {
-              name = "filesystems-${name}";
-              type = "snapshot";
-              actual =
-                os.config.fileSystems
-                |> lib.filterAttrs (_: cfg: cfg.enable)
-                |> lib.mapAttrs (_: cfg: {inherit (cfg) device fsType options;});
-            });
-        };
-        "Profiles snapshot" = {
-          pos = __curPos;
-          tests =
-            self.nixosConfigurations
-            |> lib.mapAttrsToList (name: os: {
-              name = "profiles-${name}";
-              type = "snapshot";
-              actual = let
-                filterEnabled = lib.filterAttrsRecursive (_: node: node == true || (builtins.isAttrs node && node != {}));
-                attrsToString = lib.mapAttrsToListRecursive (path: _: lib.concatStringsSep "." path);
-              in {
-                nixos = os.config.my.profiles |> filterEnabled |> attrsToString;
-                home = os.config.home-manager.users.lpchaim.my.profiles |> filterEnabled |> attrsToString;
-              };
-            });
-        };
-        "Servers have authorized keys" = {
-          pos = __curPos;
-          tests =
-            self.nixosConfigurations
-            |> lib.filterAttrs (_: os: os.config.my.profiles.server)
-            |> lib.mapAttrsToList (name: os: {
-              name = "authorizedkeys-${name}";
-              actual = let
-                inherit (os.config.users.users.lpchaim.openssh.authorizedKeys) keys keyFiles;
-              in
-                (builtins.length (keys ++ keyFiles)) > 0;
-              expected = true;
-            });
-        };
-      };
-    };
-  };
 }

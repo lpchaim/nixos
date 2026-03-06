@@ -2,9 +2,12 @@
   config,
   lib,
   osConfig ? {},
+  pkgs,
+  self,
   ...
 }: let
   inherit (config.my.secret.helpers) mkSecret mkHostSecret;
+  inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.ssh;
 in {
   options.my.ssh.enable =
@@ -27,14 +30,21 @@ in {
         "*" = {
           addKeysToAgent = "yes";
           compression = false;
+          controlMaster = "no";
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          controlPersist = "no";
           forwardAgent = false;
+          hashKnownHosts = false;
           identitiesOnly = true;
           identityFile = [
             config.my.secrets.ssh.path
             config.my.secrets.ssh-yubikey-25388788.path
             config.my.secrets.ssh-yubikey-26583315.path
           ];
+          serverAliveCountMax = 3;
+          serverAliveInterval = 0;
           setEnv.TERM = "xterm-256color";
+          userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
         };
         "*github.com".identityFile = config.my.secrets.ssh-github.path;
         "*tangled.org".identityFile = config.my.secrets.ssh-tangled.path;
@@ -44,6 +54,10 @@ in {
 
     services.ssh-agent = {
       enable = true;
+    };
+
+    home.file = {
+      ".ssh/known_hosts_generated".source = self.legacyPackages.${system}.knownHosts;
     };
   };
 }

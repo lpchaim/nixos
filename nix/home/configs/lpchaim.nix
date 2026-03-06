@@ -1,10 +1,10 @@
 {
-  config,
   lib,
   osConfig ? {},
+  self,
   ...
 }: let
-  inherit (config.my.config) name;
+  inherit (self.vars) name;
 in {
   home = rec {
     username = "${name.user}";

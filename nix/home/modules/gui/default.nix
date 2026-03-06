@@ -3,6 +3,7 @@
   pkgs,
   lib,
   osConfig ? {},
+  self,
   ...
 }: let
   cfg = config.my.gui;
@@ -41,7 +42,7 @@ in {
     ];
 
     home.file = let
-      inherit (config.my.config) profilePicture wallpaper;
+      inherit (self.vars) profilePicture wallpaper;
     in {
       "${config.home.homeDirectory}/.face".source = profilePicture;
       "${config.xdg.userDirs.pictures}/Wallpapers/${baseNameOf wallpaper}".source = wallpaper;

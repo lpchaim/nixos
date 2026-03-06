@@ -1,12 +1,12 @@
 {
   config,
-  inputs,
   lib,
   osConfig ? {},
+  self,
   ...
 }: let
-  inherit (config.my.config) nix;
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (self.lib.secrets.helpers) mkSecret;
+  inherit (self.vars) nix;
   cfg = config.my.nix;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";

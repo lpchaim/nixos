@@ -2,9 +2,10 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) flake shell;
+  inherit (self.vars) shell;
   cfg = config.my.cli.essentials;
 in {
   options.my.cli.essentials.enable = lib.mkEnableOption "essentials";

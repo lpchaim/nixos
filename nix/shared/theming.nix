@@ -1,11 +1,10 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) wallpaper;
+  inherit (inputs.self.vars) wallpaper;
   base16 = pkgs.base16-schemes + /share/themes;
 in {
   stylix = {

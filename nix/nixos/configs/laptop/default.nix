@@ -1,5 +1,5 @@
-{config, ...}: let
-  inherit (config.my.config) name;
+{self, ...}: let
+  inherit (self.vars) name;
 in {
   imports = [
     ./hardware-configuration.nix
@@ -20,7 +20,6 @@ in {
     };
   };
 
-  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh5IZnZipti8mCt0NPCVrJ5XTU2z+nb7d2hgMG4/B3C";
   system.stateVersion = "23.11";
   home-manager.users.${name.user}.home.stateVersion = "23.05";
 }

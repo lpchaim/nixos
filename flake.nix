@@ -41,6 +41,7 @@
         schemas =
           inputs.flake-schemas.schemas
           // (import' ./nix/schemas);
+        vars = import' ./vars;
       };
     });
 

@@ -1,5 +1,5 @@
-{config, ...}: let
-  inherit (config.my.config) name;
+{self, ...}: let
+  inherit (self.vars) name;
 in {
   imports = [
     ./hardware-configuration.nix
@@ -24,7 +24,6 @@ in {
 
   networking.interfaces.enp6s0.wakeOnLan.enable = true;
 
-  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMNf+oynlWr+Xq3UYKpCy8ih/w9sT6IuIKAtYjo6sfJr";
   system.stateVersion = "23.11";
   home-manager.users.${name.user}.home.stateVersion = "24.11";
 }

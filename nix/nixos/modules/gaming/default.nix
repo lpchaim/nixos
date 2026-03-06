@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: let
-  inherit (config.my.config) name;
   cfg = config.my.gaming;
 in {
   imports = [
