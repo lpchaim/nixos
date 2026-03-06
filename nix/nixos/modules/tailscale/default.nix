@@ -20,15 +20,15 @@ in {
     trusted = lib.mkOption {
       description = "Whether to tag this device as trusted";
       type = lib.types.bool;
-      default = false;
+      default = config.my.networking.trusted;
     };
     advertise.exitNode = lib.mkOption {
       description = "Whether to advertise an exit node";
-      default = false;
       type = lib.types.bool;
+      default = false;
     };
     advertise.routes = lib.mkOption {
-      description = "routes to advertise";
+      description = "Routes to advertise";
       default = [];
       type = with lib.types; listOf str;
     };

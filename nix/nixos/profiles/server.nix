@@ -12,7 +12,6 @@ in {
     my = {
       networking.tailscale = {
         enable = true;
-        trusted = true;
         advertise.exitNode = true;
         advertise.routes = [routingPrefix];
       };

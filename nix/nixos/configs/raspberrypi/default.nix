@@ -12,7 +12,7 @@ in {
 
   my = {
     ci.build = true;
-    networking.tailscale.trusted = true;
+    networking.trusted = true;
     security.u2f.relaxed = true;
     profiles = {
       headless = true;
