@@ -38,6 +38,7 @@
       flake = {
         inherit systems;
         lib = import' ./nix/lib;
+        nixConfig = self.vars.nix.settings;
         schemas =
           inputs.flake-schemas.schemas
           // (import' ./nix/schemas);
