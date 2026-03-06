@@ -1,18 +1,21 @@
-{
-  lib,
-  self,
-  ...
-}: let
-  inherit (self.lib.storage.btrfs) mkSecondaryStorage mkStorage;
-  inherit (self.vars) name;
-in
-  lib.mkMerge [
-    (mkStorage {
-      device = "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD";
-      swapSize = "35G";
-    })
-    (mkSecondaryStorage {
-      device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
-      mountPoint = "/run/media/${name.user}/storage";
-    })
-  ]
+{self, ...}: {
+  disko.devices.disk.main = self.lib.storage.btrfs.mkDiskoRootDisk {
+    device = "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD";
+    swapSize = "35G";
+  };
+  fileSystems."/run/media/${self.vars.name.user}/storage" = {
+    device = "/dev/disk/by-id/ata-ADATA_SU630_2J0220042661-part1";
+    fsType = "btrfs";
+    options = [
+      "defaults"
+      "auto"
+      "exec"
+      "nofail"
+      "nosuid"
+      "nodev"
+      "noatime"
+      "compress=zstd"
+      "x-gvfs-show"
+    ];
+  };
+}

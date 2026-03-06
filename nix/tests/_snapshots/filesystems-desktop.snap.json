@@ -1,15 +1,16 @@
 {
   "/": {
-    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "device": "/dev/disk/by-partlabel/disk-main-root",
     "fsType": "btrfs",
     "options": [
       "x-initrd.mount",
       "compress=zstd",
+      "noatime",
       "subvol=@"
     ]
   },
   "/.swapvol": {
-    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "device": "/dev/disk/by-partlabel/disk-main-root",
     "fsType": "btrfs",
     "options": [
       "defaults",
@@ -17,22 +18,23 @@
     ]
   },
   "/boot": {
-    "device": "/dev/disk/by-partlabel/disk-vdb-ESP",
+    "device": "/dev/disk/by-partlabel/disk-main-ESP",
     "fsType": "vfat",
     "options": [
       "defaults"
     ]
   },
   "/home": {
-    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "device": "/dev/disk/by-partlabel/disk-main-root",
     "fsType": "btrfs",
     "options": [
       "compress=zstd",
+      "noatime",
       "subvol=@home"
     ]
   },
   "/nix": {
-    "device": "/dev/disk/by-partlabel/disk-vdb-root",
+    "device": "/dev/disk/by-partlabel/disk-main-root",
     "fsType": "btrfs",
     "options": [
       "x-initrd.mount",
@@ -54,6 +56,27 @@
       "noatime",
       "compress=zstd",
       "x-gvfs-show"
+    ]
+  },
+  "/var/cache": {
+    "device": "/dev/disk/by-partlabel/disk-main-root",
+    "fsType": "btrfs",
+    "options": [
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@cache"
+    ]
+  },
+  "/var/log": {
+    "device": "/dev/disk/by-partlabel/disk-main-root",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@log"
     ]
   }
 }

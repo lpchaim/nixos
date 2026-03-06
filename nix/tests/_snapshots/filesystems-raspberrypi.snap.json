@@ -35,5 +35,26 @@
       "compress=zstd",
       "noatime"
     ]
+  },
+  "/var/cache": {
+    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "fsType": "btrfs",
+    "options": [
+      "subvol=@cache",
+      "nofail",
+      "compress=zstd",
+      "noatime"
+    ]
+  },
+  "/var/log": {
+    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "subvol=@log",
+      "nofail",
+      "compress=zstd",
+      "noatime"
+    ]
   }
 }
