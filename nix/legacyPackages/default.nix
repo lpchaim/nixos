@@ -1,10 +1,5 @@
-{
-  inputs,
-  lib,
-  self,
-  ...
-}: let
-  inherit (inputs.self.lib) callPackageWith callPackageRecursiveWith;
+{self, ...}: let
+  inherit (self.lib) callPackageWith callPackageRecursiveWith;
 in {
   perSystem = {
     self',
@@ -16,13 +11,9 @@ in {
   in {
     legacyPackages = {
       ci.matrix = callPackage ./ciMatrix.nix {inherit self;};
+      knownHosts = callPackage ./knownHosts.nix {inherit self;};
       scripts = callPackageRecursive ./scripts {inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;};
       vimPlugins = callPackageRecursive ./vimPlugins {};
-      knownHosts =
-        self.vars.hosts
-        |> lib.mapAttrsToList (host: cfg: "${host} ${cfg.pubKey}")
-        |> lib.concatStringsSep "\n"
-        |> pkgs.writeText "known-hosts";
     };
   };
 }
