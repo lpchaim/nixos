@@ -1,10 +1,10 @@
 {
   lib,
   nushell,
-  writeNuScriptStdinBin,
+  writers,
   ...
 }:
-writeNuScriptStdinBin "nu-inspect"
+writers.writeNuBinStdin "nu-inspect"
 # nu
 ''
   # Outputs structured command data based on nushell script contents

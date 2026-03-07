@@ -8,6 +8,10 @@
   inherit (self.vars) shell;
   cfg = config.my.cli.essentials;
 in {
+  imports = [
+    ./hyfetch.nix
+  ];
+
   options.my.cli.essentials.enable = lib.mkEnableOption "essentials";
 
   config = lib.mkIf cfg.enable {
@@ -30,7 +34,6 @@ in {
           hexyl
           inshellisense
           jq
-          neofetch
           ncdu
           nurl
           poppler
