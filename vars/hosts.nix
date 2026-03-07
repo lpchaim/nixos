@@ -1,6 +1,6 @@
 {
   desktop = {
-    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMNf+oynlWr+Xq3UYKpCy8ih/w9sT6IuIKAtYjo6sfJr";
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAVYoVIxGgrX+TCAbwZX6MwE/2wCOtyENOrMu/rTzlhs";
     system = "x86_64-linux";
     ip.v4 = "10.0.0.50";
   };
