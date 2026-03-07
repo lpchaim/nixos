@@ -32,7 +32,7 @@ in {
       element-desktop
       file-roller
       gnome-system-monitor
-      libreoffice-qt6-fresh
+      libreoffice
       loupe
       nautilus
       pavucontrol
