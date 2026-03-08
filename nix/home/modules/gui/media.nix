@@ -8,7 +8,10 @@
   inherit (pkgs.stdenv.hostPlatform) system;
   cfg = config.my.gui.media;
 in {
-  options.my.gui.media.enable = lib.mkEnableOption "gui media apps" // {default = config.my.gui.enable;};
+  options.my.gui.media.enable =
+    lib.mkEnableOption "gui media apps"
+    // {default = config.my.gui.enable;};
+
   config = lib.mkIf cfg.enable {
     programs = {
       mpv.enable = true;

@@ -11,6 +11,7 @@ in {
   imports = [
     ./chromium.nix
     ./firefox.nix
+    ./imageEditors.nix
     ./kitty.nix
     ./mangohud.nix
     ./media.nix
