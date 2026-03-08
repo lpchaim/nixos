@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   osConfig ? {},
   ...
 }: let
-  inherit (config.my.secret.helpers) mkHostSecret;
+  inherit (config.my.secret.helpers) mkHostSecret mkSecret;
   syncthingtray = config.services.syncthing.tray.package;
   cfg = config.my.syncthing;
 in {
@@ -15,6 +14,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.secret.definitions = lib.mkIf (config.my.hostName != null) {
+      "syncthing-password" = mkSecret "syncthing-password" {};
       "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {};
       "host.syncthing-key" = mkHostSecret config "syncthing-key" {};
     };
@@ -23,22 +23,34 @@ in {
       enable = true;
       tray.enable = config.my.profiles.graphical;
       cert = config.my.secrets."host.syncthing-cert".path;
+      guiAddress = "0.0.0.0:8384";
       key = config.my.secrets."host.syncthing-key".path;
       overrideDevices = true;
       overrideFolders = true;
+      passwordFile = config.my.secrets."syncthing-password".path;
       settings = {
+        # See ~/.local/state/syncthing/config.xml
+        defaults.folder = {
+          minDiskFree.unit = "%";
+          minDiskFree.value = "10";
+          order = "oldestFirst";
+        };
         gui.theme = "dark";
+        gui.user = config.home.username;
         options = {
           localAnnounceEnabled = true;
           relaysEnabled = true;
+          startBrowser = false;
           urAccepted = -1; # For no and don't ask again
         };
         startBrowser = false;
         folders = let
-          computers = ["desktop" "laptop" "steamdeck"];
+          computers = ["desktop"];
+          laptops = ["laptop"];
+          gaming = ["steamdeck" "steamdeck-standalone"];
           phones = ["galaxyS23"];
           servers = ["raspberrypi" "server"];
-          allDevices = computers ++ phones ++ servers;
+          allDevices = computers ++ laptops ++ gaming ++ phones ++ servers;
           trashVersioning = {
             type = "trashcan";
             params.cleanoutDays = "30";
@@ -56,28 +68,28 @@ in {
             label = "Notes/Logseq";
             type = "sendreceive";
             versioning = trashVersioning;
-            devices = allDevices;
+            devices = computers ++ laptops ++ phones ++ servers;
           };
           "~/Notes/Obsidian" = {
             id = "tgnpg-efws9";
             label = "Notes/Obsidian";
             type = "sendreceive";
             versioning = trashVersioning;
-            devices = allDevices;
+            devices = computers ++ laptops ++ phones ++ servers;
           };
           "~/Notes/Work" = {
             id = "gkcpi-lubwx";
             label = "Notes/Work";
             type = "sendreceive";
             versioning = trashVersioning;
-            devices = allDevices;
+            devices = computers ++ laptops ++ phones ++ servers;
           };
           "~/.steam/steam/userdata/85204334/config/grid" = {
             id = "steam-custom-icons";
             label = "Steam/Custom Icons";
             type = "sendreceive";
             versioning = null;
-            devices = computers ++ servers;
+            devices = computers ++ gaming ++ servers;
           };
         };
         devices = {
@@ -94,16 +106,13 @@ in {
           server.id = "X5LHXQ6-NOCD2NO-RQ7FPLO-WFLLFRE-5BTTVL6-XLH3DAV-4ZIYI47-EEOVYAK";
           server.name = "Server";
           steamdeck.id = "OBZRWRW-B7DYVZC-RL5JV3D-6YNWG4O-MAIN2GY-KTEBY6V-DWQK36S-5E2O7AB";
-          steamdeck.name = "Steam Deck";
+          steamdeck.name = "Steam Deck (deprecated)";
+          steamdeck-standalone.id = "ZVNIWFX-XW3IKJH-VP33OHM-32YKAOZ-CGXRC7E-ZTA2IUP-QLXL6GY-PP5QYQS";
+          steamdeck-standalone.name = "Steam Deck";
         };
       };
     };
 
     home.packages = [syncthingtray];
-    systemd.user.services.syncthingtray = {
-      Service.ExecStart = lib.mkForce (pkgs.writeShellScript "syncthingtray-wait" ''
-        ${syncthingtray}/bin/syncthingtray --wait
-      '');
-    };
   };
 }

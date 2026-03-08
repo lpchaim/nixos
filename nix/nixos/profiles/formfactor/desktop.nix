@@ -27,7 +27,10 @@ in {
 
     boot.kernelPackages = pkgs.linuxPackages_zen;
 
-    hardware.keyboard.qmk.enable = true;
+    hardware.keyboard.qmk = {
+      enable = true;
+      keychronSupport = true;
+    };
 
     networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
 
