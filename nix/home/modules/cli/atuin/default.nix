@@ -1,12 +1,11 @@
 {
   config,
-  inputs,
   lib,
   osConfig ? {},
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.cli.atuin;
   atuinLogin = pkgs.writeShellScriptBin "atuin-login" ''
     if atuin status | grep -q "not logged in"; then
