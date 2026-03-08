@@ -45,11 +45,9 @@ in {
 
     boot.kernelModules = ["wireguard"];
     services.tailscale = let
-      tags =
-        cfg.advertise.tags
-        ++ lib.optionals cfg.trusted ["trusted"];
+      inherit (cfg.advertise) tags;
       formattedTags =
-        tags
+        cfg.advertise.tags
         |> map (it: "tag:${it}")
         |> builtins.concatStringsSep ",";
     in {

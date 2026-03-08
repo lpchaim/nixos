@@ -18,6 +18,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    my.networking.tailscale.advertise.tags = lib.optionalAttrs cfg.trusted ["trusted"];
+
     networking = {
       enableIPv6 = cfg.ipv6.enable;
       firewall.enable = true;

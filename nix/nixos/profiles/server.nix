@@ -14,6 +14,7 @@ in {
         enable = true;
         advertise.exitNode = true;
         advertise.routes = [routingPrefix];
+        advertise.tags = ["server"];
       };
     };
 
