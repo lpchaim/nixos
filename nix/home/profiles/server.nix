@@ -14,6 +14,12 @@ in {
       cli.editors.neovim.enable = false;
       cli.extras.enable = false;
       development.enable = false;
+      scripts.enable = false;
+    };
+
+    programs = {
+      fish.generateCompletions = false;
+      man.enable = false;
     };
   };
 }
