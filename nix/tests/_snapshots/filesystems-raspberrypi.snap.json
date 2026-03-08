@@ -1,6 +1,6 @@
 {
   "/": {
-    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2",
     "fsType": "btrfs",
     "options": [
       "x-initrd.mount",
@@ -10,7 +10,7 @@
     ]
   },
   "/boot": {
-    "device": "/dev/disk/by-uuid/12CE-A600",
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part1",
     "fsType": "vfat",
     "options": [
       "fmask=0022",
@@ -18,20 +18,42 @@
     ]
   },
   "/home": {
-    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2",
     "fsType": "btrfs",
     "options": [
       "subvol=@home",
+      "nofail",
       "compress=zstd",
       "noatime"
     ]
   },
   "/nix": {
-    "device": "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79",
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2",
     "fsType": "btrfs",
     "options": [
       "x-initrd.mount",
       "subvol=@nix",
+      "compress=zstd",
+      "noatime"
+    ]
+  },
+  "/var/cache": {
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2",
+    "fsType": "btrfs",
+    "options": [
+      "subvol=@cache",
+      "nofail",
+      "compress=zstd",
+      "noatime"
+    ]
+  },
+  "/var/log": {
+    "device": "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "subvol=@log",
+      "nofail",
       "compress=zstd",
       "noatime"
     ]

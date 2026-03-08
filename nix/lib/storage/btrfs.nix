@@ -1,83 +1,79 @@
-{
-  mkStorage = {
+{lib, ...}: rec {
+  primary.options = [
+    "defaults"
+    "compress=zstd"
+    "noatime"
+  ];
+  secondary.options =
+    [
+      "defaults"
+      "auto"
+      "exec"
+      "nofail"
+      "nosuid"
+      "nodev"
+      "x-gvfs-show"
+    ]
+    ++ primary.options;
+
+  mkDiskoRootDisk = {
     device,
-    bootSize ? "512M",
-    swapSize,
+    swapSize ? null,
+    espSize ? "1024M",
+    espIndex ? 1,
+    rootIndex ? 2,
   }: {
-    disko.devices = {
-      disk = {
-        vdb = {
-          inherit device;
-          type = "disk";
+    inherit device;
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          device = "${device}-part${toString espIndex}";
+          type = "EF00";
+          size = espSize;
           content = {
-            type = "gpt";
-            partitions = {
-              ESP = {
-                type = "EF00";
-                size = bootSize;
-                content = {
-                  type = "filesystem";
-                  format = "vfat";
-                  mountpoint = "/boot";
-                };
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+          };
+        };
+        root = {
+          device = "${device}-part${toString rootIndex}";
+          size = "100%";
+          content = {
+            type = "btrfs";
+            extraArgs = ["-f"]; # Override existing partition
+            subvolumes = {
+              "@" = {
+                mountpoint = "/";
+                mountOptions = primary.options;
               };
-              root = {
-                size = "100%";
-                content = {
-                  type = "btrfs";
-                  extraArgs = ["-f"]; # Override existing partition
-                  # Subvolumes must set a mountpoint in order to be mounted,
-                  # unless their parent is mounted
-                  subvolumes = {
-                    # Subvolume name is different from mountpoint
-                    "@" = {
-                      mountOptions = ["compress=zstd"];
-                      mountpoint = "/";
-                    };
-                    # Subvolume name is the same as the mountpoint
-                    "@home" = {
-                      mountOptions = ["compress=zstd"];
-                      mountpoint = "/home";
-                    };
-                    # Parent is not mounted so the mountpoint must be set
-                    "@nix" = {
-                      mountOptions = ["compress=zstd" "noatime"];
-                      mountpoint = "/nix";
-                    };
-                    "@swap" = {
-                      mountpoint = "/.swapvol";
-                      swap = {
-                        swapfile.size = swapSize;
-                      };
-                    };
-                  };
-                };
+              "@cache" = {
+                mountpoint = "/var/cache";
+                mountOptions = primary.options ++ ["nofail"];
+              };
+              "@home" = {
+                mountpoint = "/home";
+                mountOptions = primary.options ++ ["nofail"];
+              };
+              "@log" = {
+                mountpoint = "/var/log";
+                mountOptions = primary.options ++ ["nofail"];
+              };
+              "@nix" = {
+                mountpoint = "/nix";
+                mountOptions = primary.options;
+              };
+              "@swap" = lib.mkIf (swapSize != null) {
+                mountpoint = "/.swapvol";
+                swap.swapfile.options = ["defaults" "nofail"];
+                swap.swapfile.size = swapSize;
               };
             };
           };
         };
       };
-    };
-  };
-
-  mkSecondaryStorage = {
-    device,
-    mountPoint,
-  }: {
-    fileSystems.${mountPoint} = {
-      inherit device;
-      fsType = "btrfs";
-      options = [
-        "defaults"
-        "auto"
-        "exec"
-        "nofail"
-        "nosuid"
-        "nodev"
-        "noatime"
-        "compress=zstd"
-        "x-gvfs-show"
-      ];
     };
   };
 }

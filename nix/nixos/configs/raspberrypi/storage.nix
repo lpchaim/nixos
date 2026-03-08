@@ -1,25 +1,38 @@
 {
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/12CE-A600";
-    fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
-  };
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["subvol=@" "compress=zstd" "noatime"];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["subvol=@home" "compress=zstd" "noatime"];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/322a6d8e-f946-4d60-98a3-dd1af1373c79";
-    fsType = "btrfs";
-    options = ["subvol=@nix" "compress=zstd" "noatime"];
+  fileSystems = let
+    boot.device = "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part1";
+    root.device = "/dev/disk/by-id/usb-Argon_Forty_000000000F12-0:0-part2";
+    options = ["compress=zstd" "noatime"];
+  in {
+    "/boot" = {
+      inherit (boot) device;
+      fsType = "vfat";
+      options = ["fmask=0022" "dmask=0022"];
+    };
+    "/" = {
+      inherit (root) device;
+      fsType = "btrfs";
+      options = ["subvol=@"] ++ options;
+    };
+    "/home" = {
+      inherit (root) device;
+      fsType = "btrfs";
+      options = ["subvol=@home" "nofail"] ++ options;
+    };
+    "/nix" = {
+      inherit (root) device;
+      fsType = "btrfs";
+      options = ["subvol=@nix"] ++ options;
+    };
+    "/var/cache" = {
+      inherit (root) device;
+      fsType = "btrfs";
+      options = ["subvol=@cache" "nofail"] ++ options;
+    };
+    "/var/log" = {
+      inherit (root) device;
+      fsType = "btrfs";
+      options = ["subvol=@log" "nofail"] ++ options;
+    };
   };
 }
