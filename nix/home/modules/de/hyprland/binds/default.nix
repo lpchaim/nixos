@@ -11,7 +11,6 @@
     genList
     mkEnableOption
     mkIf
-    mkMerge
     range
     ;
 
@@ -51,95 +50,102 @@ in {
     enableFnKeys = lib.mkEnableOption "function key bindings";
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
-      wayland.windowManager.hyprland = {
-        settings = {
-          "$mod" = "SUPER";
-          bind =
-            [
-              "$mod, E, exec, nautilus"
-              "CTRL ALT, L, exec, ${config.services.hypridle.settings.general.lock_cmd}"
-              "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
-              "$mod ALT, F11, exec, pidof grimblast || grimblast copy active --notify"
-              "$mod SHIFT, F11, exec, pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
-                # Workaround for grimblast --freeze not actually freezing, see https://github.com/hyprwm/contrib/issues/37#issuecomment-1558933363
-                hyprpicker -r -n -z &
-                hyprpicker_pid=$!
-                grimblast copy area --notify
-                kill "$hyprpicker_pid"
-              ''}"
+  config = mkIf cfg.enable {
+    wayland.windowManager.hyprland = {
+      settings = {
+        "$mod" = "SUPER";
+        bind =
+          [
+            "$mod, E, exec, nautilus"
+            "CTRL ALT, L, exec, ${config.services.hypridle.settings.general.lock_cmd}"
+            "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
+            "$mod ALT, F11, exec, pidof grimblast || grimblast copy active --notify"
+            "$mod SHIFT, F11, exec, pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
+              # Workaround for grimblast --freeze not actually freezing, see https://github.com/hyprwm/contrib/issues/37#issuecomment-1558933363
+              hyprpicker -r -n -z &
+              hyprpicker_pid=$!
+              grimblast copy area --notify
+              kill "$hyprpicker_pid"
+            ''}"
 
-              # "$mod CTRL, Z, pseudo," # dwindle
-              "$mod, X, togglesplit," # dwindle
+            # "$mod CTRL, Z, pseudo," # dwindle
+            "$mod, X, togglesplit," # dwindle
 
-              "$mod, Q, exec, ${pkgs.writeShellScript "killactive" ''
-                # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
-                if [ "$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${lib.getBin pkgs.jq} -r ".class")" = "Steam" ]; then
-                    ${lib.getBin pkgs.xdotool} getactivewindow windowunmap
-                else
-                    ${pkgs.hyprland}/bin/hyprctl dispatch killactive ""
-                fi
-              ''}"
-              "$mod, F, togglefloating,"
-              "$mod ALT, F, setfloating,"
-              "$mod ALT, F, pin,"
-              "$mod, G, togglegroup,"
-              "$mod SHIFT, G, changegroupactive,"
-              "$mod, Z, fullscreen,"
+            "$mod, Q, exec, ${pkgs.writeShellScript "killactive" ''
+              # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
+              if [ "$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${lib.getBin pkgs.jq} -r ".class")" = "Steam" ]; then
+                  ${lib.getBin pkgs.xdotool} getactivewindow windowunmap
+              else
+                  ${pkgs.hyprland}/bin/hyprctl dispatch killactive ""
+              fi
+            ''}"
+            "$mod, F, togglefloating,"
+            "$mod ALT, F, setfloating,"
+            "$mod ALT, F, pin,"
+            "$mod, G, togglegroup,"
+            "$mod SHIFT, G, changegroupactive,"
+            "$mod, Z, fullscreen,"
 
-              "ALT, TAB, cyclenext, tiled"
-              "ALT SHIFT, TAB, cyclenext, prev tiled"
-              "$mod, TAB, cyclenext,"
-              "$mod SHIFT, TAB, cyclenext, prev"
+            "ALT, TAB, cyclenext, tiled"
+            "ALT SHIFT, TAB, cyclenext, prev tiled"
+            "$mod, TAB, cyclenext,"
+            "$mod SHIFT, TAB, cyclenext, prev"
 
-              "$mod, S, togglespecialworkspace, magic"
-              "$mod SHIFT, S, movetoworkspace, special:magic"
+            "$mod, S, togglespecialworkspace, magic"
+            "$mod SHIFT, S, movetoworkspace, special:magic"
 
-              "$mod, mouse_down, workspace, e+1"
-              "$mod, mouse_up, workspace, e-1"
+            "$mod, mouse_down, workspace, e+1"
+            "$mod, mouse_up, workspace, e-1"
 
-              "$mod SHIFT ALT, 1, movewindow, mon:+1"
-              "$mod SHIFT ALT, 2, movewindow, mon:-1"
-            ]
-            ++ (makeDirectionalBinds "movefocus" [])
-            ++ (makeDirectionalBinds "movewindoworgroup" ["SHIFT"])
-            ++ (makeWorkspaceBinds "workspace" [])
-            ++ (makeWorkspaceBinds "movetoworkspace" ["SHIFT"])
-            ++ (lib.optional config.programs.firefox.enable "$mod, B, exec, firefox")
-            ++ (lib.optional config.programs.kitty.enable "$mod, T, exec, kitty")
-            ++ (lib.optional config.programs.wezterm.enable "$mod ALT, T, exec, wezterm");
+            "$mod SHIFT ALT, 1, movewindow, mon:+1"
+            "$mod SHIFT ALT, 2, movewindow, mon:-1"
+          ]
+          ++ (makeDirectionalBinds "movefocus" [])
+          ++ (makeDirectionalBinds "movewindoworgroup" ["SHIFT"])
+          ++ (makeWorkspaceBinds "workspace" [])
+          ++ (makeWorkspaceBinds "movetoworkspace" ["SHIFT"])
+          ++ (lib.optional config.programs.firefox.enable "$mod, B, exec, firefox")
+          ++ (lib.optional config.programs.kitty.enable "$mod, T, exec, kitty")
+          ++ (lib.optional config.programs.wezterm.enable "$mod ALT, T, exec, wezterm");
 
-          binde = [
+        bindle =
+          [
             "$mod CTRL, H, resizeactive, -10 0"
             "$mod CTRL, L, resizeactive, 10 0"
             "$mod CTRL, K, resizeactive, 0 -10"
             "$mod CTRL, J, resizeactive, 0 10"
+          ]
+          ++ lib.optionals cfg.enableFnKeys [
+            ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+            ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+            ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+            ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
           ];
-          bindm = [
-            "$mod, mouse:272, movewindow" # LMB
-            "$mod, mouse:273, resizewindow" # RMB
-          ];
-          misc = {
-            enable_swallow = true;
-            swallow_regex = "^(kitty|wezterm)";
-          };
+        bindl = lib.optionals cfg.enableFnKeys [
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioNext, exec, playerctl next"
+          ", XF86AudioPrev, exec, playerctl previous"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ];
+        bindm = [
+          "$mod, mouse:272, movewindow" # LMB
+          "$mod, mouse:273, resizewindow" # RMB
+        ];
+        misc = {
+          enable_swallow = true;
+          swallow_regex = "^(kitty|wezterm)";
         };
       };
+    };
 
-      home.packages = with pkgs; [
-        grimblast
-        nautilus
+    home.packages =
+      [
+        pkgs.grimblast
+        pkgs.nautilus
+      ]
+      ++ lib.optionals cfg.enableFnKeys [
+        pkgs.brightnessctl
+        pkgs.playerctl
       ];
-    }
-    (lib.mkIf cfg.enableFnKeys {
-      wayland.windowManager.hyprland.settings.binde = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-      ];
-    })
-  ]);
+  };
 }
