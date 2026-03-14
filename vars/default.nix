@@ -2,6 +2,8 @@ args: {
   name.user = "lpchaim";
   name.full = "Luna Perroni";
   email.main = "lpchaim@proton.me";
+  domain.main = "lpcha.im";
+  timezone = "America/Sao_Paulo";
   flake.path = "~/.config/nixos";
   networks = import ./networks.nix;
   repo = rec {

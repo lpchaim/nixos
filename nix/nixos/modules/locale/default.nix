@@ -1,6 +1,6 @@
 {self, ...}: {
   time = {
-    timeZone = "America/Sao_Paulo";
+    timeZone = self.vars.timezone;
     hardwareClockInLocalTime = true;
   };
   i18n = {

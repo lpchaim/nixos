@@ -20,7 +20,7 @@ in {
         homeassistant = {
           unit_system = "metric";
           temperature_unit = "C";
-          time_zone = "America/Sao_Paulo";
+          time_zone = config.time.timeZone;
         };
         recorder.db_url = "postgresql://@/hass";
         "automation ui" = "!include automations.yaml";

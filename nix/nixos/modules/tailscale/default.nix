@@ -34,7 +34,7 @@ in {
     };
     advertise.tags = lib.mkOption {
       description = "ACL tags to advertise";
-      default = ["nixos"];
+      default = [];
       type = with lib.types; listOf str;
     };
   };
@@ -47,7 +47,8 @@ in {
     services.tailscale = let
       inherit (cfg.advertise) tags;
       formattedTags =
-        cfg.advertise.tags
+        ["nixos"]
+        ++ tags
         |> map (it: "tag:${it}")
         |> builtins.concatStringsSep ",";
     in {

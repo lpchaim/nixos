@@ -22,6 +22,13 @@ in {
         package = config.boot.kernelPackages.nvidiaPackages.stable;
         powerManagement.enable = true;
       };
+      nvidia-container-toolkit = {
+        enable = true;
+        device-name-strategy = "uuid";
+        discovery-mode = "auto";
+        mount-nvidia-executables = true;
+        mount-nvidia-docker-1-directories = true;
+      };
     };
     services.xserver.videoDrivers = ["nvidia"];
 

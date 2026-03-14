@@ -11,7 +11,10 @@ in {
     gaming.enable = true;
     networking.trusted = true;
     users.emily.enable = true;
-    virtualization.oci.enable = true;
+    virtualization.oci = {
+      enable = true;
+      externalInterface = "enp6s0";
+    };
     profiles = {
       formfactor.desktop = true;
       hardware.gpu.nvidia = true;
