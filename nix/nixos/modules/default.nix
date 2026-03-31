@@ -40,6 +40,7 @@
       ./security
       ./services
       ./ssh
+      ./storage
       ./syncthing
       ./tailscale
       ./theming
