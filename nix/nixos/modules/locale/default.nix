@@ -1,7 +1,7 @@
 {self, ...}: {
   time = {
     timeZone = self.vars.timezone;
-    hardwareClockInLocalTime = true;
+    hardwareClockInLocalTime = false;
   };
   i18n = {
     supportedLocales = [

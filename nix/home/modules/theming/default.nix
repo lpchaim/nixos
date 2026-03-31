@@ -26,6 +26,7 @@ in
         enable = true;
         defaultFonts.monospace = [config.stylix.fonts.monospace.name];
       };
+      gtk.gtk4.theme = config.gtk.theme;
     }
     (lib.mkIf (matchTheme "catppuccin" != null) {
       programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";

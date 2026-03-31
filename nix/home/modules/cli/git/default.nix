@@ -30,6 +30,7 @@ in {
           user.email = email.main;
           user.name = name.full;
         };
+        signing.format = "openpgp";
       };
       lazygit.enable = cfg.lazygit.enable;
     };
