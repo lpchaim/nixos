@@ -24,10 +24,13 @@ in {
       tray.enable = config.my.profiles.graphical;
       cert = config.my.secrets."host.syncthing-cert".path;
       guiAddress = "0.0.0.0:8384";
+      guiCredentials = {
+        username = config.home.username;
+        passwordFile = config.my.secrets."syncthing-password".path;
+      };
       key = config.my.secrets."host.syncthing-key".path;
       overrideDevices = true;
       overrideFolders = true;
-      passwordFile = config.my.secrets."syncthing-password".path;
       settings = {
         # See ~/.local/state/syncthing/config.xml
         defaults.folder = {
@@ -36,7 +39,6 @@ in {
           order = "oldestFirst";
         };
         gui.theme = "dark";
-        gui.user = config.home.username;
         options = {
           localAnnounceEnabled = true;
           relaysEnabled = true;

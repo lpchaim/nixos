@@ -49,7 +49,7 @@
   },
   "/run/media/lpchaim/sdcard": {
     "device": "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1",
-    "fsType": "auto",
+    "fsType": "btrfs",
     "options": [
       "defaults",
       "subvol=@",

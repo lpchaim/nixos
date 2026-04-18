@@ -5,6 +5,7 @@
   };
   fileSystems."/run/media/${self.vars.name.user}/sdcard" = {
     device = "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1";
+    fsType = "btrfs";
     options = [
       "defaults"
       "subvol=@"
