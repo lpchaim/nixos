@@ -21,6 +21,7 @@ in {
     generators = let
       getBaseName = file: lib.escapeShellArg (lib.removeSuffix ".age" file);
     in {
+      password = {pkgs, ...}: "${pkgs.xkcdpass}/bin/xkcdpass --numwords=6 --delimiter='-'";
       ssh-ed25519-keypair = {
         pkgs,
         file,

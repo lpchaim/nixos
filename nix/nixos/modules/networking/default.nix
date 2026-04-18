@@ -21,8 +21,15 @@ in {
     my.networking.tailscale.advertise.tags = lib.mkIf cfg.trusted ["trusted"];
 
     networking = {
+      hostId = config.my.hostVars.hostId or null;
       enableIPv6 = cfg.ipv6.enable;
       firewall.enable = true;
+      interfaces = lib.mkIf (config.my.hostVars.interface or {} ? "wired") {
+        ${config.my.hostVars.interface.wired}.wakeOnLan = {
+          enable = true;
+          policy = ["magic"];
+        };
+      };
       networkmanager = {
         enable = true;
         settings = {

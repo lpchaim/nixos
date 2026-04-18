@@ -31,8 +31,9 @@ in {
   config = lib.mkIf cfg.enable {
     my.virtualization.oci.compose = {
       attrs = {
-        inherit (config.my.virtualization.oci) networks services;
+        inherit (config.my.virtualization.oci) networks;
         name = cfg.project;
+        services = config.my.virtualization.oci.services.contents;
       };
       prettyAttrs =
         cfg.attrs

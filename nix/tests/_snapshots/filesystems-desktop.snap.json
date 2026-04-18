@@ -62,6 +62,46 @@
       "x-gvfs-show"
     ]
   },
+  "/srv/hdd1": {
+    "device": "/dev/disk/by-id/ata-WDC_WD40EZRZ-00GXCB0_WD-WCC7K5FR9AZE-part1",
+    "fsType": "ext4",
+    "options": [
+      "defaults",
+      "nofail",
+      "noatime"
+    ]
+  },
+  "/srv/storage": {
+    "device": "/srv/tank:/srv/hdd1",
+    "fsType": "mergerfs",
+    "options": [
+      "x-systemd.requires-mounts-for=/srv/tank",
+      "x-systemd.requires-mounts-for=/srv/hdd1",
+      "defaults",
+      "nofail",
+      "cache.files=off",
+      "category.create=eppfrd",
+      "dropcacheonclose=false",
+      "export-support=true",
+      "fsname=mergerfs",
+      "func.getattr=newest",
+      "inodecalc=path-hash",
+      "ignorepponrename=true",
+      "minfreespace=50G",
+      "nonempty",
+      "passthrough.io=rw",
+      "xattr=passthrough"
+    ]
+  },
+  "/srv/tank": {
+    "device": "tank",
+    "fsType": "zfs",
+    "options": [
+      "defaults",
+      "nofail",
+      "noatime"
+    ]
+  },
   "/var/cache": {
     "device": "/dev/disk/by-id/nvme-Corsair_MP600_PRO_XT_214279380001310131BD-part2",
     "fsType": "btrfs",

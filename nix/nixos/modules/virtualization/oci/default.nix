@@ -30,13 +30,13 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.virtualization.oci = {
+      externalInterface = config.my.hostVars.interfaces.wired or null;
       networks = {
         internal = {
           internal = true;
           ipam.config = [{subnet = oci.internal.routingPrefix;}];
         };
         external = {
-          external = true;
           ipam.config = [{subnet = oci.external.routingPrefix;}];
         };
       };

@@ -39,6 +39,7 @@
       ./secureboot
       ./security
       ./services
+      ./serving
       ./ssh
       ./storage
       ./syncthing
@@ -64,6 +65,10 @@
     theming.enable = lib.mkDefault true;
     users.enable = lib.mkDefault true;
     users.lpchaim.enable = lib.mkDefault true;
+    virtualization.oci.services = {
+      cloudflare-ddns.enable = lib.mkDefault config.my.virtualization.oci.enable;
+      gotify.enable = lib.mkDefault config.my.virtualization.oci.enable;
+    };
     zram.enable = lib.mkDefault true;
   };
 

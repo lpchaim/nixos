@@ -43,6 +43,7 @@ in {
           rsync
           sad
           serpl
+          smartmontools
           tgpt
           tig
           yazi

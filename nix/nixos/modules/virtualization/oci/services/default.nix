@@ -8,9 +8,10 @@
 in {
   imports = [
     ./cloudflare-ddns.nix
+    ./gotify.nix
   ];
 
-  options.my.virtualization.oci.services = lib.mkOption {
+  options.my.virtualization.oci.services.contents = lib.mkOption {
     description = "freeform OCI compose services";
     type = lib.types.submodule {
       freeformType = format.type;

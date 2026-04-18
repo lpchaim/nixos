@@ -5,9 +5,9 @@
   ...
 }: let
   inherit (config.my.secret.helpers) mkSecret;
-  cfg = config.my.virtualization.oci.containers.cloudflare-ddns;
+  cfg = config.my.virtualization.oci.services.cloudflare-ddns;
 in {
-  options.my.virtualization.oci.containers.cloudflare-ddns = {
+  options.my.virtualization.oci.services.cloudflare-ddns = {
     enable = lib.mkEnableOption "cloudflare-ddns container";
   };
 
@@ -32,8 +32,8 @@ in {
       };
     };
 
-    my.virtualization.oci.services.cloudflare-ddns = {
-      image = "oznu/cloudflare-ddns";
+    my.virtualization.oci.services.contents.cloudflare-ddns = {
+      image = "docker.io/oznu/cloudflare-ddns";
       environment = {
         ZONE = self.vars.domain.main;
         INTERFACE = config.my.virtualization.oci.externalInterface;

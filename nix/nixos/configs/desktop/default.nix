@@ -10,11 +10,8 @@ in {
     ci.build = true;
     gaming.enable = true;
     networking.trusted = true;
+    serving.enable = true;
     users.emily.enable = true;
-    virtualization.oci = {
-      enable = true;
-      externalInterface = "enp6s0";
-    };
     profiles = {
       formfactor.desktop = true;
       hardware.gpu.nvidia = true;
@@ -24,8 +21,6 @@ in {
       graphical = true;
     };
   };
-
-  networking.interfaces.enp6s0.wakeOnLan.enable = true;
 
   system.stateVersion = "23.11";
   home-manager.users.${name.user}.home.stateVersion = "24.11";
