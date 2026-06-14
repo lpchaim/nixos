@@ -7,20 +7,15 @@
 in {
   options.my.profiles.hardware.gpu.nvidia = lib.mkEnableOption "NVIDIA GPU profile";
   config = lib.mkIf cfg {
-    boot.kernelParams = [
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-      "nvidia.NVreg_UsePageAttributeTable=1"
-    ];
-
     hardware = {
       graphics.enable = true;
       nvidia = {
         modesetting.enable = true;
         nvidiaSettings = true;
-        open = false;
+        open = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
         powerManagement.enable = true;
+        powerManagement.kernelSuspendNotifier = true;
       };
       nvidia-container-toolkit = {
         enable = true;
@@ -33,7 +28,5 @@ in {
     services.xserver.videoDrivers = ["nvidia"];
 
     nixpkgs.config.cudaSupport = true;
-    virtualisation.docker.enableNvidia = true;
-    virtualisation.docker.daemon.settings.features.cdi = true;
   };
 }

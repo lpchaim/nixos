@@ -13,6 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       package = pkgs.firefox-bin.override {
         cfg = {
           enableGnomeExtensions = config.my.de.gnome.enable or false;

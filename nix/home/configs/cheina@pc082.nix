@@ -1,12 +1,9 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
-}: let
-  inherit (inputs.self.lib.secrets.paths) root;
-in {
+}: {
   home = {
     username = "cheina";
     homeDirectory = "/home/cheina";

@@ -32,6 +32,7 @@ in {
     {
       wayland.windowManager.hyprland = {
         enable = true;
+        configType = "lua";
         systemd.variables = ["--all"];
         settings = {
           exec-once = [

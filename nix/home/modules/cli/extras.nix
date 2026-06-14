@@ -19,7 +19,6 @@ in {
       inotify-tools
       jocalsend
       nix-output-monitor
-      python312Packages.howdoi
       (symlinkJoin {
         name = "termshot";
         paths = [termshot];

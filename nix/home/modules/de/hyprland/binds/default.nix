@@ -36,12 +36,12 @@
     map
     (i: let
       getKey = i:
-        builtins.toString (
+        toString (
           if i == 10
           then 0
           else i
         );
-      getWorkspace = i: builtins.toString i;
+      getWorkspace = i: toString i;
     in "${trigger}, ${getKey i}, ${cmd}, ${getWorkspace i}")
     (range 1 10);
 in {
@@ -69,7 +69,8 @@ in {
             ''}"
 
             # "$mod CTRL, Z, pseudo," # dwindle
-            "$mod, X, togglesplit," # dwindle
+            "$mod, X, layoutmsg, togglesplit" # dwindle
+            "$mod SHIFT, X, layoutmsg, swapsplit" # dwindle
 
             "$mod, Q, exec, ${pkgs.writeShellScript "killactive" ''
               # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
@@ -80,8 +81,8 @@ in {
               fi
             ''}"
             "$mod, F, togglefloating,"
-            "$mod ALT, F, setfloating,"
-            "$mod ALT, F, pin,"
+            "$mod SHIFT, F, setfloating,"
+            "$mod SHIFT, F, pin,"
             "$mod, G, togglegroup,"
             "$mod SHIFT, G, changegroupactive,"
             "$mod, Z, fullscreen,"
