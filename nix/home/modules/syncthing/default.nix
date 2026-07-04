@@ -8,9 +8,14 @@
   syncthingtray = config.services.syncthing.tray.package;
   cfg = config.my.syncthing;
 in {
-  options.my.syncthing.enable =
-    lib.mkEnableOption "syncthing"
-    // {default = osConfig.my.syncthing.enable or false;};
+  options.my.syncthing = {
+    enable =
+      lib.mkEnableOption "syncthing"
+      // {default = osConfig.my.syncthing.enable or false;};
+    tray.enable =
+      lib.mkEnableOption "syncthing tray"
+      // {default = config.my.profiles.graphical;};
+  };
 
   config = lib.mkIf cfg.enable {
     my.secret.definitions = lib.mkIf (config.my.hostName != null) {
@@ -21,7 +26,7 @@ in {
 
     services.syncthing = {
       enable = true;
-      tray.enable = config.my.profiles.graphical;
+      tray.enable = cfg.tray.enable;
       cert = config.my.secrets."host.syncthing-cert".path;
       guiAddress = "0.0.0.0:8384";
       guiCredentials = {
