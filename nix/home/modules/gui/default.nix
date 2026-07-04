@@ -15,6 +15,7 @@ in {
     ./kitty.nix
     ./mangohud.nix
     ./media.nix
+    ./zenBrowser.nix
   ];
 
   options.my.gui.enable =

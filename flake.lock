@@ -1361,7 +1361,8 @@
         "stable": "stable_2",
         "stylix": "stylix",
         "unstable": "unstable",
-        "wayland-pipewire-idle-inhibit": "wayland-pipewire-idle-inhibit"
+        "wayland-pipewire-idle-inhibit": "wayland-pipewire-idle-inhibit",
+        "zen-browser": "zen-browser"
       }
     },
     "rust-overlay": {
@@ -1704,6 +1705,29 @@
       "original": {
         "owner": "rafaelrc7",
         "repo": "wayland-pipewire-idle-inhibit",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781426426,
+        "narHash": "sha256-yzxJMNgv/sLishhCT9G2lm7W9CjHSlXWkfbWC7vfjqc=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "df336067c1a8af3bfce3f0b88b66dc1c57411b4e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }
