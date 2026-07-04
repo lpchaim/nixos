@@ -1,12 +1,12 @@
 {
   config,
-  inputs,
   lib,
   options,
+  self,
   ...
 }: let
-  inherit (config.my.config) name;
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (self.lib.secrets.helpers) mkSecret;
+  inherit (self.vars) name;
   cfg = config.my.networking.tailscale;
 in {
   options.my.networking.tailscale = {
@@ -20,47 +20,58 @@ in {
     trusted = lib.mkOption {
       description = "Whether to tag this device as trusted";
       type = lib.types.bool;
-      default = false;
+      default = config.my.networking.trusted;
     };
     advertise.exitNode = lib.mkOption {
       description = "Whether to advertise an exit node";
-      default = false;
       type = lib.types.bool;
+      default = false;
+    };
+    advertise.routes = lib.mkOption {
+      description = "Routes to advertise";
+      default = [];
+      type = with lib.types; listOf str;
     };
     advertise.tags = lib.mkOption {
       description = "ACL tags to advertise";
-      default = ["nixos"];
+      default = [];
       type = with lib.types; listOf str;
     };
   };
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "tailscale-oauth-secret" = mkSecret "tailscale-oauth-secret" {};
     };
 
+    boot.kernelModules = ["wireguard"];
     services.tailscale = let
-      tags =
-        cfg.advertise.tags
-        ++ lib.optionals cfg.trusted ["trusted"];
+      inherit (cfg.advertise) tags;
       formattedTags =
-        tags
+        ["nixos"]
+        ++ tags
         |> map (it: "tag:${it}")
         |> builtins.concatStringsSep ",";
     in {
       inherit (cfg) authKeyParameters;
       enable = true;
       authKeyFile = config.my.secrets."tailscale-oauth-secret".path;
+      disableUpstreamLogging = true;
       extraUpFlags =
         [
           "--accept-dns"
           "--accept-routes"
-          "--advertise-tags=${formattedTags}"
           "--operator=${name.user}"
           "--reset" # Forces unspecified arguments to default values
           "--ssh"
         ]
         ++ lib.optionals cfg.advertise.exitNode [
           "--advertise-exit-node"
+        ]
+        ++ lib.optionals (cfg.advertise.routes != []) [
+          "--advertise-routes=${lib.concatStringsSep "," cfg.advertise.routes}"
+        ]
+        ++ lib.optionals (tags != []) [
+          "--advertise-tags=${formattedTags}"
         ];
       openFirewall = true;
       useRoutingFeatures = "both";

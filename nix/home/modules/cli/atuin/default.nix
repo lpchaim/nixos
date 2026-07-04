@@ -1,12 +1,11 @@
 {
   config,
-  inputs,
   lib,
   osConfig ? {},
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.secrets.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.cli.atuin;
   atuinLogin = pkgs.writeShellScriptBin "atuin-login" ''
     if atuin status | grep -q "not logged in"; then
@@ -20,7 +19,7 @@ in {
   options.my.cli.atuin.enable = lib.mkEnableOption "atuin";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "atuin-password" = mkSecret "atuin-password" {};
       "atuin-key" = mkSecret "atuin-key" {};
     };
@@ -29,7 +28,6 @@ in {
       atuinLogin
     ];
 
-    programs.mcfly.enable = lib.mkForce false;
     programs.atuin = {
       enable = true;
       daemon.enable = osConfig != {};

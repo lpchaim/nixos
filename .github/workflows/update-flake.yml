@@ -36,6 +36,7 @@ jobs:
         run: |
           set -o pipefail
           nix flake check --quiet --all-systems --keep-going 2>&1 \
+          | grep --invert-match 'unknown experimental feature' \
           | tee -a "$GITHUB_STEP_SUMMARY" ./check.out
       - name: Build PR body
         id: vars

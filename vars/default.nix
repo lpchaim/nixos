@@ -1,0 +1,21 @@
+args: {
+  name.user = "lpchaim";
+  name.full = "Luna Perroni";
+  email.main = "lpchaim@proton.me";
+  domain.main = "lpcha.im";
+  timezone = "America/Sao_Paulo";
+  flake.path = "~/.config/nixos";
+  networks = import ./networks.nix;
+  repo = rec {
+    main = github;
+    github = "https://github.com/lpchaim/nixos";
+    tangled = "https://tangled.org/lpchaim/nix";
+  };
+  shell = "fish";
+  wallpaper = ../assets/wallpaper.jpg;
+  profilePicture = ../assets/profile-picture.png;
+  ssh = import ./ssh.nix args;
+  hosts = import ./hosts.nix;
+  nix = import ./nix.nix args;
+  kb = import ./kb.nix;
+}

@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  self,
   ...
 }: let
-  inherit (config.my.config) email name;
+  inherit (self.vars) email name;
   cfg = config.my.cli.git;
 in {
   options.my.cli.git = {
@@ -29,6 +30,7 @@ in {
           user.email = email.main;
           user.name = name.full;
         };
+        signing.format = "openpgp";
       };
       lazygit.enable = cfg.lazygit.enable;
     };

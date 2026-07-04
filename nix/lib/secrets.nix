@@ -1,4 +1,4 @@
-rec {
+{lib, ...}: rec {
   paths = rec {
     root = ../../secrets;
     identities = root + /identities;
@@ -25,7 +25,9 @@ rec {
       args
       // {
         rekeyFile = let
-          host = configOrHost.networking.hostName or configOrHost;
+          host = configOrHost.networking.hostName
+            or configOrHost.my.hostName
+            or configOrHost;
         in
           paths.perHost + /${host}/${name}.age;
       };

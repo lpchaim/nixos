@@ -11,13 +11,13 @@ in {
   options.my.users.emily.enable = lib.mkEnableOption "emily user";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "user.emily.password" = mkUserSecret "emily" "password" {};
     };
 
     users = {
-      extraGroups.emily.gid = 1001;
-      extraUsers.emily =
+      groups.emily.gid = 1001;
+      users.emily =
         config.my.users.defaultUserAttrs
         // {
           uid = 1001;

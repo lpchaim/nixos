@@ -1,9 +1,10 @@
 {
   config,
   lib,
+  self,
   ...
 }: let
-  inherit (config.my.config) wallpaper;
+  inherit (self.vars) wallpaper;
   cfg = config.my.bars.dank-material-shell;
 in {
   options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";

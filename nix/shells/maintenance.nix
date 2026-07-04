@@ -23,8 +23,10 @@ in {
         (with pkgs; [
           age-plugin-yubikey
           colmena
+          disko
           just
           rage
+          yaml-language-server
         ])
         ++ config.pre-commit.settings.enabledPackages
         ++ lib.optionals (config.agenix-rekey.package != null) [

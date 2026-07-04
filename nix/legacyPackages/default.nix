@@ -1,5 +1,5 @@
-{inputs, ...} @ args: let
-  inherit (inputs.self.lib) callPackageWith callPackageRecursiveWith;
+{self, ...}: let
+  inherit (self.lib) callPackageWith callPackageRecursiveWith;
 in {
   perSystem = {
     self',
@@ -10,8 +10,10 @@ in {
     callPackageRecursive = callPackageRecursiveWith pkgs;
   in {
     legacyPackages = {
-      ci.matrix = callPackage ./ciMatrix.nix {inherit (args.inputs) self;};
-      scripts = callPackageRecursive ./scripts {inherit (self'.legacyPackages.pkgs) writeNuScriptStdinBin;};
+      ci.matrix = callPackage ./ciMatrix.nix {inherit self;};
+      knownHosts = callPackage ./knownHosts.nix {inherit self;};
+      scripts = callPackageRecursive ./scripts {inherit (self'.legacyPackages.pkgs) writers;};
+      vimPlugins = callPackageRecursive ./vimPlugins {};
     };
   };
 }

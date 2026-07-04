@@ -17,6 +17,10 @@ in {
       graphics.enable = true;
       graphics.enable32Bit = true;
     };
+    networking.firewall.allowedTCPPorts = [
+      57621 # spotify local discovery
+      5353 # spotify cast discovery
+    ];
     services.xserver.enable = lib.mkDefault true;
     xdg.portal = {
       enable = true;

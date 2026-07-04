@@ -1,5 +1,5 @@
-{writeNuScriptStdinBin, ...}:
-writeNuScriptStdinBin "nu-generate-carapace-spec"
+{writers, ...}:
+writers.writeNuBinStdin "nu-generate-carapace-spec"
 # nu
 ''
   # Generates carapace completion spec based on structured command metadata

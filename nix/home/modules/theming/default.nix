@@ -16,13 +16,17 @@ in
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
       ];
-      stylix.targets.mangohud.enable = false;
-      stylix.targets.firefox.profileNames = ["default"];
-      stylix.targets.vscode.profileNames = ["default"];
+      stylix.targets = {
+        firefox.profileNames = ["default"];
+        mangohud.enable = false;
+        obsidian.enable = false;
+        vscode.profileNames = ["default"];
+      };
       fonts.fontconfig = {
         enable = true;
         defaultFonts.monospace = [config.stylix.fonts.monospace.name];
       };
+      gtk.gtk4.theme = lib.mkDefault config.gtk.theme;
     }
     (lib.mkIf (matchTheme "catppuccin" != null) {
       programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";

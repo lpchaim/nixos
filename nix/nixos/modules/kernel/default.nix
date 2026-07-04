@@ -12,7 +12,6 @@ in {
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       kernelModules = [
         "i2c-dev"
-        "wireguard"
       ];
     };
     services.udev.extraRules = ''

@@ -10,7 +10,6 @@ in {
   options.my.profiles.de.gnome = lib.mkEnableOption "gnome profile";
   config = lib.mkIf cfg {
     services.xserver.enable = true;
-    services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
 
     services.gnome = {

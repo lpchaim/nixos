@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -22,7 +23,6 @@
       ../profiles
       ./boot
       ./ci
-      ./desktop
       ./deploy
       ./gaming
       ./gui
@@ -39,7 +39,9 @@
       ./secureboot
       ./security
       ./services
+      ./serving
       ./ssh
+      ./storage
       ./syncthing
       ./tailscale
       ./theming
@@ -51,15 +53,22 @@
 
   my = {
     kernel.enable = lib.mkDefault true;
+    networking.enable = lib.mkDefault true;
+    networking.ipv6.enable = lib.mkDefault true;
     networking.tailscale.enable = lib.mkDefault true;
     nix.enable = lib.mkDefault true;
     pipewire.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;
+    services.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
     syncthing.enable = lib.mkDefault true;
     theming.enable = lib.mkDefault true;
     users.enable = lib.mkDefault true;
     users.lpchaim.enable = lib.mkDefault true;
+    virtualization.oci.services = {
+      cloudflare-ddns.enable = lib.mkDefault config.my.virtualization.oci.enable;
+      gotify.enable = lib.mkDefault config.my.virtualization.oci.enable;
+    };
     zram.enable = lib.mkDefault true;
   };
 
@@ -74,6 +83,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
   };
+  nixpkgs.hostPlatform = config.my.hostVars.system or "x86_64-linux";
   systemd = {
     targets.network-online.wantedBy = pkgs.lib.mkForce [];
     services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];

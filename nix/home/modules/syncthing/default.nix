@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   osConfig ? {},
   ...
 }: let
-  syncthing = osConfig.services.syncthing.package or config.services.syncthing.package;
+  inherit (config.my.secret.helpers) mkHostSecret mkSecret;
   syncthingtray = config.services.syncthing.tray.package;
   cfg = config.my.syncthing;
 in {
@@ -14,112 +13,108 @@ in {
     // {default = osConfig.my.syncthing.enable or false;};
 
   config = lib.mkIf cfg.enable {
-    home.packages = [syncthingtray];
+    my.secret.definitions = lib.mkIf (config.my.hostName != null) {
+      "syncthing-password" = mkSecret "syncthing-password" {};
+      "host.syncthing-cert" = mkHostSecret config "syncthing-cert" {};
+      "host.syncthing-key" = mkHostSecret config "syncthing-key" {};
+    };
+
     services.syncthing = {
-      enable = osConfig == {};
-      tray.enable = true;
+      enable = true;
+      tray.enable = config.my.profiles.graphical;
+      cert = config.my.secrets."host.syncthing-cert".path;
+      guiAddress = "0.0.0.0:8384";
+      guiCredentials = {
+        username = config.home.username;
+        passwordFile = config.my.secrets."syncthing-password".path;
+      };
+      key = config.my.secrets."host.syncthing-key".path;
+      overrideDevices = true;
+      overrideFolders = true;
+      settings = {
+        # See ~/.local/state/syncthing/config.xml
+        defaults.folder = {
+          minDiskFree.unit = "%";
+          minDiskFree.value = "10";
+          order = "oldestFirst";
+        };
+        gui.theme = "dark";
+        options = {
+          localAnnounceEnabled = true;
+          relaysEnabled = true;
+          startBrowser = false;
+          urAccepted = -1; # For no and don't ask again
+        };
+        startBrowser = false;
+        folders = let
+          computers = ["desktop"];
+          laptops = ["laptop"];
+          gaming = ["steamdeck" "steamdeck-standalone"];
+          phones = ["galaxyS23"];
+          servers = ["raspberrypi" "server"];
+          allDevices = computers ++ laptops ++ gaming ++ phones ++ servers;
+          trashVersioning = {
+            type = "trashcan";
+            params.cleanoutDays = "30";
+          };
+        in {
+          "~/Sync" = {
+            id = "default";
+            label = "Default Folder";
+            type = "sendreceive";
+            versioning = null;
+            devices = allDevices;
+          };
+          "~/Notes/Logseq" = {
+            id = "6ymhp-fehcm";
+            label = "Notes/Logseq";
+            type = "sendreceive";
+            versioning = trashVersioning;
+            devices = computers ++ laptops ++ phones ++ servers;
+          };
+          "~/Notes/Obsidian" = {
+            id = "tgnpg-efws9";
+            label = "Notes/Obsidian";
+            type = "sendreceive";
+            versioning = trashVersioning;
+            devices = computers ++ laptops ++ phones ++ servers;
+          };
+          "~/Notes/Work" = {
+            id = "gkcpi-lubwx";
+            label = "Notes/Work";
+            type = "sendreceive";
+            versioning = trashVersioning;
+            devices = computers ++ laptops ++ phones ++ servers;
+          };
+          "~/.steam/steam/userdata/85204334/config/grid" = {
+            id = "steam-custom-icons";
+            label = "Steam/Custom Icons";
+            type = "sendreceive";
+            versioning = null;
+            devices = computers ++ gaming ++ servers;
+          };
+        };
+        devices = {
+          desktop.id = "Q7UXFUW-Q4QWALL-AVBRBPW-Y2S44CV-IR4H3V4-OT2GH4V-6WCXBR4-STJXFQJ";
+          desktop.name = "Desktop";
+          laptop.id = "VFFQPOF-XAPVKHO-4PUSIVT-ACYNHAZ-GOQBWC6-SEYBXGE-2MBBMRS-TJRD4QL";
+          laptop.name = "Laptop";
+          pixel7.id = "PDMAJC4-SIXM4NI-UDMSLPU-3QSBSM2-ZUBLQDU-MNCR2HH-XUJIG52-PH4IKQC";
+          pixel7.name = "Pixel 7 Pro";
+          galaxyS23.id = "DPARDTW-7LHI6VK-CRKEYI4-VK6BWWP-DMW6KOG-6LWAT4O-QFGDFPR-XVO6RAF";
+          galaxyS23.name = "Galaxy S23";
+          raspberrypi.id = "XT3UPMT-4I4FJ5W-YTHHID6-GGM57IS-RE7Z7PU-FMYJMGW-T7MJVZF-3MLJTQK";
+          raspberrypi.name = "Raspberry Pi";
+          server.id = "X5LHXQ6-NOCD2NO-RQ7FPLO-WFLLFRE-5BTTVL6-XLH3DAV-4ZIYI47-EEOVYAK";
+          server.name = "Server";
+          steamdeck.id = "OBZRWRW-B7DYVZC-RL5JV3D-6YNWG4O-MAIN2GY-KTEBY6V-DWQK36S-5E2O7AB";
+          steamdeck.name = "Steam Deck (deprecated)";
+          steamdeck-standalone.id = "ZVNIWFX-XW3IKJH-VP33OHM-32YKAOZ-CGXRC7E-ZTA2IUP-QLXL6GY-PP5QYQS";
+          steamdeck-standalone.name = "Steam Deck";
+        };
+      };
     };
-    systemd.user.services.syncthingtray = {
-      Service.ExecStart = lib.mkForce (pkgs.writeShellScript "syncthingtray-wait" ''
-        ${syncthingtray}/bin/syncthingtray --wait
-      '');
-      Service.ExecStartPre = pkgs.writeShellScript "setup-syncthingtray" ''
-          cat <<EOF >> ~/.config/syncthingtray.ini
-          [General]
-          v=${syncthingtray.version}
 
-          [startup]
-          considerForReconnect=false
-          considerLauncherForReconnect=false
-          showButton=false
-          showLauncherButton=false
-          stopOnMetered=false
-          stopServiceOnMetered=false
-          syncthingArgs="serve --no-browser --logflags=3"
-          syncthingAutostart=false
-          syncthingPath=syncthing
-          syncthingUnit=syncthing.service
-          systemUnit=false
-          useLibSyncthing=false
-
-          [tray]
-          connections\1\apiKey=@ByteArray($(${syncthing}/bin/syncthing cli config dump-json | nu --stdin --commands 'from json | get gui.apiKey'))
-          connections\1\authEnabled=false
-          connections\1\autoConnect=true
-          connections\1\devStatsPollInterval=60000
-          connections\1\diskEventLimit=200
-          connections\1\errorsPollInterval=30000
-          connections\1\httpsCertPath=/home/lpchaim/.config/syncthing/https-cert.pem
-          connections\1\label=Primary instance
-          connections\1\longPollingTimeout=0
-          connections\1\password=
-          connections\1\pauseOnMetered=false
-          connections\1\reconnectInterval=30000
-          connections\1\requestTimeout=0
-          connections\1\statusComputionFlags=59
-          connections\1\syncthingUrl=http://127.0.0.1:8384
-          connections\1\trafficPollInterval=5000
-          connections\1\userName=
-          connections\size=1
-          dbusNotifications=true
-          distinguishTrayIcons=false
-          frameStyle=16
-          ignoreInavailabilityAfterStart=15
-          notifyOnDisconnect=true
-          notifyOnErrors=true
-          notifyOnLauncherErrors=true
-          notifyOnLocalSyncComplete=false
-          notifyOnNewDeviceConnects=false
-          notifyOnNewDirectoryShared=false
-          notifyOnRemoteSyncComplete=false
-          positioning\assumedIconPos=@Point(0 0)
-          positioning\useAssumedIconPosition=false
-          positioning\useCursorPos=true
-          preferIconsFromTheme=false
-          showSyncthingNotifications=true
-          showTabTexts=true
-          showTraffic=true
-          statusIcons="#ff26b6db,#ff0882c8,#ffffffff;#ffdb3c26,#ffc80828,#ffffffff;#ffc9ce3b,#ffebb83b,#ffffffff;#ff2d9d69,#ff2d9d69,#ffffffff;#ff26b6db,#ff0882c8,#ffffffff;#ff26b6db,#ff0882c8,#ffffffff;#ffa9a9a9,#ff58656c,#ffffffff;#ffa9a9a9,#ff58656c,#ffffffff"
-          statusIconsRenderSize=@Size(32 32)
-          statusIconsStrokeWidth=0
-          tabPos=1
-          trayIcons="#ff26b6db,#ff0882c8,#ffffffff;#ffdb3c26,#ffc80828,#ffffffff;#ffc9ce3b,#ffebb83b,#ffffffff;#ff2d9d69,#ff2d9d69,#ffffffff;#ff26b6db,#ff0882c8,#ffffffff;#ff26b6db,#ff0882c8,#ffffffff;#ffa9a9a9,#ff58656c,#ffffffff;#ffa9a9a9,#ff58656c,#ffffffff"
-          trayIconsRenderSize=@Size(32 32)
-          trayIconsStrokeWidth=0
-          trayMenuSize=@Size(575 475)
-          usePaletteForStatusIcons=false
-          usePaletteForTrayIcons=false
-          windowType=0
-
-          [webview]
-          customCommand=
-          disabled=false
-          mode=0
-          qt\customfont=false
-          qt\customicontheme=false
-          qt\customlocale=false
-          qt\custompalette=false
-          qt\customstylesheet=false
-          qt\customwidgetstyle=false
-          qt\font="Sans Serif,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1"
-          qt\icontheme=hicolor
-          qt\iconthemepath=
-          qt\locale=en_US
-          qt\palette=@Variant(\0\0\0\x44\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xcb\x4\xcb\x4\xcb\x4\0\0\x1\x1\xff\xff\x9f\xf4\x9f\xf4\x9f\xf4\0\0\x1\x1\xff\xff\xb8\x90\xb8\x90\xb8\x90\0\0\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xffv{v{v{\0\0\x1\x1\xff\xff\x30\x30\x8c\x8c\xc6\xc6\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\0\0\0\0\xff\xff\0\0\x1\x1\xff\xff\xff\xff\0\0\xff\xff\0\0\x1\x1\xff\xff\xf7\xf7\xf7\xf7\xf7\xf7\0\0\x1\x1\xff\xff\xbe\xbe\xbe\xbe\xbe\xbe\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xcb\x4\xcb\x4\xcb\x4\0\0\x1\x1\xff\xff\xbe\xbe\xbe\xbe\xbe\xbe\0\0\x1\x1\xff\xff\xb8\x90\xb8\x90\xb8\x90\0\0\x1\x1\xff\xff\xbe\xbe\xbe\xbe\xbe\xbe\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xbe\xbe\xbe\xbe\xbe\xbe\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xff\xb1\xb8\xb1\xb8\xb1\xb8\0\0\x1\x1\xff\xff\x91\x91\x91\x91\x91\x91\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\0\0\0\0\xff\xff\0\0\x1\x1\xff\xff\xff\xff\0\0\xff\xff\0\0\x1\x1\xff\xff\xf7\xf7\xf7\xf7\xf7\xf7\0\0\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xcb\x4\xcb\x4\xcb\x4\0\0\x1\x1\xff\xff\x9f\xf4\x9f\xf4\x9f\xf4\0\0\x1\x1\xff\xff\xb8\x90\xb8\x90\xb8\x90\0\0\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\0\0\0\0\0\0\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\xef\xef\xef\xef\xef\xef\0\0\x1\x1\xff\xffv{v{v{\0\0\x1\x1\xff\xff\x30\x30\x8c\x8c\xc6\xc6\0\0\x1\x1\xff\xff\xff\xff\xff\xff\xff\xff\0\0\x1\x1\xff\xff\0\0\0\0\xff\xff\0\0\x1\x1\xff\xff\xff\xff\0\0\xff\xff\0\0\x1\x1\xff\xff\xf7\xf7\xf7\xf7\xf7\xf7\0\0)
-          qt\plugindir=
-          qt\stylesheetpath=
-          qt\trpath=
-          qt\widgetstyle=
-        EOF
-      '';
-      Unit.X-Restart-Triggers = [
-        syncthing
-        syncthingtray
-        "syncthing.systemunit.service"
-        "syncthing-init.systemunit.service"
-        "syncthing-relay.systemunit.service"
-      ];
-      Unit.X-SwitchMethod = "restart";
-    };
+    home.packages = [syncthingtray];
   };
 }

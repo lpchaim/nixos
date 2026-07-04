@@ -1,0 +1,15 @@
+{
+  "home": [
+    "de.hyprland",
+    "graphical",
+    "hardware.gpu.nvidia"
+  ],
+  "nixos": [
+    "de.hyprland",
+    "formfactor.desktop",
+    "graphical",
+    "greeter.gdm",
+    "hardware.gpu.nvidia",
+    "hardware.rgb"
+  ]
+}

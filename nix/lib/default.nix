@@ -4,10 +4,10 @@
   self,
   ...
 } @ args: {
-  config = import ./config.nix args;
   flake = import ./flake.nix args;
+  oci = import ./oci.nix args;
   packages = import ./packages.nix args;
-  secrets = import ./secrets.nix;
+  secrets = import ./secrets.nix args;
   services = import ./services.nix args;
   storage = import ./storage args;
   strings = import ./strings.nix args;

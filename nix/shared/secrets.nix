@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   ...
@@ -6,7 +7,7 @@
   inherit (inputs.self.lib.secrets) identities;
 in {
   options.my = {
-    secretDefinitions = lib.mkOption {
+    secret.definitions = lib.mkOption {
       description = "Secret definitions";
       default = [];
     };
@@ -16,11 +17,29 @@ in {
     };
   };
 
-  config.age.rekey = {
-    masterIdentities = [
-      identities.primaryYubikey
-      identities.secondaryYubikey
-    ];
-    storageMode = "local";
+  config.age = {
+    generators = let
+      getBaseName = file: lib.escapeShellArg (lib.removeSuffix ".age" file);
+    in {
+      password = {pkgs, ...}: "${pkgs.xkcdpass}/bin/xkcdpass --numwords=6 --delimiter='-'";
+      ssh-ed25519-keypair = {
+        pkgs,
+        file,
+        ...
+      } @ args: let
+        sshKeygen = lib.getExe' pkgs.openssh "ssh-keygen";
+      in ''
+        priv=''$${config.age.generators.ssh-ed25519 args}
+        ${sshKeygen} -yf /dev/stdin <<< "$priv" > '${getBaseName file}.pub'
+        echo "$priv"
+      '';
+    };
+    rekey = {
+      masterIdentities = [
+        identities.primaryYubikey
+        identities.secondaryYubikey
+      ];
+      storageMode = "local";
+    };
   };
 }

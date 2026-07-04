@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  self,
   ...
 }: let
-  inherit (config.my.config) nix;
   cfg = config.my.nix;
+  inherit (self.vars) nix;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";
   config = lib.mkIf (cfg.enable) {

@@ -1,25 +1,26 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) name shell;
-  inherit (inputs.self.lib.secrets.helpers) mkUserSecret;
+  inherit (self.lib.secrets.helpers) mkUserSecret;
+  inherit (self.vars) name shell;
+  inherit (self.vars.ssh.publicKeys) perHost perYubikey;
   userName = name.user;
   cfg = config.my.users.lpchaim;
 in {
   options.my.users.lpchaim.enable = lib.mkEnableOption "lpchaim user";
 
   config = lib.mkIf cfg.enable {
-    my.secretDefinitions = {
+    my.secret.definitions = {
       "user.lpchaim.password" = mkUserSecret "lpchaim" "password" {};
     };
 
     users = {
-      extraGroups.${userName}.gid = 1000;
-      extraUsers.${userName} =
+      groups.${userName}.gid = 1000;
+      users.${userName} =
         config.my.users.defaultUserAttrs
         // {
           uid = 1000;
@@ -28,8 +29,13 @@ in {
           group = userName;
           shell = pkgs.${shell};
           hashedPasswordFile = "${config.my.secrets."user.lpchaim.password".path}";
+          openssh.authorizedKeys.keys =
+            perYubikey
+            // {inherit (perHost) laptop desktop;}
+            |> builtins.attrValues;
         };
     };
-    systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.extraUsers.${userName}.home];
+
+    systemd.services.ollama.serviceConfig.ReadWritePaths = [config.users.users.${userName}.home];
   };
 }

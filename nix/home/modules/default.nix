@@ -42,10 +42,10 @@
       atuin.enable = true;
       editors = {
         helix.enable = lib.mkDefault true;
-        kakoune.enable = lib.mkDefault true;
         vim.enable = lib.mkDefault true;
       };
       essentials.enable = lib.mkDefault true;
+      extras.enable = lib.mkDefault true;
       fish.enable = lib.mkDefault true;
       git.enable = lib.mkDefault true;
       nushell.enable = lib.mkDefault true;
@@ -55,7 +55,7 @@
       zsh.enable = lib.mkDefault true;
     };
     development = {
-      nixd.enable = lib.mkDefault true;
+      enable = lib.mkDefault true;
     };
     nix.enable = lib.mkDefault true;
     scripts.enable = lib.mkDefault true;

@@ -2,9 +2,10 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) wallpaper;
+  inherit (self.vars) wallpaper;
   cfg = config.my.de.gnome.theming;
 in {
   options.my.de.gnome.theming = {

@@ -10,7 +10,7 @@ in {
     root = "${self}/nix";
   in {
     inherit root;
-    globalArgs = {inherit inputs;};
+    globalArgs = {inherit inputs self;};
     nixos = rec {
       configurationsDirectory = "${root}/nixos/configs";
       modulesDirectory = "${root}/nixos/modules";

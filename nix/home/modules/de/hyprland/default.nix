@@ -2,9 +2,10 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit (config.my.config) kb;
+  inherit (self.vars) kb;
   cfg = config.my.de.hyprland;
 in {
   imports = [
@@ -31,6 +32,7 @@ in {
     {
       wayland.windowManager.hyprland = {
         enable = true;
+        configType = "lua";
         systemd.variables = ["--all"];
         settings = {
           exec-once = [

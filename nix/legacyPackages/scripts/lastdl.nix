@@ -1,9 +1,9 @@
 {
-  writeNuScriptStdinBin,
+  writers,
   xdg-user-dirs,
   ...
 }:
-writeNuScriptStdinBin "lastdl"
+writers.writeNuBinStdin "lastdl"
 # nu
 ''
   # Print the last downloaded file

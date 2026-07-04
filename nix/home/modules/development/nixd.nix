@@ -3,13 +3,16 @@
   lib,
   osConfig ? {},
   pkgs,
+  self,
   ...
 }: let
   cfg = config.my.development.nixd;
   isNixos = osConfig != {};
 in {
   options.my.development.nixd = {
-    enable = lib.mkEnableOption "nixd";
+    enable =
+      lib.mkEnableOption "nixd"
+      // {default = config.my.development.enable;};
     lsp.enable = lib.mkEnableOption "nixd LSP" // {default = cfg.enable;};
   };
 
@@ -30,7 +33,7 @@ in {
             command = "${lib.getExe pkgs.nixd}";
             args = ["--semantic-tokens=true"];
             config.nixd = let
-              inherit (config.my.config) flake;
+              inherit (self.vars) flake;
               inherit (pkgs.stdenv.hostPlatform) system;
               inherit (config.home) username;
               absoluteFlakePath = builtins.replaceStrings ["~"] [config.home.homeDirectory] flake.path;

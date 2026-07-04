@@ -21,6 +21,7 @@
         (importApply' ./nix/packages)
         (importApply' ./nix/legacyPackages)
         (importApply' ./nix/shells)
+        (importApply' ./nix/tests)
       ];
       perSystem = {
         pkgs,
@@ -37,9 +38,11 @@
       flake = {
         inherit systems;
         lib = import' ./nix/lib;
+        nixConfig = self.vars.nix.settings;
         schemas =
           inputs.flake-schemas.schemas
           // (import' ./nix/schemas);
+        vars = import' ./vars;
       };
     });
 
@@ -105,6 +108,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-std.url = "github:chessai/nix-std";
+    nixtest.url = "gitlab:TECHNOFAB/nixtest?dir=lib";
     nixneovimplugins = {
       url = "github:jooooscha/nixpkgs-vim-extra-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,6 +132,13 @@
     wayland-pipewire-idle-inhibit = {
       url = "github:rafaelrc7/wayland-pipewire-idle-inhibit";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
   };
 }

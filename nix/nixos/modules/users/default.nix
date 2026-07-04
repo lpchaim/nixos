@@ -15,7 +15,9 @@ in {
     defaultUserAttrs = lib.mkOption {
       default = {
         isNormalUser = true;
-        extraGroups = ["i2c" "networkmanager" "storage" "wheel"];
+        extraGroups =
+          ["i2c" "networkmanager" "storage" "wheel"]
+          ++ lib.optionals config.programs.gamemode.enable ["gamemode"];
       };
     };
   };
@@ -23,7 +25,7 @@ in {
   config = lib.mkIf cfg.enable {
     users = {
       mutableUsers = false;
-      extraUsers.root.hashedPassword = null;
+      users.root.hashedPassword = null;
     };
   };
 }

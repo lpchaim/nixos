@@ -1,0 +1,84 @@
+{
+  "/": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "subvol=@"
+    ]
+  },
+  "/.swapvol": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "subvol=@swap"
+    ]
+  },
+  "/boot": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part1",
+    "fsType": "vfat",
+    "options": [
+      "defaults"
+    ]
+  },
+  "/home": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@home"
+    ]
+  },
+  "/nix": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "subvol=@nix"
+    ]
+  },
+  "/run/media/lpchaim/sdcard": {
+    "device": "/dev/disk/by-id/mmc-EF8S5_0x3b3163d0-part1",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "subvol=@",
+      "compress=zstd",
+      "noatime",
+      "nofail"
+    ]
+  },
+  "/var/cache": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@cache"
+    ]
+  },
+  "/var/log": {
+    "device": "/dev/disk/by-id/nvme-KINGSTON_OM3PDP3512B-A01_50026B7685D47463-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@log"
+    ]
+  }
+}

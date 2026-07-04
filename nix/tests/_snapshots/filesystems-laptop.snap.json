@@ -1,0 +1,73 @@
+{
+  "/": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "subvol=@"
+    ]
+  },
+  "/.swapvol": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "subvol=@swap"
+    ]
+  },
+  "/boot": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part1",
+    "fsType": "vfat",
+    "options": [
+      "defaults"
+    ]
+  },
+  "/home": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@home"
+    ]
+  },
+  "/nix": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "subvol=@nix"
+    ]
+  },
+  "/var/cache": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@cache"
+    ]
+  },
+  "/var/log": {
+    "device": "/dev/disk/by-id/nvme-WDSN740-SDDPNQD-512G-1004_23360G804890-part2",
+    "fsType": "btrfs",
+    "options": [
+      "x-initrd.mount",
+      "defaults",
+      "compress=zstd",
+      "noatime",
+      "nofail",
+      "subvol=@log"
+    ]
+  }
+}

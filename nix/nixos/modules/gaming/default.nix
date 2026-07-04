@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: let
-  inherit (config.my.config) name;
   cfg = config.my.gaming;
 in {
   imports = [
@@ -43,8 +42,6 @@ in {
       security.rtkit.enable = true; # make pipewire realtime-capable
 
       services.pipewire.lowLatency.enable = true;
-
-      users.extraUsers.${name.user}.extraGroups = ["gamemode"];
 
       services.flatpak.packages = [
         "com.fightcade.Fightcade"

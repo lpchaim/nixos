@@ -27,6 +27,8 @@ in {
       ;
   };
 
+  disko = prev.disko.override {inherit nix;};
+
   # Adapted from https://github.com/nix-community/nixd/issues/704#issuecomment-3688024705
   nixd = prev.symlinkJoin {
     name = "nixd-lix";

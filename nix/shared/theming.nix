@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.config) wallpaper;
+  inherit (inputs.self.vars) wallpaper;
   base16 = pkgs.base16-schemes + /share/themes;
 in {
   stylix = {
@@ -21,6 +21,14 @@ in {
     fonts.monospace = {
       name = lib.mkDefault "JetBrainsMono Nerd Font";
       package = lib.mkDefault pkgs.nerd-fonts.jetbrains-mono;
+    };
+    fonts.sansSerif = {
+      name = lib.mkDefault "Inter Variable";
+      package = lib.mkDefault pkgs.inter;
+    };
+    fonts.serif = {
+      name = lib.mkDefault "Libre Baskerville";
+      package = lib.mkDefault pkgs.libre-baskerville;
     };
   };
 }

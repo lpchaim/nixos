@@ -1,0 +1,11 @@
+{
+  "home": [
+    "de.gnome",
+    "graphical"
+  ],
+  "nixos": [
+    "de.gnome",
+    "graphical",
+    "greeter.gdm"
+  ]
+}

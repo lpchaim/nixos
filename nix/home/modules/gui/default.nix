@@ -3,6 +3,7 @@
   pkgs,
   lib,
   osConfig ? {},
+  self,
   ...
 }: let
   cfg = config.my.gui;
@@ -10,9 +11,11 @@ in {
   imports = [
     ./chromium.nix
     ./firefox.nix
+    ./imageEditors.nix
     ./kitty.nix
     ./mangohud.nix
     ./media.nix
+    ./zenBrowser.nix
   ];
 
   options.my.gui.enable =
@@ -31,10 +34,9 @@ in {
       element-desktop
       file-roller
       gnome-system-monitor
-      libreoffice-qt6-fresh
+      libreoffice
       loupe
       nautilus
-      obsidian
       pavucontrol
       qbittorrent
       signal-desktop
@@ -42,13 +44,17 @@ in {
     ];
 
     home.file = let
-      inherit (config.my.config) profilePicture wallpaper;
+      inherit (self.vars) profilePicture wallpaper;
     in {
       "${config.home.homeDirectory}/.face".source = profilePicture;
       "${config.xdg.userDirs.pictures}/Wallpapers/${baseNameOf wallpaper}".source = wallpaper;
     };
 
     programs = {
+      obsidian = {
+        enable = true;
+        vaults.default.target = "Notes/Obsidian";
+      };
       vscode = {
         enable = true;
         package = pkgs.vscode.fhs;
@@ -63,10 +69,6 @@ in {
         inherit (osConfig.programs.kdeconnect) package;
         enable = true;
         indicator = true;
-      };
-      nextcloud-client = {
-        enable = false;
-        startInBackground = true;
       };
       trayscale = {
         enable = true;

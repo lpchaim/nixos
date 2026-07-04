@@ -4,17 +4,22 @@
 {inputs, ...}: let
   inherit (inputs.nixpkgs) lib;
 in (final: prev: let
+  inherit (prev) coreutils nushell;
   inherit (prev.writers) makeScriptWriter;
-  interpreter = "${lib.getExe prev.nushell} --no-config-file --stdin";
+  interpreter = "${coreutils}/bin/env -S ${lib.getExe nushell} --no-config-file --stdin";
   patch = writer:
     writer.overrideAttrs (prev: {
       content = "\n${prev.content}";
     });
-in rec {
+in {
   # Based on the original implementation, see https://noogle.dev/f/pkgs/writers/writeNu
-  writeNuScriptStdin = name: argsOrScript:
-    if lib.isAttrs argsOrScript && !lib.isDerivation argsOrScript
-    then patch (makeScriptWriter (argsOrScript // {inherit interpreter;}) name)
-    else patch (makeScriptWriter {inherit interpreter;} name argsOrScript);
-  writeNuScriptStdinBin = name: writeNuScriptStdin "/bin/${name}";
+  writers =
+    prev.writers
+    // rec {
+      writeNuStdin = name: argsOrScript:
+        if lib.isAttrs argsOrScript && !lib.isDerivation argsOrScript
+        then patch (makeScriptWriter (argsOrScript // {inherit interpreter;}) name)
+        else patch (makeScriptWriter {inherit interpreter;} name argsOrScript);
+      writeNuBinStdin = name: writeNuStdin "/bin/${name}";
+    };
 })

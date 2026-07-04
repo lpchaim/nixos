@@ -1,6 +1,6 @@
 {inputs, ...}: {
   perSystem = {self', ...}: let
-    inherit (inputs.self.lib.config) flake repo;
+    inherit (inputs.self.vars) flake repo;
     inherit (self'.legacyPackages) pkgs;
   in {
     make-shells.deploy = {
