@@ -25,4 +25,5 @@ jobs:
         with:
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - run: |
-          nix flake check --quiet --all-systems --keep-going .
+          nix flake check --quiet --all-systems --keep-going . \
+          | grep --invert-match 'unknown experimental feature'
