@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -25,6 +26,7 @@ in {
         parsec-bin
         # wine-discord-ipc-bridge
         protonup-qt
+        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
       ];
 
       programs = {

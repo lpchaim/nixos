@@ -610,6 +610,28 @@
         "type": "github"
       }
     },
+    "freesmlauncher": {
+      "inputs": {
+        "libnbtplusplus": "libnbtplusplus",
+        "nix-filter": "nix-filter",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785071325,
+        "narHash": "sha256-KDcpsMmBVi8KKTa5okXU8YxJSmWJ2ejDwPCUjVg4p60=",
+        "owner": "FreesmTeam",
+        "repo": "FreesmLauncher",
+        "rev": "eac3219c1e0bfe9a4f1a8be8d040fd8701f3d3c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreesmTeam",
+        "repo": "FreesmLauncher",
+        "type": "github"
+      }
+    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -858,6 +880,22 @@
         "type": "github"
       }
     },
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772016279,
+        "narHash": "sha256-7itkptyjoRcXfGLwg1/jxajetZ3a4mDc66+w4X6yW8s=",
+        "owner": "FreesmTeam",
+        "repo": "libnbtplusplus",
+        "rev": "687e43031df0dc641984b4256bcca50d5b3f7de3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FreesmTeam",
+        "repo": "libnbtplusplus",
+        "type": "github"
+      }
+    },
     "m3shapes": {
       "flake": false,
       "locked": {
@@ -890,6 +928,21 @@
       "original": {
         "owner": "nicknovitski",
         "repo": "make-shell",
+        "type": "github"
+      }
+    },
+    "nix-filter": {
+      "locked": {
+        "lastModified": 1757882181,
+        "narHash": "sha256-+cCxYIh2UNalTz364p+QYmWHs0P+6wDhiWR4jDIKQIU=",
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "rev": "59c44d1909c72441144b93cf0f054be7fe764de5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nix-filter",
         "type": "github"
       }
     },
@@ -1340,6 +1393,7 @@
         "ez-configs": "ez-configs",
         "flake-parts": "flake-parts_2",
         "flake-schemas": "flake-schemas",
+        "freesmlauncher": "freesmlauncher",
         "git-hooks-nix": "git-hooks-nix",
         "home-manager": "home-manager_2",
         "jovian": "jovian",
