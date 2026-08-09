@@ -28,9 +28,14 @@ in {
         ];
       };
     };
+
     home.packages = with pkgs; [
       mpv
       vlc
+    ];
+
+    xdg.mimeApps.defaultApplicationPackages = with pkgs; [
+      mpv
     ];
   };
 }

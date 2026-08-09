@@ -21,6 +21,7 @@ in
         mangohud.enable = false;
         obsidian.enable = false;
         vscode.profileNames = ["default"];
+        zen-browser.profileNames = ["default"];
       };
       fonts.fontconfig = {
         enable = true;

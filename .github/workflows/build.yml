@@ -52,7 +52,7 @@ jobs:
           system: ${{ matrix.system }}
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
-      - run: |
+      - run: >
           nix build --quiet ${{ matrix.derivation }}
 
   build-aarch64-linux:
@@ -71,5 +71,5 @@ jobs:
           system: ${{ matrix.system }}
           cachixAuthToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           makeSpace: ${{ matrix.output == 'nixosConfigurations' }}
-      - run: |
+      - run: >
           nix build --quiet ${{ matrix.derivation }}

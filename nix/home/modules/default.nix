@@ -60,6 +60,7 @@
     nix.enable = lib.mkDefault true;
     scripts.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;
+    syncthing.tray.enable = lib.mkDefault false;
     ssh.enable = lib.mkDefault true;
   };
 

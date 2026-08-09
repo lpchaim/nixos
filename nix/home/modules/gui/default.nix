@@ -76,14 +76,19 @@ in {
       };
     };
 
-    xdg.mime.enable = true;
-    xdg.systemDirs.data = [
-      "${config.home.homeDirectory}/.nix-profile/share/applications"
-    ];
-
-    services.flatpak = {
-      enable = osConfig == {};
-      packages = ["com.github.tchx84.Flatseal"];
+    xdg = {
+      mime.enable = true;
+      systemDirs.data = [
+        "${config.home.homeDirectory}/.nix-profile/share/applications"
+      ];
+      mimeApps = {
+        enable = true;
+        defaultApplicationPackages = with pkgs; [
+          loupe
+          nautilus
+          vscode
+        ];
+      };
     };
   };
 }
