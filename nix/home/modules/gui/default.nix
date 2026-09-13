@@ -65,6 +65,10 @@ in {
     };
 
     services = {
+      flatpak = {
+        enable = osConfig == {};
+        packages = ["com.github.tchx84.Flatseal"];
+      };
       kdeconnect = lib.mkIf (osConfig != {}) {
         inherit (osConfig.programs.kdeconnect) package;
         enable = true;

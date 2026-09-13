@@ -6,7 +6,7 @@
   inherit (lib) mkDefault;
 in {
   boot = {
-    binfmt.emulatedSystems = lib.optionals pkgs.stdenv.isx86_64 ["aarch64-linux"];
+    binfmt.emulatedSystems = lib.optionals pkgs.stdenv.hostPlatform.isx86_64 ["aarch64-linux"];
     loader = {
       grub = {
         enable = mkDefault false;
@@ -19,7 +19,7 @@ in {
         enable = mkDefault true;
         editor = false;
         configurationLimit = mkDefault 5;
-        memtest86.enable = pkgs.stdenv.isx86_64;
+        memtest86.enable = pkgs.stdenv.hostPlatform.isx86_64;
         netbootxyz.enable = true;
       };
     };

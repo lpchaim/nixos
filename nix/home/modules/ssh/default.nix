@@ -26,29 +26,29 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = {
-          addKeysToAgent = "yes";
-          compression = false;
-          controlMaster = "no";
-          controlPath = "~/.ssh/master-%r@%n:%p";
-          controlPersist = "no";
-          forwardAgent = false;
-          hashKnownHosts = false;
-          identitiesOnly = true;
-          identityFile = [
+          AddKeysToAgent = "yes";
+          Compression = false;
+          ControlMaster = "no";
+          ControlPath = "~/.ssh/master-%r@%n:%p";
+          ControlPersist = "no";
+          ForwardAgent = false;
+          HashKnownHosts = false;
+          IdentitiesOnly = true;
+          IdentityFile = [
             config.my.secrets.ssh.path
             config.my.secrets.ssh-yubikey-25388788.path
             config.my.secrets.ssh-yubikey-26583315.path
           ];
-          serverAliveCountMax = 3;
-          serverAliveInterval = 0;
-          setEnv.TERM = "xterm-256color";
-          userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
+          ServerAliveCountMax = 3;
+          ServerAliveInterval = 0;
+          SetEnv.TERM = "xterm-256color";
+          UserKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
         };
-        "*github.com".identityFile = config.my.secrets.ssh-github.path;
-        "*tangled.org".identityFile = config.my.secrets.ssh-tangled.path;
-        "*tangled.sh".identityFile = config.my.secrets.ssh-tangled.path;
+        "*github.com".IdentityFile = config.my.secrets.ssh-github.path;
+        "*tangled.org".IdentityFile = config.my.secrets.ssh-tangled.path;
+        "*tangled.sh".IdentityFile = config.my.secrets.ssh-tangled.path;
       };
     };
 

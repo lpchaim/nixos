@@ -73,7 +73,10 @@ in {
         git = true;
         icons = "auto";
       };
-      fzf.enable = true;
+      fzf = {
+        enable = true;
+        historyWidget.command = "";
+      };
       ripgrep.enable = true;
       zoxide.enable = true;
     };

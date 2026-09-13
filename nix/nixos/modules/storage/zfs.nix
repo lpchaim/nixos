@@ -10,6 +10,7 @@ in {
 
   config = lib.mkIf (cfg.enable) {
     boot = {
+      kernelPackages = lib.mkForce pkgs.linuxPackages;
       supportedFilesystems = ["zfs"];
       zfs.forceImportRoot = false;
     };
