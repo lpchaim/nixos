@@ -30,6 +30,16 @@ in {
       }
     ];
 
+    my.gui = {
+      chromium.enable = true;
+      firefox.enable = true;
+      imageEditors.enable = true;
+      kitty.enable = true;
+      mangohud.enable = true;
+      media.enable = true;
+      zen-browser.enable = false;
+    };
+
     home.packages = with pkgs; [
       element-desktop
       file-roller
@@ -88,6 +98,7 @@ in {
       mimeApps = {
         enable = true;
         defaultApplicationPackages = with pkgs; [
+          config.programs.firefox.package
           loupe
           nautilus
           vscode

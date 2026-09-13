@@ -1,17 +1,15 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
   cfg = config.my.gui.imageEditors;
 in {
-  options.my.gui.imageEditors.enable = lib.mkEnableOption "gui apps";
+  options.my.gui.imageEditors.enable = lib.mkEnableOption "image editors";
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      gimp
-      krita-unwrapped
+    services.flatpak.packages = [
+      "org.kde.krita"
     ];
   };
 }

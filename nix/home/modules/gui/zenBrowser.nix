@@ -10,9 +10,7 @@ in {
     inputs.zen-browser.homeModules.default
   ];
 
-  options.my.gui.zen-browser.enable =
-    lib.mkEnableOption "custom zen browser"
-    // {default = config.my.gui.enable;};
+  options.my.gui.zen-browser.enable = lib.mkEnableOption "custom zen browser";
 
   config = lib.mkIf cfg.enable {
     programs.zen-browser.enable = true;

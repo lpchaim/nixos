@@ -6,9 +6,7 @@
 }: let
   cfg = config.my.gui.firefox;
 in {
-  options.my.gui.firefox.enable =
-    lib.mkEnableOption "custom firefox"
-    // {default = config.my.gui.enable;};
+  options.my.gui.firefox.enable = lib.mkEnableOption "custom firefox";
 
   config = lib.mkIf cfg.enable {
     programs.firefox = {
@@ -28,17 +26,6 @@ in {
           "browser.aboutConfig.showWarning" = false;
           "browser.bookmarks.showMobileBookmarks" = true;
           "browser.compactmode.show" = true;
-          "browser.newtabpage.activity-stream.default.sites" = builtins.concatStringsSep "," [
-            "https://www.youtube.com/"
-            "https://www.reddit.com/"
-            "https://www.wikipedia.org/"
-          ];
-          "browser.newtabpage.pinned" = [
-            {
-              title = "Home";
-              url = "https://home.lpcha.im";
-            }
-          ];
           "browser.newtabpage.activity-stream.showSponsored" = false;
           "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
           "browser.search.region" = "BR";
@@ -46,8 +33,6 @@ in {
           "browser.startup.homepage" = "about:newtab";
           "distribution.searchplugins.defaultLocale" = "pt-BR";
           "general.useragent.locale" = "pt-BR";
-          "mousewheel.default.delta_multiplier_x" = 20;
-          "mousewheel.default.delta_multiplier_y" = 20;
           "widget.use-xdg-desktop-portal.file-picker" =
             if (config.my.de.plasma.enable or false)
             then 1
