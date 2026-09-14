@@ -35,20 +35,27 @@ in {
         };
       }
     )
-    (
-      let
-        destinationPath = config.home.homeDirectory;
-      in {
-        home.file."${destinationPath}/.wallpaper".source = wallpaper;
-
-        dconf.settings = {
-          "org/gnome/desktop/background" = {
-            picture-uri = lib.mkDefault "${destinationPath}/.wallpaper";
-            primary-color = "#000000";
-            picture-options = "zoom";
-          };
+    {
+      dconf.settings = {
+        "org/gnome/desktop/interface" = {
+          accent-color = "blue";
         };
-      }
-    )
+        "org/gnome/desktop/background" = {
+          color-shading-type = "solid";
+          picture-options = "scaled";
+          picture-uri = "file://${config.stylix.image}";
+          picture-uri-dark = "file://${config.stylix.image}";
+          primary-color = "#000000";
+          secondary-color = "#000000000000";
+        };
+        "org/gnome/desktop/screensaver" = {
+          color-shading-type = "solid";
+          picture-options = "scaled";
+          picture-uri = "file://${config.stylix.image}";
+          primary-color = "#000000";
+          secondary-color = "#000000000000";
+        };
+      };
+    }
   ]);
 }

@@ -24,6 +24,7 @@ in {
         gsconnect
         show-desktop-button
         tailscale-qs
+        touchshell
         tray-icons-reloaded
         user-themes
         vitals
@@ -41,6 +42,7 @@ in {
           "gsconnect@andyholmes.github.io"
           "show-desktop-button@amivaleo"
           "tailscale@joaophi.github.com"
+          "touchshell@touchshell.com"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "Vitals@CoreCoding.com"
         ];

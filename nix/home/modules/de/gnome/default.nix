@@ -44,11 +44,16 @@ in {
         "org/gnome/mutter" = {
           experimental-features = ["scale-monitor-framebuffer"];
         };
+        "org/gnome/settings-daemon/plugins/color" = {
+          night-light-schedule-from = 0.0;
+          night-light-schedule-to = 23.99;
+          night-light-temperature = 3700;
+        };
         "org/gnome/shell" = {
           favorite-apps = [
-            "brave-browser.desktop"
+            "firefox.desktop"
             "org.gnome.Nautilus.desktop"
-            "kitty.desktop"
+            "org.gnome.Terminal.desktop"
           ];
         };
       };

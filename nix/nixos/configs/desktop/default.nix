@@ -16,6 +16,7 @@ in {
       formfactor.desktop = true;
       hardware.gpu.nvidia = true;
       hardware.rgb = true;
+      de.gnome = true;
       de.hyprland = true;
       greeter.gdm = true;
       graphical = true;

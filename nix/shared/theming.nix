@@ -31,6 +31,9 @@ in {
       package = lib.mkDefault pkgs.libre-baskerville;
     };
     overlays.enable = false;
-    targets.gtksourceview.enable = false;
+    targets = {
+      gnome.enable = false;
+      gtksourceview.enable = false;
+    };
   };
 }
