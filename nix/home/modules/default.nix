@@ -24,6 +24,7 @@
       ./cli
       ./de
       ./development
+      ./gaming
       ./gui
       ./llm
       ./misc

@@ -44,10 +44,6 @@ in {
       security.rtkit.enable = true; # make pipewire realtime-capable
 
       services.pipewire.lowLatency.enable = true;
-
-      services.flatpak.packages = [
-        "com.fightcade.Fightcade"
-      ];
     })
     (lib.mkIf cfg.steam.enable {
       hardware.steam-hardware.enable = true;
