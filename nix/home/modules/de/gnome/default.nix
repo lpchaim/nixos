@@ -35,19 +35,51 @@ in {
         "org/gnome/desktop/interface" = {
           enable-hot-corners = true;
         };
+        "org/gnome/desktop/sound" = {
+          allow-volume-above-100-percent = true;
+        };
         "org/gnome/desktop/wm/keybindings" = {
+          close = ["<Super>q"];
+          cycle-windows = ["<Super>Tab"];
+          cycle-windows-backward = ["<Shift><Super>Tab"];
+          maximize = ["<Super>z"];
+          move-to-workspace-1 = ["<Shift><Super>1"];
+          move-to-workspace-2 = ["<Shift><Super>2"];
+          move-to-workspace-3 = ["<Shift><Super>3"];
+          move-to-workspace-4 = ["<Shift><Super>4"];
+          move-to-workspace-5 = ["<Shift><Super>5"];
+          move-to-workspace-6 = ["<Shift><Super>6"];
+          move-to-workspace-7 = ["<Shift><Super>7"];
+          move-to-workspace-8 = ["<Shift><Super>8"];
+          move-to-workspace-9 = ["<Shift><Super>9"];
+          move-to-workspace-10 = ["<Shift><Super>0"];
           switch-applications = [];
           switch-applications-backward = [];
+          switch-to-workspace-1 = ["<Super>1"];
+          switch-to-workspace-2 = ["<Super>2"];
+          switch-to-workspace-3 = ["<Super>3"];
+          switch-to-workspace-4 = ["<Super>4"];
+          switch-to-workspace-5 = ["<Super>5"];
+          switch-to-workspace-6 = ["<Super>6"];
+          switch-to-workspace-7 = ["<Super>7"];
+          switch-to-workspace-8 = ["<Super>8"];
+          switch-to-workspace-9 = ["<Super>9"];
+          switch-to-workspace-10 = ["<Super>0"];
           switch-windows = ["<Alt>Tab"];
           switch-windows-backward = ["<Shift><Alt>Tab"];
+          toggle-on-all-workspaces = ["<Super>f"];
         };
         "org/gnome/mutter" = {
           experimental-features = ["scale-monitor-framebuffer"];
+          dynamic-workspaces = false;
         };
         "org/gnome/settings-daemon/plugins/color" = {
           night-light-schedule-from = 0.0;
           night-light-schedule-to = 23.99;
           night-light-temperature = 3700;
+        };
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          volume-step = 2;
         };
         "org/gnome/shell" = {
           favorite-apps = [
@@ -55,6 +87,10 @@ in {
             "org.gnome.Nautilus.desktop"
             "org.gnome.Terminal.desktop"
           ];
+          current-workspace-only = true;
+        };
+        "org/gnome/desktop/wm/preferences" = {
+          num-workspaces = 10;
         };
       };
     }
