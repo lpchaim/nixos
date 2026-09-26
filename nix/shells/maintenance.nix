@@ -22,8 +22,6 @@ in {
       packages =
         (with pkgs; [
           age-plugin-yubikey
-          colmena
-          disko
           just
           rage
           yaml-language-server
