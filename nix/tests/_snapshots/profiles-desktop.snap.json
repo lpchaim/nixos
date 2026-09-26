@@ -1,10 +1,12 @@
 {
   "home": [
+    "de.gnome",
     "de.hyprland",
     "graphical",
     "hardware.gpu.nvidia"
   ],
   "nixos": [
+    "de.gnome",
     "de.hyprland",
     "formfactor.desktop",
     "graphical",

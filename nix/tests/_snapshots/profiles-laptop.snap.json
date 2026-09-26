@@ -1,10 +1,12 @@
 {
   "home": [
+    "de.gnome",
     "de.hyprland",
     "graphical",
     "hardware.cpu.intel"
   ],
   "nixos": [
+    "de.gnome",
     "de.hyprland",
     "formfactor.laptop",
     "graphical",

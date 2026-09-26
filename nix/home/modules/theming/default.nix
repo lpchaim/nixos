@@ -16,9 +16,6 @@ in
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
       ];
-      home.pointerCursor = {
-        enable = true;
-      };
       stylix.targets = {
         firefox.profileNames = ["default"];
         mangohud.enable = false;
