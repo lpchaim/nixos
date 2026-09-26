@@ -43,7 +43,9 @@ in {
     home.packages = with pkgs; [
       element-desktop
       file-roller
+      flatpak
       gnome-system-monitor
+      gnome-terminal
       libreoffice
       loupe
       nautilus
@@ -76,7 +78,7 @@ in {
 
     services = {
       flatpak = {
-        enable = osConfig == {};
+        enable = true;
         packages = ["com.github.tchx84.Flatseal"];
       };
       kdeconnect = lib.mkIf (osConfig != {}) {
