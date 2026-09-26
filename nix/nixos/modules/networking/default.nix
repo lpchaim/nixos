@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   ...
 }: let
@@ -32,6 +33,9 @@ in {
       };
       networkmanager = {
         enable = true;
+        plugins = with pkgs; [
+          networkmanager-openvpn
+        ];
         settings = {
           connection-ethernet = {
             "match-device" = "type:ethernet";
@@ -45,13 +49,23 @@ in {
       };
     };
 
-    services.avahi = {
-      enable = cfg.trusted;
-      nssmdns4 = true;
-      domainName = networks.home.domain;
-      publish.enable = true;
-      publish.addresses = true;
-      reflector = true;
+    programs = {
+      openvpn3.enable = true;
+    };
+
+    services = {
+      avahi = {
+        enable = cfg.trusted;
+        nssmdns4 = true;
+        domainName = networks.home.domain;
+        publish.enable = true;
+        publish.addresses = true;
+        reflector = true;
+      };
+      openvpn = {
+        restartAfterSleep = true;
+        package = config.programs.openvpn3.package;
+      };
     };
   };
 }
