@@ -25,7 +25,6 @@ in {
       show-desktop-button
       tailscale-qs
       touch-board
-      tray-icons-reloaded
       user-accent-colors
       user-themes
       vitals
@@ -36,6 +35,7 @@ in {
       open-bar
       touchshell
       touchup
+      tray-icons-reloaded
     ];
   in
     lib.mkIf cfg.enable {

@@ -55,6 +55,15 @@ in {
           move-to-workspace-10 = ["<Shift><Super>0"];
           switch-applications = [];
           switch-applications-backward = [];
+          switch-to-application-1 = [];
+          switch-to-application-2 = [];
+          switch-to-application-3 = [];
+          switch-to-application-4 = [];
+          switch-to-application-5 = [];
+          switch-to-application-6 = [];
+          switch-to-application-7 = [];
+          switch-to-application-8 = [];
+          switch-to-application-9 = [];
           switch-to-workspace-1 = ["<Super>1"];
           switch-to-workspace-2 = ["<Super>2"];
           switch-to-workspace-3 = ["<Super>3"];
@@ -82,14 +91,15 @@ in {
           volume-step = 2;
         };
         "org/gnome/shell" = {
+          current-workspace-only = true;
           favorite-apps = [
             "firefox.desktop"
             "org.gnome.Nautilus.desktop"
             "org.gnome.Terminal.desktop"
           ];
-          current-workspace-only = true;
         };
         "org/gnome/desktop/wm/preferences" = {
+          button-layout = "appmenu:minimize,maximize,close";
           num-workspaces = 10;
         };
       };
