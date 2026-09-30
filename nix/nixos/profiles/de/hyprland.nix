@@ -17,7 +17,6 @@ in {
       pam.services.hyprlock = {};
       polkit.enable = true;
     };
-    xdg.portal.wlr.enable = true;
     environment = {
       sessionVariables.NIXOS_OZONE_WL = "1";
       systemPackages = with pkgs; [
