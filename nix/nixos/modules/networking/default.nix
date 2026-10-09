@@ -5,8 +5,9 @@
   self,
   ...
 }: let
-  inherit (self.vars) networks;
+  inherit (self.vars.networks.home) domain;
   cfg = config.my.networking;
+  wiredInterface = config.my.hostVars.interface.wired or null;
 in {
   options.my.networking = {
     enable = lib.mkEnableOption "networking tweaks";
@@ -22,31 +23,83 @@ in {
     my.networking.tailscale.advertise.tags = lib.mkIf cfg.trusted ["trusted"];
 
     networking = {
+      useNetworkd = true;
       hostId = config.my.hostVars.hostId or null;
       enableIPv6 = cfg.ipv6.enable;
-      firewall.enable = true;
-      interfaces = lib.mkIf (config.my.hostVars.interface or {} ? "wired") {
-        ${config.my.hostVars.interface.wired}.wakeOnLan = {
-          enable = true;
-          policy = ["magic"];
-        };
+      dhcpcd = {
+        enable = true;
+        persistent = true;
+        allowSetuid = true;
+        IPv6rs = true;
       };
+      firewall.enable = true;
       networkmanager = {
         enable = true;
         plugins = with pkgs; [
           networkmanager-openvpn
         ];
-        settings = {
-          connection-ethernet = {
-            "match-device" = "type:ethernet";
-            "connection.autoconnect-priority" = 150;
+      };
+    };
+
+    systemd = {
+      network = {
+        enable = true;
+        networks = let
+          dhcp = {
+            DHCP = "ipv4";
+            IPv6AcceptRA = true;
           };
-          connection-wifi = {
-            "match-device" = "type:wifi";
-            "connection.autoconnect-priority" = 50;
+        in
+          {
+            "10-bridge" = {
+              matchConfig.Name = "br0";
+              bridgeConfig = {};
+              networkConfig = dhcp;
+              linkConfig.RequiredForOnline = "carrier";
+            };
+            "70-wired" = {
+              matchConfig.Type = "ether";
+              networkConfig = dhcp;
+              linkConfig.RequiredForOnline = "carrier";
+            };
+            "70-wireless" = {
+              matchConfig.Type = "wlan";
+              networkConfig = dhcp;
+              linkConfig.RequiredForOnline = "no";
+            };
+          }
+          // lib.optionalAttrs (wiredInterface != null) {
+            "11-bridgedlan" = {
+              matchConfig.Name = wiredInterface;
+              networkConfig.Bridge = "br0";
+              linkConfig.RequiredForOnline = "enslaved";
+            };
+          };
+        links = {
+          "10-bridge" = {
+            matchConfig.Name = "br0";
+            linkConfig.MACAddressPolicy = "none";
+          };
+          "70-wol" = {
+            matchConfig.Name = "en*";
+            linkConfig.WakeOnLan = "magic";
           };
         };
+        netdevs = {
+          "10-bridge" = {
+            netdevConfig = {
+              Kind = "bridge";
+              Name = "br0";
+            };
+          };
+        };
+        wait-online = {
+          enable = true;
+          anyInterface = true;
+          timeout = 30;
+        };
       };
+      services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
     };
 
     programs = {
@@ -57,7 +110,7 @@ in {
       avahi = {
         enable = cfg.trusted;
         nssmdns4 = true;
-        domainName = networks.home.domain;
+        domainName = domain;
         publish.enable = true;
         publish.addresses = true;
         reflector = true;

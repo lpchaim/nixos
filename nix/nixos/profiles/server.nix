@@ -19,5 +19,9 @@ in {
     };
 
     documentation.man.cache.enable = false;
+    networking.firewall = {
+      logRefusedConnections = true;
+      logRefusedPackets = true;
+    };
   };
 }
