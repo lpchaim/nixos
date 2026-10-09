@@ -8,6 +8,7 @@ in {
   options.my.serving.enable = lib.mkEnableOption "serving tweaks";
 
   imports = [
+    ./ddns.nix
     ./storage.nix
   ];
 

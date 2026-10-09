@@ -13,9 +13,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.secret.definitions = {
-      "cloudflare-api-token" = mkSecret "cloudflare-api-token" {
-        intermediary = true;
-      };
       "cloudflare-ddns-env" = mkSecret "cloudflare-ddns-env" {
         owner = config.my.virtualization.oci.user;
         generator = {

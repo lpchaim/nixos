@@ -29,6 +29,9 @@ in {
   in
     lib.mkMerge [
       {
+        my.secret.definitions = {
+          "cloudflare-api-token" = mkSecret "cloudflare-api-token" {};
+        };
         my.secrets = osSecrets // config.age.secrets;
         age.secrets = standaloneHomeSecrets;
       }
