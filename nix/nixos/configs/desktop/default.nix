@@ -11,6 +11,7 @@ in {
     gaming.enable = true;
     networking.trusted = true;
     serving.enable = true;
+    virtualization.enable = true;
     users.emily.enable = true;
     profiles = {
       formfactor.desktop = true;
