@@ -14,6 +14,7 @@ in {
     ci.build = true;
     networking.trusted = true;
     security.u2f.relaxed = true;
+    services.home-assistant.enable = true;
     profiles = {
       headless = true;
       server = true;

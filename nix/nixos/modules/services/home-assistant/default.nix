@@ -11,13 +11,15 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    my.serving.ddns.subDomains = ["hass"];
+
     services.home-assistant = {
       enable = true;
-      openFirewall = true;
-      # configWritable = true;
-      # lovelaceConfigWritable = true;
+      openFirewallForComponents = true;
       config = {
+        default_config = {};
         homeassistant = {
+          name = "Casa";
           unit_system = "metric";
           temperature_unit = "C";
           time_zone = config.time.timeZone;
@@ -28,38 +30,38 @@ in {
         "script ui" = "!include scripts.yaml";
       };
       customComponents = with pkgs.home-assistant-custom-components; [
-        localtuya
-        midea_ac
-        midea_ac_lan
-        # sleep_as_android
         tuya_local
       ];
       customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
         mushroom
       ];
+      themes = with pkgs.home-assistant-themes; [
+        material-you-theme
+      ];
       extraPackages = python3Packages:
         with python3Packages; [
-          # gtts
+          gtts
           psycopg2
         ];
       extraComponents = [
-        # Minimal working set
-        "analytics"
-        "google_translate"
-        "met"
-        "radio_browser"
-        "shopping_list"
-        # Custom
-        "adguard"
-        "asuswrt"
         "default_config"
+        "google_assistant"
+        "shopping_list"
         "esphome"
-        "homeassistant_hardware"
         "isal"
+        "matter"
+        "met"
+        "midea"
+        "mqtt"
+        "recorder"
         "tuya"
         "workday"
+        "yeelight"
+        "zha"
       ];
     };
+
+    networking.firewall.allowedTCPPorts = [8123];
 
     services.postgresql = {
       enable = true;
@@ -71,5 +73,13 @@ in {
         }
       ];
     };
+
+    systemd.tmpfiles.rules = let
+      inherit (config.services.home-assistant) configDir;
+    in [
+      "f ${configDir}/automations.yaml 0644 hass hass -"
+      "f ${configDir}/scenes.yaml 0644 hass hass -"
+      "f ${configDir}/scripts.yaml 0644 hass hass -"
+    ];
   };
 }
