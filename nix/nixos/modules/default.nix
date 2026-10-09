@@ -53,9 +53,12 @@
 
   my = {
     kernel.enable = lib.mkDefault true;
-    networking.enable = lib.mkDefault true;
-    networking.ipv6.enable = lib.mkDefault true;
-    networking.tailscale.enable = lib.mkDefault true;
+    networking = {
+      enable = lib.mkDefault true;
+      ipv6.enable = lib.mkDefault true;
+      networkManager.enable = lib.mkDefault true;
+      tailscale.enable = lib.mkDefault true;
+    };
     nix.enable = lib.mkDefault true;
     pipewire.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;

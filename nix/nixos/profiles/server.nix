@@ -10,6 +10,7 @@ in {
   options.my.profiles.server = lib.mkEnableOption "server profile";
   config = lib.mkIf cfg {
     my = {
+      networking.networkManager.enable = false;
       networking.tailscale = {
         enable = true;
         advertise.exitNode = true;

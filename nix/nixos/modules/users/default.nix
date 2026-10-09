@@ -13,11 +13,18 @@ in {
   options.my.users = {
     enable = lib.mkEnableOption "user tweaks";
     defaultUserAttrs = lib.mkOption {
-      default = {
-        isNormalUser = true;
-        extraGroups =
-          ["i2c" "networkmanager" "storage" "wheel"]
-          ++ lib.optionals config.programs.gamemode.enable ["gamemode"];
+      type = lib.types.submodule {
+        options = {
+          isNormalUser = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+          };
+          extraGroups = lib.mkOption rec {
+            type = with lib.types; listOf str;
+            default = ["i2c" "storage" "wheel"];
+            apply = lib.concat default;
+          };
+        };
       };
     };
   };

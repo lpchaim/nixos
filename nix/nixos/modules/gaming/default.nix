@@ -20,6 +20,8 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      my.users.defaultUserAttrs.extraGroups = ["gamemode"];
+
       environment.systemPackages = with pkgs; [
         lutris
         osu-lazer-bin

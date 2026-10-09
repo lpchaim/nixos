@@ -12,6 +12,7 @@ in {
   options.my.networking = {
     enable = lib.mkEnableOption "networking tweaks";
     ipv6.enable = lib.mkEnableOption "IPv6 networking";
+    networkManager.enable = lib.mkEnableOption "network manager";
     trusted = lib.mkOption {
       description = "Whether this is a trusted device";
       type = lib.types.bool;
@@ -20,7 +21,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    my.networking.tailscale.advertise.tags = lib.mkIf cfg.trusted ["trusted"];
+    my = {
+      networking.tailscale.advertise.tags = lib.optionals cfg.trusted ["trusted"];
+      users.defaultUserAttrs.extraGroups = lib.optionals cfg.networkManager.enable ["networkmanager"];
+    };
 
     networking = {
       useNetworkd = true;
@@ -33,7 +37,7 @@ in {
         IPv6rs = true;
       };
       firewall.enable = true;
-      networkmanager = {
+      networkmanager = lib.mkIf cfg.networkManager.enable {
         enable = true;
         plugins = with pkgs; [
           networkmanager-openvpn
