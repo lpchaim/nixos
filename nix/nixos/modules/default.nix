@@ -68,21 +68,12 @@
     theming.enable = lib.mkDefault true;
     users.enable = lib.mkDefault true;
     users.lpchaim.enable = lib.mkDefault true;
-    virtualization.oci.services = {
-      cloudflare-ddns.enable = lib.mkDefault config.my.virtualization.oci.enable;
-      gotify.enable = lib.mkDefault config.my.virtualization.oci.enable;
-    };
     zram.enable = lib.mkDefault true;
   };
 
-  environment.systemPackages = with pkgs; [
-    helix
-    sbctl
-    vim
-    wget
-  ];
   home-manager = {
     backupFileExtension = "backup";
+    overwriteBackup = true;
     useGlobalPkgs = true;
     useUserPackages = true;
   };
@@ -90,5 +81,12 @@
   systemd = {
     targets.network-online.wantedBy = pkgs.lib.mkForce [];
     services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
+    sleep.settings.Sleep = {
+      AllowHibernation = "yes";
+      AllowHybridSleep = "yes";
+      AllowSuspend = "yes";
+      AllowSuspendThenHibernate = "yes";
+      HibernateDelaySec = "6h";
+    };
   };
 }

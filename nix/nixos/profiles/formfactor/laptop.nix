@@ -10,11 +10,9 @@ in {
   options.my.profiles.formfactor.laptop = lib.mkEnableOption "laptop profile";
   config = lib.mkIf cfg {
     hardware.sensor.iio.enable = true;
-
     powerManagement.enable = true;
-
     programs.iio-hyprland.enable = config.programs.hyprland.enable;
-
+    networking.networkmanager.wifi.powersave = true;
     services = {
       auto-cpufreq = {
         enable = !config.services.power-profiles-daemon.enable;

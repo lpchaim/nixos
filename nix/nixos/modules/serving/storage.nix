@@ -62,12 +62,5 @@ in {
         ];
       };
     };
-
-    services.smartd = {
-      enable = true;
-      autodetect = true;
-      notifications.wall.enable = true;
-      notifications.x11.enable = true;
-    };
   };
 }

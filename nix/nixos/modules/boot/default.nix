@@ -28,6 +28,6 @@ in {
       enable = mkDefault false;
       theme = mkDefault "breeze";
     };
-    kernelParams = ["splash" "quiet" "btusb.enable_autosuspend=n"];
+    kernelParams = ["btusb.enable_autosuspend=n"];
   };
 }

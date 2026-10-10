@@ -21,7 +21,7 @@ in {
           };
           extraGroups = lib.mkOption rec {
             type = with lib.types; listOf str;
-            default = ["i2c" "storage" "wheel"];
+            default = ["storage" "wheel"];
             apply = lib.concat default;
           };
         };

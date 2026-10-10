@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.my.profiles.graphical;
@@ -12,7 +13,11 @@ in {
       wayland.enable = true;
     };
 
-    boot.plymouth.enable = true;
+    boot = {
+      kernelParams = ["quiet"];
+      plymouth.enable = true;
+    };
+    environment.systemPackages = lib.optionals (pkgs.hostPlatform.isx86) [pkgs.via];
     hardware = {
       graphics.enable = true;
       graphics.enable32Bit = true;
