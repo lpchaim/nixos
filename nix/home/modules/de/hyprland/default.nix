@@ -200,6 +200,7 @@ in {
       services = {
         hyprpaper = {
           enable = true;
+          systemdTarget = "hyprland-session.target";
           settings = {
             ipc = "on";
             splash = false;
