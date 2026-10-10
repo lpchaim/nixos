@@ -1,6 +1,4 @@
-{self, ...}: let
-  inherit (self.vars) name;
-in {
+{
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
@@ -22,5 +20,4 @@ in {
   };
 
   system.stateVersion = "23.11";
-  home-manager.users.${name.user}.home.stateVersion = "23.05";
 }

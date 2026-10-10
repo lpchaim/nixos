@@ -1,10 +1,4 @@
-{
-  pkgs,
-  self,
-  ...
-}: let
-  inherit (self.vars) name;
-in {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
@@ -24,5 +18,4 @@ in {
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   system.stateVersion = "24.05";
-  home-manager.users.${name.user}.home.stateVersion = "24.05";
 }

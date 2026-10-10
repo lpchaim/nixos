@@ -1,11 +1,8 @@
 {
   inputs,
   ezModules,
-  self,
   ...
-}: let
-  inherit (self.vars) name;
-in {
+}: {
   imports = [
     inputs.jovian.nixosModules.default
     ezModules.steamos
@@ -34,5 +31,4 @@ in {
   systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
 
   system.stateVersion = "24.05";
-  home-manager.users.${name.user}.home.stateVersion = "24.05";
 }
