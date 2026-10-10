@@ -13,23 +13,20 @@ in {
 
   options.my.gaming = {
     enable = lib.mkEnableOption "gaming tweaks";
-    steam.enable =
-      lib.mkEnableOption "steam tweaks"
-      // {default = config.my.gaming.enable;};
+    freesmlauncher.enable = lib.mkEnableOption "freesmlauncher";
+    lutris.enable = lib.mkEnableOption "lutris";
+    osu.enable = lib.mkEnableOption "osu";
+    steam.enable = lib.mkEnableOption "steam tweaks" // {default = cfg.enable;};
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       my.users.defaultUserAttrs.extraGroups = ["gamemode"];
 
-      environment.systemPackages = with pkgs; [
-        lutris
-        osu-lazer-bin
-        parsec-bin
-        # wine-discord-ipc-bridge
-        protonup-qt
-        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
-      ];
+      environment.systemPackages =
+        lib.optionals cfg.freesmlauncher.enable [inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher]
+        ++ lib.optionals cfg.lutris.enable [pkgs.lutris]
+        ++ lib.optionals cfg.osu.enable [pkgs.osu-lazer-bin];
 
       programs = {
         gamemode = {
@@ -48,6 +45,7 @@ in {
       services.pipewire.lowLatency.enable = true;
     })
     (lib.mkIf cfg.steam.enable {
+      environment.systemPackages = [pkgs.protonup-qt];
       hardware.steam-hardware.enable = true;
       programs.steam = {
         enable = true;

@@ -6,7 +6,11 @@
 
   my = {
     ci.build = true;
-    gaming.enable = true;
+    gaming = {
+      enable = true;
+      freesmlauncher.enable = true;
+      osu.enable = true;
+    };
     networking.trusted = true;
     serving.enable = true;
     virtualization.enable = true;
