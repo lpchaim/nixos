@@ -52,6 +52,7 @@
     ];
 
   my = {
+    hardware.enable = lib.mkDefault true;
     kernel.enable = lib.mkDefault true;
     networking = {
       enable = lib.mkDefault true;
