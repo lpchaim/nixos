@@ -21,8 +21,10 @@ in {
 
     documentation.man.cache.enable = false;
     networking.firewall = {
+      checkReversePath = "loose";
       logRefusedConnections = true;
       logRefusedPackets = true;
+      logReversePathDrops = true;
     };
   };
 }

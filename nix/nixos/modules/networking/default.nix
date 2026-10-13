@@ -7,7 +7,8 @@
 }: let
   inherit (self.vars.networks.home) domain;
   cfg = config.my.networking;
-  wiredInterface = config.my.hostVars.interface.wired or null;
+  bridge = config.my.hostVars.interface.bridge or null;
+  homeNet = self.vars.networks.home;
 in {
   options.my.networking = {
     enable = lib.mkEnableOption "networking tweaks";
@@ -28,6 +29,8 @@ in {
 
     networking = {
       useNetworkd = true;
+      useDHCP = lib.mkForce false;
+      domain = domain;
       hostId = config.my.hostVars.hostId or null;
       enableIPv6 = cfg.ipv6.enable;
       dhcpcd = {
@@ -52,48 +55,67 @@ in {
           dhcp = {
             DHCP = "ipv4";
             IPv6AcceptRA = true;
+            IPv6PrivacyExtensions = "kernel";
           };
-        in
-          {
-            "10-bridge" = {
-              matchConfig.Name = "br0";
-              bridgeConfig = {};
-              networkConfig = dhcp;
-              linkConfig.RequiredForOnline = "carrier";
-            };
-            "70-wired" = {
-              matchConfig.Type = "ether";
-              networkConfig = dhcp;
-              linkConfig.RequiredForOnline = "carrier";
-            };
-            "70-wireless" = {
-              matchConfig.Type = "wlan";
-              networkConfig = dhcp;
-              linkConfig.RequiredForOnline = "no";
-            };
-          }
-          // lib.optionalAttrs (wiredInterface != null) {
-            "11-bridgedlan" = {
-              matchConfig.Name = wiredInterface;
-              networkConfig.Bridge = "br0";
-              linkConfig.RequiredForOnline = "enslaved";
-            };
+          noDhcp = {
+            DHCP = "no";
+            IPv6AcceptRA = false;
           };
+          routes = [
+            {
+              Gateway = homeNet.gateway;
+              Metric = 100;
+            }
+            {
+              Gateway = homeNet.gatewayV6;
+              Metric = 100;
+            }
+            {
+              Gateway = "_dhcp4";
+              Metric = 200;
+            }
+            {
+              Gateway = "_ipv6ra";
+              Metric = 300;
+            }
+          ];
+        in {
+          "10-bridge" = {
+            inherit routes;
+            matchConfig.Name = "br0";
+            networkConfig = dhcp;
+            linkConfig.RequiredForOnline = "carrier";
+          };
+          "20-bridged-eth" = {
+            matchConfig.Type = "ether";
+            matchConfig.Path = "!*-usb-*";
+            matchConfig.Kind = "!*";
+            networkConfig = noDhcp // {Bridge = "br0";};
+            linkConfig.RequiredForOnline = "enslaved";
+          };
+          "70-default" = {
+            inherit routes;
+            matchConfig.Type = ["ether" "wlan"];
+            networkConfig = dhcp;
+            linkConfig.RequiredForOnline = "no";
+          };
+        };
         links = {
           "10-bridge" = {
             matchConfig.Name = "br0";
             linkConfig.MACAddressPolicy = "none";
           };
-          "70-wol" = {
-            matchConfig.Name = "en*";
+          "20-eth" = {
+            matchConfig.Type = "ether";
             linkConfig.WakeOnLan = "magic";
           };
         };
-        netdevs = {
+        netdevs = lib.optionalAttrs (bridge != null) {
           "10-bridge" = {
             netdevConfig = {
               Kind = "bridge";
               Name = "br0";
+              MACAddress = lib.mkIf (bridge.mac != null) bridge.mac;
             };
           };
         };
