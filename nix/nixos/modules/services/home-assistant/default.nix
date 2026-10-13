@@ -11,7 +11,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    my.serving.ddns.subDomains = ["hass"];
+    my.serving.units.hass = {
+      port = 8123;
+      external.expose = true;
+      webSocket.enable = true;
+    };
 
     services.home-assistant = {
       enable = true;

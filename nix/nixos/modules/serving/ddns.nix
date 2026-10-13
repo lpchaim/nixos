@@ -4,24 +4,21 @@
   self,
   ...
 }: let
+  inherit (config.my.serving) externalUnits;
   cfg = config.my.serving.ddns;
   domain = self.vars.domain.main;
 in {
   options.my.serving.ddns = {
     enable =
-      lib.mkEnableOption "ddns"
-      // {default = lib.length cfg.subDomains > 0;};
-    subDomains = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [];
-    };
+      lib.mkEnableOption "DDNS auto updating"
+      // {default = config.my.serving.enable;};
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && lib.length externalUnits > 0) {
     services.ddclient = {
       enable = true;
       protocol = "cloudflare";
-      domains = map (subDomain: "${subDomain}.${domain}") cfg.subDomains;
+      domains = map (unit: "${unit.subDomain}.${domain}") externalUnits;
       zone = domain;
       usev4 = "";
       usev6 = "webv6, webv6=ipify-ipv6";
