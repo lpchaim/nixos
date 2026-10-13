@@ -9,7 +9,6 @@ in {
 
   imports = [
     ./ddns.nix
-    ./storage.nix
   ];
 
   config = lib.mkIf cfg.enable {
