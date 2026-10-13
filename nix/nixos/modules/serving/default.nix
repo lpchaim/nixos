@@ -9,6 +9,7 @@
 in {
   imports = [
     ./ddns.nix
+    ./reverseProxy
   ];
 
   options.my.serving = let
