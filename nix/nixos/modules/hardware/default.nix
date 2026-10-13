@@ -6,10 +6,6 @@
 }: let
   cfg = config.my.hardware;
 in {
-  imports = [
-    ./ups.nix
-  ];
-
   options.my.hardware = {
     enable = lib.mkEnableOption "hardware tweaks";
   };
