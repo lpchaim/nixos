@@ -17,6 +17,8 @@ in {
         advertise.routes = [routingPrefix];
         advertise.tags = ["server"];
       };
+      serving.enable = true;
+      virtualization.oci.enable = true;
     };
 
     documentation.man.cache.enable = false;

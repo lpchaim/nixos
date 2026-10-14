@@ -18,7 +18,7 @@ in {
     enable = lib.mkEnableOption "OCI container virtualization";
     externalInterface = lib.mkOption {
       description = "Which interface to use to connect to the outside world";
-      type = with lib.types; nullOr (enum (builtins.attrNames (config.networking.interfaces // config.networking.wlanInterfaces)));
+      type = with lib.types; nullOr str;
       default = null;
     };
     user = lib.mkOption {
@@ -30,7 +30,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.virtualization.oci = {
-      externalInterface = config.my.hostVars.interfaces.wired or null;
+      externalInterface = "br0";
       networks = {
         internal = {
           internal = true;
@@ -54,12 +54,16 @@ in {
       };
     };
 
-    virtualisation.podman = {
-      enable = true;
-      autoPrune.enable = true;
-      defaultNetwork.settings.dns_enabled = true;
-      dockerCompat = true;
-      dockerSocket.enable = true;
+    virtualisation = {
+      containers.registries.search = ["docker.io"];
+      oci-containers.backend = "podman";
+      podman = {
+        enable = true;
+        autoPrune.enable = true;
+        defaultNetwork.settings.dns_enabled = true;
+        dockerCompat = true;
+        dockerSocket.enable = true;
+      };
     };
   };
 }

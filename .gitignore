@@ -2,4 +2,4 @@
 .justfile
 .pre-commit-config.yaml
 /home.nix
-/result
+/result*

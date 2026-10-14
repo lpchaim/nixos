@@ -28,21 +28,11 @@ in {
       enable = true;
       tray.enable = cfg.tray.enable;
       cert = config.my.secrets."host.syncthing-cert".path;
-      guiAddress = "0.0.0.0:8384";
-      guiCredentials = {
-        username = config.home.username;
-        passwordFile = config.my.secrets."syncthing-password".path;
-      };
+      guiAddress = "127.0.0.1:8384";
       key = config.my.secrets."host.syncthing-key".path;
       overrideDevices = true;
       overrideFolders = true;
       settings = {
-        # See ~/.local/state/syncthing/config.xml
-        defaults.folder = {
-          minDiskFree.unit = "%";
-          minDiskFree.value = "10";
-          order = "oldestFirst";
-        };
         gui.theme = "dark";
         options = {
           localAnnounceEnabled = true;
@@ -50,7 +40,6 @@ in {
           startBrowser = false;
           urAccepted = -1; # For no and don't ask again
         };
-        startBrowser = false;
         folders = let
           computers = ["desktop"];
           laptops = ["laptop"];

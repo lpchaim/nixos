@@ -24,6 +24,7 @@ in {
         default_config = {};
         homeassistant = {
           name = "Casa";
+          external_url = config.my.serving.units.hass.external.url;
           unit_system = "metric";
           temperature_unit = "C";
           time_zone = config.time.timeZone;
@@ -40,35 +41,41 @@ in {
         mushroom
       ];
       themes = with pkgs.home-assistant-themes; [
+        catppuccin
         material-you-theme
       ];
       extraPackages = python3Packages:
         with python3Packages; [
+          babel
           gtts
           psycopg2
+          pychromecast
         ];
       extraComponents = [
         "default_config"
+        "apcupsd"
+        "asuswrt"
         "google_assistant"
         "shopping_list"
         "esphome"
+        "google_drive"
         "isal"
         "matter"
         "met"
         "midea"
         "mqtt"
+        "nut"
         "recorder"
+        "sftp_storage"
         "tuya"
         "workday"
         "yeelight"
         "zha"
       ];
+      configDir = "${config.my.storage.configDir}/hass";
     };
 
-    networking.firewall.allowedTCPPorts = [8123];
-
     services.postgresql = {
-      enable = true;
       ensureDatabases = ["hass"];
       ensureUsers = [
         {

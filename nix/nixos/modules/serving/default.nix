@@ -108,5 +108,10 @@ in {
         |> map (it: it.extraUDPPorts)
         |> lib.flatten;
     };
+
+    services.postgresql = {
+      enable = lib.length config.services.postgresql.ensureDatabases > 0;
+      dataDir = "${config.my.storage.dataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
+    };
   };
 }
