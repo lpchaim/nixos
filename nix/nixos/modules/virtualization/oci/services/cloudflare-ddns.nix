@@ -4,7 +4,7 @@
   self,
   ...
 }: let
-  inherit (config.my.secret.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkEnvGenerator mkSecret;
   cfg = config.my.virtualization.oci.services.cloudflare-ddns;
 in {
   options.my.virtualization.oci.services.cloudflare-ddns = {
@@ -15,16 +15,8 @@ in {
     my.secret.definitions = {
       "cloudflare-ddns-env" = mkSecret "cloudflare-ddns-env" {
         owner = config.my.virtualization.oci.user;
-        generator = {
-          dependencies = {inherit (config.age.secrets) cloudflare-api-token;};
-          script = {
-            lib,
-            decrypt,
-            deps,
-            ...
-          }: ''
-            printf 'API_KEY="%s"\n' $(${decrypt} ${lib.escapeShellArg deps.cloudflare-api-token.file})
-          '';
+        generator = mkEnvGenerator {
+          API_KEY = "cloudflare-api-token";
         };
       };
     };

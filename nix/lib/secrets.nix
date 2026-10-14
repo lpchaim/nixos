@@ -39,5 +39,25 @@
         in
           paths.perUser + /${user}/${name}.age;
       };
+    mkEnvGenerator = secrets: env: let
+      secretKeys = builtins.attrValues env;
+    in {
+      dependencies =
+        secretKeys
+        |> builtins.filter (key: lib.hasAttr key secrets)
+        |> lib.map (key: lib.nameValuePair key secrets.${key})
+        |> lib.listToAttrs;
+      script = {
+        lib,
+        decrypt,
+        deps,
+        ...
+      }:
+        env
+        |> lib.mapAttrsToList (envKey: secretKey: ''
+          printf '${envKey}="%s"\n' $(${decrypt} ${lib.escapeShellArg deps.${secretKey}.file})
+        '')
+        |> lib.concatStringsSep "\n";
+    };
   };
 }

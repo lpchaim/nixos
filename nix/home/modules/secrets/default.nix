@@ -6,7 +6,7 @@
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
-  inherit (self.lib.secrets.helpers) mkSecret mkHostSecret mkUserSecret;
+  inherit (self.lib.secrets.helpers) mkEnvGenerator mkSecret mkHostSecret mkUserSecret;
 in {
   options.my.secret.helpers = let
     extraArgs = lib.optionalAttrs (osConfig != {}) {owner = config.home.username;};
@@ -19,7 +19,11 @@ in {
           mkHostSecret configOrHost name (extraArgs // args);
         mkUserSecret = configOrUser: name: args:
           mkUserSecret configOrUser name (extraArgs // args);
+        mkEnvGenerator = env:
+          mkEnvGenerator config.my.secrets env;
       };
+      internal = true;
+      readOnly = true;
     };
 
   config = let

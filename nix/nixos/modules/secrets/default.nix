@@ -8,7 +8,14 @@
   inherit (self.lib.secrets) helpers;
 in {
   options.my.secret.helpers = lib.mkOption {
-    default = helpers;
+    default =
+      helpers
+      // {
+        mkEnvGenerator = env:
+          helpers.mkEnvGenerator config.my.secrets env;
+      };
+    internal = true;
+    readOnly = true;
   };
 
   config = {

@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  inherit (config.my.secret.helpers) mkSecret;
+  inherit (config.my.secret.helpers) mkEnvGenerator mkSecret;
   cfg = config.my.virtualization.oci.services.gotify;
 in {
   options.my.virtualization.oci.services.gotify = {
@@ -17,16 +17,8 @@ in {
       };
       "gotify-env" = mkSecret "gotify-env" {
         owner = config.my.virtualization.oci.user;
-        generator = {
-          dependencies = {inherit (config.age.secrets) gotify-password;};
-          script = {
-            lib,
-            decrypt,
-            deps,
-            ...
-          }: ''
-            printf 'GOTIFY_DEFAULTUSER_PASS="%s"\n' $(${decrypt} ${lib.escapeShellArg deps.gotify-password.file})
-          '';
+        generator = mkEnvGenerator {
+          GOTIFY_DEFAULTUSER_PASS = "gotify-password";
         };
       };
     };
