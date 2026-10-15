@@ -25,12 +25,7 @@ in {
           };
         };
       };
-      fprintd = {
-        enable = true;
-        package = pkgs.fprintd.override {
-          libfprint = pkgs.libfprint-canvasbio-cb2000;
-        };
-      };
+      fprintd.enable = true;
       thermald.enable = true;
     };
   };
