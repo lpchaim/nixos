@@ -16,6 +16,7 @@
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nur.modules.nixos.default
+      quadlet-nix.nixosModules.quadlet
       stylix.nixosModules.stylix
     ])
     ++ [

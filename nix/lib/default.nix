@@ -5,7 +5,6 @@
   ...
 } @ args: {
   flake = import ./flake.nix args;
-  oci = import ./oci.nix args;
   packages = import ./packages.nix args;
   secrets = import ./secrets.nix args;
   services = import ./services.nix args;

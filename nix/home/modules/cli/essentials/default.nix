@@ -35,6 +35,7 @@ in {
           inshellisense
           jq
           ncdu
+          netcat
           nurl
           poppler
           procs

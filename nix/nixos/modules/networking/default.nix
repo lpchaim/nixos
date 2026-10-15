@@ -29,7 +29,8 @@ in {
 
     networking = {
       useNetworkd = true;
-      useDHCP = lib.mkForce false;
+      useDHCP = lib.mkForce true;
+      usePredictableInterfaceNames = true;
       domain = domain;
       hostId = config.my.hostVars.hostId or null;
       enableIPv6 = cfg.ipv6.enable;
@@ -48,73 +49,109 @@ in {
       };
     };
 
-    systemd = {
+    systemd = let
+      mainBridge = "br0";
+      dhcp = {
+        DHCP = "ipv4";
+        IPv6AcceptRA = true;
+        IPv6PrivacyExtensions = "kernel";
+      };
+      noDhcp = {
+        DHCP = "no";
+        IPv6AcceptRA = false;
+      };
+      matchMainBridge = {
+        Name = mainBridge;
+      };
+      matchPhysicalEth = {
+        Type = "ether";
+        Path = "!*-usb-*";
+        Kind = "!*";
+      };
+      matchVirtualEth = {
+        Type = "ether";
+        Kind = "*";
+      };
+      linkConfig =
+        {MACAddressPolicy = "persistent";}
+        // lib.optionalAttrs config.networking.usePredictableInterfaceNames {
+          NamePolicy = "kernel database onboard slot path";
+        };
+      routes = [
+        {
+          Gateway = homeNet.gateway;
+          Metric = 100;
+        }
+        {
+          Gateway = homeNet.gatewayV6;
+          Metric = 110;
+        }
+        {
+          Gateway = "_dhcp4";
+          Metric = 200;
+        }
+        {
+          Gateway = "_ipv6ra";
+          Metric = 210;
+        }
+      ];
+    in {
       network = {
         enable = true;
-        networks = let
-          dhcp = {
-            DHCP = "ipv4";
-            IPv6AcceptRA = true;
-            IPv6PrivacyExtensions = "kernel";
-          };
-          noDhcp = {
-            DHCP = "no";
-            IPv6AcceptRA = false;
-          };
-          routes = [
-            {
-              Gateway = homeNet.gateway;
-              Metric = 100;
-            }
-            {
-              Gateway = homeNet.gatewayV6;
-              Metric = 100;
-            }
-            {
-              Gateway = "_dhcp4";
-              Metric = 200;
-            }
-            {
-              Gateway = "_ipv6ra";
-              Metric = 300;
-            }
-          ];
-        in {
-          "10-bridge" = {
-            inherit routes;
-            matchConfig.Name = "br0";
+        networks = {
+          "10-bridge-main" = {
+            matchConfig = matchMainBridge;
             networkConfig = dhcp;
             linkConfig.RequiredForOnline = "carrier";
+            inherit routes;
           };
-          "20-bridged-eth" = {
-            matchConfig.Type = "ether";
-            matchConfig.Path = "!*-usb-*";
-            matchConfig.Kind = "!*";
-            networkConfig = noDhcp // {Bridge = "br0";};
+          "20-ethernet-physical" = {
+            matchConfig = matchPhysicalEth;
+            networkConfig = noDhcp // {Bridge = mainBridge;};
             linkConfig.RequiredForOnline = "enslaved";
           };
-          "70-default" = {
-            inherit routes;
-            matchConfig.Type = ["ether" "wlan"];
+          "20-ethernet-virtual" = {
+            matchConfig = matchVirtualEth;
+            linkConfig.Unmanaged = true;
+          };
+          "20-bridge" = {
+            matchConfig.Type = "bridge";
+            linkConfig.Unmanaged = true;
+          };
+          "20-loopback" = {
+            matchConfig.Type = "loopback";
+            linkConfig.Unmanaged = true;
+          };
+          "60-default" = {
+            matchConfig.Name = "*";
             networkConfig = dhcp;
             linkConfig.RequiredForOnline = "no";
+            inherit routes;
           };
         };
         links = {
-          "10-bridge" = {
-            matchConfig.Name = "br0";
-            linkConfig.MACAddressPolicy = "none";
+          "10-bridge-main" = {
+            matchConfig = matchMainBridge;
+            linkConfig = linkConfig // {MACAddressPolicy = "none";};
           };
-          "20-eth" = {
-            matchConfig.Type = "ether";
-            linkConfig.WakeOnLan = "magic";
+          "20-ethernet-physical" = {
+            matchConfig = matchPhysicalEth;
+            linkConfig = linkConfig // {WakeOnLan = "magic";};
+          };
+          "20-loopback" = {
+            matchConfig.Type = "loopback";
+            linkConfig = {};
+          };
+          "60-default" = {
+            matchConfig.OriginalName = "*";
+            inherit linkConfig;
           };
         };
         netdevs = lib.optionalAttrs (bridge != null) {
-          "10-bridge" = {
+          "10-bridge-main" = {
             netdevConfig = {
               Kind = "bridge";
-              Name = "br0";
+              Name = mainBridge;
               MACAddress = lib.mkIf (bridge.mac != null) bridge.mac;
             };
           };
@@ -125,7 +162,7 @@ in {
           timeout = 30;
         };
       };
-      services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
+      services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "alert";
     };
 
     programs = {

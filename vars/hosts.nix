@@ -18,7 +18,7 @@
     system = "aarch64-linux";
     hostId = "ee66c96c";
     ip.v4 = "10.0.0.2";
-    interface.eth.name = "eth0";
+    interface.eth.name = "enabcm6e4ei0";
     interface.bridge.mac = "02:6d:70:82:41:c3";
   };
 }
