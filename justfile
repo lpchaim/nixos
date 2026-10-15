@@ -2,6 +2,7 @@ _default:
   @just --list --list-submodules --unsorted
 
 mod home './just/home.just'
+mod generate './just/generate.just'
 mod secrets './just/secrets.just'
 mod secureboot './just/secureboot.just'
 mod system './just/system.just'
