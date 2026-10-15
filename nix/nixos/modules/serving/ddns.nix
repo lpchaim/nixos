@@ -18,7 +18,7 @@ in {
     services.ddclient = {
       enable = true;
       protocol = "cloudflare";
-      domains = map (unit: "${unit.subDomain}.${domain}") externalUnits;
+      domains = map (unit: "${unit.cert.subDomain}.${unit.cert.domain}") externalUnits;
       zone = domain;
       usev4 = "";
       usev6 = "webv6, webv6=ipify-ipv6";

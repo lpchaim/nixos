@@ -5,8 +5,8 @@
   ...
 }: let
   inherit (config.my.serving) externalUnits;
+  inherit (config.my.secret.helpers) mkEnvGenerator mkSecret;
   cfg = config.my.serving.reverseProxy;
-  domain = self.vars.domain.main;
 in {
   options.my.serving.reverseProxy = {
     enable =
@@ -48,10 +48,11 @@ in {
         externalUnits
         |> lib.map (unit:
           lib.nameValuePair
-          "${unit.subDomain}.${domain}"
+          "${unit.cert.subDomain}.${unit.cert.domain}"
           {
             forceSSL = true;
-            enableACME = true;
+            enableACME = !unit.cert.wildcard;
+            useACMEHost = lib.mkIf unit.cert.wildcard unit.cert.domain;
             locations."/" = {
               proxyPass = "http://${unit.address}:${toString unit.port}";
               extraConfig =
@@ -65,9 +66,29 @@ in {
           })
         |> builtins.listToAttrs;
     };
+
+    my.secret.definitions = {
+      "acme-env" = mkSecret "acme-env" {
+        group = config.services.nginx.group;
+        generator = mkEnvGenerator {
+          CLOUDFLARE_DNS_API_TOKEN = "cloudflare-api-token";
+        };
+      };
+    };
     security.acme = {
       acceptTerms = true;
       defaults.email = self.vars.email.main;
+      certs =
+        externalUnits
+        |> map (unit: unit.cert.domain)
+        |> lib.unique
+        |> (domains:
+          lib.genAttrs domains (domain: {
+            domain = "*.${domain}";
+            group = config.services.nginx.group;
+            dnsProvider = "cloudflare";
+            environmentFile = config.my.secrets."acme-env".path;
+          }));
     };
   };
 }

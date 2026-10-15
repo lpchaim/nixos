@@ -19,7 +19,7 @@ in {
       ...
     }: {
       options = {
-        subDomain = lib.mkOption {
+        name = lib.mkOption {
           type = lib.types.singleLineStr;
           default = name;
         };
@@ -53,7 +53,7 @@ in {
         };
         external.url = lib.mkOption {
           type = lib.types.str;
-          default = "https://${config.subDomain}.${externalDomain}";
+          default = "https://${config.cert.subDomain}.${config.cert.domain}";
           internal = true;
           readOnly = true;
         };
@@ -64,6 +64,21 @@ in {
         webSocket.timeout = lib.mkOption {
           type = lib.types.int;
           default = 86400;
+        };
+        cert.domain = lib.mkOption {
+          description = "The domain to use for this unit's certificate";
+          type = lib.types.str;
+          default = externalDomain;
+        };
+        cert.subDomain = lib.mkOption {
+          description = "The subdomain to use for this unit's certificate";
+          type = lib.types.singleLineStr;
+          default = name;
+        };
+        cert.wildcard = lib.mkOption {
+          description = "Whether this unit should use the root domain's certificate";
+          type = lib.types.bool;
+          default = true;
         };
         extraNginxConfig = lib.mkOption {
           type = lib.types.str;
