@@ -53,7 +53,13 @@
     ];
 
   my = {
-    hardware.enable = lib.mkDefault true;
+    hardware = {
+      enable = lib.mkDefault true;
+      ups = {
+        device = lib.mkDefault "/dev/serial/by-id/usb-NXP_SEMICONDUCTORS_MCU_VIRTUAL_COM_DEMO-if00";
+        nut.driver = lib.mkDefault "gamatronic";
+      };
+    };
     kernel.enable = lib.mkDefault true;
     networking = {
       enable = lib.mkDefault true;
