@@ -58,6 +58,7 @@ in {
         "google_assistant"
         "shopping_list"
         "esphome"
+        "google_assistant_sdk"
         "google_drive"
         "isal"
         "matter"
