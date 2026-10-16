@@ -11,7 +11,6 @@
         nix
       ];
       packages = with pkgs; [
-        colmena
         disko
         home-manager
         nh

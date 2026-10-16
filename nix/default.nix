@@ -14,7 +14,6 @@ in {
     (importApply' ./apps)
     (importApply' ./checks)
     (importApply' ./devShells)
-    (importApply' ./flakeModules)
     (importApply' ./home/homeConfigurations.nix)
     (importApply' ./home/homeModules.nix)
     (importApply' ./legacyPackages)
@@ -23,6 +22,8 @@ in {
     (importApply' ./overlays)
     (importApply' ./packages)
     (importApply' ./tests)
+    inputs.agenix-rekey.flakeModule
+    inputs.git-hooks-nix.flakeModule
   ];
   perSystem = {
     pkgs,
@@ -30,7 +31,21 @@ in {
     ...
   }: {
     _module.args.pkgs = self'.legacyPackages.pkgs;
+    agenix-rekey = {
+      inherit (self) nixosConfigurations;
+      agePackage = pkgs.rage;
+      homeConfigurations = self.lib.getStandaloneHomeConfigurations self;
+    };
     formatter = pkgs.alejandra;
+    pre-commit = {
+      inherit pkgs;
+      check.enable = true;
+      settings = {
+        hooks.actionlint.enable = true;
+        hooks.alejandra.enable = true;
+        hooks.ripsecrets.enable = true;
+      };
+    };
   };
   flake = {
     inherit systems;
