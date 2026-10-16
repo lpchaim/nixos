@@ -6,7 +6,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
 
