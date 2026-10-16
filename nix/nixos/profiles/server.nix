@@ -17,7 +17,11 @@ in {
         advertise.routes = [routingPrefix];
         advertise.tags = ["server"];
       };
-      serving.enable = true;
+      serving = {
+        enable = true;
+        ddns.enable = true;
+        reverseProxy.enable = true;
+      };
       virtualization.oci.enable = true;
     };
 

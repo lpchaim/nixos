@@ -9,9 +9,7 @@
   domain = self.vars.domain.main;
 in {
   options.my.serving.ddns = {
-    enable =
-      lib.mkEnableOption "DDNS auto updating"
-      // {default = config.my.serving.enable;};
+    enable = lib.mkEnableOption "DDNS auto updating";
   };
 
   config = lib.mkIf (cfg.enable && lib.length externalUnits > 0) {

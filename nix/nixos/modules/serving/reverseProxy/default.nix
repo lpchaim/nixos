@@ -9,9 +9,7 @@
   cfg = config.my.serving.reverseProxy;
 in {
   options.my.serving.reverseProxy = {
-    enable =
-      lib.mkEnableOption "NGINX reverse proxying"
-      // {default = config.my.serving.enable;};
+    enable = lib.mkEnableOption "NGINX reverse proxying";
   };
 
   config = lib.mkIf (cfg.enable && lib.length externalUnits > 0) {
