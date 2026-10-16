@@ -1,11 +1,11 @@
 {
   inputs,
-  ezModules,
+  self,
   ...
 }: {
   imports = [
     inputs.jovian.nixosModules.default
-    ezModules.steamos
+    self.nixosModules.steamos
     ./hardware-configuration.nix
     ./storage.nix
   ];

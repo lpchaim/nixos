@@ -40,6 +40,17 @@
       | nu-generate-carapace-spec \
       > $out
     '';
+  importDir = path:
+    builtins.readDir path
+    |> lib.filterAttrs (name: type: type == "directory" || (lib.hasSuffix ".nix" name && name != "default.nix"))
+    |> lib.mapAttrs' (name: type: {
+      name = lib.removeSuffix ".nix" name;
+      value =
+        if type != "directory" || builtins.pathExists (path + /${name}/default.nix)
+        then import (path + /${name})
+        else null;
+    })
+    |> lib.filterAttrs (_: content: content != null);
   nixFilesToAttrs = path:
     builtins.readDir path
     |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")

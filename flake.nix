@@ -37,11 +37,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ez-configs = {
-      url = "github:ehllie/ez-configs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     freesmlauncher = {
