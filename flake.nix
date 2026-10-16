@@ -1,50 +1,7 @@
 {
   description = "Defines my personal systems/home configs and whatnot";
 
-  outputs = {self, ...} @ inputs:
-    inputs.flake-parts.lib.mkFlake
-    {inherit inputs;}
-    ({flake-parts-lib, ...}: let
-      inherit (flake-parts-lib) importApply;
-      inherit (inputs.nixpkgs) lib;
-      specialArgs = {inherit inputs lib self;};
-      import' = path: import path specialArgs;
-      importApply' = path: importApply path specialArgs;
-      systems = ["aarch64-linux" "x86_64-linux"];
-    in {
-      inherit systems;
-      imports = [
-        (importApply' ./nix/flakeModules)
-        (importApply' ./nix/apps)
-        (importApply' ./nix/checks)
-        (importApply' ./nix/overlays)
-        (importApply' ./nix/packages)
-        (importApply' ./nix/legacyPackages)
-        (importApply' ./nix/shells)
-        (importApply' ./nix/tests)
-      ];
-      perSystem = {
-        pkgs,
-        system,
-        ...
-      }: {
-        _module.args.pkgs = self.lib.mkPkgs {inherit system;};
-        formatter = pkgs.alejandra;
-        legacyPackages.pkgs = self.lib.mkPkgs {
-          inherit system;
-          inherit (inputs) nixpkgs;
-        };
-      };
-      flake = {
-        inherit systems;
-        lib = import' ./nix/lib;
-        nixConfig = self.vars.nix.settings;
-        schemas =
-          inputs.flake-schemas.schemas
-          // (import' ./nix/schemas);
-        vars = import' ./vars;
-      };
-    });
+  outputs = inputs: import ./nix inputs;
 
   inputs = {
     # Nixpkgs
