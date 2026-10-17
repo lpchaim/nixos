@@ -35,7 +35,7 @@ in {
       hostId = config.my.hostVars.hostId or null;
       enableIPv6 = cfg.ipv6.enable;
       dhcpcd = {
-        enable = true;
+        enable = false;
         persistent = true;
         allowSetuid = true;
         IPv6rs = true;
