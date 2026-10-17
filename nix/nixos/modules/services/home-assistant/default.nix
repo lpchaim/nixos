@@ -64,7 +64,6 @@ in {
         ];
       extraComponents = [
         "default_config"
-        "apcupsd"
         "asuswrt"
         "google_assistant"
         "shopping_list"
