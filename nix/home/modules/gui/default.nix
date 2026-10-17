@@ -15,7 +15,6 @@ in {
     ./kitty.nix
     ./mangohud.nix
     ./media.nix
-    ./zenBrowser.nix
   ];
 
   options.my.gui.enable =
@@ -37,7 +36,6 @@ in {
       kitty.enable = true;
       mangohud.enable = true;
       media.enable = true;
-      zen-browser.enable = false;
     };
 
     home.packages = with pkgs; [

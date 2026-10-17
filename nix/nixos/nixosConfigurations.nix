@@ -31,6 +31,5 @@ in {
     desktop = mkNixos "desktop" {};
     laptop = mkNixos "laptop" {};
     raspberrypi = mkNixos "raspberrypi" {system = "aarch64-linux";};
-    steamdeck = mkNixos "steamdeck" {};
   };
 }

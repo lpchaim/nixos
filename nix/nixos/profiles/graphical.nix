@@ -17,7 +17,7 @@ in {
       kernelParams = ["quiet"];
       plymouth.enable = true;
     };
-    environment.systemPackages = lib.optionals (pkgs.hostPlatform.isx86) [pkgs.via];
+    environment.systemPackages = lib.optionals (pkgs.stdenv.hostPlatform.isx86) [pkgs.via];
     hardware = {
       graphics.enable = true;
       graphics.enable32Bit = true;
