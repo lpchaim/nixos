@@ -4,6 +4,7 @@
   pkgs,
   ...
 }: let
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.services.home-assistant;
 in {
   options.my.services.home-assistant = {
@@ -11,6 +12,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    my.secret.definitions = {
+      "hass-secrets" = mkSecret "hass-secrets.yaml" {
+        owner = "hass";
+        group = "hass";
+        path = "${config.services.home-assistant.configDir}/secrets.yaml";
+      };
+    };
     my.serving.units.hass = {
       port = 8123;
       external.expose = true;
@@ -28,6 +36,9 @@ in {
           unit_system = "metric";
           temperature_unit = "C";
           time_zone = config.time.timeZone;
+          latitude = "!secret latitude";
+          longitude = "!secret longitude";
+          elevation = "!secret elevation";
         };
         recorder.db_url = "postgresql://@/hass";
         "automation ui" = "!include automations.yaml";
