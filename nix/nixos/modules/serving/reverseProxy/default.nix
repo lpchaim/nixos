@@ -5,7 +5,8 @@
   ...
 }: let
   inherit (config.my.serving) externalUnits;
-  inherit (config.my.secret.helpers) mkEnvGenerator mkSecret;
+  inherit (config.my.secret.generators) mkEnvGenerator;
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.serving.reverseProxy;
 in {
   options.my.serving.reverseProxy = {
@@ -68,8 +69,8 @@ in {
     my.secret.definitions = {
       "acme-env" = mkSecret "acme-env" {
         group = config.services.nginx.group;
-        generator = mkEnvGenerator {
-          CLOUDFLARE_DNS_API_TOKEN = "cloudflare-api-token";
+        generator = mkEnvGenerator {tags = ["cloudflare"];} {
+          CLOUDFLARE_DNS_API_TOKEN = config.my.secrets.cloudflare-api-token;
         };
       };
     };

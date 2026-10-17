@@ -5,17 +5,19 @@
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
-  inherit (self.lib.secrets) helpers;
+  inherit (self.lib.secrets) generators helpers;
 in {
-  options.my.secret.helpers = lib.mkOption {
-    default =
-      helpers
-      // {
-        mkEnvGenerator = env:
-          helpers.mkEnvGenerator config.my.secrets env;
-      };
-    internal = true;
-    readOnly = true;
+  options.my.secret = {
+    generators = lib.mkOption {
+      default = generators;
+      internal = true;
+      readOnly = true;
+    };
+    helpers = lib.mkOption {
+      default = helpers;
+      internal = true;
+      readOnly = true;
+    };
   };
 
   config = {

@@ -4,7 +4,8 @@
   pkgs,
   ...
 }: let
-  inherit (config.my.secret.helpers) mkEnvGenerator mkSecret;
+  inherit (config.my.secret.generators) mkEnvGenerator;
+  inherit (config.my.secret.helpers) mkSecret;
   cfg = config.my.hardware.ups;
 in {
   options.my.hardware.ups = {
@@ -53,8 +54,8 @@ in {
         "nut-password" = mkSecret "nut-password" {intermediary = true;};
         "nut-oci-env" = mkSecret "nut-oci-env" {
           owner = config.my.virtualization.oci.user;
-          generator = mkEnvGenerator {
-            API_PASSWORD = "nut-password";
+          generator = mkEnvGenerator {tags = ["nut"];} {
+            API_PASSWORD = config.my.secrets.nut-password;
           };
         };
       };

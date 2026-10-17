@@ -6,25 +6,33 @@
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
-  inherit (self.lib.secrets.helpers) mkEnvGenerator mkSecret mkHostSecret mkUserSecret;
+  inherit (self.lib.secrets) generators helpers;
+  inherit (helpers) mkSecret mkHostSecret mkUserSecret;
 in {
-  options.my.secret.helpers = let
-    extraArgs = lib.optionalAttrs (osConfig != {}) {owner = config.home.username;};
-  in
-    lib.mkOption {
-      default = {
-        mkSecret = name: args:
-          mkSecret name (extraArgs // args);
-        mkHostSecret = configOrHost: name: args:
-          mkHostSecret configOrHost name (extraArgs // args);
-        mkUserSecret = configOrUser: name: args:
-          mkUserSecret configOrUser name (extraArgs // args);
-        mkEnvGenerator = env:
-          mkEnvGenerator config.my.secrets env;
-      };
+  options.my.secret = {
+    generators = lib.mkOption {
+      default = generators;
       internal = true;
       readOnly = true;
     };
+    helpers = let
+      extraArgs = lib.optionalAttrs (osConfig != {}) {owner = config.home.username;};
+    in
+      lib.mkOption {
+        default =
+          helpers
+          // {
+            mkSecret = name: args:
+              mkSecret name (extraArgs // args);
+            mkHostSecret = configOrHost: name: args:
+              mkHostSecret configOrHost name (extraArgs // args);
+            mkUserSecret = configOrUser: name: args:
+              mkUserSecret configOrUser name (extraArgs // args);
+          };
+        internal = true;
+        readOnly = true;
+      };
+  };
 
   config = let
     osSecrets = osConfig.age.secrets or {};

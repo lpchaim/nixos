@@ -15,6 +15,56 @@
       pubkey = "age1yubikey1qvsexaz0mrwzd6eadgmnupexs0csw6esdzmfzs3eehmn4w4hdlch5j7xrxs";
     };
   };
+  generators = rec {
+    mkEnvGenerator = args: attrs: let
+      str =
+        builtins.attrNames attrs
+        |> lib.concatMapStrings (name: ''
+          ${name}="%s"
+        '');
+      subs = builtins.attrValues attrs;
+    in
+      mkPrintfGenerator args str subs;
+    mkEnvsubstGenerator = args: string: env:
+      args
+      // {
+        dependencies =
+          builtins.attrValues env
+          |> lib.flatten
+          |> (secrets: lib.genAttrs' secrets (secret: lib.nameValuePair secret.name secret));
+        script = {
+          lib,
+          decrypt,
+          deps,
+          ...
+        }: let
+          envs =
+            env
+            |> lib.mapAttrsToList (name: secret: ''${name}="$(${decrypt} ${lib.escapeShellArg deps.${secret.name}.file})"'')
+            |> lib.concatStringsSep " ";
+        in ''
+          echo ${lib.escapeShellArg string} | ${envs} envsubst
+        '';
+      };
+    mkPrintfGenerator = args: string: subs:
+      args
+      // {
+        dependencies = lib.genAttrs' subs (secret: lib.nameValuePair secret.name secret);
+        script = {
+          lib,
+          decrypt,
+          deps,
+          ...
+        }: let
+          args =
+            subs
+            |> map (secret: ''"$(${decrypt} ${lib.escapeShellArg deps.${secret.name}.file})"'')
+            |> lib.concatStringsSep " ";
+        in ''
+          printf ${lib.escapeShellArg string} ${args}
+        '';
+      };
+  };
   helpers = {
     mkSecret = name: args:
       args
@@ -39,25 +89,5 @@
         in
           paths.perUser + /${user}/${name}.age;
       };
-    mkEnvGenerator = secrets: env: let
-      secretKeys = builtins.attrValues env;
-    in {
-      dependencies =
-        secretKeys
-        |> builtins.filter (key: lib.hasAttr key secrets)
-        |> lib.map (key: lib.nameValuePair key secrets.${key})
-        |> lib.listToAttrs;
-      script = {
-        lib,
-        decrypt,
-        deps,
-        ...
-      }:
-        env
-        |> lib.mapAttrsToList (envKey: secretKey: ''
-          printf '${envKey}="%s"\n' $(${decrypt} ${lib.escapeShellArg deps.${secretKey}.file})
-        '')
-        |> lib.concatStringsSep "\n";
-    };
   };
 }
