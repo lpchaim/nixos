@@ -11,6 +11,8 @@ in {
     // {default = osConfig == {};};
 
   config = lib.mkIf cfg {
+    home.sessionVariables.BACKUP_EXTENSION = "backup";
+
     targets.genericLinux.enable = true;
 
     xdg.mime.enable = false;

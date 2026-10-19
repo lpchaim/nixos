@@ -46,7 +46,9 @@
     (pkgs.writeShellScriptBin "cleanslate" ''
       git fetch origin dev:dev && git checkout dev
     '')
+    pkgs.discordo
   ];
+  home.sessionPath = ["${config.home.homeDirectory}/Luna/Bin"];
 
   programs = {
     atuin.daemon.enable = false;
@@ -76,7 +78,6 @@
     zsh.initContent = ''
       export NVM_DIR="$HOME/.nvm"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-      export PATH="$PATH:$HOME/Lucas/Bin";
     '';
   };
 
