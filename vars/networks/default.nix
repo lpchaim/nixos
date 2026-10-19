@@ -6,6 +6,10 @@
     routingPrefix = "10.0.0.0/8";
     subnetMask = "255.255.255.0";
   };
+  tailscale = {
+    routingPrefix = "100.0.0.0/8";
+    nodes = import ./tailscale-nodes.nix;
+  };
   oci.internal = {
     routingPrefix = "172.16.80.0/24";
   };

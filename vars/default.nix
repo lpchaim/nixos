@@ -5,7 +5,7 @@ args: {
   domain.main = "lpcha.im";
   timezone = "America/Sao_Paulo";
   flake.path = "~/.config/nixos";
-  networks = import ./networks.nix;
+  networks = import ./networks;
   repo = rec {
     main = github;
     github = "https://github.com/lpchaim/nixos";
