@@ -27,7 +27,24 @@ in {
       enable = true;
       enableDefaultConfig = false;
       settings = {
-        "*" = {
+        github = lib.hm.dag.entryBefore ["local"] {
+          header = "Host *github.com";
+          IdentityFile = config.my.secrets.ssh-github.path;
+        };
+        tangled-org = lib.hm.dag.entryBefore ["local"] {
+          header = "Host *tangled.org";
+          IdentityFile = config.my.secrets.ssh-tangled.path;
+        };
+        tangled-sh = lib.hm.dag.entryBefore ["local"] {
+          header = "Host *tangled.sh";
+          IdentityFile = config.my.secrets.ssh-tangled.path;
+        };
+        local = lib.hm.dag.entryBefore ["global"] {
+          header = "Host *.local";
+          IdentityFile = ["~/.ssh/id_rsa"];
+        };
+        global = {
+          header = "Host *";
           AddKeysToAgent = "yes";
           Compression = false;
           ControlMaster = "no";
@@ -46,9 +63,6 @@ in {
           SetEnv.TERM = "xterm-256color";
           UserKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
         };
-        "*github.com".IdentityFile = config.my.secrets.ssh-github.path;
-        "*tangled.org".IdentityFile = config.my.secrets.ssh-tangled.path;
-        "*tangled.sh".IdentityFile = config.my.secrets.ssh-tangled.path;
       };
     };
 
