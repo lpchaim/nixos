@@ -1,17 +1,52 @@
 diff --git a/scripts/run_tests.lua b/scripts/run_tests.lua
-index 2b56cbe..9f17f45 100755
+index fe25f4f..2d805d8 100755
 --- a/scripts/run_tests.lua
 +++ b/scripts/run_tests.lua
-@@ -100,7 +100,7 @@ local tests = {
-     -- issue fixing --
-     { src = "fail_outlive_1", code = 1, nocomp = true },
-     { src = "fail_outlive_2", code = 1, nocomp = true },
--    { src = "fail_synax_1", code = 1, nocomp = true },
-+    { src = "fail_syntax_1", code = 1, nocomp = true },
-     { src = "issue_mut_loop", code = 0 },
-     { src = "issue_for_slice", code = 0 },
-     { src = "issue_lit_arr", code = 0 },
-@@ -272,7 +272,7 @@ local function run_test(t, failed, ex)
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env lua
+ local tmp   = ".test/"
+ local time  = os.time()
++local stdlibPath  = os.getenv("STDLIB_PATH") or (os.getenv( "HOME" ) .. "/.local/lib/lcc")
+ 
+ -- test list --
+ local tests = {
+@@ -118,7 +119,7 @@ local tests = {
+     { src = "fail_io_bad_handle",
+         output =
+             "../tests/fail_io_bad_handle.lic:7:33: assertion failed\n" ..
+-            os.getenv( "HOME" ) .. "/.local/lib/lcc/std/io.lim:118:14: could not write to this handle\n",
++            stdlibPath .. "/std/io.lim:118:14: could not write to this handle\n",
+         code = 1 },
+     { src = "fail_io_from_result",
+         output = "../tests/fail_io_from_result.lic:14:19: assertion failed\n",
+@@ -134,7 +135,7 @@ local tests = {
+     -- others --
+     { src = "fail_empty", code = 1, nocomp = true },
+     { src = "fail_empty_assign", code = 1, nocomp = true },
+-    { src = "unreachable", output = "Illegal instruction (core dumped)\n", code = 1 },
++    { src = "unreachable", output = "", code = 1 },
+ 
+     -- parser --
+     { src = "vars", code = 0 },
+@@ -211,7 +212,7 @@ local tests = {
+     { src = "union", code = 0 },
+     { src = "printf", output = "4\nfoo\ntrue\n", code = 0 },
+     { src = "fmt_mismatch", output = "../tests/fmt_mismatch.lic:5:37: assertion failed\n" ..
+-        os.getenv( "HOME" ) .. "/.local/lib/lcc/str/fmt.lim:56:43: union tag mismatch\n", code = 1 },
++        stdlibPath .. "/str/fmt.lim:56:43: union tag mismatch\n", code = 1 },
+     -- io --
+     { src = "hello", output = "mornin' sailor!\n", code = 0 },
+     -- mem --
+@@ -278,7 +279,7 @@ end
+ 
+ local function run_test(t, failed, ex)
+     local bin = tmp .. t.src
+-    local args = "-t " .. (t.add_args or "")
++    local args = "-t " .. " -std " .. stdlibPath .. " ".. (t.add_args or "")
+     local ok = nil
+     if ex then
+         ok = exec("lcc ".. args .. " ../ex/" .. t.src .. ".lic " .. bin .. " > " .. tmp .. "compiler.log 2>&1")
+@@ -302,7 +303,7 @@ local function run_test(t, failed, ex)
              ok = exec(bin .. (t.argv or "") .. " > " .. log .. " 2>&1")
          end
  
