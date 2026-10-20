@@ -8,6 +8,7 @@
   inherit (self.lib.secrets.helpers) mkSecret;
   inherit (self.vars) nix;
   cfg = config.my.nix;
+  isLix = lib.hasPrefix "lix" config.nix.package.name;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";
 
@@ -21,8 +22,16 @@ in {
         !include ${config.my.secrets."nix-extra-access-tokens".path}
       '';
       gc.automatic = osConfig == {};
+      settings = lib.mkIf isLix {repl-overlays = ["repl-overlay.nix"];};
     };
 
     nixpkgs = lib.mkIf (osConfig == {}) nix.pkgs;
+
+    home = {
+      sessionVariables.NIX_FLAKE_PATH = lib.replaceString "~" config.home.homeDirectory self.vars.flake.path;
+      file = lib.mkIf isLix {
+        "${config.xdg.configHome}/nix/repl-overlay.nix".source = ./repl-overlay.nix;
+      };
+    };
   };
 }
