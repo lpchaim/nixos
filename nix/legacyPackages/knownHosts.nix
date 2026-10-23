@@ -7,16 +7,21 @@
   inherit (self.vars) hosts networks;
 in
   hosts
-  |> lib.concatMapAttrs (
+  |> lib.mapAttrsToList (
     host: cfg:
-      {
-        "${host}" = cfg.pubKey;
-        "${host}.${networks.home.domain}" = cfg.pubKey;
-      }
-      // lib.optionalAttrs (cfg.ip.v4 or null != null) {
-        "${cfg.ip.v4}" = cfg.pubKey;
-      }
+      [cfg.pubKey self.vars.ssh.publicKeys.perHost.${host}]
+      |> map (
+        pubKey:
+          [
+            "${host} ${pubKey}"
+            "${host}.${networks.home.domain} ${pubKey}"
+          ]
+          ++ lib.optionals (cfg.ip.v4 or null != null) [
+            "${cfg.ip.v4} ${pubKey}"
+            "${cfg.ip.v4}.${networks.home.domain} ${pubKey}"
+          ]
+      )
   )
-  |> lib.mapAttrsToList (host: key: "${host} ${key}")
+  |> lib.flatten
   |> lib.concatStringsSep "\n"
   |> writeText "known-hosts"

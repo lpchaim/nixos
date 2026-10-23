@@ -26,52 +26,53 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings = {
-        github = lib.hm.dag.entryBefore ["local"] {
-          header = "Host *github.com";
-          IdentityFile = config.my.secrets.ssh-github.path;
+      settings =
+        {
+          local = lib.hm.dag.entryBefore ["global"] {
+            header = "Host *.local";
+          };
+        }
+        // (lib.hm.dag.entriesBetween "git-provider" ["global"] ["local"] [
+          {
+            header = "Host *github.com";
+            IdentityFile = config.my.secrets.ssh-github.path;
+            IdentityAgent = "none";
+          }
+          {
+            header = "Host *tangled.org,*tangled.sh";
+            IdentityFile = config.my.secrets.ssh-tangled.path;
+            IdentityAgent = "none";
+          }
+        ])
+        // {
+          global = {
+            header = "Host *";
+            AddKeysToAgent = "yes";
+            Compression = false;
+            ControlMaster = "no";
+            ControlPath = "~/.ssh/master-%r@%n:%p";
+            ControlPersist = "no";
+            ForwardAgent = false;
+            HashKnownHosts = false;
+            IdentitiesOnly = true;
+            IdentityFile = [
+              config.my.secrets.ssh.path
+              config.my.secrets.ssh-yubikey-25388788.path
+              config.my.secrets.ssh-yubikey-26583315.path
+            ];
+            ServerAliveCountMax = 3;
+            ServerAliveInterval = 0;
+            SetEnv.TERM = "xterm-256color";
+            UserKnownHostsFile = [
+              "~/.ssh/known_hosts"
+              "${self.legacyPackages.${system}.knownHosts}"
+            ];
+          };
         };
-        tangled-org = lib.hm.dag.entryBefore ["local"] {
-          header = "Host *tangled.org";
-          IdentityFile = config.my.secrets.ssh-tangled.path;
-        };
-        tangled-sh = lib.hm.dag.entryBefore ["local"] {
-          header = "Host *tangled.sh";
-          IdentityFile = config.my.secrets.ssh-tangled.path;
-        };
-        local = lib.hm.dag.entryBefore ["global"] {
-          header = "Host *.local";
-          IdentityFile = ["~/.ssh/id_rsa"];
-        };
-        global = {
-          header = "Host *";
-          AddKeysToAgent = "yes";
-          Compression = false;
-          ControlMaster = "no";
-          ControlPath = "~/.ssh/master-%r@%n:%p";
-          ControlPersist = "no";
-          ForwardAgent = false;
-          HashKnownHosts = false;
-          IdentitiesOnly = true;
-          IdentityFile = [
-            config.my.secrets.ssh.path
-            config.my.secrets.ssh-yubikey-25388788.path
-            config.my.secrets.ssh-yubikey-26583315.path
-          ];
-          ServerAliveCountMax = 3;
-          ServerAliveInterval = 0;
-          SetEnv.TERM = "xterm-256color";
-          UserKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
-        };
-      };
     };
 
     services.ssh-agent = {
       enable = true;
-    };
-
-    home.file = {
-      ".ssh/known_hosts_generated".source = self.legacyPackages.${system}.knownHosts;
     };
   };
 }
