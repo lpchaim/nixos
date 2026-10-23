@@ -41,9 +41,14 @@ in {
       inherit pkgs;
       check.enable = true;
       settings = {
-        hooks.actionlint.enable = true;
-        hooks.alejandra.enable = true;
-        hooks.ripsecrets.enable = true;
+        enable = true;
+        addGcRoot = true;
+        hooks = {
+          actionlint.enable = true;
+          check-merge-conflicts.enable = true;
+          alejandra.enable = true;
+          ripsecrets.enable = true;
+        };
       };
     };
   };
