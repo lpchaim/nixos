@@ -64,6 +64,7 @@ in {
         ];
       extraComponents = [
         "default_config"
+        "adguard"
         "asuswrt"
         "google_assistant"
         "shopping_list"

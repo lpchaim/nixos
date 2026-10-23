@@ -40,6 +40,7 @@
       | nu-generate-carapace-spec \
       > $out
     '';
+
   importDir = path:
     builtins.readDir path
     |> lib.filterAttrs (name: type: type == "directory" || (lib.hasSuffix ".nix" name && name != "default.nix"))
@@ -51,6 +52,27 @@
         else null;
     })
     |> lib.filterAttrs (_: content: content != null);
+
+  mkStableNumericId = maxCharacters: seed:
+    builtins.hashString "sha256" seed
+    |> inputs.nix-std.lib.regex.substitute "[^[:digit:]]" ""
+    |> inputs.nix-std.lib.regex.substitute "^0+" ""
+    |> (chars:
+      if maxCharacters != null
+      then (lib.substring 0 maxCharacters chars)
+      else chars);
+
+  mkStableUuid = seed: let
+    h = builtins.hashString "sha256" seed;
+  in
+    lib.concatStringsSep "-" [
+      (builtins.substring 0 8 h)
+      (builtins.substring 8 4 h)
+      (builtins.substring 12 4 h)
+      (builtins.substring 16 4 h)
+      (builtins.substring 20 12 h)
+    ];
+
   nixFilesToAttrs = path:
     builtins.readDir path
     |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")

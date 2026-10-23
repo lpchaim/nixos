@@ -18,6 +18,17 @@ in {
           expected = true;
         });
     };
+    "Active servers have an IPv4 address" = {
+      pos = __curPos;
+      tests =
+        activeNixosConfigurations
+        |> lib.filterAttrs (_: os: os.config.my.profiles.server)
+        |> lib.mapAttrsToList (name: os: {
+          name = "ipv4-${name}";
+          actual = os.config.my.hostVars.ip.v4 or null != null;
+          expected = true;
+        });
+    };
     "Active servers have authorized keys" = {
       pos = __curPos;
       tests =

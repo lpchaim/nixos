@@ -9,7 +9,10 @@
     hardware.ups.enable = true;
     networking.trusted = true;
     security.u2f.relaxed = true;
-    services.home-assistant.enable = true;
+    services = {
+      adguardhome.enable = true;
+      home-assistant.enable = true;
+    };
     profiles = {
       headless = true;
       server = true;

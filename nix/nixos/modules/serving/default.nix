@@ -3,7 +3,7 @@
   lib,
   self,
   ...
-}: let
+} @ toplevel: let
   cfg = config.my.serving;
   externalDomain = self.vars.domain.main;
 in {
@@ -25,7 +25,7 @@ in {
         };
         address = lib.mkOption {
           type = lib.types.singleLineStr;
-          default = "localhost";
+          default = toplevel.config.my.hostVars.ip.v4 or "127.0.0.1";
         };
         port = lib.mkOption {
           type = with lib.types; nullOr int;
@@ -45,7 +45,6 @@ in {
           type = lib.types.str;
           default = "http://${config.address}:${toString config.port}";
           internal = true;
-          readOnly = true;
         };
         external.expose = lib.mkOption {
           type = lib.types.bool;
@@ -55,7 +54,6 @@ in {
           type = lib.types.str;
           default = "https://${config.cert.subDomain}.${config.cert.domain}";
           internal = true;
-          readOnly = true;
         };
         webSocket.enable = lib.mkOption {
           type = lib.types.bool;
