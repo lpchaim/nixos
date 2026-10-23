@@ -7,7 +7,7 @@
     accept-flake-config = true;
     auto-optimise-store = true;
     builders-use-substitutes = true;
-    extra-experimental-features = "flakes nix-command pipe-operator";
+    experimental-features = ["flakes" "nix-command" "pipe-operator"];
     http-connections = 20;
     keep-derivations = true;
     keep-outputs = true;
