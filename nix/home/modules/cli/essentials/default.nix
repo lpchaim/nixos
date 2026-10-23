@@ -47,7 +47,6 @@ in {
           smartmontools
           tgpt
           tig
-          yazi
           wget
           zip
         ])
@@ -79,6 +78,27 @@ in {
         historyWidget.command = "";
       };
       ripgrep.enable = true;
+      yazi = {
+        enable = true;
+        shellWrapperName = "y";
+        initLua =
+          # lua
+          ''
+            Status:children_add(function()
+            	local h = cx.active.current.hovered
+            	if not h or ya.target_family() ~= "unix" then
+            		return ""
+            	end
+
+            	return ui.Line {
+            		ui.Span(ya.user_name(h.cha.uid) or tostring(h.cha.uid)),
+            		":",
+            		ui.Span(ya.group_name(h.cha.gid) or tostring(h.cha.gid)),
+            		" ",
+            	}
+            end, 500, Status.RIGHT)
+          '';
+      };
       zoxide.enable = true;
     };
   };
