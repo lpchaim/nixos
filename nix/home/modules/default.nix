@@ -52,7 +52,7 @@
       starship.enable = lib.mkDefault true;
       tealdeer.enable = lib.mkDefault true;
       zellij.enable = lib.mkDefault true;
-      zsh.enable = lib.mkDefault true;
+      zsh.enable = lib.mkDefault false;
     };
     development = {
       enable = lib.mkDefault true;

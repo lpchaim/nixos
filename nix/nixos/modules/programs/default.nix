@@ -22,6 +22,5 @@
         extraArgs = "--keep 5";
       };
     };
-    zsh.enable = true;
   };
 }
