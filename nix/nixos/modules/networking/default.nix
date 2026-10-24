@@ -173,10 +173,11 @@ in {
       avahi = {
         enable = cfg.trusted;
         nssmdns4 = true;
-        domainName = domain;
-        publish.enable = true;
-        publish.addresses = true;
-        reflector = true;
+        settings = {
+          publish.publish-addresses = true;
+          reflector.enable-reflector = true;
+          server.domain-name = domain;
+        };
       };
       openvpn = {
         restartAfterSleep = true;

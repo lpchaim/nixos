@@ -39,7 +39,6 @@ in {
         };
       };
 
-      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
       security.rtkit.enable = true; # make pipewire realtime-capable
 
       services.pipewire.lowLatency.enable = true;

@@ -19,6 +19,7 @@ in {
         source ${./commands.nu}
         source "${nuScripts}/modules/formats/from-env.nu"
       '';
+      loadSessionVariables = true;
       plugins = with pkgs.nushellPlugins; [
         query
       ];

@@ -6,8 +6,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-26.05";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
+    unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
     # Hyprland
     dms = {
