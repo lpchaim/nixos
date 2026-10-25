@@ -28,6 +28,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
     freesmlauncher = {
@@ -44,6 +48,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
+    mmproxy = {
+      url = "github:cloudflare/mmproxy";
+      flake = false;
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/latest";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {
@@ -62,6 +70,10 @@
     };
     nur = {
       url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    panix = {
+      url = "github:mihakrumpestar/panix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";

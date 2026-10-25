@@ -17,12 +17,14 @@ in {
     (importApply' ./home/homeConfigurations.nix)
     (importApply' ./home/homeModules.nix)
     (importApply' ./legacyPackages)
+    (importApply' ./modules)
     (importApply' ./nixos/nixosConfigurations.nix)
     (importApply' ./nixos/nixosModules.nix)
     (importApply' ./overlays)
     (importApply' ./packages)
     (importApply' ./tests)
     inputs.agenix-rekey.flakeModule
+    (inputs.files + /flake-module.nix)
     inputs.git-hooks-nix.flakeModule
   ];
   perSystem = {
@@ -35,6 +37,13 @@ in {
       inherit (self) nixosConfigurations;
       agePackage = pkgs.rage;
       homeConfigurations = self.lib.getStandaloneHomeConfigurations self;
+    };
+    files = {
+      checks.enable = true;
+      writer = {
+        app = true;
+        exeFilename = "write-files";
+      };
     };
     formatter = pkgs.alejandra;
     pre-commit = {

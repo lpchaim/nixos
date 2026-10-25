@@ -1,8 +1,8 @@
-{
+{self, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
-    ../../../shared/storage/zfsPool.nix
+    (self + /nix/shared/storage/zfsPool.nix)
   ];
 
   my = {

@@ -32,6 +32,9 @@ in {
         ]
         ++ lib.optionals (config.pre-commit.settings.package != null) [
           config.pre-commit.settings.package
+        ]
+        ++ lib.optionals (config.files.writer.drv or null != null) [
+          config.files.writer.drv
         ];
       shellHook =
         config.pre-commit.installationScript

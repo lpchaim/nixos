@@ -6,23 +6,41 @@
     osConfig = {};
   };
   homeRoot = ./.;
-  mkHome = user: {
+  mkHome = home: {
     system ? "x86_64-linux",
     pkgs ? self.legacyPackages.${system}.pkgs,
     osConfig ? {},
+    extraModules ? [],
   }:
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       extraSpecialArgs = specialArgs // {inherit osConfig;};
-      modules = [
-        (homeRoot + /modules)
-        (homeRoot + "/configs/${user}.nix")
-      ];
+      modules =
+        [
+          (homeRoot + /modules)
+          (homeRoot + /configs/lpchaim.nix)
+          (homeRoot + /configs/${home}.nix)
+        ]
+        ++ extraModules;
     };
+  mkStandaloneHome = home: args:
+    mkHome home (args
+      // {
+        extraModules = [
+          {
+            home.username = lib.splitString "@" home |> lib.head;
+            my = {
+              hostName = lib.splitString "@" home |> lib.last;
+              profiles.standalone = true;
+            };
+          }
+        ];
+      });
 in {
   flake.homeConfigurations =
     {
-      "cheina@pc082" = mkHome "cheina@pc082" {};
+      "cheina@pc082" = mkStandaloneHome "cheina@pc082" {};
+      "lpchaim@steamdeck" = mkStandaloneHome "lpchaim@steamdeck" {};
     }
     // lib.concatMapAttrs (
       osName: {

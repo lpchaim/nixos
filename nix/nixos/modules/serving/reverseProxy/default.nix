@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   self,
   ...
@@ -30,8 +31,7 @@ in {
           |> map (ip: "set_real_ip_from ${ip};")
           |> lib.concatStringsSep "\n";
       in ''
-        ${mapIps "${self}/assets/cloudflareIpsV4.txt"}
-        ${mapIps "${self}/assets/cloudflareIpsV6.txt"}
+        ${mapIps "${inputs.mmproxy}/cloudflare-ip-ranges.txt"}
         real_ip_header CF-Connecting-IP;
       '';
       appendHttpConfig = ''

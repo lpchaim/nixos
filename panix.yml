@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=/nix/store/rb7xny5z3lz211prlkz89ks2njxkqpwx-panix-yaml-schema
+flags:
+  activation_mode:
+    pertype:
+      homeConfigurations: switch
+      nixosConfigurations: boot
+  tags:
+  - default
+fleet:
+  auto_rollback: false
+  flakes:
+    main:
+      installables:
+        homeConfigurations:
+          lpchaim@steamdeck:
+            machines:
+              steamdeck: {}
+            ssh:
+              username: lpchaim
+            tags:
+            - local
+            - personal
+        nixosConfigurations:
+          desktop:
+            machines:
+              desktop: {}
+            tags:
+            - local
+            - personal
+            - default
+          laptop:
+            machines:
+              laptop: {}
+            tags:
+            - local
+            - personal
+          raspberrypi:
+            machines:
+              raspberrypi: {}
+            tags:
+            - local
+            - server
+            - default
+  ssh:
+    disable_strict_key_checking: false
+    port: 22
+    username: root
+  tags:
+  - production

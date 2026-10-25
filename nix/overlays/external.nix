@@ -4,4 +4,5 @@ in
   lib.composeManyExtensions [
     inputs.agenix-rekey.overlays.default
     inputs.nix-gaming.overlays.default
+    (final: prev: {panix = inputs.panix.packages.${prev.stdenv.hostPlatform.system}.default;})
   ]
