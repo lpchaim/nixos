@@ -2,6 +2,7 @@
   config,
   lib,
   osConfig ? {},
+  pkgs,
   self,
   ...
 }: let
@@ -28,7 +29,10 @@ in {
     nixpkgs = lib.mkIf (osConfig == {}) nix.pkgs;
 
     home = {
-      sessionVariables.NIX_FLAKE_PATH = lib.replaceString "~" config.home.homeDirectory self.vars.flake.path;
+      sessionVariables = {
+        FLAKE_PATH = lib.replaceString "~" config.home.homeDirectory self.vars.flake.path;
+        SYSTEM = pkgs.stdenv.hostPlatform.system;
+      };
       file = lib.mkIf isLix {
         "${config.xdg.configHome}/nix/repl-overlay.nix".source = ./repl-overlay.nix;
       };

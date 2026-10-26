@@ -1,5 +1,5 @@
 {currentSystem, ...}: final: prev: let
-  flakePath = builtins.getEnv "NIX_FLAKE_PATH";
+  flakePath = builtins.getEnv "FLAKE_PATH";
   common = {
     inherit currentSystem;
   };

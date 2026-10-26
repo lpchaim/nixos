@@ -36,6 +36,7 @@ in {
           jq
           ncdu
           netcat
+          nix-tree
           nurl
           poppler
           procs
