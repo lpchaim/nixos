@@ -83,24 +83,43 @@ in {
             });
         };
         filters =
-          import ./adlists.nix
+          import ./adLists.nix
           |> lib.map (it:
             it
             // {
               enabled = true;
               id = mkStableNumericId 8 it.url |> lib.toInt;
             });
+        user_rules = import ./userRules.nix;
         clients = {
-          persistent =
-            lib.filterAttrs (_: host: host.ip.v4 or null != null) self.vars.hosts
-            |> lib.mapAttrsToList (name: host: {
-              inherit name;
-              uid = mkStableUuid (lib.concatStringsSep ":" [name host.ip.v4]);
-              ids = [host.ip.v4];
-              tags = ["device_pc" "os_linux"];
-              use_global_settings = true;
-              use_global_blocked_services = true;
-            });
+          persistent = let
+            hosts = lib.filterAttrs (_: host: host.ip.v4 or null != null) self.vars.hosts;
+            tailscaleNodes = self.vars.networks.tailscale.nodes;
+            hostClients =
+              lib.mapAttrsToList (name: host: {
+                inherit name;
+                uid = mkStableUuid "host:${name}";
+                ids =
+                  ([host.ip.v4] ++ [tailscaleNodes.${name}.ip.v4 or null])
+                  |> lib.filter (ip: ip != null);
+                tags = ["device_pc" "os_linux"];
+                use_global_settings = true;
+                use_global_blocked_services = true;
+              })
+              hosts;
+            nonHostTailscale = lib.removeAttrs tailscaleNodes (builtins.attrNames hosts);
+            tailscaleClients =
+              lib.mapAttrsToList (name: node: {
+                inherit name;
+                uid = mkStableUuid "tailscale:${name}";
+                ids = [node.ip.v4];
+                tags = lib.optionals (lib.elem "nixos" node.tags) ["device_pc" "os_linux"];
+                use_global_settings = true;
+                use_global_blocked_services = true;
+              })
+              nonHostTailscale;
+          in
+            hostClients ++ tailscaleClients;
           runtime_sources = {
             whois = true;
             arp = true;

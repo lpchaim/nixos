@@ -11,10 +11,11 @@ args: {
           pkgs.writers.writeNuBin "update-tailscale-vars"
           # nu
           ''
-            tailscale status --json
-              | from json
+            let status = tailscale status --json | from json
+            $status
               | get Peer
               | values
+              | append $status.Self
               | each {
                 [
                   ($in.DNSName | split row "." | first)
@@ -23,6 +24,7 @@ args: {
                       v4: ($in.TailscaleIPs | first),
                       v6: ($in.TailscaleIPs | last),
                     }
+                    tags: ($in | get --optional Tags | default [] | each { str replace --regex "^tag:" "" })
                   }
                 ]
               }
