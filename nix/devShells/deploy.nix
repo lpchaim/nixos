@@ -8,6 +8,7 @@
 
       inputsFrom = with self'.devShells; [
         maintenance
+        minimal
         nix
       ];
       packages = with pkgs; [

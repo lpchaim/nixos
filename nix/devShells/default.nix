@@ -10,16 +10,5 @@
 
   perSystem = {self', ...}: {
     devShells.default = self'.devShells.maintenance;
-    make-shell.imports = [
-      ({pkgs, ...}: {
-        env.EDITOR = "hx";
-        packages = with pkgs; [
-          bat
-          fish
-          git
-          helix
-        ];
-      })
-    ];
   };
 }
