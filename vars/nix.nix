@@ -1,4 +1,6 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  inherit (inputs.nixpkgs) lib;
+in {
   pkgs = {
     config.allowUnfree = true;
     overlays = builtins.attrValues inputs.self.overlays;
@@ -13,13 +15,13 @@
     keep-outputs = true;
     max-jobs = "auto";
     max-substitution-jobs = 20;
-    substituters = [
-      "https://cache.nixos.org?priority=1"
-      "https://nix-community.cachix.org?priority=2"
-      "https://cache.nixos-cuda.org?priority=3"
-      "https://lpchaim.cachix.org?priority=4"
-      "https://nix-gaming.cachix.org?priority=5"
-      "https://freesmlauncher.cachix.org?priority=6"
+    substituters = lib.imap1 (i: url: "${url}?priority=${toString i}") [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+      "https://cache.nixos-cuda.org"
+      "https://lpchaim.cachix.org"
+      "https://nix-gaming.cachix.org"
+      "https://freesmlauncher.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="

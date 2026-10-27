@@ -28,7 +28,7 @@ in {
           systems = self.systems;
         })
       );
-      channel.enable = lib.mkForce false;
+      channel.enable = true;
       distributedBuilds = true;
       gc.automatic = !config.programs.nh.enable || !config.programs.nh.clean.enable;
       sshServe = lib.mkIf (builtins.hasAttr config.networking.hostName builderConfigurations) {
