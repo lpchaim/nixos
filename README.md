@@ -66,6 +66,7 @@ As an example, this is a working NixOS configuration describing my main rig.
       de.gnome = true;
       de.hyprland = true;
       greeter.gdm = true;
+      builder = true;
       graphical = true;
     };
   };

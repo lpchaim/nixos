@@ -14,7 +14,6 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      panix
       piper
     ];
 

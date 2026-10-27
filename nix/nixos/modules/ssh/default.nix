@@ -20,7 +20,7 @@ in {
       settings = {
         AllowAgentForwarding = lib.mkDefault false;
         PasswordAuthentication = lib.mkDefault false;
-        PermitRootLogin = lib.mkDefault "no";
+        PermitRootLogin = lib.mkDefault "prohibit-password";
         KbdInteractiveAuthentication = lib.mkDefault false;
       };
     };

@@ -4,9 +4,13 @@ flags:
     pertype:
       homeConfigurations: switch
       nixosConfigurations: boot
+  local_machine_hostname: none
   tags:
   - default
 fleet:
+  activation_hooks:
+    pre:
+    - nix run nixpkgs#nvd -- diff /run/current-system "$PANIX_CLOSURE"
   auto_rollback: false
   flakes:
     main:
@@ -47,3 +51,4 @@ fleet:
     username: root
   tags:
   - production
+  - all

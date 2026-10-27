@@ -6,15 +6,19 @@
           homeConfigurations = "switch";
           nixosConfigurations = "boot";
         };
+        local_machine_hostname = "none";
         tags = ["default"];
       };
       fleet = {
-        tags = ["production"];
+        tags = ["production" "all"];
         auto_rollback = false;
         ssh = {
           username = "root";
           port = 22;
           disable_strict_key_checking = false;
+        };
+        activation_hooks = {
+          pre = [''nix run nixpkgs#nvd -- diff /run/current-system "$PANIX_CLOSURE"''];
         };
         flakes.main.installables = {
           nixosConfigurations = {

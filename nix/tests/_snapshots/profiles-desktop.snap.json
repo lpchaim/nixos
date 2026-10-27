@@ -6,6 +6,7 @@
     "hardware.gpu.nvidia"
   ],
   "nixos": [
+    "builder",
     "de.gnome",
     "de.hyprland",
     "formfactor.desktop",

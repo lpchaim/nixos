@@ -23,6 +23,7 @@
       de.gnome = true;
       de.hyprland = true;
       greeter.gdm = true;
+      builder = true;
       graphical = true;
     };
   };
