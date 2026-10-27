@@ -39,7 +39,7 @@ in {
             IdentityAgent = "none";
           }
           {
-            header = "Host *tangled.org,*tangled.sh";
+            header = "Host *tangled.org *tangled.sh";
             IdentityFile = config.my.secrets.ssh-tangled.path;
             IdentityAgent = "none";
           }
