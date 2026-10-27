@@ -19,34 +19,23 @@ in {
       packages =
         (with pkgs; [
           _7zz # Just 7-zip
-          bash
           chafa
-          cheat
           curl
           delta
-          difftastic
           dust
           duf
           fd
           file
-          fx
           gnutar
           hexyl
-          inshellisense
           jq
           ncdu
           netcat
-          nix-tree
-          nurl
-          poppler
           procs
           progress
           resvg
           rsync
-          sad
-          serpl
           smartmontools
-          tgpt
           tig
           wget
           zip

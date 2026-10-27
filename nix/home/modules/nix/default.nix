@@ -12,7 +12,6 @@
   isLix = lib.hasPrefix "lix" config.nix.package.name;
 in {
   options.my.nix.enable = lib.mkEnableOption "nix";
-
   config = lib.mkIf (cfg.enable) {
     my.secret.definitions = {
       "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {};

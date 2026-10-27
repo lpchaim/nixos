@@ -25,12 +25,22 @@ in {
       virtualization.oci.enable = true;
     };
 
-    documentation.man.cache.enable = false;
+    documentation = {
+      dev.enable = false;
+      doc.enable = false;
+      info.enable = false;
+      man.cache.enable = false;
+      nixos.enable = false;
+    };
     networking.firewall = {
       checkReversePath = "loose";
       logRefusedConnections = true;
       logRefusedPackets = true;
       logReversePathDrops = true;
+    };
+    nix = {
+      channel.enable = false;
+      registry = lib.mkForce {};
     };
   };
 }
