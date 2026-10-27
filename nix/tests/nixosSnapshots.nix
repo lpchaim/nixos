@@ -4,7 +4,7 @@
   ...
 }: {
   perSystem.nixtest.suites = {
-    "Age pubkeys snapshot" = {
+    "Age pubkeys are stable" = {
       pos = __curPos;
       tests =
         self.nixosConfigurations
@@ -14,7 +14,7 @@
           actual = os.config.age.rekey.hostPubkey;
         });
     };
-    "Filesystems snapshot" = {
+    "Filesystems are stable" = {
       pos = __curPos;
       tests =
         self.nixosConfigurations
@@ -27,7 +27,7 @@
             |> lib.mapAttrs (_: cfg: {inherit (cfg) device fsType options;});
         });
     };
-    "Profiles snapshot" = {
+    "Profiles are stable" = {
       pos = __curPos;
       tests =
         self.nixosConfigurations
@@ -41,6 +41,26 @@
             nixos = os.config.my.profiles |> filterEnabled |> attrsToString;
             home = os.config.home-manager.users.lpchaim.my.profiles |> filterEnabled |> attrsToString;
           };
+        });
+    };
+    "Generated IDs are stable" = {
+      pos = __curPos;
+      tests =
+        [0 1 (-1) "desktop"]
+        |> lib.imap (i: seed: {
+          name = "generated-id-${toString i}";
+          type = "snapshot";
+          actual = self.lib.mkStableNumericId null seed;
+        });
+    };
+    "Generated UUIDs are stable" = {
+      pos = __curPos;
+      tests =
+        [0 1 (-1) "desktop"]
+        |> lib.imap (i: seed: {
+          name = "generated-uuid-${toString i}";
+          type = "snapshot";
+          actual = self.lib.mkStableUuid seed;
         });
     };
   };

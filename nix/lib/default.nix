@@ -54,7 +54,7 @@
     |> lib.filterAttrs (_: content: content != null);
 
   mkStableNumericId = maxCharacters: seed:
-    builtins.hashString "sha256" seed
+    builtins.hashString "sha256" (seed |> toString |> lib.trim)
     |> inputs.nix-std.lib.regex.substitute "[^[:digit:]]" ""
     |> inputs.nix-std.lib.regex.substitute "^0+" ""
     |> (chars:
@@ -63,7 +63,7 @@
       else chars);
 
   mkStableUuid = seed: let
-    h = builtins.hashString "sha256" seed;
+    h = builtins.hashString "sha256" (seed |> toString |> lib.trim);
   in
     lib.concatStringsSep "-" [
       (builtins.substring 0 8 h)
