@@ -1,14 +1,16 @@
 _default:
   @just --list --list-submodules --unsorted
 
-mod home './just/home.just'
 mod generate './just/generate.just'
 mod secrets './just/secrets.just'
 mod secureboot './just/secureboot.just'
-mod system './just/system.just'
 mod theme './just/theme.just'
-mod tests './just/tests.just'
 mod u2f './just/u2f.just'
+mod unittests './just/unittests.just'
+
+# Run checks
+check:
+  nix flake check --quiet --all-systems
 
 # Run tests
-test *args: (tests::run args)
+test *args: (unittests::run args)
