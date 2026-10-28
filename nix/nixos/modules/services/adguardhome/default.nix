@@ -23,7 +23,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     my.serving.units.adguardhome = {
-      port = config.services.adguardhome.port;
+      port = 3000;
       extraUDPPorts = [53];
     };
 
@@ -32,7 +32,14 @@ in {
       openFirewall = true;
       mutableSettings = true;
       settings = {
-        address = "0.0.0.0:3000";
+        address = "0.0.0.0:${toString config.my.serving.units.adguardhome.port}";
+        dns = {
+          bind_hosts = [
+            "127.0.0.1"
+            config.my.hostVars.ip.v4
+          ];
+          port = 53;
+        };
         users = [
           {
             name = "lpchaim";
