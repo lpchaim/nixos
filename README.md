@@ -55,7 +55,14 @@ As an example, this is a working NixOS configuration describing my main rig.
       freesmlauncher.enable = true;
       osu.enable = true;
     };
-    networking.trusted = true;
+    networking = {
+      tailscale = {
+        enable = true;
+        advertise.exitNode = true;
+        advertise.routes = [self.vars.networks.home.routingPrefix];
+      };
+      trusted = true;
+    };
     serving.enable = true;
     virtualization.enable = true;
     users.emily.enable = true;
