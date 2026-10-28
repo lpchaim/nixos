@@ -17,10 +17,6 @@ in {
       scripts.enable = false;
     };
 
-    nix = {
-      channels = lib.mkForce {};
-      registry = lib.mkForce {};
-    };
     programs = {
       fish.generateCompletions = false;
       man.enable = false;

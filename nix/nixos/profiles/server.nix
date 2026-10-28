@@ -38,9 +38,5 @@ in {
       logRefusedPackets = true;
       logReversePathDrops = true;
     };
-    nix = {
-      channel.enable = false;
-      registry = lib.mkForce {};
-    };
   };
 }

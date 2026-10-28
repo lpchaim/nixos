@@ -18,7 +18,7 @@ in {
     };
 
     nix = {
-      channels = {inherit (self.inputs) nixpkgs stable unstable;};
+      channels = {inherit (self.inputs) nixpkgs;};
       extraOptions = ''
         !include ${config.my.secrets."nix-extra-access-tokens".path}
       '';
