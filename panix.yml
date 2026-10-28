@@ -45,6 +45,12 @@ fleet:
             - local
             - server
             - default
+        packages:
+          nixosConfigurations.raspberrypi.config.services.home-assistant.package:
+            machines:
+              raspberrypi: {}
+            tags:
+            - package
   ssh:
     disable_strict_key_checking: false
     port: 22

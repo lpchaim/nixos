@@ -1,6 +1,6 @@
 {
   perSystem = {pkgs, ...}: let
-    config = {
+    configFile = {
       flags = {
         activation_mode.pertype = {
           homeConfigurations = "switch";
@@ -42,6 +42,12 @@
               machines.steamdeck = {};
             };
           };
+          packages = {
+            "nixosConfigurations.raspberrypi.config.services.home-assistant.package" = {
+              tags = ["package"];
+              machines.raspberrypi = {};
+            };
+          };
         };
       };
     };
@@ -50,7 +56,7 @@
     '';
   in {
     files.file."panix.yml".source =
-      pkgs.writeText "panix-json" (builtins.toJSON config)
+      pkgs.writeText "panix-json" (builtins.toJSON configFile)
       |> (jsonFile:
         pkgs.runCommandLocal "panix-yml" {buildInputs = [pkgs.remarshal];} ''
           echo '# yaml-language-server: $schema=${schema}' > $out
