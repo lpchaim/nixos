@@ -2,6 +2,7 @@
   config,
   self,
   lib,
+  pkgs,
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
@@ -23,6 +24,7 @@ in {
   config = {
     my.secrets = config.age.secrets;
     age = {
+      ageBin = lib.getExe pkgs.rage;
       secrets = let
         osSecrets = config.my.secret.definitions;
         homeConfigs = config.home-manager.users;

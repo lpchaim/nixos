@@ -8,6 +8,7 @@
   packages = import ./packages.nix args;
   secrets = import ./secrets.nix args;
   services = import ./services.nix args;
+  systemd = import ./systemd.nix args;
   storage = import ./storage args;
   strings = import ./strings.nix args;
 
