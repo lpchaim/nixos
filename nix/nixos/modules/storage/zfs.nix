@@ -27,5 +27,16 @@ in {
     environment.systemPackages = with pkgs; [
       zfs
     ];
+
+    services.zfs = {
+      autoScrub = {
+        enable = true;
+        interval = "monthly";
+      };
+      trim = {
+        enable = true;
+        interval = "weekly";
+      };
+    };
   };
 }

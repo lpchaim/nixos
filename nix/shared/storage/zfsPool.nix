@@ -48,4 +48,6 @@
       ];
     };
   };
+
+  services.zfs.autoScrub.pools = ["tank"];
 }
