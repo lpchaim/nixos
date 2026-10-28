@@ -42,17 +42,34 @@ in {
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {
-        CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
         MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
       };
     };
 
-    programs.${shell}.enable = config.programs ? "${shell}";
     programs = {
+      ${shell}.enable = true;
+      bash.enable = true;
       bat.enable = true;
       broot.enable = true;
       btop.enable = true;
-      carapace.enable = true;
+      carapace = {
+        enable = true;
+        extraPackages = with pkgs; [
+          config.programs.zsh.package
+          config.programs.fish.package
+          inshellisense
+          config.programs.bash.package
+        ];
+        environment = {
+          CARAPACE_BRIDGES =
+            config.programs.carapace.extraPackages
+            |> map (pkg: pkg.meta.mainProgram or pkg.pname)
+            |> lib.concatStringsSep ",";
+          CARAPACE_LENIENT = 1;
+          CARAPACE_MATCH = 1; # Case insensitive
+          CARAPACE_MERGEFLAGS = 1;
+        };
+      };
       dircolors.enable = true;
       eza = {
         enable = true;

@@ -18,7 +18,6 @@ in {
       ffmpeg
       imagemagick
       inotify-tools
-      inshellisense
       jocalsend
       nix-output-monitor
       nix-tree
