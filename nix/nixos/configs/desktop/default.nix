@@ -6,7 +6,6 @@
   ];
 
   my = {
-    ci.build = true;
     gaming = {
       enable = true;
       freesmlauncher.enable = true;
