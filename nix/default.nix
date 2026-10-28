@@ -22,7 +22,7 @@ in {
     (importApply' ./nixos/nixosModules.nix)
     (importApply' ./overlays)
     (importApply' ./packages)
-    (importApply' ./tests)
+    (importApply' ../tests)
     inputs.agenix-rekey.flakeModule
     (inputs.files + /flake-module.nix)
     inputs.git-hooks-nix.flakeModule

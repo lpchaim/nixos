@@ -7,7 +7,7 @@
     self.nixosConfigurations
     |> lib.filterAttrs (_: os: !os.config.my.deprecated);
 in {
-  perSystem = {pkgs, ...}: {
+  perSystem = _: {
     nixtest.suites = {
       "Active hosts have vars" = {
         pos = __curPos;
@@ -44,19 +44,27 @@ in {
             expected = true;
           });
       };
-      "Systemd escaping matches binary logic" = {
+      "Age pubkeys are stable" = {
         pos = __curPos;
         tests =
-          ["/dev/ttyACM0" "/dev/serial/by-id/usb-NXP_SEMICONDUCTORS_MCU_VIRTUAL_COM_DEMO-if00"]
-          |> lib.imap (i: path: rec {
-            name = "systemd-path-${actual}";
-            actual = self.lib.systemd.escapePath path |> lib.trim;
-            expected =
-              pkgs.runCommandLocal "escaped-expected-${toString i}" {buildInputs = [pkgs.systemd];} ''
-                systemd-escape --path '${path}' > $out
-              ''
-              |> builtins.readFile
-              |> lib.trim;
+          self.nixosConfigurations
+          |> lib.mapAttrsToList (name: os: {
+            name = "pubkey-${name}";
+            type = "snapshot";
+            actual = os.config.age.rekey.hostPubkey;
+          });
+      };
+      "Filesystems are stable" = {
+        pos = __curPos;
+        tests =
+          self.nixosConfigurations
+          |> lib.mapAttrsToList (name: os: {
+            name = "filesystems-${name}";
+            type = "snapshot";
+            actual =
+              os.config.fileSystems
+              |> lib.filterAttrs (_: cfg: cfg.enable)
+              |> lib.mapAttrs (_: cfg: {inherit (cfg) device fsType options;});
           });
       };
     };
