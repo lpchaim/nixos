@@ -11,7 +11,14 @@ in {
     // {default = osConfig == {};};
 
   config = lib.mkIf cfg {
+    home.sessionVariables.BACKUP_EXTENSION = "backup";
+
     targets.genericLinux.enable = true;
+
+    programs.ssh.settings.local-standalone = lib.hm.dag.entryBefore ["local"] {
+      header = "Host *.local";
+      IdentityFile = ["~/.ssh/id_rsa"];
+    };
 
     xdg.mime.enable = false;
     xdg.systemDirs.data = [

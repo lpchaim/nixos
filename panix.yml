@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=/nix/store/rb7xny5z3lz211prlkz89ks2njxkqpwx-panix-yaml-schema
+flags:
+  activation_mode:
+    pertype:
+      homeConfigurations: switch
+      nixosConfigurations: boot
+  local_machine_hostname: none
+  tags:
+  - default
+fleet:
+  activation_hooks:
+    pre:
+    - nix run nixpkgs#nvd -- diff /run/current-system "$PANIX_CLOSURE"
+  auto_rollback: false
+  flakes:
+    main:
+      installables:
+        homeConfigurations:
+          lpchaim@steamdeck:
+            machines:
+              steamdeck: {}
+            ssh:
+              username: lpchaim
+            tags:
+            - local
+            - personal
+        nixosConfigurations:
+          desktop:
+            machines:
+              desktop: {}
+            tags:
+            - local
+            - personal
+            - default
+          laptop:
+            machines:
+              laptop: {}
+            tags:
+            - local
+            - personal
+          raspberrypi:
+            machines:
+              raspberrypi: {}
+            tags:
+            - local
+            - server
+            - default
+        packages:
+          nixosConfigurations.raspberrypi.config.services.home-assistant.package:
+            machines:
+              raspberrypi: {}
+            tags:
+            - package
+  ssh:
+    disable_strict_key_checking: false
+    port: 22
+    username: root
+  tags:
+  - production
+  - all

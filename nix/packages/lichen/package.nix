@@ -11,13 +11,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: rec {
   pname = "lichen";
-  version = "0.22.0-unstable";
+  version = "0.27.2-unstable";
 
   src = fetchFromSourcehut {
     owner = "~mikaela-md";
     repo = "lcc";
-    rev = "04858821e088297c328ee07679b6babbb4b28d68";
-    hash = "sha256-Jj+ki1xT+JgsGN1gjobBEfU+Xgeddnbm53Fhyj04f9A=";
+    rev = "1e4e3a794d268858b4b32aa4cd90de06a93ee2fb";
+    hash = "sha256-ehNa3fnw2lRFzxYXScpUQz13WnrsFceMluLddnJhwkw=";
   };
 
   nativeBuildInputs = [
@@ -70,6 +70,7 @@ stdenv.mkDerivation (finalAttrs: rec {
     set -e
     pushd ./scripts
     export PATH="$PATH:$out/bin"
+    export STDLIB_PATH="$out/lib"
     ${lib.getExe lua} ./run_tests.lua
     popd
 

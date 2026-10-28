@@ -1,5 +1,6 @@
 {
   imports = [
+    ./builder.nix
     ./de
     ./formfactor
     ./graphical.nix

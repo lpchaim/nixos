@@ -1,18 +1,11 @@
 {
   config,
   lib,
-  osConfig ? {},
   ...
 }: let
   cfg = config.my.gui.mangohud;
 in {
-  options.my.gui.mangohud.enable =
-    lib.mkEnableOption "gui apps"
-    // {
-      default =
-        config.my.gui.enable
-        && !(osConfig.jovian.steam.enable or false);
-    };
+  options.my.gui.mangohud.enable = lib.mkEnableOption "mangohud";
 
   config = lib.mkIf cfg.enable {
     programs.mangohud = {

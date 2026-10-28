@@ -8,9 +8,7 @@
   inherit (inputs.home-manager.lib) hm;
   cfg = config.my.gui.chromium;
 in {
-  options.my.gui.chromium.enable =
-    lib.mkEnableOption "custom chromium"
-    // {default = config.my.gui.enable;};
+  options.my.gui.chromium.enable = lib.mkEnableOption "custom chromium";
 
   config = lib.mkIf cfg.enable {
     programs.chromium = {

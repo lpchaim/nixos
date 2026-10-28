@@ -2,18 +2,29 @@
   config,
   self,
   lib,
+  pkgs,
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
-  inherit (self.lib.secrets) helpers;
+  inherit (self.lib.secrets) generators helpers;
 in {
-  options.my.secret.helpers = lib.mkOption {
-    default = helpers;
+  options.my.secret = {
+    generators = lib.mkOption {
+      default = generators;
+      internal = true;
+      readOnly = true;
+    };
+    helpers = lib.mkOption {
+      default = helpers;
+      internal = true;
+      readOnly = true;
+    };
   };
 
   config = {
     my.secrets = config.age.secrets;
     age = {
+      ageBin = lib.getExe pkgs.rage;
       secrets = let
         osSecrets = config.my.secret.definitions;
         homeConfigs = config.home-manager.users;

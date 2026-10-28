@@ -7,9 +7,7 @@
   cfg = config.my.gaming.obs;
 in {
   options.my.gaming.obs = {
-    enable =
-      lib.mkEnableOption "OBS"
-      // {default = config.my.gaming.enable;};
+    enable = lib.mkEnableOption "OBS";
     enableVirtualCamera = lib.mkEnableOption "OBS virtual webcam";
   };
 

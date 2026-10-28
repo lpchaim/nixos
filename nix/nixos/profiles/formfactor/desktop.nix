@@ -1,12 +1,10 @@
 # Desktop-specific configurations
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }: let
-  inherit (inputs.self.lib.services) mkOneShotBootService;
   cfg = config.my.profiles.formfactor.desktop;
 in {
   options.my.profiles.formfactor.desktop = lib.mkEnableOption "desktop profile";
@@ -17,25 +15,12 @@ in {
 
     environment.systemPackages = with pkgs; [
       piper
-      qmk
-      qmk_hid
-      qmk-udev-rules
-      via
-      waypipe
-      wayvnc
     ];
 
     boot.kernelPackages = pkgs.linuxPackages_zen;
 
-    hardware.keyboard.qmk = {
-      enable = true;
-      keychronSupport = true;
-    };
-
-    networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
-
-    systemd.services.usb-wakeup-disable = mkOneShotBootService {
-      script = "echo disabled | tee /sys/bus/usb/devices/*/power/wakeup";
-    };
+    services.udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"
+    '';
   };
 }

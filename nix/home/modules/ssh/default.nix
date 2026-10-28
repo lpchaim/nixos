@@ -26,38 +26,53 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
-        "*" = {
-          addKeysToAgent = "yes";
-          compression = false;
-          controlMaster = "no";
-          controlPath = "~/.ssh/master-%r@%n:%p";
-          controlPersist = "no";
-          forwardAgent = false;
-          hashKnownHosts = false;
-          identitiesOnly = true;
-          identityFile = [
-            config.my.secrets.ssh.path
-            config.my.secrets.ssh-yubikey-25388788.path
-            config.my.secrets.ssh-yubikey-26583315.path
-          ];
-          serverAliveCountMax = 3;
-          serverAliveInterval = 0;
-          setEnv.TERM = "xterm-256color";
-          userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/known_hosts_generated";
+      settings =
+        {
+          local = lib.hm.dag.entryBefore ["global"] {
+            header = "Host *.local";
+          };
+        }
+        // (lib.hm.dag.entriesBetween "git-provider" ["global"] ["local"] [
+          {
+            header = "Host *github.com";
+            IdentityFile = config.my.secrets.ssh-github.path;
+            IdentityAgent = "none";
+          }
+          {
+            header = "Host *tangled.org *tangled.sh";
+            IdentityFile = config.my.secrets.ssh-tangled.path;
+            IdentityAgent = "none";
+          }
+        ])
+        // {
+          global = {
+            header = "Host *";
+            AddKeysToAgent = "yes";
+            Compression = false;
+            ControlMaster = "no";
+            ControlPath = "~/.ssh/master-%r@%n:%p";
+            ControlPersist = "no";
+            ForwardAgent = false;
+            HashKnownHosts = false;
+            IdentitiesOnly = true;
+            IdentityFile = [
+              config.my.secrets.ssh.path
+              config.my.secrets.ssh-yubikey-25388788.path
+              config.my.secrets.ssh-yubikey-26583315.path
+            ];
+            ServerAliveCountMax = 3;
+            ServerAliveInterval = 0;
+            SetEnv.TERM = "xterm-256color";
+            UserKnownHostsFile = [
+              "~/.ssh/known_hosts"
+              "${self.legacyPackages.${system}.knownHosts}"
+            ];
+          };
         };
-        "*github.com".identityFile = config.my.secrets.ssh-github.path;
-        "*tangled.org".identityFile = config.my.secrets.ssh-tangled.path;
-        "*tangled.sh".identityFile = config.my.secrets.ssh-tangled.path;
-      };
     };
 
     services.ssh-agent = {
       enable = true;
-    };
-
-    home.file = {
-      ".ssh/known_hosts_generated".source = self.legacyPackages.${system}.knownHosts;
     };
   };
 }

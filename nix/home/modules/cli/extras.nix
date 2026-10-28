@@ -14,11 +14,18 @@ in {
     home.packages = with pkgs; [
       asciinema
       charm-freeze
+      difftastic
       ffmpeg
       imagemagick
       inotify-tools
       jocalsend
       nix-output-monitor
+      nix-tree
+      nurl
+      nvd
+      poppler
+      sad
+      serpl
       (symlinkJoin {
         name = "termshot";
         paths = [termshot];

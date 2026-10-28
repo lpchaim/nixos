@@ -32,7 +32,7 @@ in {
     {
       wayland.windowManager.hyprland = {
         enable = true;
-        configType = "lua";
+        configType = "hyprlang";
         systemd.variables = ["--all"];
         settings = {
           exec-once = [
@@ -200,6 +200,7 @@ in {
       services = {
         hyprpaper = {
           enable = true;
+          systemdTarget = "hyprland-session.target";
           settings = {
             ipc = "on";
             splash = false;
@@ -209,7 +210,7 @@ in {
         };
         wayland-pipewire-idle-inhibit = {
           enable = true;
-          systemdTarget = "graphical-session.target";
+          systemdTarget = "hyprland-session.target";
           settings = {
             verbosity = "INFO";
             media_minimum_duration = 10;
@@ -245,17 +246,6 @@ in {
           hyprpicker
           wlinhibit
         ];
-      };
-
-      xdg.portal = {
-        enable = true;
-        config.common.default = ["hyprland" "wlr" "gtk"];
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-hyprland
-          xdg-desktop-portal-wlr
-          xdg-desktop-portal-gtk
-        ];
-        xdgOpenUsePortal = true;
       };
     }
   ]);

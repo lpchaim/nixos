@@ -8,6 +8,7 @@
     lib.filterAttrs (_: fs: fs.fsType == fsType) config.fileSystems;
 in {
   imports = [
+    ./adguardhome
     ./home-assistant
     ./swayosd.nix
   ];

@@ -13,6 +13,7 @@
   boot.initrd.availableKernelModules = [
     "pcie_brcmstb" # required for the pcie bus to work
     "reset-raspberrypi" # required for vl805 firmware to load
+    "sdhci_iproc"
     "uas"
     "usbhid"
     "usb_storage"

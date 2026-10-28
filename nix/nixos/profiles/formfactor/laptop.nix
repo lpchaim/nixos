@@ -2,7 +2,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.my.profiles.formfactor.laptop;
@@ -10,11 +9,9 @@ in {
   options.my.profiles.formfactor.laptop = lib.mkEnableOption "laptop profile";
   config = lib.mkIf cfg {
     hardware.sensor.iio.enable = true;
-
     powerManagement.enable = true;
-
     programs.iio-hyprland.enable = config.programs.hyprland.enable;
-
+    networking.networkmanager.wifi.powersave = true;
     services = {
       auto-cpufreq = {
         enable = !config.services.power-profiles-daemon.enable;
@@ -27,12 +24,7 @@ in {
           };
         };
       };
-      fprintd = {
-        enable = true;
-        package = pkgs.fprintd.override {
-          libfprint = pkgs.libfprint-canvasbio-cb2000;
-        };
-      };
+      fprintd.enable = true;
       thermald.enable = true;
     };
   };

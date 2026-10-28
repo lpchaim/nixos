@@ -34,25 +34,37 @@ This is mainly for my NixOS configurations, but it also has a couple standalone 
 - No libraries with too much magic behind how they work
   - As little obfuscation as possible on how things work, compose my own tools from more barebones ones as needed
 
-I use [ez-configs] to get some boilerplate out of the way when it comes to setting up systems and home configurations. I usually define home configurations directly on the system configurations themselves since they tend to have similar functionality goals and complimentary options anyway.
+I usually define home configurations directly on the system configurations themselves since they tend to have similar functionality goals and complimentary options anyway.
 
 I have plenty of custom HM and NixOS modules, so I use `profiles` to group them together and massively simplify my configs. They also have enough smarts to, for instance, enable the `gnome` Home Manager module by default if the host system has the same module enabled.
 
 As an example, this is a working NixOS configuration describing my main rig.
 
 ```nix
-{config, ...}: let
-  inherit (config.my.config) name;
-in {
+{self, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
+    (self + /nix/shared/storage/zfsPool.nix)
   ];
 
   my = {
     ci.build = true;
-    gaming.enable = true;
-    networking.tailscale.trusted = true;
+    gaming = {
+      enable = true;
+      freesmlauncher.enable = true;
+      osu.enable = true;
+    };
+    networking = {
+      tailscale = {
+        enable = true;
+        advertise.exitNode = true;
+        advertise.routes = [self.vars.networks.home.routingPrefix];
+      };
+      trusted = true;
+    };
+    serving.enable = true;
+    virtualization.enable = true;
     users.emily.enable = true;
     profiles = {
       formfactor.desktop = true;
@@ -60,16 +72,15 @@ in {
       hardware.rgb = true;
       de.gnome = true;
       de.hyprland = true;
+      greeter.gdm = true;
+      builder = true;
       graphical = true;
     };
   };
 
-  networking.interfaces.enp6s0.wakeOnLan.enable = true;
-
-  age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMNf+oynlWr+Xq3UYKpCy8ih/w9sT6IuIKAtYjo6sfJr";
   system.stateVersion = "23.11";
-  home-manager.users.${name.user}.home.stateVersion = "24.11";
 }
+
 ```
 
 ## Look and feel
@@ -82,6 +93,7 @@ The color scheme used in my screenshots is `stella`.
 ## File structure
 
 I'm hoping the file structure under `/nix` is mostly self-explanatory. That said, there are a couple that bear explaining:
-- `nix/flakeModules` for flake modules consumed by [flake-parts]
+- `nix/default.nix` for flake output definitions
+- `nix/modules` for flake modules consumed by [flake-parts]
 - `nix/schemas` for my custom [flake-schemas] definitions
 - `nix/shared` for configuration and modules useful to both and NixOS and Home Manager

@@ -15,7 +15,6 @@ in {
     ./kitty.nix
     ./mangohud.nix
     ./media.nix
-    ./zenBrowser.nix
   ];
 
   options.my.gui.enable =
@@ -30,10 +29,21 @@ in {
       }
     ];
 
+    my.gui = {
+      chromium.enable = true;
+      firefox.enable = true;
+      imageEditors.enable = true;
+      kitty.enable = true;
+      mangohud.enable = true;
+      media.enable = true;
+    };
+
     home.packages = with pkgs; [
       element-desktop
       file-roller
+      flatpak
       gnome-system-monitor
+      gnome-terminal
       libreoffice
       loupe
       nautilus
@@ -65,6 +75,10 @@ in {
     };
 
     services = {
+      flatpak = {
+        enable = true;
+        packages = ["com.github.tchx84.Flatseal"];
+      };
       kdeconnect = lib.mkIf (osConfig != {}) {
         inherit (osConfig.programs.kdeconnect) package;
         enable = true;
@@ -84,6 +98,7 @@ in {
       mimeApps = {
         enable = true;
         defaultApplicationPackages = with pkgs; [
+          config.programs.firefox.package
           loupe
           nautilus
           vscode

@@ -13,21 +13,20 @@ in {
 
   options.my.gaming = {
     enable = lib.mkEnableOption "gaming tweaks";
-    steam.enable =
-      lib.mkEnableOption "steam tweaks"
-      // {default = config.my.gaming.enable;};
+    freesmlauncher.enable = lib.mkEnableOption "freesmlauncher";
+    lutris.enable = lib.mkEnableOption "lutris";
+    osu.enable = lib.mkEnableOption "osu";
+    steam.enable = lib.mkEnableOption "steam tweaks" // {default = cfg.enable;};
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [
-        lutris
-        osu-lazer-bin
-        parsec-bin
-        # wine-discord-ipc-bridge
-        protonup-qt
-        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
-      ];
+      my.users.defaultUserAttrs.extraGroups = ["gamemode"];
+
+      environment.systemPackages =
+        lib.optionals cfg.freesmlauncher.enable [inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher]
+        ++ lib.optionals cfg.lutris.enable [pkgs.lutris]
+        ++ lib.optionals cfg.osu.enable [pkgs.osu-lazer-bin];
 
       programs = {
         gamemode = {
@@ -40,16 +39,12 @@ in {
         };
       };
 
-      security.wrappers.gamescope.source = lib.mkForce (lib.getBin pkgs.gamescope);
       security.rtkit.enable = true; # make pipewire realtime-capable
 
       services.pipewire.lowLatency.enable = true;
-
-      services.flatpak.packages = [
-        "com.fightcade.Fightcade"
-      ];
     })
     (lib.mkIf cfg.steam.enable {
+      environment.systemPackages = [pkgs.protonup-qt];
       hardware.steam-hardware.enable = true;
       programs.steam = {
         enable = true;

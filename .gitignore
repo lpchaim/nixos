@@ -1,5 +1,4 @@
 .direnv
-.justfile
+.panix
 .pre-commit-config.yaml
-/home.nix
-/result
+/result*

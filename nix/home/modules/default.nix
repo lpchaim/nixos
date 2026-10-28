@@ -7,7 +7,6 @@
     (with inputs; [
       agenix.homeManagerModules.default
       agenix-rekey.homeManagerModules.default
-      caelestia.homeManagerModules.default
       dms.homeModules.dank-material-shell
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak
@@ -24,6 +23,7 @@
       ./cli
       ./de
       ./development
+      ./gaming
       ./gui
       ./llm
       ./misc

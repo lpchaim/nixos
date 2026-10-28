@@ -19,50 +19,57 @@ in {
       packages =
         (with pkgs; [
           _7zz # Just 7-zip
-          bash
           chafa
-          cheat
           curl
           delta
-          difftastic
           dust
           duf
           fd
           file
-          fx
           gnutar
           hexyl
-          inshellisense
           jq
           ncdu
-          nurl
-          poppler
+          netcat
           procs
           progress
           resvg
           rsync
-          sad
-          serpl
           smartmontools
-          tgpt
           tig
-          yazi
           wget
           zip
         ])
         ++ config.stylix.fonts.packages;
       sessionVariables = {
-        CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
         MANPAGER = "${lib.getExe pkgs.bat} --language man --plain";
       };
     };
 
-    programs.${shell}.enable = config.programs ? "${shell}";
     programs = {
+      ${shell}.enable = true;
+      bash.enable = true;
       bat.enable = true;
       broot.enable = true;
       btop.enable = true;
-      carapace.enable = true;
+      carapace = {
+        enable = true;
+        extraPackages = with pkgs; [
+          config.programs.zsh.package
+          config.programs.fish.package
+          inshellisense
+          config.programs.bash.package
+        ];
+        environment = {
+          CARAPACE_BRIDGES =
+            config.programs.carapace.extraPackages
+            |> map (pkg: pkg.meta.mainProgram or pkg.pname)
+            |> lib.concatStringsSep ",";
+          CARAPACE_LENIENT = 1;
+          CARAPACE_MATCH = 1; # Case insensitive
+          CARAPACE_MERGEFLAGS = 1;
+        };
+      };
       dircolors.enable = true;
       eza = {
         enable = true;
@@ -73,8 +80,32 @@ in {
         git = true;
         icons = "auto";
       };
-      fzf.enable = true;
+      fzf = {
+        enable = true;
+        historyWidget.command = "";
+      };
       ripgrep.enable = true;
+      yazi = {
+        enable = true;
+        shellWrapperName = "y";
+        initLua =
+          # lua
+          ''
+            Status:children_add(function()
+            	local h = cx.active.current.hovered
+            	if not h or ya.target_family() ~= "unix" then
+            		return ""
+            	end
+
+            	return ui.Line {
+            		ui.Span(ya.user_name(h.cha.uid) or tostring(h.cha.uid)),
+            		":",
+            		ui.Span(ya.group_name(h.cha.gid) or tostring(h.cha.gid)),
+            		" ",
+            	}
+            end, 500, Status.RIGHT)
+          '';
+      };
       zoxide.enable = true;
     };
   };

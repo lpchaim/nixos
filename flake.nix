@@ -1,65 +1,17 @@
 {
   description = "Defines my personal systems/home configs and whatnot";
 
-  outputs = {self, ...} @ inputs:
-    inputs.flake-parts.lib.mkFlake
-    {inherit inputs;}
-    ({flake-parts-lib, ...}: let
-      inherit (flake-parts-lib) importApply;
-      inherit (inputs.nixpkgs) lib;
-      specialArgs = {inherit inputs lib self;};
-      import' = path: import path specialArgs;
-      importApply' = path: importApply path specialArgs;
-      systems = ["aarch64-linux" "x86_64-linux"];
-    in {
-      inherit systems;
-      imports = [
-        (importApply' ./nix/flakeModules)
-        (importApply' ./nix/apps)
-        (importApply' ./nix/checks)
-        (importApply' ./nix/overlays)
-        (importApply' ./nix/packages)
-        (importApply' ./nix/legacyPackages)
-        (importApply' ./nix/shells)
-        (importApply' ./nix/tests)
-      ];
-      perSystem = {
-        pkgs,
-        system,
-        ...
-      }: {
-        _module.args.pkgs = self.lib.mkPkgs {inherit system;};
-        formatter = pkgs.alejandra;
-        legacyPackages.pkgs = self.lib.mkPkgs {
-          inherit system;
-          inherit (inputs) nixpkgs;
-        };
-      };
-      flake = {
-        inherit systems;
-        lib = import' ./nix/lib;
-        nixConfig = self.vars.nix.settings;
-        schemas =
-          inputs.flake-schemas.schemas
-          // (import' ./nix/schemas);
-        vars = import' ./vars;
-      };
-    });
+  outputs = inputs: import ./nix inputs;
 
   inputs = {
     # Nixpkgs
     nixpkgs.follows = "unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-hare.url = "github:lpchaim/nixpkgs/update-hare";
+    stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
+    unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
     # Hyprland
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    caelestia = {
-      url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -72,18 +24,13 @@
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    colmena = {
-      url = "github:zhaofengli/colmena";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ez-configs = {
-      url = "github:ehllie/ez-configs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
     };
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
@@ -96,15 +43,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     make-shell.url = "github:nicknovitski/make-shell";
+    mmproxy = {
+      url = "github:cloudflare/mmproxy";
+      flake = false;
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/latest";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nix-index-database = {
@@ -125,6 +72,11 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    panix = {
+      url = "github:mihakrumpestar/panix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -136,13 +88,6 @@
     wayland-pipewire-idle-inhibit = {
       url = "github:rafaelrc7/wayland-pipewire-idle-inhibit";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-      };
     };
   };
 }

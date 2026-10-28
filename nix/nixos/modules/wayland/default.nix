@@ -17,11 +17,15 @@ in {
       }
     ];
 
-    programs.xwayland.enable = true;
-
     environment.systemPackages = with pkgs; [
       nur.repos.ataraxiasjel.waydroid-script
+      waypipe
+      wayvnc
     ];
+
+    networking.firewall.allowedTCPPorts = [5900]; # Default VNC port
+
+    programs.xwayland.enable = true;
 
     # To init: sudo waydroid init -s GAPPS
     # See also: https://nixos.wiki/wiki/WayDroid

@@ -30,8 +30,7 @@ in {
           shell = pkgs.${shell};
           hashedPasswordFile = "${config.my.secrets."user.lpchaim.password".path}";
           openssh.authorizedKeys.keys =
-            perYubikey
-            // {inherit (perHost) laptop desktop;}
+            (perYubikey // {inherit (perHost) desktop laptop;})
             |> builtins.attrValues;
         };
     };

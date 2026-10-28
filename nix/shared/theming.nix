@@ -30,5 +30,10 @@ in {
       name = lib.mkDefault "Libre Baskerville";
       package = lib.mkDefault pkgs.libre-baskerville;
     };
+    overlays.enable = false;
+    targets = {
+      gnome.enable = false;
+      gtksourceview.enable = false;
+    };
   };
 }

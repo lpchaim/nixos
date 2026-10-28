@@ -21,7 +21,7 @@ in {
       plugins = with pkgs; [
         rofi-emoji
       ];
-      extraConfig = {
+      settings = {
         modes = "run,drun,window,filebrowser,recursivebrowser,ssh,keys,combi";
         modi = "run,drun,window,recursivebrowser,ssh";
         display-drun = "󰀻  Apps";

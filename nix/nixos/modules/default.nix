@@ -16,6 +16,7 @@
       nix-gaming.nixosModules.pipewireLowLatency
       nix-gaming.nixosModules.platformOptimizations
       nur.modules.nixos.default
+      quadlet-nix.nixosModules.quadlet
       stylix.nixosModules.stylix
     ])
     ++ [
@@ -52,10 +53,20 @@
     ];
 
   my = {
+    hardware = {
+      enable = lib.mkDefault true;
+      ups = {
+        device = lib.mkDefault "/dev/serial/by-id/usb-NXP_SEMICONDUCTORS_MCU_VIRTUAL_COM_DEMO-if00";
+        nut.driver = lib.mkDefault "gamatronic";
+      };
+    };
     kernel.enable = lib.mkDefault true;
-    networking.enable = lib.mkDefault true;
-    networking.ipv6.enable = lib.mkDefault true;
-    networking.tailscale.enable = lib.mkDefault true;
+    networking = {
+      enable = lib.mkDefault true;
+      ipv6.enable = lib.mkDefault true;
+      networkManager.enable = lib.mkDefault true;
+      tailscale.enable = lib.mkDefault true;
+    };
     nix.enable = lib.mkDefault true;
     pipewire.enable = lib.mkDefault true;
     security.enable = lib.mkDefault true;
@@ -65,21 +76,12 @@
     theming.enable = lib.mkDefault true;
     users.enable = lib.mkDefault true;
     users.lpchaim.enable = lib.mkDefault true;
-    virtualization.oci.services = {
-      cloudflare-ddns.enable = lib.mkDefault config.my.virtualization.oci.enable;
-      gotify.enable = lib.mkDefault config.my.virtualization.oci.enable;
-    };
     zram.enable = lib.mkDefault true;
   };
 
-  environment.systemPackages = with pkgs; [
-    helix
-    sbctl
-    vim
-    wget
-  ];
   home-manager = {
     backupFileExtension = "backup";
+    overwriteBackup = true;
     useGlobalPkgs = true;
     useUserPackages = true;
   };
@@ -87,5 +89,12 @@
   systemd = {
     targets.network-online.wantedBy = pkgs.lib.mkForce [];
     services.NetworkManager-wait-online.wantedBy = pkgs.lib.mkForce [];
+    sleep.settings.Sleep = {
+      AllowHibernation = "yes";
+      AllowHybridSleep = "yes";
+      AllowSuspend = "yes";
+      AllowSuspendThenHibernate = "yes";
+      HibernateDelaySec = "6h";
+    };
   };
 }
