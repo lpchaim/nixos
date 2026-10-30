@@ -2,140 +2,119 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  inherit
-    (lib)
-    concatStringsSep
-    elemAt
-    genList
-    mkEnableOption
-    mkIf
-    range
-    ;
+  inherit (self.lib.hyprland.lua) bind bindl bindle exec execCmd local mod;
 
   cfg = config.my.de.hyprland.binds;
-
-  makeDirectional = {
-    cmd,
-    mods ? [],
-    keys ? ["left" "right" "up" "down"],
-  }: let
-    trigger = concatStringsSep " " (["$mod"] ++ mods);
-    directions = ["l" "r" "u" "d"];
-  in (genList (i: "${trigger}, ${elemAt keys i}, ${cmd}, ${elemAt directions i}") 4);
-  makeDirectionalBinds = cmd: mods:
-    (makeDirectional {inherit cmd mods;})
-    ++ (makeDirectional {
-      inherit cmd mods;
-      keys = ["H" "L" "K" "J"];
-    });
-  makeWorkspaceBinds = cmd: mods: let
-    trigger = concatStringsSep " " (["$mod"] ++ mods);
-  in
-    map
-    (i: let
-      getKey = i:
-        toString (
-          if i == 10
-          then 0
-          else i
-        );
-      getWorkspace = i: toString i;
-    in "${trigger}, ${getKey i}, ${cmd}, ${getWorkspace i}")
-    (range 1 10);
 in {
   options.my.de.hyprland.binds = {
-    enable = mkEnableOption "bindings";
+    enable = lib.mkEnableOption "bindings";
     enableFnKeys = lib.mkEnableOption "function key bindings";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       settings = {
-        "$mod" = "SUPER";
+        mod = local "SUPER";
         bind =
           [
-            "$mod, E, exec, nautilus"
-            "CTRL ALT, L, exec, ${config.services.hypridle.settings.general.lock_cmd}"
-            "$mod, F11, exec, pidof grimblast || grimblast copy output --notify"
-            "$mod ALT, F11, exec, pidof grimblast || grimblast copy active --notify"
-            "$mod SHIFT, F11, exec, pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
+            (bind (mod "E") (execCmd "nautilus") {})
+            (bind "CTRL + ALT + L" (execCmd config.services.hypridle.settings.general.lock_cmd) {})
+            (bind (mod "F11") (execCmd "pidof grimblast || grimblast copy output --notify") {})
+            (bind (mod "ALT + F11") (execCmd "pidof grimblast || grimblast copy active --notify") {})
+            (bind (mod "SHIFT + F11") (execCmd "pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
               # Workaround for grimblast --freeze not actually freezing, see https://github.com/hyprwm/contrib/issues/37#issuecomment-1558933363
               hyprpicker -r -n -z &
               hyprpicker_pid=$!
               grimblast copy area --notify
               kill "$hyprpicker_pid"
-            ''}"
+            ''}") {})
 
-            # "$mod CTRL, Z, pseudo," # dwindle
-            "$mod, X, layoutmsg, togglesplit" # dwindle
-            "$mod SHIFT, X, layoutmsg, swapsplit" # dwindle
+            (bind (mod "X") (exec "hl.dsp.layout" ["togglesplit"]) {})
+            (bind (mod "SHIFT + X") (exec "hl.dsp.layout" ["swapsplit"]) {})
 
-            "$mod, Q, exec, ${pkgs.writeShellScript "killactive" ''
+            (bind (mod "Q") (execCmd (pkgs.writeShellScript "killactive" ''
               # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
               if [ "$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${lib.getBin pkgs.jq} -r ".class")" = "Steam" ]; then
                   ${lib.getBin pkgs.xdotool} getactivewindow windowunmap
               else
                   ${pkgs.hyprland}/bin/hyprctl dispatch killactive ""
               fi
-            ''}"
-            "$mod, F, togglefloating,"
-            "$mod SHIFT, F, setfloating,"
-            "$mod SHIFT, F, pin,"
-            "$mod, G, togglegroup,"
-            "$mod SHIFT, G, changegroupactive,"
-            "$mod, Z, fullscreen,"
+            '')) {})
+            (bind (mod "F") (exec "hl.dsp.window.float" [{action = "toggle";}]) {})
+            (bind (mod "SHIFT + F") (exec "hl.dsp.window.float" [{action = "set";}]) {})
+            (bind (mod "SHIFT + F") (exec "hl.dsp.window.pin" []) {})
+            (bind (mod "G") (exec "hl.dsp.group.toggle" []) {})
+            (bind (mod "Z") (exec "hl.dsp.window.fullscreen" [{mode = "fullscreen"; action = "toggle";}]) {})
 
-            "ALT, TAB, cyclenext, tiled"
-            "ALT SHIFT, TAB, cyclenext, prev tiled"
-            "$mod, TAB, cyclenext,"
-            "$mod SHIFT, TAB, cyclenext, prev"
+            (bind "ALT + TAB" (exec "hl.dsp.window.cycle_next" [{next = true; tiled = true;}]) {})
+            (bind "ALT + SHIFT + TAB" (exec "hl.dsp.window.cycle_next" [{prev = true; tiled = true;}]) {})
+            (bind (mod "TAB") (exec "hl.dsp.window.cycle_next" [{next = true;}]) {})
+            (bind (mod "SHIFT + TAB") (exec "hl.dsp.window.cycle_next" [{prev = true;}]) {})
 
-            "$mod, S, togglespecialworkspace, magic"
-            "$mod SHIFT, S, movetoworkspace, special:magic"
+            (bind (mod "S") (exec "hl.dsp.workspace.toggle_special" ["magic"]) {})
+            (bind (mod "SHIFT + S") (exec "hl.dsp.window.move" [{workspace = "special:magic";}]) {})
 
-            "$mod, mouse_down, workspace, e+1"
-            "$mod, mouse_up, workspace, e-1"
+            (bind (mod "SHIFT + ALT + L") (exec "hl.dsp.window.move" [{monitor = "+1";}]) {})
+            (bind (mod "SHIFT + ALT + H") (exec "hl.dsp.window.move" [{monitor = "-1";}]) {})
 
-            "$mod SHIFT ALT, 1, movewindow, mon:+1"
-            "$mod SHIFT ALT, 2, movewindow, mon:-1"
-          ]
-          ++ (makeDirectionalBinds "movefocus" [])
-          ++ (makeDirectionalBinds "movewindoworgroup" ["SHIFT"])
-          ++ (makeWorkspaceBinds "workspace" [])
-          ++ (makeWorkspaceBinds "movetoworkspace" ["SHIFT"])
-          ++ (lib.optional config.programs.firefox.enable "$mod, B, exec, firefox")
-          ++ (lib.optional config.programs.kitty.enable "$mod, T, exec, kitty")
-          ++ (lib.optional config.programs.wezterm.enable "$mod ALT, T, exec, wezterm");
+            (bind (mod "mouse:272") (exec "hl.dsp.window.drag" []) {}) # LMB
+            (bind (mod "mouse:273") (exec "hl.dsp.window.resize" []) {}) # RMB
+            (bind (mod "mouse_down") (exec "hl.dsp.focus" [{workspace = "e+1";}]) {})
+            (bind (mod "mouse_up") (exec "hl.dsp.focus" [{workspace = "e-1";}]) {})
 
-        bindle =
-          [
-            "$mod CTRL, H, resizeactive, -10 0"
-            "$mod CTRL, L, resizeactive, 10 0"
-            "$mod CTRL, K, resizeactive, 0 -10"
-            "$mod CTRL, J, resizeactive, 0 10"
+            (bind (mod "H") (exec "hl.dsp.focus" [{direction = "left";}]) {})
+            (bind (mod "J") (exec "hl.dsp.focus" [{direction = "down";}]) {})
+            (bind (mod "K") (exec "hl.dsp.focus" [{direction = "up";}]) {})
+            (bind (mod "L") (exec "hl.dsp.focus" [{direction = "right";}]) {})
+
+            (bind (mod "SHIFT + H") (exec "hl.dsp.window.move" [{into_or_create_group = "l";}]) {})
+            (bind (mod "SHIFT + J") (exec "hl.dsp.window.move" [{into_or_create_group = "d";}]) {})
+            (bind (mod "SHIFT + K") (exec "hl.dsp.window.move" [{into_or_create_group = "u";}]) {})
+            (bind (mod "SHIFT + L") (exec "hl.dsp.window.move" [{into_or_create_group = "r";}]) {})
+
+            (bindle (mod "CTRL + H") (exec "hl.dsp.window.resize" [{x = -10; y = 0; relative = true;}]))
+            (bindle (mod "CTRL + J") (exec "hl.dsp.window.resize" [{x = 0; y = 10; relative = true;}]))
+            (bindle (mod "CTRL + K") (exec "hl.dsp.window.resize" [{x = 0; y = -10; relative = true;}]))
+            (bindle (mod "CTRL + L") (exec "hl.dsp.window.resize" [{x = 10; y = 0; relative = true;}]))
+
+            (bind (mod "1") (exec "hl.dsp.focus" [{workspace = 1;}]) {})
+            (bind (mod "2") (exec "hl.dsp.focus" [{workspace = 2;}]) {})
+            (bind (mod "3") (exec "hl.dsp.focus" [{workspace = 3;}]) {})
+            (bind (mod "4") (exec "hl.dsp.focus" [{workspace = 4;}]) {})
+            (bind (mod "5") (exec "hl.dsp.focus" [{workspace = 5;}]) {})
+            (bind (mod "6") (exec "hl.dsp.focus" [{workspace = 6;}]) {})
+            (bind (mod "7") (exec "hl.dsp.focus" [{workspace = 7;}]) {})
+            (bind (mod "8") (exec "hl.dsp.focus" [{workspace = 8;}]) {})
+            (bind (mod "9") (exec "hl.dsp.focus" [{workspace = 9;}]) {})
+            (bind (mod "0") (exec "hl.dsp.focus" [{workspace = 10;}]) {})
+
+            (bind (mod "SHIFT + 1") (exec "hl.dsp.window.move" [{workspace = 1;}]) {})
+            (bind (mod "SHIFT + 2") (exec "hl.dsp.window.move" [{workspace = 2;}]) {})
+            (bind (mod "SHIFT + 3") (exec "hl.dsp.window.move" [{workspace = 3;}]) {})
+            (bind (mod "SHIFT + 4") (exec "hl.dsp.window.move" [{workspace = 4;}]) {})
+            (bind (mod "SHIFT + 5") (exec "hl.dsp.window.move" [{workspace = 5;}]) {})
+            (bind (mod "SHIFT + 6") (exec "hl.dsp.window.move" [{workspace = 6;}]) {})
+            (bind (mod "SHIFT + 7") (exec "hl.dsp.window.move" [{workspace = 7;}]) {})
+            (bind (mod "SHIFT + 8") (exec "hl.dsp.window.move" [{workspace = 8;}]) {})
+            (bind (mod "SHIFT + 9") (exec "hl.dsp.window.move" [{workspace = 9;}]) {})
+            (bind (mod "SHIFT + 0") (exec "hl.dsp.window.move" [{workspace = 10;}]) {})
           ]
           ++ lib.optionals cfg.enableFnKeys [
-            ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-            ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-            ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-            ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-"
-          ];
-        bindl = lib.optionals cfg.enableFnKeys [
-          ", XF86AudioPlay, exec, playerctl play-pause"
-          ", XF86AudioNext, exec, playerctl next"
-          ", XF86AudioPrev, exec, playerctl previous"
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ];
-        bindm = [
-          "$mod, mouse:272, movewindow" # LMB
-          "$mod, mouse:273, resizewindow" # RMB
-        ];
-        misc = {
-          enable_swallow = true;
-          swallow_regex = "^(kitty|wezterm)";
-        };
+            (bindle "XF86MonBrightnessDown" (execCmd "brightnessctl set 5%-"))
+            (bindle "XF86MonBrightnessUp" (execCmd "brightnessctl set 5%+"))
+            (bindle "XF86AudioRaiseVolume" (execCmd "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
+            (bindle "XF86AudioLowerVolume" (execCmd "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-"))
+            (bindl "XF86AudioPlay" (execCmd "playerctl play-pause"))
+            (bindl "XF86AudioNext" (execCmd "playerctl next"))
+            (bindl "XF86AudioPrev" (execCmd "playerctl previous"))
+            (bindl "XF86AudioMute" (execCmd "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+          ]
+          ++ (lib.optional config.programs.firefox.enable (bind (mod "B") (execCmd "firefox") {}))
+          ++ (lib.optional config.programs.kitty.enable (bind (mod "T") (execCmd "kitty") {}))
+          ++ (lib.optional config.programs.wezterm.enable (bind (mod "ALT + T") (execCmd "wezterm") {}));
       };
     };
 

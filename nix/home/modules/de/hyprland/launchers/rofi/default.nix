@@ -2,18 +2,20 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
+  inherit (self.lib.hyprland.lua) bindr execCmd mod;
   cfg = config.my.de.hyprland.launchers.rofi;
 in {
   options.my.de.hyprland.launchers.rofi.enable = lib.mkEnableOption "rofi";
 
   config = lib.mkIf cfg.enable {
-    wayland.windowManager.hyprland.settings.bindr = [
-      "$mod, SUPER_L, exec, pkill rofi || rofi -show drun"
-      "$mod, R, exec, pkill rofi || rofi -show run"
-      "$mod, W, exec, pkill rofi || rofi -show window"
-      "$mod, period, exec, pkill rofi || rofi -modi emoji -show emoji"
+    wayland.windowManager.hyprland.settings.bind = [
+      (bindr (mod "SUPER_L") (execCmd "pkill rofi || rofi -show drun"))
+      (bindr (mod "R") (execCmd "pkill rofi || rofi -show run"))
+      (bindr (mod "W") (execCmd "pkill rofi || rofi -show window"))
+      (bindr (mod "period") (execCmd "pkill rofi || rofi -modi emoji -show emoji"))
     ];
 
     programs.rofi = {
