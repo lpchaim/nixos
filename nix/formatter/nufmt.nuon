@@ -1,0 +1,7 @@
+{
+  consistent_branches: "single_line"
+  indent: 2
+  indent_char: "space"
+  line_length: 80
+  margin: 0
+}

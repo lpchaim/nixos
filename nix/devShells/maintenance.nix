@@ -3,7 +3,6 @@
 in {
   perSystem = {
     config,
-    lib,
     pkgs,
     self',
     ...
@@ -26,16 +25,13 @@ in {
           rage
           yaml-language-server
         ])
-        ++ config.pre-commit.settings.enabledPackages
-        ++ lib.optionals (config.agenix-rekey.package != null) [
-          config.agenix-rekey.package
-        ]
-        ++ lib.optionals (config.pre-commit.settings.package != null) [
-          config.pre-commit.settings.package
-        ]
-        ++ lib.optionals (config.files.writer.drv or null != null) [
-          config.files.writer.drv
-        ];
+        ++ (with config; [
+          agenix-rekey.package
+          files.writer.drv
+          pre-commit.settings.package
+          treefmt.build.wrapper
+        ])
+        ++ config.pre-commit.settings.enabledPackages;
       shellHook =
         config.pre-commit.installationScript
         + ''
