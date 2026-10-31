@@ -40,7 +40,7 @@ runs:
         sudo systemctl daemon-reload
         sudo systemctl restart nix-daemon
         )
-    - uses: cachix/cachix-action@v16
+    - uses: cachix/cachix-action@v17
       with:
         name: lpchaim
         authToken: ${{ inputs.cachixAuthToken }}

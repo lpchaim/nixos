@@ -5,7 +5,6 @@
   ];
 
   my = {
-    ci.build = true;
     gaming.steam.enable = true;
     networking.trusted = true;
     profiles = {

@@ -5,7 +5,6 @@
   ];
 
   my = {
-    ci.build = true;
     hardware.ups.enable = true;
     networking.trusted = true;
     security.u2f.relaxed = true;
