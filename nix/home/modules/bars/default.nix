@@ -1,5 +1,5 @@
 {
   imports = [
-    ./dank-material-shell
+    ./dux-shell
   ];
 }

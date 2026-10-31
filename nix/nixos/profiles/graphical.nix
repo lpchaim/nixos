@@ -26,6 +26,12 @@ in {
       57621 # spotify local discovery
       5353 # spotify cast discovery
     ];
+    programs = {
+      gpu-screen-recorder = {
+        enable = true;
+        ui.enable = true;
+      };
+    };
     services.xserver.enable = lib.mkDefault true;
     xdg.portal = {
       enable = true;
