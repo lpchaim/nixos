@@ -35,14 +35,7 @@ in {
             (bind (mod "X") (exec "hl.dsp.layout" ["togglesplit"]) {})
             (bind (mod "SHIFT + X") (exec "hl.dsp.layout" ["swapsplit"]) {})
 
-            (bind (mod "Q") (execCmd (pkgs.writeShellScript "killactive" ''
-              # See https://wiki.hyprland.org/configuring/uncommon-tips--tricks/#minimize-steam-instead-of-killing
-              if [ "$(${pkgs.hyprland}/bin/hyprctl activewindow -j | ${lib.getBin pkgs.jq} -r ".class")" = "Steam" ]; then
-                  ${lib.getBin pkgs.xdotool} getactivewindow windowunmap
-              else
-                  ${pkgs.hyprland}/bin/hyprctl dispatch killactive ""
-              fi
-            '')) {})
+            (bind (mod "Q") (exec "hl.dsp.window.close" []) {})
             (bind (mod "F") (exec "hl.dsp.window.float" [{action = "toggle";}]) {})
             (bind (mod "SHIFT + F") (exec "hl.dsp.window.float" [{action = "set";}]) {})
             (bind (mod "SHIFT + F") (exec "hl.dsp.window.pin" []) {})

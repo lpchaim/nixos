@@ -16,12 +16,13 @@
               then "hyprland.lua"
               else "hyprland.conf";
             configFile = config.home.file."${config.home.homeDirectory}/.config/hypr/${configFileName}".source;
+            hyprland = config.wayland.windowManager.hyprland.finalPackage;
           in {
             name = "hyprland-${name}";
             type = "script";
             script = ''
-              export XDG_RUNTIME_DIR=$(mktmp)
-              ${lib.getExe pkgs.hyprland} --verify-config --config '${configFile}'
+              export XDG_RUNTIME_DIR=$(${lib.getExe' pkgs.coreutils "mktemp"})
+              ${lib.getExe hyprland} --verify-config --config '${configFile}'
             '';
           });
       };

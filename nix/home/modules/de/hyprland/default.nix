@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  osConfig ? {},
   self,
   ...
 }: let
@@ -37,10 +38,11 @@ in {
         systemd.variables = ["--all"];
         settings = {
           on = [
-            (on "hyprland.start" [
-              (exec "hl.exec_cmd" ["steam -silent" {workspace = "10 silent";}])
-              (exec "hl.exec_cmd" ["openrgb --startminimized" {workspace = "10 silent";}])
-            ])
+            (on "hyprland.start" (
+              lib.optional osConfig.my.gaming.steam.enable (exec "hl.exec_cmd" ["steam -silent" {workspace = "10 silent";}])
+              ++ lib.optional osConfig.my.profiles.hardware.rgb (exec "hl.exec_cmd" ["openrgb --startminimized" {workspace = "10 silent";}])
+              ++ lib.optional config.my.gui.enable (exec "hl.exec_cmd" ["vesktop --start-minimized" {workspace = "special:magic silent";}])
+            ))
           ];
           config = {
             animations.enabled = true;

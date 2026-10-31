@@ -1,4 +1,10 @@
-{lib, ...}: {
+{
+  lib,
+  self,
+  ...
+}: let
+  stripParentheses = self.lib.strings.stripEnclosing "(" ")";
+in {
   lua = rec {
     args = args: {_args = args;};
     bind = keys: dispatcher: flags:
@@ -19,14 +25,18 @@
     local = var: {_var = var;};
     mod = keys: lua "mod .. ' + ${keys}'";
     on = event: execs:
-      args [
-        event
-        (lua ''
-          function()
-            ${execs |> map (lib.generators.toLua {}) |> lib.concatStringsSep "\n  "}
-          end
-        '')
-      ];
+      if (builtins.length execs > 0)
+      then
+        args [
+          event
+          (lua ''
+            function()
+              ${execs
+              |> map (_exec: _exec |> lib.generators.toLua {} |> stripParentheses)
+              |> lib.concatStringsSep "\n  "}
+            end'')
+        ]
+      else args [];
     lua = lib.generators.mkLuaInline;
   };
 }
