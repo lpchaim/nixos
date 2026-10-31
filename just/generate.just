@@ -1,6 +1,6 @@
 # Generate stable MAC address
 @mac host interface='':
-  echo "{{host}}{{interface}}"|md5sum|sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
+  echo "{{ host }}{{ interface }}"|md5sum|sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
 
 # Generate hostId
 @hostId:

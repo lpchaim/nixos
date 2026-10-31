@@ -23,7 +23,6 @@ in {
         netbootxyz.enable = true;
       };
     };
-    initrd.systemd.enable = true;
     plymouth = {
       enable = mkDefault false;
       theme = mkDefault "breeze";

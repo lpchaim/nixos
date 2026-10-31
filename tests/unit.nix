@@ -29,8 +29,8 @@
         pos = __curPos;
         tests =
           ["/dev/ttyACM0" "/dev/serial/by-id/usb-NXP_SEMICONDUCTORS_MCU_VIRTUAL_COM_DEMO-if00"]
-          |> lib.imap (i: path: rec {
-            name = "systemd-path-${actual}";
+          |> lib.imap (i: path: {
+            name = "systemd-path-${path}";
             actual = self.lib.systemd.escapePath path |> lib.trim;
             expected =
               pkgs.runCommandLocal "escaped-expected-${toString i}" {buildInputs = [pkgs.systemd];} ''

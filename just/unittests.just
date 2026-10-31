@@ -4,7 +4,7 @@ set working-directory := '../'
 run *args:
   @nix run .#nixtests:run -- \
   --snapshot-dir ./tests/_snapshots \
-  {{args}} \
+  {{ args }} \
   | sed -e 's|✅| |' -e 's|❌| |'
 
 # Updates test snapshots

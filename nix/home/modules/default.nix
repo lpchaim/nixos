@@ -47,7 +47,12 @@
       essentials.enable = lib.mkDefault true;
       extras.enable = lib.mkDefault true;
       fish.enable = lib.mkDefault true;
-      git.enable = lib.mkDefault true;
+      git = {
+        enable = lib.mkDefault true;
+        aliases.enable = lib.mkDefault true;
+        difftastic.enable = lib.mkDefault true;
+        lazygit.enable = lib.mkDefault true;
+      };
       nushell.enable = lib.mkDefault true;
       starship.enable = lib.mkDefault true;
       tealdeer.enable = lib.mkDefault true;

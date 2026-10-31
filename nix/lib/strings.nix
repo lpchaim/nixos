@@ -11,4 +11,5 @@ in {
     (attrNames replacements)
     (attrValues replacements)
     str;
+  stripEnclosing = lhs: rhs: str: str |> lib.removePrefix lhs |> lib.removeSuffix rhs;
 }

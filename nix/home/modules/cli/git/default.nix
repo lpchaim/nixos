@@ -9,16 +9,30 @@
 in {
   options.my.cli.git = {
     enable = lib.mkEnableOption "git";
-    aliases.enable = lib.mkEnableOption "git aliases" // {default = cfg.enable;};
-    delta.enable = lib.mkEnableOption "delta diffs for git" // {default = cfg.enable;};
-    lazygit.enable = lib.mkEnableOption "lazygit" // {default = cfg.enable;};
+    aliases.enable = lib.mkEnableOption "git aliases";
+    delta.enable = lib.mkEnableOption "delta diffs for git";
+    difftastic.enable = lib.mkEnableOption "difftastic diffs for git";
+    lazygit.enable = lib.mkEnableOption "lazygit";
   };
 
   config = lib.mkIf cfg.enable {
     programs = {
-      delta = lib.mkIf cfg.delta.enable {
-        enable = true;
+      delta = {
+        enable = cfg.delta.enable;
         enableGitIntegration = true;
+      };
+      difftastic = {
+        enable = cfg.delta.enable;
+        options = {
+          color = "always";
+          sort-paths = true;
+          skip-unchanged = true;
+          tab-width = 2;
+        };
+        git = {
+          enable = true;
+          mode = "both";
+        };
       };
       git = {
         enable = true;

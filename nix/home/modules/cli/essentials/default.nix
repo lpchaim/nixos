@@ -21,7 +21,6 @@ in {
           _7zz # Just 7-zip
           chafa
           curl
-          delta
           dust
           duf
           fd

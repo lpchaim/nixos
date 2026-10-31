@@ -14,6 +14,7 @@ in {
     (importApply' ./apps)
     (importApply' ./checks)
     (importApply' ./devShells)
+    (importApply' ./formatter)
     (importApply' ./home/homeConfigurations.nix)
     (importApply' ./home/homeModules.nix)
     (importApply' ./legacyPackages)
@@ -32,7 +33,7 @@ in {
     self',
     ...
   }: {
-    _module.args.pkgs = self'.legacyPackages.pkgs;
+    _module.args = {inherit (self'.legacyPackages) pkgs;};
     agenix-rekey = {
       inherit (self) nixosConfigurations;
       agePackage = pkgs.rage;
@@ -45,17 +46,15 @@ in {
         exeFilename = "write-files";
       };
     };
-    formatter = pkgs.alejandra;
     pre-commit = {
       inherit pkgs;
       check.enable = true;
       settings = {
         enable = true;
         addGcRoot = true;
+        package = pkgs.prek;
         hooks = {
-          actionlint.enable = true;
           check-merge-conflicts.enable = true;
-          alejandra.enable = true;
           ripsecrets.enable = true;
         };
       };

@@ -12,5 +12,9 @@ in {
       compositor.name = lib.mkDefault "hyprland";
       configHome = "/home/lpchaim";
     };
+
+    security.pam.services.greetd = {
+      inherit (config.security.pam.services.login) fprintAuth u2fAuth;
+    };
   };
 }

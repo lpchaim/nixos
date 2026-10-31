@@ -5,6 +5,7 @@
   ...
 } @ args: {
   flake = import ./flake.nix args;
+  hyprland = import ./hyprland.nix args;
   packages = import ./packages.nix args;
   secrets = import ./secrets.nix args;
   services = import ./services.nix args;

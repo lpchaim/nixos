@@ -2,10 +2,12 @@
   config,
   lib,
   pkgs,
+  osConfig ? {},
   self,
   ...
 }: let
   inherit (self.vars) kb;
+  inherit (self.lib.hyprland.lua) args exec on;
   cfg = config.my.de.hyprland;
 in {
   imports = [
@@ -32,80 +34,97 @@ in {
     {
       wayland.windowManager.hyprland = {
         enable = true;
-        configType = "hyprlang";
+        configType = "lua";
         systemd.variables = ["--all"];
         settings = {
-          exec-once = [
-            "[workspace 10 silent] steam -silent"
-            "[workspace 10 silent] openrgb --startminimized"
+          on = [
+            (on "hyprland.start" (
+              lib.optional osConfig.my.gaming.steam.enable (exec "hl.exec_cmd" ["steam -silent" {workspace = "10 silent";}])
+              ++ lib.optional osConfig.my.profiles.hardware.rgb (exec "hl.exec_cmd" ["openrgb --startminimized" {workspace = "10 silent";}])
+              ++ lib.optional config.my.gui.enable (exec "hl.exec_cmd" ["vesktop --start-minimized" {workspace = "special:magic silent";}])
+            ))
           ];
-          general = {
-            gaps_in = 2;
-            gaps_out = 5;
-            border_size = 2;
-            "col.active_border" = lib.mkDefault "rgba(33ccffee) rgba(00ff99ee) 45deg";
-            "col.inactive_border" = lib.mkDefault "rgba(595959aa)";
-            resize_on_border = true;
-            allow_tearing = true;
-            layout = "dwindle";
-          };
-          decoration = {
-            rounding = 5;
-            active_opacity = 0.9;
-            inactive_opacity = 0.8;
-            blur = {
-              enabled = true;
-              size = 10;
-              passes = 3;
-              noise = 0.1;
-              contrast = 0.9;
-              brightness = 0.8;
-              vibrancy = 0.2;
-              new_optimizations = true;
-              popups = true;
-              special = false;
-              xray = true;
+          config = {
+            animations.enabled = true;
+            general = {
+              gaps_in = 2;
+              gaps_out = 5;
+              border_size = 2;
+              col = {
+                active_border = lib.mkDefault "rgb(a5aad4)";
+                inactive_border = lib.mkDefault "rgb(655978)";
+              };
+              resize_on_border = true;
+              allow_tearing = true;
+              layout = "dwindle";
+            };
+            decoration = {
+              rounding = 5;
+              active_opacity = 0.9;
+              inactive_opacity = 0.8;
+              blur = {
+                enabled = true;
+                size = 10;
+                passes = 3;
+                noise = 0.1;
+                contrast = 0.9;
+                brightness = 0.8;
+                vibrancy = 0.2;
+                new_optimizations = true;
+                popups = true;
+                special = false;
+                xray = true;
+              };
+            };
+            dwindle = {
+              smart_split = true;
+              smart_resizing = true;
+              preserve_split = true;
+              precise_mouse_move = true;
+            };
+            master = {
+              allow_small_split = true;
+              mfact = "0.7";
+              new_on_active = "after";
+              new_status = "inherit";
+            };
+            misc = {
+              disable_hyprland_logo = true;
+              focus_on_activate = true;
+              vrr = 2; # Fullscreen only
+            };
+            input = {
+              kb_layout = kb.default.layout;
+              kb_variant = kb.default.variant;
+              kb_options = kb.default.options;
+              follow_mouse = 1;
+              touchpad.natural_scroll = false;
+              resolve_binds_by_sym = false;
+            };
+            binds.workspace_center_on = 1; # Last active
+            opengl.nvidia_anti_flicker = true;
+            debug.disable_logs = false;
+            misc = {
+              enable_swallow = true;
+              swallow_regex = "^(kitty|wezterm)$";
             };
           };
-          animations = {
-            enabled = true;
-            bezier = [
-              "easein, 0.42, 0, 0.58, 1"
-              "easeout, 0.42, 0, 1, 1"
-              "easeinout, 0, 0, 0.58, 1"
-            ];
-            animation = [
-              "windows, 1, 2, easeinout"
-              "layers, 1, 2, easeinout"
-              "fade, 1, 2, easeinout"
-              "border, 1, 2, easeinout"
-              "borderangle, 1, 2, easeinout"
-              "workspaces, 1, 3, easeinout, slide"
-              "specialWorkspace, 1, 3, easeinout, slidevert -50%"
-            ];
-          };
-          dwindle = {
-            pseudotile = true;
-            smart_split = true;
-            smart_resizing = true;
-            preserve_split = true;
-          };
-          master = {
-            new_status = "master";
-          };
-          misc = {
-            disable_hyprland_logo = true;
-            focus_on_activate = true;
-            vrr = 2; # Fullscreen only
-          };
-          input = {
-            kb_layout = kb.default.layout;
-            kb_variant = kb.default.variant;
-            kb_options = kb.default.options;
-            follow_mouse = 1;
-            touchpad.natural_scroll = false;
-            resolve_binds_by_sym = false;
-          };
+          monitor = [
+            {
+              output = "";
+              mode = "highrr";
+              position = "auto";
+              scale = "1";
+              vrr = 2;
+            }
+            {
+              output = "eDP-1";
+              mode = "highrr";
+              position = "auto";
+              scale = "1";
+              vrr = 2;
+            }
+          ];
           device = [
             {
               name = "keychron--keychron-link--keyboard";
@@ -113,87 +132,106 @@ in {
               kb_variant = kb.us.variant;
             }
           ];
-          binds.workspace_center_on = 1; # Last active
-          gesture = [
-            "3, horizontal, workspace"
-          ];
+          gesture = {
+            fingers = 3;
+            direction = "horizontal";
+            action = "workspace";
+          };
           env = [
-            "XCURSOR_SIZE,32"
-            "HYPRCURSOR_SIZE,32"
+            (args ["XCURSOR_SIZE" 32])
+            (args ["HYPRCURSOR_SIZE" 32])
           ];
-          monitor = [
-            ",highrr,auto,1,vrr,2"
-            "eDP-1,highrr,auto,1,vrr,2"
+          curve = [
+            (args ["easein" {type = "bezier"; points = [[0.42 0] [0.58 1]];}])
+            (args ["easeout" {type = "bezier"; points = [[0.42 0] [1 1]];}])
+            (args ["easeinout" {type = "bezier"; points = [[0 0] [0.58 1]];}])
           ];
-          opengl.nvidia_anti_flicker = true;
-          windowrule = let
-            mkAutoFloatRule = args:
-              args
-              // {
+          animation = [
+            (args [{leaf = "windows"; enabled = true; speed = 2; bezier = "easeinout";}])
+            (args [{leaf = "layers"; enabled = true; speed = 2; bezier = "easeinout";}])
+            (args [{leaf = "fade"; enabled = true; speed = 2; bezier = "easeinout";}])
+            (args [{leaf = "border"; enabled = true; speed = 2; bezier = "easeinout";}])
+            (args [{leaf = "borderangle"; enabled = true; speed = 2; bezier = "easeinout";}])
+            (args [{leaf = "workspaces"; enabled = true; speed = 3; bezier = "easeinout"; style = "slide";}])
+            (args [{leaf = "specialWorkspace"; enabled = true; speed = 3; bezier = "easeinout"; style = "slidevert -50%";}])
+          ];
+          window_rule = let
+            mkRule = attrs: attrs;
+            mkAutoFloatRule = attrs:
+              mkRule (attrs // {
                 opacity = "0.7 override";
-                no_initial_focus = "on";
-                float = "on";
-                pin = "on";
+                no_initial_focus = true;
+                float = true;
+                pin = true;
                 move = "(monitor_w-window_w-(monitor_w*0.03)) (monitor_h-window_h-(monitor_h*0.03))";
                 size = "(monitor_w*0.25) (monitor_h*0.25)";
-              };
-            mkMediaAppRule = args:
-              args
+              });
+            mkMediaAppRule = attrs:
+              mkRule (attrs
               // {
                 idle_inhibit = "focus";
-                immediate = "on";
-                no_vrr = "on";
-                opaque = "on";
-              };
+                immediate = true;
+                no_vrr = true;
+                opaque = true;
+              });
           in [
             (mkAutoFloatRule {
               name = "floating-discord";
-              "match:class" = "^(discord|vesktop)$";
-              "match:initial_title" = "^(Discord Popout)$";
+              match = {
+                class = "^(discord|vesktop)$";
+                initial_title = "^(Discord Popout)$";
+              };
             })
             (mkAutoFloatRule {
               name = "floating-chromium";
-              "match:initial_title" = "^(Picture in picture)$";
+              match.initial_title = "^(Picture in picture)$";
             })
             (mkAutoFloatRule {
               name = "floating-firefox";
-              "match:class" = "^(Picture-in-Picture)$";
-              "match:initial_title" = "^(Picture in picture)$";
+              match = {
+                class = "^(Picture-in-Picture)$";
+                initial_title = "^(Picture in picture)$";
+              };
             })
             (mkMediaAppRule {
               name = "media-mpv";
-              "match:class" = "^(mpv)$";
+              match.class = "^(mpv)$";
             })
             (mkMediaAppRule {
               name = "media-vlc";
-              "match:class" = "^(vlc)$";
+              match.class = "^(vlc)$";
             })
-            {
+            (mkRule {
               name = "steam-games";
-              fullscreen = "on";
+              match = {
+                class = "^steam_appd+$";
+              };
+              fullscreen = true;
               idle_inhibit = "focus";
-              monitor = 1;
+              monitor = "1";
               opacity = "1.0 override";
-              workspace = 10;
-              "match:class" = "^steam_appd+$";
-            }
-            {
+              workspace = "10";
+            })
+            (mkRule {
               name = "hide-xwaylandvideobridge";
+              match = {
+                class = "^(xwaylandvideobridge)$";
+              };
               max_size = "1 1";
-              no_anim = "on";
-              no_blur = "on";
-              no_focus = "on";
-              no_initial_focus = "on";
+              no_anim = true;
+              no_blur = true;
+              no_focus = true;
+              no_initial_focus = true;
               opacity = "0.0 override";
-              "match:class" = "^(xwaylandvideobridge)$";
-            }
-            {
+            })
+            (mkRule {
               name = "rofi-focus";
-              stay_focused = "on";
-              "match:class" = "^(rofi)$";
-            }
+              match = {
+                class = "^(rofi)$";
+              };
+              stay_focused = true;
+            })
           ];
-          debug.disable_logs = false;
         };
       };
 
