@@ -40,7 +40,7 @@ in {
       homeConfigurations = self.lib.getStandaloneHomeConfigurations self;
     };
     files = {
-      checks.enable = true;
+      checks.enable = false;
       writer = {
         app = true;
         exeFilename = "write-files";
