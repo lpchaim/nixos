@@ -49,7 +49,6 @@ As an example, this is a working NixOS configuration describing my main rig.
   ];
 
   my = {
-    ci.build = true;
     gaming = {
       enable = true;
       freesmlauncher.enable = true;
