@@ -157,7 +157,7 @@ in {
           };
         };
         wait-online = {
-          enable = true;
+          enable = lib.mkDefault false;
           anyInterface = true;
           timeout = 30;
         };

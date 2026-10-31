@@ -38,5 +38,6 @@ in {
       logRefusedPackets = true;
       logReversePathDrops = true;
     };
+    systemd.network.wait-online.enable = true;
   };
 }
