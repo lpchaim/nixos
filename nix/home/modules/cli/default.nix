@@ -10,7 +10,6 @@
     ./nushell
     ./starship
     ./tealdeer
-    ./tmux
     ./zellij
     ./zsh
   ];
