@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.4.0](https://github.com/lpchaim/nixos/compare/v2.3.0...v2.4.0) (2026-11-01)
+
+
+### Features
+
+* Add difftastic to git configuration, enable by default ([0b0a076](https://github.com/lpchaim/nixos/commit/0b0a076ed1287d176499593459f0a087e69173cb))
+* Add treefmt-nix, revamp formatters ([49df7f0](https://github.com/lpchaim/nixos/commit/49df7f010cc0f11072393ac2db979ff8308bd0be))
+* Migrate hyprland config to lua ([7f534b2](https://github.com/lpchaim/nixos/commit/7f534b2ab88741dca10d2519fa93a75087266df9))
+* Update DMS config, hyprland config fixes ([6cb4fdf](https://github.com/lpchaim/nixos/commit/6cb4fdf818eeae83858e17efbf6112da5388eb50))
+* Update tealdeer configuration ([3b34776](https://github.com/lpchaim/nixos/commit/3b34776bf8e09ee6a13b626a290261fe321b90c6))
+
+
+### Bug Fixes
+
+* **ci:** Add qemu setup to check/update workflows ([b1202a4](https://github.com/lpchaim/nixos/commit/b1202a412add866499491caa1c2997a9c4781f34))
+* Disable files module flake check ([c2334da](https://github.com/lpchaim/nixos/commit/c2334da50667bb8a6a314887526ee7a543207f0b))
+* Remove obsolete grep from CI workflows ([91029d2](https://github.com/lpchaim/nixos/commit/91029d2c42bda66858df0f7dbd7b4820da368725))
+* Remove obsolete initrd.systemd.enable option ([d799481](https://github.com/lpchaim/nixos/commit/d799481140a91697de831a0540670daa944d9f43))
+
 ## [2.3.0](https://github.com/lpchaim/nixos/compare/v2.2.0...v2.3.0) (2026-10-28)
 
 
