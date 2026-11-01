@@ -10,7 +10,7 @@ mod unittests './just/unittests.just'
 
 # Run checks
 check:
-  nix flake check --quiet --all-systems --no-build
+  nix flake check --quiet --all-systems
 
 # Run tests
 test *args: (unittests::run args)
