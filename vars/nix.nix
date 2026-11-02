@@ -17,8 +17,8 @@ in {
     substituters = lib.imap1 (i: url: "${url}?priority=${toString i}") [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
-      "https://cache.nixos-cuda.org"
       "https://lpchaim.cachix.org"
+      "https://cache.nixos-cuda.org"
       "https://nix-gaming.cachix.org"
       "https://freesmlauncher.cachix.org"
     ];
@@ -31,5 +31,6 @@ in {
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
     ];
     trusted-users = ["root" "@wheel"];
+    warn-dirty = false;
   };
 }
