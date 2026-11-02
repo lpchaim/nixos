@@ -44,3 +44,19 @@ def --wrapped fzf [
 def "into list" []: any -> list<any> {
   each {}
 }
+
+# Parses nix code into structured data
+def "from nix" []: string -> any {
+  nix eval --raw --expr $"builtins.toJSON
+  ($in)
+  "
+  | from json
+}
+
+# Converts table data into nix text
+def "to nix" []: any  -> string {
+  to json
+  | nix eval --expr $"builtins.fromJSON ''
+  ($in)
+  ''"
+}
