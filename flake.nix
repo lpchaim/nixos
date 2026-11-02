@@ -38,10 +38,7 @@
     };
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
-    freesmlauncher = {
-      url = "github:FreesmTeam/FreesmLauncher";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager = {
       url = "github:nix-community/home-manager";
