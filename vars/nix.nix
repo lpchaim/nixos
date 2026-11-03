@@ -3,7 +3,6 @@
 in {
   pkgs = {
     config.allowUnfree = true;
-    overlays = builtins.attrValues inputs.self.overlays;
   };
   settings = {
     accept-flake-config = true;

@@ -39,7 +39,10 @@ in {
       settings = lib.mkIf isLix {repl-overlays = ["repl-overlay.nix"];};
     };
 
-    nixpkgs = lib.mkIf (osConfig == {}) nix.pkgs;
+    nixpkgs = lib.mkIf (osConfig == {}) {
+      inherit (nix.pkgs) config;
+      overlays = builtins.attrValues self.overlays;
+    };
 
     home = {
       packages = [config.nix.package pkgs.sqlite];

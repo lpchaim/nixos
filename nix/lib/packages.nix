@@ -2,15 +2,14 @@
   inputs,
   lib,
   ...
-}: let
-  overlays = builtins.attrValues inputs.self.overlays;
-in {
+}: {
   callPackageRecursiveWith = pkgs: path: extraArgs:
     lib.packagesFromDirectoryRecursive {
       callPackage = lib.callPackageWith (pkgs // extraArgs);
       directory = path;
     }
     |> lib.filterAttrsRecursive (name: _: name != "default");
+
   callPackageWith = pkgs: path: extraArgs:
     lib.callPackageWith
     pkgs
@@ -22,12 +21,14 @@ in {
       else path
     )
     extraArgs;
+
   mkPkgs = {
     system,
     nixpkgs ? inputs.nixpkgs,
   }:
     import nixpkgs {
-      inherit system overlays;
-      allowUnfree = true;
+      inherit system;
+      inherit (inputs.self.vars.nix.pkgs) config;
+      overlays = builtins.attrValues inputs.self.overlays;
     };
 }

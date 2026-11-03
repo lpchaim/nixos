@@ -74,11 +74,4 @@
       (builtins.substring 16 4 h)
       (builtins.substring 20 12 h)
     ];
-
-  nixFilesToAttrs = path:
-    builtins.readDir path
-    |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")
-    |> lib.concatMapAttrs (relativePath: _: {
-      ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
-    });
 }
