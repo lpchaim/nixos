@@ -11,7 +11,12 @@
   cfg = config.my.nix;
   isLix = lib.hasPrefix "lix" config.nix.package.name;
 in {
+  imports = [
+    (self + /nix/common/nix.nix)
+  ];
+
   options.my.nix.enable = lib.mkEnableOption "nix";
+
   config = lib.mkIf (cfg.enable) {
     my.secret.definitions = {
       "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {};

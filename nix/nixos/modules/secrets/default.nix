@@ -8,6 +8,10 @@
   inherit (self.lib.secrets.paths) root;
   inherit (self.lib.secrets) generators helpers;
 in {
+  imports = [
+    (self + /nix/common/secrets.nix)
+  ];
+
   options.my.secret = {
     generators = lib.mkOption {
       default = generators;

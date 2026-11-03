@@ -1,56 +1,11 @@
 {
   config,
-  inputs,
   lib,
+  self,
   pkgs,
   ...
 }: {
-  imports =
-    (with inputs; [
-      agenix.nixosModules.default
-      agenix-rekey.nixosModules.default
-      disko.nixosModules.disko
-      home-manager.nixosModules.home-manager
-      lanzaboote.nixosModules.lanzaboote
-      nix-flatpak.nixosModules.nix-flatpak
-      nix-gaming.nixosModules.pipewireLowLatency
-      nix-gaming.nixosModules.platformOptimizations
-      nur.modules.nixos.default
-      quadlet-nix.nixosModules.quadlet
-      stylix.nixosModules.stylix
-    ])
-    ++ [
-      ../../shared
-      ../profiles
-      ./boot
-      ./ci
-      ./deploy
-      ./gaming
-      ./gui
-      ./hardware
-      ./kdeconnect
-      ./kernel
-      ./locale
-      ./misc
-      ./networking
-      ./nix
-      ./pipewire
-      ./programs
-      ./secrets
-      ./secureboot
-      ./security
-      ./services
-      ./serving
-      ./ssh
-      ./storage
-      ./syncthing
-      ./tailscale
-      ./theming
-      ./users
-      ./virtualization
-      ./wayland
-      ./zram
-    ];
+  imports = builtins.attrValues self.nixosModules;
 
   my = {
     hardware = {

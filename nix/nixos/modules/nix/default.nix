@@ -11,7 +11,12 @@
     self.nixosConfigurations
     |> lib.filterAttrs (name: host: config.networking.hostName != name && host.config.my.profiles.builder);
 in {
+  imports = [
+    (self + /nix/common/nix.nix)
+  ];
+
   options.my.nix.enable = lib.mkEnableOption "nix";
+
   config = lib.mkIf (cfg.enable) {
     nix = {
       buildMachines = lib.mkIf (!isLix) (

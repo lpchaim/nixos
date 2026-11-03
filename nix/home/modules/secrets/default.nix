@@ -1,14 +1,18 @@
 {
   config,
   lib,
-  self,
   osConfig ? {},
+  self,
   ...
 }: let
   inherit (self.lib.secrets.paths) root;
   inherit (self.lib.secrets) generators helpers;
   inherit (helpers) mkSecret mkHostSecret mkUserSecret;
 in {
+  imports = [
+    (self + /nix/common/secrets.nix)
+  ];
+
   options.my.secret = {
     generators = lib.mkOption {
       default = generators;
