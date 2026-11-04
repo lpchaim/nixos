@@ -23,6 +23,7 @@
       agenix.homeManagerModules.default
       agenix-rekey.homeManagerModules.default
       dms.homeModules.dank-material-shell
+      dms-plugin-registry.homeModules.default
       nix-index-database.homeModules.nix-index
       nix-flatpak.homeManagerModules.nix-flatpak
       nixvim.homeModules.nixvim

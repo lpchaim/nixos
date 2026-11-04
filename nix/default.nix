@@ -1,12 +1,17 @@
 {self, ...} @ inputs:
-inputs.flake-parts.lib.mkFlake
-{inherit inputs;}
-({flake-parts-lib, ...}: let
+inputs.flake-parts.lib.mkFlake {inherit inputs;} ({
+  flake-parts-lib,
+  getSystem,
+  moduleWithSystem,
+  withSystem,
+  ...
+}: let
   inherit (flake-parts-lib) importApply;
   inherit (inputs.nixpkgs) lib;
+  flakePartsArgs = {inherit getSystem moduleWithSystem withSystem;};
   specialArgs = {inherit inputs lib self;};
   import' = path: import path specialArgs;
-  importApply' = path: importApply path specialArgs;
+  importApply' = path: importApply path (flakePartsArgs // specialArgs);
   systems = ["aarch64-linux" "x86_64-linux"];
 in {
   inherit systems;
