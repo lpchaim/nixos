@@ -46,13 +46,14 @@ in {
     };
 
     home.file."${config.xdg.configHome}/freeze/user.json".text = builtins.toJSON {
-      font.family = "JetBrainsMono Nerd Font";
       font.file = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFontMono-Regular.ttf";
       font.ligatures = true;
       font.size = config.stylix.fonts.sizes.terminal;
       shadow = false;
       window = false;
-      show-line-numbers = true;
+      width = 0;
+      height = 0;
+      line_height = 1;
     };
   };
 }
