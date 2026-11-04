@@ -1,5 +1,7 @@
 {
+  config,
   lib,
+  osConfig ? {},
   self,
   ...
 }: {
@@ -42,5 +44,6 @@
     home-manager.enable = lib.mkDefault true;
   };
 
+  home.stateVersion = lib.mkIf (osConfig != {}) osConfig.system.stateVersion;
   systemd.user.startServices = "sd-switch";
 }

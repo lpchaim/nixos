@@ -1,5 +1,8 @@
-{inputs, ...}: let
-  inherit (inputs) self;
+{
+  inputs,
+  self,
+  ...
+}: let
   inherit (inputs.nixpkgs) lib;
   specialArgs = {
     inherit inputs self;
@@ -13,7 +16,8 @@
     extraModules ? [],
   }:
     lib.nixosSystem {
-      inherit specialArgs system;
+      inherit system;
+      specialArgs = specialArgs // {inherit system;};
       modules =
         [
           (osRoot + /modules)
