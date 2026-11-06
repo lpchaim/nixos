@@ -46,7 +46,35 @@ in {
         };
         signing.format = "openpgp";
       };
-      lazygit.enable = cfg.lazygit.enable;
+      lazygit = lib.mkIf cfg.lazygit.enable {
+        enable = true;
+        settings = {
+          git.diffRenderers =
+            lib.optionals cfg.delta.enable [
+              {
+                name = "delta";
+                type = "stdinFilter";
+                command = "delta --paging=never --color-only";
+              }
+            ]
+            ++ lib.optionals cfg.difftastic.enable [
+              {
+                name = "difftastic";
+                type = "extDiff";
+                command = "difft --color=always --background={{colorScheme}} --context={{diffContext}}";
+              }
+            ]
+            ++ [
+              {
+                name = "git";
+                type = "rawGit";
+                args = ["--no-ext-diff"];
+              }
+            ];
+          gui.tabWidth = 2;
+          update.method = "never";
+        };
+      };
     };
 
     home.shellAliases = lib.mkIf cfg.aliases.enable {
