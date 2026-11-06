@@ -23,15 +23,16 @@ in {
           curl
           dust
           duf
-          fd
           file
           gnutar
           hexyl
+          igrep
           jq
           ncdu
           netcat
           procs
           progress
+          repgrep
           resvg
           rsync
           smartmontools
@@ -79,9 +80,35 @@ in {
         git = true;
         icons = "auto";
       };
-      fzf = {
+      fd = {
         enable = true;
-        historyWidget.command = "";
+        extraOptions = [
+          "--no-require-git"
+        ];
+        hidden = false;
+        ignores = [
+          ".cache"
+          ".direnv"
+          ".git"
+        ];
+      };
+      fzf = let
+        fdArgs =
+          config.programs.fd.extraOptions
+          |> lib.concat ["--ignore-file=${config.xdg.configFile."fd/ignore".target}"]
+          |> lib.escapeShellArgs;
+        fd = "fd ${fdArgs}";
+      in {
+        enable = true;
+        changeDirWidget.command = "${fd} --type=directory"; # ALT + C
+        fileWidget.command = "${fd} --type=file --type=symlink"; # CTRL + T
+        historyWidget.command = ""; # CTRL + R
+        defaultCommand = "xdg-open $(config.programs.fzf.fileWidget.command)";
+        defaultOptions = [
+          "--layout=default"
+          "--preview='${lib.getExe pkgs.fzf-preview} {}'"
+          "--smart-case"
+        ];
       };
       ripgrep.enable = true;
       yazi = {
