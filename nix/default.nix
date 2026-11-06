@@ -17,7 +17,6 @@ in {
   inherit systems;
   imports = [
     (importApply' ./apps)
-    (importApply' ./checks)
     (importApply' ./devShells)
     (importApply' ./formatter)
     (importApply' ./home/homeConfigurations.nix)

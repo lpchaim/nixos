@@ -2,10 +2,12 @@
   lib,
   self,
   ...
-}: {
+}: let
+  standaloneHomeConfigurations = self.lib.getStandaloneHomeConfigurations self;
+in {
   perSystem = {pkgs, ...}: {
     nixtest.suites = {
-      "Hyprland config is valid" = {
+      "Hyprland configs are valid" = {
         pos = __curPos;
         tests =
           self.homeConfigurations
@@ -24,6 +26,16 @@
               export XDG_RUNTIME_DIR=$(${lib.getExe' pkgs.coreutils "mktemp"})
               ${lib.getExe hyprland} --verify-config --config '${configFile}'
             '';
+          });
+      };
+      "Standalone home configurations evaluate" = {
+        pos = __curPos;
+        tests =
+          standaloneHomeConfigurations
+          |> lib.mapAttrsToList (name: {activationPackage, ...}: {
+            name = "home-${name}";
+            actual = (builtins.tryEval activationPackage).success;
+            expected = true;
           });
       };
     };
