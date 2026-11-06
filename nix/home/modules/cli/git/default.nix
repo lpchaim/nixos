@@ -22,7 +22,7 @@ in {
         enableGitIntegration = true;
       };
       difftastic = {
-        enable = cfg.delta.enable;
+        enable = cfg.difftastic.enable;
         options = {
           color = "always";
           sort-paths = true;
