@@ -64,8 +64,11 @@ in {
       hyprpaper.enable = false;
     };
 
-    home.packages = with pkgs; [
-      efibootmgr
-    ];
+    home = {
+      file."${config.xdg.stateHome}/dms/session.json".mutable = true;
+      packages = with pkgs; [
+        efibootmgr
+      ];
+    };
   };
 }

@@ -10,6 +10,7 @@
     gui = ./modules/gui;
     llm = ./modules/llm;
     misc = ./modules/misc;
+    mutableFiles = ./modules/mutableFiles.nix;
     nix = ./modules/nix;
     profiles = ./profiles;
     scripts = ./modules/scripts;
