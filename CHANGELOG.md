@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.4.0](https://github.com/lpchaim/nixos/compare/v2.3.0...v2.4.0) (2026-11-08)
+
+
+### Features
+
+* Add difftastic to git configuration, enable by default ([0b0a076](https://github.com/lpchaim/nixos/commit/0b0a076ed1287d176499593459f0a087e69173cb))
+* Add lazygit settings, proper diff viewers ([ba68aab](https://github.com/lpchaim/nixos/commit/ba68aab640cce053297a9b872470cfbd27b132d6))
+* Add treefmt-nix, revamp formatters ([49df7f0](https://github.com/lpchaim/nixos/commit/49df7f010cc0f11072393ac2db979ff8308bd0be))
+* Better FZF settings, add igrep + repgrep + ripgrep-all ([19f3cbe](https://github.com/lpchaim/nixos/commit/19f3cbe3485be0af48ccc71580073456f5eec3d2))
+* Disable dirty tree warnings, reorder substituters ([8d076ec](https://github.com/lpchaim/nixos/commit/8d076ecc9b8d246a388ee7e136719a7335e12f00))
+* **git:** Git settings tweaks ([0846dc2](https://github.com/lpchaim/nixos/commit/0846dc224bf107f00c0764487fea46716e16c7cc))
+* **home-manager:** Opt-in mutable files ([88f678b](https://github.com/lpchaim/nixos/commit/88f678bb7476abed6202ab92e8aa4701f9897d74))
+* Hyprland setting tweaks ([a752ccc](https://github.com/lpchaim/nixos/commit/a752ccc6c4468479ec8a97c64899ef35cb57f58e))
+* Migrate hyprland config to lua ([7f534b2](https://github.com/lpchaim/nixos/commit/7f534b2ab88741dca10d2519fa93a75087266df9))
+* More declarative DMS configuration ([6d443e1](https://github.com/lpchaim/nixos/commit/6d443e17fe252c29e1cdd6423ee305e4d251ab24))
+* More flexible home/nixos configuration definitions ([c977cb6](https://github.com/lpchaim/nixos/commit/c977cb63244c2ad14d0c75f714b68b325ba537b7))
+* **nushell:** Add to/from nix commands ([3666af5](https://github.com/lpchaim/nixos/commit/3666af5049a9ab47d418c0b1f7e9946b11593527))
+* Update DMS config, hyprland config fixes ([6cb4fdf](https://github.com/lpchaim/nixos/commit/6cb4fdf818eeae83858e17efbf6112da5388eb50))
+* Update tealdeer configuration ([3b34776](https://github.com/lpchaim/nixos/commit/3b34776bf8e09ee6a13b626a290261fe321b90c6))
+
+
+### Bug Fixes
+
+* **ci:** Add qemu setup to check/update workflows ([b1202a4](https://github.com/lpchaim/nixos/commit/b1202a412add866499491caa1c2997a9c4781f34))
+* Disable files module flake check ([c2334da](https://github.com/lpchaim/nixos/commit/c2334da50667bb8a6a314887526ee7a543207f0b))
+* Enable CI mode for treefmt flake check ([5d58c49](https://github.com/lpchaim/nixos/commit/5d58c49306b326177e68ddae0c9d826a53d98029))
+* **fzf:** Fix default FZF command ([66511d5](https://github.com/lpchaim/nixos/commit/66511d5462c189f8246f88b95bad18fa33009c9a))
+* **git:** Fix difftastic enabled check ([9eb384a](https://github.com/lpchaim/nixos/commit/9eb384a5da4b29b2fc9d0b62e80b7358aaec3969))
+* Remove freesmlauncher nixpkgs follow so it caches properly ([88256a7](https://github.com/lpchaim/nixos/commit/88256a7507d8aa42bf8df8cb336700a9e44ae02e))
+* Remove obsolete grep from CI workflows ([91029d2](https://github.com/lpchaim/nixos/commit/91029d2c42bda66858df0f7dbd7b4820da368725))
+* Remove obsolete initrd.systemd.enable option ([d799481](https://github.com/lpchaim/nixos/commit/d799481140a91697de831a0540670daa944d9f43))
+* Small fixes ([5377a01](https://github.com/lpchaim/nixos/commit/5377a0188ec1f76990170491ac867c5dd1cffcfd))
+
 ## [2.3.0](https://github.com/lpchaim/nixos/compare/v2.2.0...v2.3.0) (2026-10-28)
 
 
