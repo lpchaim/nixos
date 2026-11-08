@@ -103,7 +103,7 @@ in {
         changeDirWidget.command = "${fd} --type=directory"; # ALT + C
         fileWidget.command = "${fd} --type=file --type=symlink"; # CTRL + T
         historyWidget.command = ""; # CTRL + R
-        defaultCommand = "xdg-open $(config.programs.fzf.fileWidget.command)";
+        defaultCommand = config.programs.fzf.fileWidget.command;
         defaultOptions = [
           "--layout=default"
           "--preview='${lib.getExe pkgs.fzf-preview} {}'"
