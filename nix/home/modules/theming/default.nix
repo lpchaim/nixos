@@ -2,14 +2,19 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
   matchTheme = theme:
     config.stylix.base16Scheme
     |> toString
     |> builtins.match "^.*/themes/.*${theme}.*$";
-in
-  lib.mkIf config.stylix.enable (lib.mkMerge [
+in {
+  imports = [
+    (self + /nix/common/theming.nix)
+  ];
+
+  config = lib.mkIf config.stylix.enable (lib.mkMerge [
     {
       home.packages = with pkgs; [
         noto-fonts
@@ -31,4 +36,5 @@ in
     (lib.mkIf (matchTheme "catppuccin" != null) {
       programs.helix.settings.theme = lib.mkForce "catppuccin_mocha";
     })
-  ])
+  ]);
+}

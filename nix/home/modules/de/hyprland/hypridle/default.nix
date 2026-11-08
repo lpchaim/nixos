@@ -12,19 +12,12 @@ in {
       // {default = config.my.de.hyprland.enable;};
     lockCmd = lib.mkOption {
       description = "Command to lock the screen";
-      type = lib.types.nullOr lib.types.str;
-      default = null;
+      type = lib.types.str;
+      default = "loginctl lock-session";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = config.services.hypridle.settings.general.lock_cmd != null;
-        message = "config.services.hypridle.settings.general.lock_cmd must be set for hypridle to work properly";
-      }
-    ];
-
     services.hypridle = {
       enable = true;
       systemdTarget = "hyprland-session.target";

@@ -43,6 +43,7 @@ in {
       };
       nix-index.enable = true;
       nix-index-database.comma.enable = true;
+      ripgrep-all.enable = true;
     };
 
     home.file."${config.xdg.configHome}/freeze/user.json".text = builtins.toJSON {

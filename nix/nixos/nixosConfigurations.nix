@@ -1,5 +1,8 @@
-{inputs, ...}: let
-  inherit (inputs) self;
+{
+  inputs,
+  self,
+  ...
+}: let
   inherit (inputs.nixpkgs) lib;
   specialArgs = {
     inherit inputs self;
@@ -10,21 +13,25 @@
   mkNixos = host: {
     system ? "x86_64-linux",
     users ? ["lpchaim"],
+    extraModules ? [],
   }:
     lib.nixosSystem {
-      inherit specialArgs system;
-      modules = [
-        (osRoot + /modules)
-        (osRoot + /configs/${host})
-        {
-          networking.hostName = lib.mkDefault host;
-          home-manager = {
-            extraSpecialArgs = specialArgs // {osConfig = self.nixosConfigurations.${host}.config;};
-            sharedModules = [(homeRoot + /modules)];
-            users = lib.genAttrs users (user: homeRoot + /configs/${user}.nix);
-          };
-        }
-      ];
+      inherit system;
+      specialArgs = specialArgs // {inherit system;};
+      modules =
+        [
+          (osRoot + /modules)
+          (osRoot + /configs/${host})
+          ({config, ...}: {
+            networking.hostName = lib.mkDefault host;
+            home-manager = {
+              extraSpecialArgs = specialArgs // {osConfig = config;};
+              sharedModules = [(homeRoot + /modules)];
+              users = lib.genAttrs users (user: homeRoot + /configs/${user}.nix);
+            };
+          })
+        ]
+        ++ extraModules;
     };
 in {
   flake.nixosConfigurations = {

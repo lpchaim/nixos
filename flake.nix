@@ -14,6 +14,10 @@
       url = "github:AvengeMedia/DankMaterialShell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dms-plugin-registry = {
+      url = "github:duxlabs-dev/dux-plugin-registry";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Misc
     agenix = {
@@ -34,10 +38,7 @@
     };
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-schemas.url = "github:DeterminateSystems/flake-schemas";
-    freesmlauncher = {
-      url = "github:FreesmTeam/FreesmLauncher";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager = {
       url = "github:nix-community/home-manager";

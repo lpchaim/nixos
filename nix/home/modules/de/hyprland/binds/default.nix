@@ -5,7 +5,7 @@
   self,
   ...
 }: let
-  inherit (self.lib.hyprland.lua) bind bindl bindle exec execCmd local mod;
+  inherit (self.lib.hyprland.lua) bind bindl bindle exec execCmd local luaFunction mod;
 
   cfg = config.my.de.hyprland.binds;
 in {
@@ -21,7 +21,7 @@ in {
         bind =
           [
             (bind (mod "E") (execCmd "nautilus") {})
-            (bind "CTRL + ALT + L" (execCmd config.services.hypridle.settings.general.lock_cmd) {})
+            (bind "CTRL + ALT + L" (execCmd config.my.de.hyprland.hypridle.lockCmd) {})
             (bind (mod "F11") (execCmd "pidof grimblast || grimblast copy output --notify") {})
             (bind (mod "ALT + F11") (execCmd "pidof grimblast || grimblast copy active --notify") {})
             (bind (mod "SHIFT + F11") (execCmd "pidof grimblast || ${pkgs.writeShellScript "grimblast-freeze" ''
@@ -44,8 +44,6 @@ in {
 
             (bind "ALT + TAB" (exec "hl.dsp.window.cycle_next" [{next = true; tiled = true;}]) {})
             (bind "ALT + SHIFT + TAB" (exec "hl.dsp.window.cycle_next" [{prev = true; tiled = true;}]) {})
-            (bind (mod "TAB") (exec "hl.dsp.window.cycle_next" [{next = true;}]) {})
-            (bind (mod "SHIFT + TAB") (exec "hl.dsp.window.cycle_next" [{prev = true;}]) {})
 
             (bind (mod "S") (exec "hl.dsp.workspace.toggle_special" ["magic"]) {})
             (bind (mod "SHIFT + S") (exec "hl.dsp.window.move" [{workspace = "special:magic";}]) {})
@@ -63,10 +61,10 @@ in {
             (bind (mod "K") (exec "hl.dsp.focus" [{direction = "up";}]) {})
             (bind (mod "L") (exec "hl.dsp.focus" [{direction = "right";}]) {})
 
-            (bind (mod "SHIFT + H") (exec "hl.dsp.window.move" [{into_or_create_group = "l";}]) {})
-            (bind (mod "SHIFT + J") (exec "hl.dsp.window.move" [{into_or_create_group = "d";}]) {})
-            (bind (mod "SHIFT + K") (exec "hl.dsp.window.move" [{into_or_create_group = "u";}]) {})
-            (bind (mod "SHIFT + L") (exec "hl.dsp.window.move" [{into_or_create_group = "r";}]) {})
+            (bind (mod "SHIFT + H") (exec "hl.dsp.window.move" [{direction = "left";}]) {})
+            (bind (mod "SHIFT + J") (exec "hl.dsp.window.move" [{direction = "down";}]) {})
+            (bind (mod "SHIFT + K") (exec "hl.dsp.window.move" [{direction = "up";}]) {})
+            (bind (mod "SHIFT + L") (exec "hl.dsp.window.move" [{direction = "right";}]) {})
 
             (bindle (mod "CTRL + H") (exec "hl.dsp.window.resize" [{x = -10; y = 0; relative = true;}]))
             (bindle (mod "CTRL + J") (exec "hl.dsp.window.resize" [{x = 0; y = 10; relative = true;}]))
@@ -94,6 +92,36 @@ in {
             (bind (mod "SHIFT + 8") (exec "hl.dsp.window.move" [{workspace = 8;}]) {})
             (bind (mod "SHIFT + 9") (exec "hl.dsp.window.move" [{workspace = 9;}]) {})
             (bind (mod "SHIFT + 0") (exec "hl.dsp.window.move" [{workspace = 10;}]) {})
+
+            (bind (mod "TAB") (luaFunction ''
+              -- #!lua
+              local layouts = { "scrolling", "dwindle", "master", "monocle" }
+              local workspace = hl.get_active_workspace()
+              if hl.get_active_special_workspace() then
+                  workspace = hl.get_active_special_workspace()
+              end
+
+              local next_layout = "dwindle"
+
+              if not workspace then
+                  return
+              end
+
+              for i = 1, #layouts do
+                  if layouts[i] == workspace.tiled_layout then
+                      local next_layout_idx = (i % #layouts) + 1
+                      next_layout = layouts[next_layout_idx]
+                      break
+                  end
+              end
+
+              if workspace.special then
+                  hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout })
+              else
+                  hl.workspace_rule({ workspace = "name:" .. tostring(workspace.name), layout = next_layout })
+              end
+              hl.dispatch(hl.dsp.exec_cmd("notify-send --app-name Hyprland --transient 'Workspace layout set to " .. next_layout .. "'"))
+            '') {})
           ]
           ++ lib.optionals cfg.enableFnKeys [
             (bindle "XF86MonBrightnessDown" (execCmd "brightnessctl set 5%-"))
@@ -111,14 +139,8 @@ in {
       };
     };
 
-    home.packages =
-      [
-        pkgs.grimblast
-        pkgs.nautilus
-      ]
-      ++ lib.optionals cfg.enableFnKeys [
-        pkgs.brightnessctl
-        pkgs.playerctl
-      ];
+    home.packages = [
+      pkgs.nautilus
+    ];
   };
 }

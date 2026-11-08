@@ -1,31 +1,29 @@
 {
   config,
   lib,
-  pkgs,
-  self,
   ...
-}: let
-  inherit (self.vars) wallpaper;
-  cfg = config.my.bars.dank-material-shell;
-in {
-  options.my.bars.dank-material-shell.enable = lib.mkEnableOption "Dank material shell";
+}: {
+  imports = [
+    ./barConfigs.nix
+    ./controlCenterWidgets.nix
+    ./greeterWidgetInstances.nix
+    ./lockScreenWidgetInstances.nix
+  ];
 
-  config = lib.mkIf (cfg.enable) {
-    stylix.targets.dank-material-shell.enable = false;
-
-    programs.dank-material-shell = {
-      enable = true;
-      enableAudioWavelength = true;
-      enableCalendarEvents = false;
-      enableClipboardPaste = true;
-      enableDynamicTheming = true;
-      enableSystemMonitoring = true;
-      enableVPN = true;
-
-      # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SettingsSpec.js
-      settings =
-        lib.recursiveUpdate
-        (./settings.json |> builtins.readFile |> builtins.fromJSON)
+  config = lib.mkIf (config.my.bars.dux-shell.enable) {
+    # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SettingsSpec.js
+    programs.dank-material-shell.settings =
+      (builtins.readFile ./settings.json)
+      |> builtins.fromJSON
+      |> (it:
+        lib.removeAttrs it [
+          "barConfigs"
+          "controlCenterWidgets"
+          "greeterWidgetInstances"
+          "lockScreenWidgetInstances"
+        ])
+      |> (it:
+        lib.recursiveUpdate it
         {
           clockFormat = "24h";
           showSeconds = false;
@@ -35,18 +33,28 @@ in {
           clockDateFormat = "dd/MM";
           lockDateFormat = "dd/MM";
 
+          dashOptions = {
+            media = {
+              lyrics = false;
+              titleFont = "ui";
+            };
+          };
+
+          audioVisualizerEnabled = true;
+          avatarRing = "primary";
           centeringMode = "geometric";
-          currentThemeCategory = lib.mkDefault "generic";
-          currentThemeName = lib.mkDefault "purple";
-          customThemeFile = lib.mkDefault "";
-          fontFamily = lib.mkDefault config.stylix.fonts.sansSerif.name;
+          clipboardSize = "compact";
+          currentThemeCategory = "dynamic";
+          currentThemeName = "dynamic";
           matugenScheme = "scheme-tonal-spot";
           matugenSourceMode = "value";
           matugenSpec = "dms";
-          monoFontFamily = lib.mkDefault config.stylix.fonts.monospace.name;
+          fontFamily = config.stylix.fonts.sansSerif.name;
+          monoFontFamily = config.stylix.fonts.monospace.name;
           runDmsMatugenTemplates = true;
           runUserMatugenTemplates = true;
           wallpaperFillMode = "Fit";
+          lockScreenWallpaperFillMode = "Fit";
           widgetBackgroundColor = "sth";
           widgetColorMode = "colorful";
 
@@ -71,7 +79,7 @@ in {
           notificationHistorySaveNormal = true;
           notificationOverlayEnabled = false;
           notificationPopupBodyInvokesAction = true;
-          notificationPopupPosition = 0;
+          notificationPopupPosition = -1;
           notificationShowTimeoutBar = true;
           notificationTimeoutCritical = 0;
           notificationTimeoutLow = 5000;
@@ -82,8 +90,8 @@ in {
           osdAudioOutputEnabled = true;
           osdBrightnessEnabled = true;
           osdCapsLockEnabled = true;
-          osdIdleInhibitorEnabled = true;
-          osdMediaPlaybackEnabled = true;
+          osdIdleInhibitorEnabled = false;
+          osdMediaPlaybackEnabled = false;
           osdMediaVolumeEnabled = true;
           osdMicMuteEnabled = true;
           osdPowerProfileEnabled = true;
@@ -102,36 +110,17 @@ in {
           ];
           powerActionConfirm = true;
           powerActionHoldDuration = 0.25;
+
           powerMenuGridLayout = false;
-        };
+          acLockTimeout = 5 * 60;
+          acMonitorTimeout = 10 * 60;
+          batteryCriticalThreshold = 5;
+          batteryLowThreshold = 15;
+          batteryNotifyLow = true;
+          batteryLowNotificationType = 0;
 
-      # See https://raw.githubusercontent.com/AvengeMedia/DankMaterialShell/refs/heads/master/quickshell/Common/settings/SessionSpec.js
-      session = {
-        doNotDisturb = false;
-        isLightMode = false;
-        nightModeEnabled = false;
-        showThirdPartyPlugins = true;
-        timeLocale = "pt";
-        wallpaperPath = wallpaper;
-        nvidiaGpuTempEnabled = config.my.profiles.hardware.gpu.nvidia;
-        nonNvidiaGpuTempEnabled = !config.my.profiles.hardware.gpu.nvidia;
-      };
-
-      clipboardSettings = {
-        maxHistory = 50;
-      };
-
-      systemd = {
-        enable = true;
-        restartIfChanged = true;
-      };
-    };
-
-    my.de.hyprland = {
-      hyprlock.enable = false;
-      hypridle.lockCmd = "[[ $(dms ipc call lock isLocked) != 'false' ]] || dms ipc call lock lock";
-    };
-
-    home.packages = [pkgs.libnotify];
+          scrollYBehavior = "none";
+          scrollXBehavior = "none";
+        });
   };
 }

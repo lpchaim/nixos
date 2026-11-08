@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
-    (self + /nix/shared/storage/zfsPool.nix)
+    ./zfsPool.nix
   ];
 
   my = {

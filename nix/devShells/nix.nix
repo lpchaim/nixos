@@ -7,7 +7,7 @@
       packages = with pkgs; [
         alejandra
         nixd
-        nixpkgs-fmt
+        nixfmt
       ];
     };
   };

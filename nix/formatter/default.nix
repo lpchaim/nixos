@@ -64,7 +64,7 @@ in {
         enable = true;
         name = "treefmt";
         description = "Run treefmt";
-        entry = "${lib.getExe config.treefmt.build.wrapper} --fail-on-change";
+        entry = "${lib.getExe config.treefmt.build.wrapper} --ci";
         priority = 10;
       };
     };

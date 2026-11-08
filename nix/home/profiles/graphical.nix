@@ -2,6 +2,7 @@
   config,
   lib,
   osConfig ? {},
+  pkgs,
   ...
 }: let
   cfg = config.my.profiles.graphical;
@@ -11,9 +12,16 @@ in {
     // {default = osConfig.my.profiles.graphical or false;};
   config = lib.mkIf cfg {
     my = {
-      bars.dank-material-shell.enable = lib.mkDefault true;
+      bars.dux-shell.enable = lib.mkDefault true;
       gui.enable = true;
       gui.media.enable = true;
     };
+
+    home.packages = with pkgs; [
+      brightnessctl
+      grimblast
+      libnotify
+      playerctl
+    ];
   };
 }

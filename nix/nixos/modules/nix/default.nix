@@ -11,9 +11,13 @@
     self.nixosConfigurations
     |> lib.filterAttrs (name: host: config.networking.hostName != name && host.config.my.profiles.builder);
 in {
+  imports = [
+    (self + /nix/common/nix.nix)
+  ];
+
   options.my.nix.enable = lib.mkEnableOption "nix";
+
   config = lib.mkIf (cfg.enable) {
-    nixpkgs = nix.pkgs;
     nix = {
       buildMachines = lib.mkIf (!isLix) (
         builderConfigurations
@@ -32,6 +36,12 @@ in {
       distributedBuilds = true;
       gc.automatic = !config.programs.nh.enable || !config.programs.nh.clean.enable;
     };
+
+    nixpkgs = {
+      inherit (nix.pkgs) config;
+      overlays = builtins.attrValues self.overlays;
+    };
+
     lix.buildMachines.machines = lib.mkIf isLix (
       builderConfigurations
       |> lib.mapAttrs (name: host: {

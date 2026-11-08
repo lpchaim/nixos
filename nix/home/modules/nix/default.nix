@@ -11,7 +11,12 @@
   cfg = config.my.nix;
   isLix = lib.hasPrefix "lix" config.nix.package.name;
 in {
+  imports = [
+    (self + /nix/common/nix.nix)
+  ];
+
   options.my.nix.enable = lib.mkEnableOption "nix";
+
   config = lib.mkIf (cfg.enable) {
     my.secret.definitions = {
       "nix-extra-access-tokens" = mkSecret "nix-extra-access-tokens" {};
@@ -39,7 +44,10 @@ in {
       settings = lib.mkIf isLix {repl-overlays = ["repl-overlay.nix"];};
     };
 
-    nixpkgs = lib.mkIf (osConfig == {}) nix.pkgs;
+    nixpkgs = lib.mkIf (osConfig == {}) {
+      inherit (nix.pkgs) config;
+      overlays = builtins.attrValues self.overlays;
+    };
 
     home = {
       packages = [config.nix.package pkgs.sqlite];

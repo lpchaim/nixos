@@ -43,18 +43,6 @@
       > $out
     '';
 
-  importDir = path:
-    builtins.readDir path
-    |> lib.filterAttrs (name: type: type == "directory" || (lib.hasSuffix ".nix" name && name != "default.nix"))
-    |> lib.mapAttrs' (name: type: {
-      name = lib.removeSuffix ".nix" name;
-      value =
-        if type != "directory" || builtins.pathExists (path + /${name}/default.nix)
-        then import (path + /${name})
-        else null;
-    })
-    |> lib.filterAttrs (_: content: content != null);
-
   mkStableNumericId = maxCharacters: seed:
     builtins.hashString "sha256" (seed |> toString |> lib.trim)
     |> inputs.nix-std.lib.regex.substitute "[^[:digit:]]" ""
@@ -74,11 +62,4 @@
       (builtins.substring 16 4 h)
       (builtins.substring 20 12 h)
     ];
-
-  nixFilesToAttrs = path:
-    builtins.readDir path
-    |> lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name && name != "default.nix")
-    |> lib.concatMapAttrs (relativePath: _: {
-      ${relativePath |> lib.removeSuffix ".nix"} = path + /${relativePath};
-    });
 }

@@ -38,5 +38,10 @@ in {
         ]
       else args [];
     lua = lib.generators.mkLuaInline;
+    luaFunction = content:
+      lua ''
+        function()
+        ${content |> lib.splitString "\n" |> map (line: "  ${line}") |> lib.concatStringsSep "\n" |> lib.trim}
+        end'';
   };
 }
